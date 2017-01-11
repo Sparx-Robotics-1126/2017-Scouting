@@ -8,76 +8,10 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.sparx1126.steamworks.MainScreen">
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Scouter Name"
-        android:ems="10"
-        android:id="@+id/editText"
-        style="@android:style/Widget.Material.AutoCompleteTextView"
-        android:singleLine="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+    tools:context="com.sparx1126.steamworks.MainScreen"
+    android:background="@color/colorWhite">
 
     <Spinner
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:background="@android:drawable/btn_dropdown"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/editText" />
-
-    <Button
-        android:text="Scout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button3"
-        android:elevation="0dp"
-        style="@android:style/Widget.Material.Button.Colored"
-        android:layout_below="@+id/button2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:backgroundTint="#C40000"
-        android:minHeight="75dip"
-        android:textSize="22sp" />
-
-    <Button
-        android:text="Benchmark"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button2"
-        android:elevation="0dp"
-        style="@android:style/Widget.Material.Button.Colored"
-        android:backgroundTint="#c40000"
-        android:layout_below="@+id/spinner"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:minHeight="75dip"
-        android:textSize="20sp" />
-
-    <Button
-        android:text="View"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button"
-        android:elevation="0dp"
-        style="@android:style/Widget.Material.Button.Colored"
-        android:backgroundTint="#C40000"
-        android:layout_below="@+id/button3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:minHeight="75dip"
-        android:textSize="22sp" />
-
+        android:id="@+id/To_Units"
+        style="@style/spinner_style" />
 </RelativeLayout>
