@@ -3,7 +3,7 @@
 
     <item><layer-list>
         <item><shape>
-            <gradient android:angle="90" android:endColor="@color/colorSparxRed" android:startColor="@color/colorNavy" android:type="linear" />
+            <gradient android:angle="90" android:endColor="@color/colorWhite" android:startColor="@color/colorWhite" android:type="linear" />
 
             <stroke android:width="1dp" android:color="#000000" />
 
@@ -11,7 +11,7 @@
 
             <padding android:bottom="3dp" android:left="3dp" android:right="3dp" android:top="3dp" />
         </shape></item>
-        <item ><bitmap android:gravity="bottom|right" android:src="@android:drawable/arrow_down_float" />
+        <item ><bitmap android:gravity="bottom|right" android:src="@android:drawable/ic_menu_more" />
         </item>
     </layer-list></item>
 
