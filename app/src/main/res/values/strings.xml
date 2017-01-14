@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">SteamWorks</string>
+    <string name="cancel">Cancel</string>
+    <string name="downloading_data">Downloading data</string>
+    <string name="okay">Okay</string>
 </resources>

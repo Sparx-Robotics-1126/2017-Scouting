@@ -11,6 +11,14 @@
     tools:context="com.sparx1126.steamworks.MainScreen"
     android:background="@color/colorWhite">
 
+    <Spinner
+        android:id="@+id/eventPicker"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/horiz_margin"
+        android:layout_marginRight="@dimen/horiz_margin"
+        android:background="@android:drawable/btn_dropdown" />
+
     <Button
         android:text="View"
         android:layout_width="wrap_content"
@@ -64,36 +72,5 @@
         android:textColor="@color/colorWhite"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editText"
-        style="@android:style/Widget.Material.AutoCompleteTextView"
-        android:singleLine="true"
-        android:hint="Event"
-        android:minHeight="75dp"
-        android:layout_marginTop="12dp"
-        android:layout_below="@+id/editText2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:ems="10"
-        android:id="@+id/editText2"
-        style="@android:style/Widget.Material.AutoCompleteTextView"
-        android:singleLine="true"
-        android:hint="Scouter Name"
-        android:minHeight="75dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
