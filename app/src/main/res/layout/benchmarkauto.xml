@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="122dp">
+
+        <Button
+            android:text="Teleop"
+            android:layout_width="240dp"
+            android:id="@+id/button5"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:background="@color/colorSparxRed"
+            android:elevation="0dp"
+            android:layout_margin="10dp"
+            android:textSize="25sp"
+            android:layout_weight="0.55"
+            android:layout_height="100dp"
+            android:textColor="#c0c0c0"
+            android:alpha="60"/>
+
+        <Button
+            android:text="Auto"
+            android:layout_width="240dp"
+            android:id="@+id/button4"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:background="@color/colorSparxRed"
+            android:elevation="0dp"
+            android:layout_margin="10dp"
+            android:textSize="25sp"
+            android:layout_weight="1"
+            android:layout_height="100dp"
+            android:textColor="@color/colorWhite"/>
+    </LinearLayout>
+
+    <CheckBox
+        android:text="Can you shoot in the high goal?"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox2"
+        android:textSize="30sp"
+        android:layout_weight="0.13" />
+
+    <CheckBox
+        android:text="Can you shoot in the low goal?"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox3"
+        android:textSize="30sp"
+        android:layout_weight="0.11" />
+
+    <CheckBox
+        android:text="Can you put the hear on the lift?"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox4"
+        android:textSize="30sp"
+        android:layout_weight="0.09" />
+
+    <CheckBox
+        android:text="Can you put the gear on all 3 lifts?"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox5"
+        android:textSize="30sp"
+        android:layout_weight="0.08" />
+
+    <CheckBox
+        android:text="Can you do both shoot and put the gear on the lift in one period?"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox7"
+        android:textSize="30sp"
+        android:layout_weight="0.13" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="177dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText6"
+        android:hint="Comments"
+        android:textSize="30sp"/>
+
+</LinearLayout>
