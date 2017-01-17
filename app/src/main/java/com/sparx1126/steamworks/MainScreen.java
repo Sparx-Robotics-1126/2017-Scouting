@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -94,10 +95,26 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
 
 
     public void setupEventSpinner() {
-        cursorAdapterRegionalNames = new SimpleCursorAdapter(
+        Cursor allEventData = dbHelper.createEventNameCursor();
+        Cursor filteredEventData;
+
+        //System.out.println(DatabaseUtils.dumpCursorToString(myData));
+
+        try {
+            while (allEventData.moveToNext()) {
+                System.out.println(allEventData.getString(allEventData.getColumnIndex("start_date")));
+            }
+        } finally {
+            allEventData.close();
+        }
+
+        //String myString = DatabaseUtils.dumpCursorToString(myData);
+        //System.out.println(myString);
+
+        /*cursorAdapterRegionalNames = new SimpleCursorAdapter(
                 this,
                 android.R.layout.simple_list_item_1,
-                dbHelper.createEventNameCursor(),
+                myData,
                 new String[]{"title"},
                 new int[]{android.R.id.text1}, 0);
 
@@ -118,7 +135,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         //check if this is selected
         eventPicker.setOnItemSelectedListener(this);
         //finally set the value
-        eventPicker.setAdapter(cursorAdapterRegionalNames);
+        eventPicker.setAdapter(cursorAdapterRegionalNames);*/
     }
 
     @Override
