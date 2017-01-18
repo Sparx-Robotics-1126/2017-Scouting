@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SteamWorks</string>
+    <string name="title_activity_benchmark_teleop_switcher">BenchmarkTeleopSwitcher</string>
 </resources>

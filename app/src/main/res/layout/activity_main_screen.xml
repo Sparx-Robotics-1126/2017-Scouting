@@ -43,14 +43,14 @@
         android:layout_above="@+id/button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/button2"
-        android:layout_alignEnd="@+id/button2"
+        android:layout_alignRight="@+id/benchmarkAuto"
+        android:layout_alignEnd="@+id/benchmarkAuto"
         android:layout_marginTop="50px"
         android:layout_marginBottom="50px"/>
 
     <Button
         android:text="Benchmark"
-        android:id="@+id/button2"
+        android:id="@+id/benchmarkAuto"
         android:elevation="0dp"
         style="@android:style/Widget.Material.Button.Colored"
         android:backgroundTint="#c40000"
@@ -88,8 +88,8 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/button2"
-        android:layout_alignEnd="@+id/button2"
+        android:layout_alignRight="@+id/benchmarkAuto"
+        android:layout_alignEnd="@+id/benchmarkAuto"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:textSize="35px"
         android:hint="Scouter Name"/>

@@ -13,7 +13,7 @@
         <Button
             android:text="Teleop"
             android:layout_width="240dp"
-            android:id="@+id/button5"
+            android:id="@+id/teleopSwitcher"
             style="@android:style/Widget.Material.Button.Colored"
             android:background="@color/colorSparxRed"
             android:elevation="0dp"
@@ -27,7 +27,7 @@
         <Button
             android:text="Auto"
             android:layout_width="240dp"
-            android:id="@+id/button4"
+            android:id="@+id/button6"
             style="@android:style/Widget.Material.Button.Colored"
             android:background="@color/colorSparxRed"
             android:elevation="0dp"
@@ -39,52 +39,58 @@
     </LinearLayout>
 
     <CheckBox
-        android:text="Can you shoot in the high goal?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/checkBox2"
         android:textSize="30sp"
-        android:layout_weight="0.13" />
+        android:layout_weight="0.13"
+        android:text="Ability to shoot in the high goal?"
+        android:buttonTint="@color/colorSparxRed"/>
 
     <CheckBox
-        android:text="Can you shoot in the low goal?"
+        android:text="Ability to shoot in the low goal?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/checkBox3"
         android:textSize="30sp"
-        android:layout_weight="0.11" />
+        android:layout_weight="0.11"
+        android:buttonTint="@color/colorSparxRed"/>
 
     <CheckBox
-        android:text="Can you put the hear on the lift?"
+        android:text="Ability to put the gear on one lift?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/checkBox4"
         android:textSize="30sp"
-        android:layout_weight="0.09" />
+        android:layout_weight="0.09"
+        android:buttonTint="@color/colorSparxRed"/>
 
     <CheckBox
-        android:text="Can you put the gear on all 3 lifts?"
+        android:text="Ability to put the gear on all 3 lifts?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/checkBox5"
         android:textSize="30sp"
-        android:layout_weight="0.08" />
+        android:layout_weight="0.08"
+        android:buttonTint="@color/colorSparxRed"/>
 
     <CheckBox
-        android:text="Can you do both shoot and put the gear on the lift in one period?"
+        android:text="Ability to both shoot and put the gear on the lift in auto period?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/checkBox7"
         android:textSize="30sp"
-        android:layout_weight="0.13" />
+        android:layout_weight="0.13"
+        android:buttonTint="@color/colorSparxRed"/>
 
     <EditText
         android:layout_width="match_parent"
-        android:layout_height="177dp"
+        android:layout_height="78dp"
         android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/editText6"
         android:hint="Comments"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:buttonTint="@color/colorSparxRed"/>
 
 </LinearLayout>

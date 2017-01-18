@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:weightSum="1">
@@ -44,7 +45,8 @@
         android:ems="10"
         android:id="@+id/editText2"
         android:hint="Robot speed"
-        android:textSize="30sp"/>
+        android:textSize="30sp"
+        android:layout_margin="30sp"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -53,14 +55,46 @@
         android:ems="10"
         android:id="@+id/editText5"
         android:textSize="30sp"
-        android:hint="How man balls can be held" />
+        android:hint="Ammount of balls that can be held"
+        android:layout_margin="30sp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText3"
+        android:hint="Accuracy for low goal (if possible)"
+        android:textSize="30sp"
+        android:layout_margin="30sp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText4"
+        android:hint="Accuracy for high goal (if possible)"
+        android:textSize="30sp"
+        android:layout_margin="30sp"/>
 
     <CheckBox
-        android:text="Can you scale?"
+        android:text="Ability To Scale?"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/checkBox6"
         android:textSize="30sp"
-        android:layout_weight="0.05" />
+        android:layout_weight="0.05"
+        android:layout_margin="30sp"
+        android:buttonTint="@color/colorSparxRed"
+        android:minHeight="0dp" />
 
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:hint="Comments"
+        android:textSize="30sp" />
 </LinearLayout>
