@@ -35,6 +35,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     private DatabaseHelper dbHelper;
     private BlueAlliance blueAlliance;
     private Spinner eventPicker;
+    private static long ONE_DAY_EPOCH = 86400000;
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -116,89 +117,44 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
 
 
     public void setupEventSpinner() {
-        Cursor allEventData = dbHelper.createEventNameCursor();
-        ArrayList<String> eventsWeAreIn = new ArrayList<String>();
-        SimpleDateFormat eventFormater = new SimpleDateFormat("yyyy-MM-dd");
+        Cursor eventDataCur = dbHelper.createEventNameCursor();
+        //Left that here because it's a way to dump all of the data into the console
+        //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
+        ArrayList<String> eventsWeAreInArray = fillInEventsNeerToday(eventDataCur);
+        cursorAdapterRegionalNames = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray); //selected item will look like a spinner set from XML
+        cursorAdapterRegionalNames.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        eventPicker.setAdapter(cursorAdapterRegionalNames);
+    }
 
+    private long getTodayInEpoch() {
         Calendar c = Calendar.getInstance();
-
-        //long epochToday = c.getTime().getTime();
-        Date tmpToday = null;
+        long epochToday = c.getTime().getTime();
+        return epochToday;
+    }
+    private ArrayList<String> fillInEventsNeerToday(Cursor eventDataCur){
+        ArrayList<String> eventsWeAreInArray = new ArrayList<String>();
+        SimpleDateFormat cursorFormater = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        long epochToday = getTodayInEpoch();
         try {
-            tmpToday = eventFormater.parse("2016-11-13");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        long epochToday = tmpToday.getTime();
-        System.out.println("Todays date Epoch => " + epochToday);
-
-        //String eventFormatedDate = eventFormater.format(c.getTime());
-        String eventFormatedDate = eventFormater.format(tmpToday.getTime());
-        System.out.println("Todays date => " + eventFormatedDate);
-
-
-
-        //System.out.println(DatabaseUtils.dumpCursorToString(allEventData));
-
-        try {
-            while (allEventData.moveToNext()) {
-                SimpleDateFormat cursorFormater = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            while (eventDataCur.moveToNext()) {
                 Date dateObj = null;
                 try {
-                    dateObj = cursorFormater.parse(allEventData.getString(allEventData.getColumnIndex("start_date")));
+                    String startDateStr = eventDataCur.getString(eventDataCur.getColumnIndex("start_date"));
+                    dateObj = cursorFormater.parse(startDateStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 long epoch = dateObj.getTime();
-                String newDateStr = eventFormater.format(dateObj);
 
-
-                //if((epochToday <= (epoch + 259200)) && (epochToday >= (epoch - 86400)))
-                long myPastEpoch = epochToday - 345600000;
-                long myFutureEpoch = epochToday + 345600000;
-
-
-                if(epoch >= myPastEpoch && epoch <= myFutureEpoch)
+                if(epoch >= epochToday - (ONE_DAY_EPOCH * 4)&& epoch <= epochToday + (ONE_DAY_EPOCH * 1000))
                 {
-                    //eventsWeAreIn.insertData(allEventData.currentRecord);
-                    System.out.println("Event time => " + newDateStr);
-                    System.out.println("Event time Epoch=> " + epoch);
-                    eventsWeAreIn.add(allEventData.getString(allEventData.getColumnIndex("title")));
+                    eventsWeAreInArray.add(eventDataCur.getString(eventDataCur.getColumnIndex("title")));
                 }
-
             }
         } finally {
-            allEventData.close();
+            eventDataCur.close();
         }
-
-        cursorAdapterRegionalNames = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, eventsWeAreIn); //selected item will look like a spinner set from XML
-        cursorAdapterRegionalNames.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        /*cursorAdapterRegionalNames = new SimpleCursorAdapter(
-                this,
-                android.R.layout.simple_list_item_1,
-                allEventData,
-                new String[]{"title"},
-                new int[]{android.R.id.text1}, 0);*/
-
-        //bind view to this in order to get its value later
-        /*cursorAdapterRegionalNames.setViewBinder(
-                new SimpleCursorAdapter.ViewBinder() {
-                    @Override
-                    public boolean setViewValue(View view, Cursor cursor, int i) {
-                        view.setTag(cursor.getString(cursor.getColumnIndex("key")));
-                        if (view instanceof TextView) {
-                            ((TextView) view).setText(cursor.getString(i));
-                        }
-                        return true;
-                    }
-                }
-
-        );*/
-        //check if this is selected
-        //eventPicker.setOnItemSelectedListener(this);
-        //finally set the value
-        eventPicker.setAdapter(cursorAdapterRegionalNames);
+        return eventsWeAreInArray;
     }
 
     @Override
