@@ -77,7 +77,7 @@
     <AutoCompleteTextView
         android:layout_width="wrap_content"
         android:layout_height="100px"
-        android:id="@+id/scouterName"
+        android:id="@+id/autoCompleteTextView1"
         android:minWidth="100px"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:textSize="35px"

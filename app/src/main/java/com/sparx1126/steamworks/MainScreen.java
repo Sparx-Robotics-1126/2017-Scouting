@@ -2,16 +2,21 @@ package com.sparx1126.steamworks;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -37,16 +42,21 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     private BlueAlliance blueAlliance;
     private Spinner eventPicker;
     private static long ONE_DAY_EPOCH = 86400000;
+    private AutoCompleteTextView actv;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
 
+    //Kevin is watching ( ͡° ͜ʖ ͡°)
+    //this push thing isn't working ;-;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+        actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
         blueAlliance = BlueAlliance.getInstance(this);
         benchmarkAuto = (Button)findViewById(R.id.benchmarkAuto);
         benchmarkAuto.setOnClickListener(new View.OnClickListener() {
@@ -61,13 +71,44 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        scouterAutoComplete();
+        eventPicker.setOnTouchListener(spinnerOnTouch);
+        eventPicker.setOnKeyListener(spinnerOnKey);
     }
 
+    private View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                System.out.println("your code there");
+                setupEventSpinner();
+            }
+            return false;
+        }
+    };
+
+    private static View.OnKeyListener spinnerOnKey = new View.OnKeyListener() {
+        public boolean onKey(View v, int keyCode, KeyEvent event) {
+            if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
+                System.out.println("your code here");
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
+
+    private void scouterAutoComplete(){
+        String[] students = getResources().getStringArray(R.array.students);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this,android.R.layout.simple_list_item_1,students);
+        actv.setAdapter(adapter);
+
+    }
     private void downloadEventSpinnerDataIfNecessary() {
         if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
             downloadEventSpinnerData();
         } else {
-            setupEventSpinner();
+            //setupEventSpinner();
         }
     }
 
@@ -84,7 +125,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                         alert.dismiss();
                         if (!success)
                             alertUser("Failure", "Did not successfully download event list!").show();
-                        setupEventSpinner();
+                        //setupEventSpinner();
 //                            mNavigationDrawerFragment.updateDrawerData();
                     }
                 });
@@ -125,6 +166,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
 
 
     public void setupEventSpinner() {
+
         Cursor eventDataCur = dbHelper.createEventNameCursor();
         //Left that here because it's a way to dump all of the data into the console
         //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
@@ -132,6 +174,18 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         cursorAdapterRegionalNames = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray); //selected item will look like a spinner set from XML
         cursorAdapterRegionalNames.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         eventPicker.setAdapter(cursorAdapterRegionalNames);
+        Spinner spnLocale = (Spinner)findViewById(R.id.eventPicker);
+
+        spnLocale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                System.out.println("selected");
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                System.out.println("not selected");
+                return;
+            }
+        });
     }
 
     private long getTodayInEpoch() {
@@ -154,7 +208,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                 }
                 long epoch = dateObj.getTime();
 
-                if(epoch >= epochToday - (ONE_DAY_EPOCH * 4)&& epoch <= epochToday + (ONE_DAY_EPOCH * 1000))
+                if(epoch >= epochToday - (ONE_DAY_EPOCH * 1000)&& epoch <= epochToday + (ONE_DAY_EPOCH * 1000))
                 {
                     eventsWeAreInArray.add(eventDataCur.getString(eventDataCur.getColumnIndex("title")));
                 }
