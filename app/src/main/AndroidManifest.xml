@@ -8,15 +8,19 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainScreen">
+        <activity android:name=".MainScreen"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
-        <activity android:name=".BenchmarkAuto" />
-        <activity android:name=".BenchmarkTeleopSwitcher"/>
+        <activity android:name=".BenchmarkAuto"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".BenchmarkTeleopSwitcher"
+            android:windowSoftInputMode="stateHidden"/>
     </application>
 
 </manifest>

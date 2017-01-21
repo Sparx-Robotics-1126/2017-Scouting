@@ -86,11 +86,26 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="78dp"
-        android:inputType="textPersonName"
+        android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/editText6"
         android:hint="Comments"
         android:textSize="30sp"
-        android:buttonTint="@color/colorSparxRed"/>
+        android:buttonTint="@color/colorSparxRed"
+        android:layout_weight="0.27" />
+
+    <Button
+        android:text="Submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/SubmitTeleopBenchmark"
+        android:backgroundTint="@color/colorSparxRed"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_weight="0.15"
+        android:layout_marginTop="50sp"
+        android:elevation="13dp"
+        android:layout_margin="50sp"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"/>
 
 </LinearLayout>
