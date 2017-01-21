@@ -11,6 +11,8 @@
     tools:context="com.sparx1126.steamworks.MainScreen"
     android:background="@color/colorWhite">
 
+    <requestFocus />
+
     <Spinner
         android:id="@+id/eventPicker"
         android:layout_width="fill_parent"
@@ -20,57 +22,85 @@
         android:background="@android:drawable/btn_dropdown" />
 
     <Button
-        android:text="View"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button"
+        android:text="Benchmark"
+        android:id="@+id/benchmarkAuto"
         android:elevation="0dp"
         style="@android:style/Widget.Material.Button.Colored"
+        android:backgroundTint="#c40000"
         android:minHeight="75dip"
-        android:textSize="22sp"
-        android:backgroundTint="@color/colorSparxRed"
-        android:layout_alignParentBottom="true"
+        android:textSize="20sp"
+        android:textColor="@color/colorWhite"
+        android:layout_width="wrap_content"
+        android:layout_height="150px"
+        android:layout_above="@+id/button3"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="14dp"
-        android:layout_alignRight="@+id/button3"
-        android:layout_alignEnd="@+id/button3"
-        android:textColor="@color/colorWhite"/>
+        android:layout_alignParentStart="true" />
 
     <Button
         android:text="Scout"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="150px"
         android:id="@+id/button3"
         android:elevation="0dp"
         style="@android:style/Widget.Material.Button.Colored"
         android:backgroundTint="#C40000"
         android:minHeight="75dip"
         android:textSize="22sp"
+        android:textColor="@color/colorWhite"
         android:layout_above="@+id/button"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/button2"
-        android:layout_alignEnd="@+id/button2"
+        android:layout_alignRight="@+id/benchmarkAuto"
+        android:layout_alignEnd="@+id/benchmarkAuto"
         android:layout_marginTop="50px"
-        android:layout_marginBottom="50px"
-        android:textColor="@color/colorWhite"/>
+        android:layout_marginBottom="50px"/>
 
     <Button
-        android:text="Benchmark"
+        android:text="View"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/button2"
+        android:id="@+id/button"
         android:elevation="0dp"
         style="@android:style/Widget.Material.Button.Colored"
-        android:backgroundTint="#c40000"
         android:minHeight="75dip"
-        android:textSize="20sp"
-        android:layout_above="@+id/button3"
+        android:textSize="22sp"
+        android:backgroundTint="@color/colorSparxRed"
+        android:textColor="@color/colorWhite"
+        android:layout_height="150px"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textColor="@color/colorWhite"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignRight="@+id/button3"
+        android:layout_alignEnd="@+id/button3" />
+
+    <AutoCompleteTextView
+        android:layout_width="wrap_content"
+        android:layout_height="100px"
+        android:id="@+id/team"
+        android:minWidth="100px"
+        android:textSize="35px"
+        android:hint="Team Number"
+        android:completionHint=" fhg "
+        android:layout_above="@+id/benchmarkAuto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="15dp" />
+
+
+    <AutoCompleteTextView
+        android:layout_width="wrap_content"
+        android:layout_height="100px"
+        android:id="@+id/scouterName"
+        android:minWidth="100px"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:textSize="35px"
+        android:hint="Scouter Name"
+        android:layout_above="@+id/team"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="12dp" />
 
 </RelativeLayout>
