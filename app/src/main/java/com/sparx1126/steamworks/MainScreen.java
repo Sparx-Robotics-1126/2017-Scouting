@@ -31,6 +31,7 @@ import static com.sparx1126.steamworks.NetworkHelper.isNetworkAvailable;
 
 public class MainScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String[] regionals = {"Finger Lakes Regional 2017", "Cleveland Regional 2017"};
+    Button benchmarkAuto;
     private ArrayAdapter<String> cursorAdapterRegionalNames;
     private DatabaseHelper dbHelper;
     private BlueAlliance blueAlliance;
@@ -47,6 +48,13 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         blueAlliance = BlueAlliance.getInstance(this);
+        benchmarkAuto = (Button)findViewById(R.id.benchmarkAuto);
+        benchmarkAuto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                benchmarkAutoButtonClicked(v);
+            }
+        });
         dbHelper = DatabaseHelper.getInstance(this);
         eventPicker = (Spinner) findViewById(R.id.eventPicker);
         downloadEventSpinnerDataIfNecessary();
@@ -204,4 +212,12 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
+
+    private void benchmarkAutoButtonClicked(View v) {
+        Context context = MainScreen.this;
+        Class destination = BenchmarkAuto.class;
+        Intent intent = new Intent(context, destination);
+        startActivity(intent);
+    }
+
 }
