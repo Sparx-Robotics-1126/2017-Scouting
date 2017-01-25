@@ -37,6 +37,13 @@ import static com.sparx1126.steamworks.NetworkHelper.isNetworkAvailable;
 public class MainScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     String[] regionals = {"Finger Lakes Regional 2017", "Cleveland Regional 2017"};
     Button benchmarkAuto;
+    Button button;
+    Button button3;
+    int i = 0;
+    String AutoCompleteTextView1;
+    private boolean eventSelected = false;
+    private boolean nameSelected = false;
+    private boolean buttonsvisibility = false;
     private ArrayAdapter<String> cursorAdapterRegionalNames;
     private DatabaseHelper dbHelper;
     private BlueAlliance blueAlliance;
@@ -58,7 +65,12 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         setContentView(R.layout.activity_main_screen);
         actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
         blueAlliance = BlueAlliance.getInstance(this);
+        button3 = (Button)findViewById(R.id.button3);
         benchmarkAuto = (Button)findViewById(R.id.benchmarkAuto);
+        button = (Button)findViewById(R.id.button);
+        benchmarkAuto.setVisibility(View.INVISIBLE);
+        button3.setVisibility(View.INVISIBLE);
+        button.setVisibility(View.INVISIBLE);
         benchmarkAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,6 +93,9 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 System.out.println("your code there");
                 setupEventSpinner();
+                benchmarkAuto.setVisibility(View.VISIBLE);
+                button.setVisibility(View.VISIBLE);
+                button3.setVisibility(View.VISIBLE);
             }
             return false;
         }
@@ -97,13 +112,27 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         }
     };
 
+
     private void scouterAutoComplete(){
         String[] students = getResources().getStringArray(R.array.students);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this,android.R.layout.simple_list_item_1,students);
         actv.setAdapter(adapter);
+System.out.println("KEVINABGAEBGESBATES");
+            if (students[i] == actv.getHint() ){
+                button.setVisibility(View.VISIBLE);
+            }
+        else{
+                i++;
+            }
+            if (i > 43){
+                i = 0;
+            }
+            System.out.println(i);
+
 
     }
+
     private void downloadEventSpinnerDataIfNecessary() {
         if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
             downloadEventSpinnerData();
@@ -176,7 +205,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         eventPicker.setAdapter(cursorAdapterRegionalNames);
         Spinner spnLocale = (Spinner)findViewById(R.id.eventPicker);
 
-        spnLocale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        /*spnLocale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 System.out.println("selected");
             }
@@ -185,7 +214,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                 System.out.println("not selected");
                 return;
             }
-        });
+        });*/
     }
 
     private long getTodayInEpoch() {
