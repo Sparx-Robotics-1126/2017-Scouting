@@ -10,12 +10,14 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView.OnDismissListener;
 import android.widget.Button;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
@@ -71,6 +73,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         benchmarkAuto.setVisibility(View.INVISIBLE);
         button3.setVisibility(View.INVISIBLE);
         button.setVisibility(View.INVISIBLE);
+
         benchmarkAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -101,6 +104,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         }
     };
 
+
     private static View.OnKeyListener spinnerOnKey = new View.OnKeyListener() {
         public boolean onKey(View v, int keyCode, KeyEvent event) {
             if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
@@ -118,18 +122,6 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this,android.R.layout.simple_list_item_1,students);
         actv.setAdapter(adapter);
-System.out.println("KEVINABGAEBGESBATES");
-            if (students[i] == actv.getHint() ){
-                button.setVisibility(View.VISIBLE);
-            }
-        else{
-                i++;
-            }
-            if (i > 43){
-                i = 0;
-            }
-            System.out.println(i);
-
 
     }
 
