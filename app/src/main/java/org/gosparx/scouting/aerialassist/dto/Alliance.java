@@ -1,4 +1,4 @@
-package com.sparx1126.steamworks;
+package org.gosparx.scouting.aerialassist.dto;
 
 import java.util.List;
 

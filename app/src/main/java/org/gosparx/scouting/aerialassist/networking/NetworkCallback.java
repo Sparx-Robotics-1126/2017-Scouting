@@ -1,4 +1,4 @@
-package com.sparx1126.steamworks;
+package org.gosparx.scouting.aerialassist.networking;
 
 /**
  * Created by jbass on 3/29/14.

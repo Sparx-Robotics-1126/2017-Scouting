@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,8 +11,20 @@
         android:layout_width="match_parent"
         android:layout_height="122dp">
 
+        <ImageButton
+            app:srcCompat="@drawable/ic_home_black_24dp"
+            android:id="@+id/home_auto"
+            android:layout_weight="0.14"
+            android:tint="@color/colorWhite"
+            android:backgroundTint="@color/colorSparxRed"
+            android:layout_height="110dp"
+            android:layout_marginTop="5px"
+            android:minWidth="100px"
+            android:maxWidth="100px"
+            android:layout_width="100px" />
+
         <Button
-            android:text="Teleop"
+            android:text="To Tele"
             android:layout_width="240dp"
             android:id="@+id/teleopSwitcher"
             style="@android:style/Widget.Material.Button.Colored"
@@ -21,21 +34,8 @@
             android:textSize="25sp"
             android:layout_weight="0.55"
             android:layout_height="100dp"
-            android:textColor="#c0c0c0"
+            android:textColor="#FFF"
             android:alpha="60"/>
-
-        <Button
-            android:text="Auto"
-            android:layout_width="240dp"
-            android:id="@+id/button6"
-            style="@android:style/Widget.Material.Button.Colored"
-            android:background="@color/colorSparxRed"
-            android:elevation="0dp"
-            android:layout_margin="10dp"
-            android:textSize="25sp"
-            android:layout_weight="1"
-            android:layout_height="100dp"
-            android:textColor="@color/colorWhite"/>
     </LinearLayout>
 
     <CheckBox
@@ -92,7 +92,7 @@
         android:hint="Comments"
         android:textSize="30sp"
         android:buttonTint="@color/colorSparxRed"
-        android:layout_weight="0.27" />
+        android:layout_weight="0.23" />
 
     <Button
         android:text="Submit"

@@ -20,9 +20,14 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".BenchmarkAuto"
+
+        <activity android:name=".BenchmarkAutoScreen"
             android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".BenchmarkTeleopSwitcher"
+        <activity android:name=".BenchmarkTeleopScreen"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ScoutingScreen"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".ViewScreen"
             android:windowSoftInputMode="stateHidden"/>
         <!-- ATTENTION: This was auto-generated to add Google Play services to your project for
          App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->

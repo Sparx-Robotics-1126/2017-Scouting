@@ -1,4 +1,4 @@
-package com.sparx1126.steamworks;
+package org.gosparx.scouting.aerialassist.networking;
 
 import android.content.Context;
 import android.net.ConnectivityManager;

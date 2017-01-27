@@ -1,4 +1,4 @@
-package com.sparx1126.steamworks;
+package org.gosparx.scouting.aerialassist.dto;
 
 import com.google.gson.annotations.SerializedName;
 

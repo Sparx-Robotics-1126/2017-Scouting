@@ -1,0 +1,18 @@
+package com.sparx1126.steamworks;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
+
+/**
+ * Created by Amanda on 1/21/17.
+ */
+
+public class ViewScreen extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.view);
+    }
+}

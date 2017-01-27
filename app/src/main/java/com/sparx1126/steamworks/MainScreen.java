@@ -6,27 +6,28 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView.OnDismissListener;
 import android.widget.Button;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.appindexing.Thing;
 import com.google.android.gms.common.api.GoogleApiClient;
+
+import org.gosparx.scouting.aerialassist.DatabaseHelper;
+import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
+import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
+import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -34,24 +35,18 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.sparx1126.steamworks.NetworkHelper.isNetworkAvailable;
+import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class MainScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
-    String[] regionals = {"Finger Lakes Regional 2017", "Cleveland Regional 2017"};
-    Button benchmarkAuto;
-    Button button;
-    Button button3;
-    int i = 0;
-    String AutoCompleteTextView1;
-    private boolean eventSelected = false;
-    private boolean nameSelected = false;
-    private boolean buttonsvisibility = false;
+    private Button benchmarkAuto;
+    private Button view;
+    private Button scout;
     private ArrayAdapter<String> cursorAdapterRegionalNames;
     private DatabaseHelper dbHelper;
     private BlueAlliance blueAlliance;
     private Spinner eventPicker;
     private static long ONE_DAY_EPOCH = 86400000;
-    private AutoCompleteTextView actv;
+    private AutoCompleteTextView scouter;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -65,22 +60,38 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
-        actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView1);
         blueAlliance = BlueAlliance.getInstance(this);
-        button3 = (Button)findViewById(R.id.button3);
-        benchmarkAuto = (Button)findViewById(R.id.benchmarkAuto);
-        button = (Button)findViewById(R.id.button);
-        benchmarkAuto.setVisibility(View.INVISIBLE);
-        button3.setVisibility(View.INVISIBLE);
-        button.setVisibility(View.INVISIBLE);
+        dbHelper = DatabaseHelper.getInstance(this);
 
+        scout = (Button)findViewById(R.id.scout);
+        scout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonClicked(v);
+            }
+        });
+        benchmarkAuto = (Button)findViewById(R.id.benchmarkAuto);
         benchmarkAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                benchmarkAutoButtonClicked(v);
+                buttonClicked(v);
+
             }
         });
-        dbHelper = DatabaseHelper.getInstance(this);
+        view = (Button)findViewById(R.id.view_data);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                buttonClicked(v);
+
+            }
+        });
+
+        scouter = (AutoCompleteTextView) findViewById(R.id.scouter);
+        benchmarkAuto.setVisibility(View.INVISIBLE);
+        scout.setVisibility(View.INVISIBLE);
+        view.setVisibility(View.INVISIBLE);
+
         eventPicker = (Spinner) findViewById(R.id.eventPicker);
         downloadEventSpinnerDataIfNecessary();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -91,14 +102,35 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         eventPicker.setOnKeyListener(spinnerOnKey);
     }
 
+    public void buttonClicked(View view) {
+        Context context = MainScreen.this;
+        Class destination = null;
+
+
+        switch (view.getId()) {
+            case R.id.benchmarkAuto:
+                destination = BenchmarkAutoScreen.class;
+                break;
+            case R.id.scout:
+                destination = ScoutingScreen.class;
+                break;
+            case R.id.view_data:
+                destination = ViewScreen.class;
+                break;
+        }
+
+        Intent intent = new Intent(context, destination);
+        startActivity(intent);
+    }
+
     private View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 System.out.println("your code there");
                 setupEventSpinner();
                 benchmarkAuto.setVisibility(View.VISIBLE);
-                button.setVisibility(View.VISIBLE);
-                button3.setVisibility(View.VISIBLE);
+                view.setVisibility(View.VISIBLE);
+                scout.setVisibility(View.VISIBLE);
             }
             return false;
         }
@@ -121,7 +153,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         String[] students = getResources().getStringArray(R.array.students);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this,android.R.layout.simple_list_item_1,students);
-        actv.setAdapter(adapter);
+        scouter.setAdapter(adapter);
 
     }
 
@@ -287,12 +319,4 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
-
-    private void benchmarkAutoButtonClicked(View v) {
-        Context context = MainScreen.this;
-        Class destination = BenchmarkAuto.class;
-        Intent intent = new Intent(context, destination);
-        startActivity(intent);
-    }
-
 }

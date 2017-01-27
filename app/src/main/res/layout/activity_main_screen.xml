@@ -22,43 +22,18 @@
         android:layout_marginRight="@dimen/horiz_margin"
         android:background="@android:drawable/btn_dropdown" />
 
-    <Button
-        android:text="Scout"
+    <AutoCompleteTextView
         android:layout_width="wrap_content"
-        android:layout_height="150px"
-        android:id="@+id/button3"
-        android:elevation="0dp"
-        style="@android:style/Widget.Material.Button.Colored"
-        android:backgroundTint="#C40000"
-        android:minHeight="75dip"
-        android:textSize="22sp"
-        android:textColor="@color/colorWhite"
-        android:layout_above="@+id/button"
+        android:layout_height="100px"
+        android:id="@+id/scouter"
+        android:minWidth="100px"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
+        android:textSize="35px"
+        android:hint="Scouter Name"
+        android:layout_above="@+id/team"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/benchmarkAuto"
-        android:layout_alignEnd="@+id/benchmarkAuto"
-        android:layout_marginTop="50px"
-        android:layout_marginBottom="50px"/>
-
-    <Button
-        android:text="Benchmark"
-        android:id="@+id/benchmarkAuto"
-        android:elevation="0dp"
-        style="@android:style/Widget.Material.Button.Colored"
-        android:backgroundTint="#c40000"
-        android:minHeight="75dip"
-        android:textSize="20sp"
-        android:textColor="@color/colorWhite"
-        android:layout_width="wrap_content"
-        android:layout_height="150px"
-        android:layout_above="@+id/button3"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginRight="10dp"
-        android:layout_marginEnd="10dp"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginBottom="12dp" />
 
     <AutoCompleteTextView
         android:layout_width="wrap_content"
@@ -73,24 +48,48 @@
         android:layout_alignParentStart="true"
         android:layout_marginBottom="15dp" />
 
-
-    <AutoCompleteTextView
+    <Button
+        android:text="Benchmark"
+        android:id="@+id/benchmarkAuto"
+        android:elevation="0dp"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:backgroundTint="#c40000"
+        android:minHeight="75dip"
+        android:textSize="20sp"
+        android:textColor="@color/colorWhite"
         android:layout_width="wrap_content"
-        android:layout_height="100px"
-        android:id="@+id/autoCompleteTextView1"
-        android:minWidth="100px"
-        style="@style/Widget.AppCompat.AutoCompleteTextView"
-        android:textSize="35px"
-        android:hint="Scouter Name"
-        android:layout_above="@+id/team"
+        android:layout_height="150px"
+        android:layout_above="@+id/scout"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Scout"
+        android:layout_width="wrap_content"
+        android:layout_height="150px"
+        android:id="@+id/scout"
+        android:elevation="0dp"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:backgroundTint="#C40000"
+        android:minHeight="75dip"
+        android:textSize="22sp"
+        android:textColor="@color/colorWhite"
+        android:layout_above="@+id/view_data"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="12dp" />
+        android:layout_alignRight="@+id/benchmarkAuto"
+        android:layout_alignEnd="@+id/benchmarkAuto"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"/>
 
     <Button
         android:text="View"
         android:layout_width="wrap_content"
-        android:id="@+id/button"
+        android:id="@+id/view_data"
         android:elevation="0dp"
         style="@android:style/Widget.Material.Button.Colored"
         android:minHeight="75dip"
@@ -101,19 +100,7 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/button3"
-        android:layout_alignEnd="@+id/button3" />
-
-    <ImageButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_home_black_24dp"
-        android:id="@+id/imageButton6"
-        style="@android:style/Widget.Material.Button.Colored"
-        android:tint="@color/colorWhite"
-        android:backgroundTint="@color/colorSparxRed"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignRight="@+id/scout"
+        android:layout_alignEnd="@+id/scout" />
 
 </RelativeLayout>

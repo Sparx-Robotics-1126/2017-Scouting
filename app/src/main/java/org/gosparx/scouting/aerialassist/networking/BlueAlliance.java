@@ -1,13 +1,20 @@
-package com.sparx1126.steamworks;
+package org.gosparx.scouting.aerialassist.networking;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+
+import org.gosparx.scouting.aerialassist.DatabaseHelper;
+import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.dto.Match;
+import org.gosparx.scouting.aerialassist.dto.Team;
+
 import java.util.List;
 
 /**
