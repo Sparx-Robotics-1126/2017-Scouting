@@ -55,6 +55,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     private GoogleApiClient client;
 
     //Kevin is watching ( ͡° ͜ʖ ͡°)
+    //Jack is too ༼ つ ◕_◕ ༽つ
     //this push thing isn't working ;-;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
