@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="122dp">
+
+        <ImageButton
+            app:srcCompat="@drawable/ic_home_black_24dp"
+            android:id="@+id/home_auto"
+            android:layout_weight="0.14"
+            android:tint="@color/colorWhite"
+            android:backgroundTint="@color/colorSparxRed"
+            android:layout_height="110dp"
+            android:layout_marginTop="5px"
+            android:minWidth="100px"
+            android:maxWidth="100px"
+            android:layout_width="100px" />
+
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/drivesSystem"
+        android:hint="Type of Drive System"
+        android:textSize="25px"
+        android:layout_height="70dp"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="0dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/drivesSpeed"
+        android:hint="Speed"
+        android:textSize="25px"
+        android:layout_margin="10dp"
+        android:layout_marginTop="0dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <TextView
+        android:layout_width="323dp"
+        android:id="@+id/pickupBallHopperBenchText"
+        android:layout_weight="0.92"
+        android:layout_marginRight="20dp"
+        android:layout_height="40dp"
+        android:textSize="25dp"
+        android:layout_marginLeft="10dp"
+        android:textColor="@color/colorBlack"
+        android:text="Can Pickup Balls From Hopper" />
+
+    <ToggleButton
+        android:text="ToggleButton"
+        android:layout_height="72dp"
+        android:id="@+id/pickupBallHopperBenchButton"
+        android:layout_width="130dp"
+        android:textOff="No"
+        android:textOn="Yes"
+        android:backgroundTint="@color/colorSparxRed"
+        android:textColor="@color/colorWhite"
+        android:layout_weight="1" />
+</LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/pickupBallFloorBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Can Pickup Balls From Floor" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:layout_height="72dp"
+            android:id="@+id/pickupBallFloorBenchButton"
+            android:layout_width="130dp"
+            android:textOff="No"
+            android:textOn="Yes"
+            android:backgroundTint="@color/colorSparxRed"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/pickupGearFloorBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Can Pickup Gears From Floor" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:layout_height="72dp"
+            android:id="@+id/pickupGearFloorBenchButton"
+            android:layout_width="130dp"
+            android:textOff="No"
+            android:textOn="Yes"
+            android:backgroundTint="@color/colorSparxRed"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/pickupGearRetrievalBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Can Pickup Gears From Retrieval" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:layout_height="72dp"
+            android:id="@+id/pickupGearRetrievalBenchButton"
+            android:layout_width="130dp"
+            android:textOff="No"
+            android:textOn="Yes"
+            android:backgroundTint="@color/colorSparxRed"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/pickupGearPreferredBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Preferred Gear Retrieval Location" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:layout_height="72dp"
+            android:id="@+id/pickupGearPreferredBenchButton"
+            android:layout_width="130dp"
+            android:textOff="Floor"
+            android:textOn="Retrieval Zone"
+            android:backgroundTint="@color/colorSparxRed"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/maximumBallCapacityBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Maximum Ball Capacity" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/maximumBallCapacityBenchInput"
+            android:layout_weight="0.92"
+            style="@android:style/TextAppearance.Material"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            android:textSize="30dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/abilityToShootHighGoalBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Ability To Shoot In High Goal" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:layout_height="72dp"
+            android:id="@+id/abilityToShootHighGoalBenchButton"
+            android:layout_width="130dp"
+            android:textOff="No"
+            android:textOn="Yes"
+            android:backgroundTint="@color/colorSparxRed"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/typeOfShooterBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Type Of Shooter" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:ems="10"
+            android:id="@+id/typeOfShooterBenchInput"
+            android:layout_weight="0.92"
+            android:inputType="textMultiLine" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/ballsPerSecondBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Balls Per Second" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/ballsPerSecondBenchText"
+            android:layout_weight="0.92"
+            style="@android:style/TextAppearance.Material"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            android:textSize="30dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/whereCanShootBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Where Can They Shoot From" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:ems="10"
+            android:id="@+id/whereCanShootBenchInput"
+            android:layout_weight="0.92"
+            android:inputType="textMultiLine" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/preferredShootingLocationBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Preferred Place To Shoot From" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:ems="10"
+            android:id="@+id/preferredShootingLocationBenchInput"
+            android:layout_weight="0.92"
+            android:inputType="textMultiLine" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/accuracyHighBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Accuracy From High Goal" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/accuracyHighBenchInput"
+            android:layout_weight="0.92"
+            style="@android:style/TextAppearance.Material"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            android:textSize="30dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/abilityToShootLowGoalBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Ability To Shoot In Low Goal" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:layout_height="72dp"
+            android:id="@+id/abilityToShootLowGoalBenchButton"
+            android:layout_width="130dp"
+            android:textOff="No"
+            android:textOn="Yes"
+            android:backgroundTint="@color/colorSparxRed"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/lowGoalRatingBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Low Goal Rating (Out of 100)" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:ems="10"
+            android:id="@+id/lowGoalRatingBenchText"
+            android:layout_weight="0.92"
+            style="@android:style/TextAppearance.Material"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:inputType="number" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Ability To Scale"
+            android:id="@+id/scaleBenchText" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:layout_height="72dp"
+            android:id="@+id/abilityToShootLowGoalBenchButton"
+            android:layout_width="130dp"
+            android:textOff="No"
+            android:textOn="Yes"
+            android:backgroundTint="@color/colorSparxRed"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Places They Can Scale From"
+            android:id="@+id/placesScaleBenchText" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:ems="10"
+            android:id="@+id/lowGoalRatingBenchText"
+            android:layout_weight="0.92"
+            style="@android:style/TextAppearance.Material"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:inputType="number" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Preferred Scale Place"
+            android:id="@+id/preferredPlacesScaleBenchText" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:ems="10"
+            android:id="@+id/preferredPlacesScaleInput"
+            android:layout_weight="0.92"
+            style="@android:style/TextAppearance.Material"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:inputType="number" />
+    </LinearLayout>
+
+    <Button
+        android:text="Submit"
+        android:id="@+id/SubmitTeleopBenchmark"
+        android:backgroundTint="@color/colorSparxRed"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_weight="0.15"
+        android:layout_marginTop="50sp"
+        android:elevation="13dp"
+        android:layout_margin="50sp"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:layout_height="100dp"
+        android:layout_width="match_parent" />
+
+
+
+</LinearLayout>
+
+ </ScrollView>

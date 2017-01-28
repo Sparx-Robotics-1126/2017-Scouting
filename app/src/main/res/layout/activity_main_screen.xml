@@ -33,7 +33,9 @@
         android:layout_above="@+id/team"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp"
+        android:layout_alignRight="@+id/benchmarkAuto"
+        android:layout_alignEnd="@+id/benchmarkAuto" />
 
     <AutoCompleteTextView
         android:layout_width="wrap_content"
@@ -46,7 +48,9 @@
         android:layout_above="@+id/benchmarkAuto"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="15dp" />
+        android:layout_marginBottom="15dp"
+        android:layout_alignRight="@+id/eventPicker"
+        android:layout_alignEnd="@+id/eventPicker" />
 
     <Button
         android:text="Benchmark"

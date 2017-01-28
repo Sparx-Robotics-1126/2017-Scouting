@@ -109,7 +109,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
 
         switch (view.getId()) {
             case R.id.benchmarkAuto:
-                destination = BenchmarkAutoScreen.class;
+                destination = BenchmarkScreen.class;
                 break;
             case R.id.scout:
                 destination = ScoutingScreen.class;
