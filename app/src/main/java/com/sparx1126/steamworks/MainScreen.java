@@ -57,9 +57,11 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     boolean eventSelected = false;
     boolean nameSelected = false;
     boolean teamSelected = false;
+    public static final int COMPETITION_YEAR = 2017;
+    public static final int COMPETITION_Threshold = 44;
     public static final String PREFS_NAME = "Sparx-prefs";
     public static final String PREFS_SCOUTER = "scouterName";
-    public static final  String PREFS_EVENT = "Sparx-prefs";
+    public static final String PREFS_EVENT = "Sparx-prefs";
     public static final String PREFS_Event_SELECTED = "eventSelected";
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -77,8 +79,12 @@ private String getName(){
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+
         blueAlliance = BlueAlliance.getInstance(this);
         dbHelper = DatabaseHelper.getInstance(this);
+        if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
+            downloadEventSpinnerData();
+        }
 
         scout = (Button)findViewById(R.id.scout);
         scout.setOnClickListener(new View.OnClickListener() {
@@ -87,6 +93,7 @@ private String getName(){
                 buttonClicked(v);
             }
         });
+        scout.setVisibility(View.INVISIBLE);
         benchmarkAuto = (Button)findViewById(R.id.benchmarkAuto);
         benchmarkAuto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,6 +102,7 @@ private String getName(){
 
             }
         });
+        benchmarkAuto.setVisibility(View.INVISIBLE);
         view = (Button)findViewById(R.id.view_data);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,9 +111,7 @@ private String getName(){
 
             }
         });
-
-
-
+        view.setVisibility(View.INVISIBLE);
 
         scouter = (AutoCompleteTextView) findViewById(R.id. scouter);
         scouter.addTextChangedListener(new TextWatcher() {
@@ -124,9 +130,8 @@ private String getName(){
             @Override
             public void afterTextChanged(Editable s) {
                 String[] students = getResources().getStringArray(R.array.students);
-                System.out.println(scouter.getEditableText().toString());
                 if(Arrays.asList(students).contains(scouter.getEditableText().toString())){
-                nameSelected = true;
+                    nameSelected = true;
                     showButtons();
                     savePreferences();
                 }
@@ -137,6 +142,7 @@ private String getName(){
                 }
             }
         });
+
         team = (AutoCompleteTextView) findViewById(R.id. team);
         team.addTextChangedListener(new TextWatcher() {
 
@@ -154,22 +160,16 @@ private String getName(){
             public void afterTextChanged(Editable s) {
                 teamSelected = true;
                 showButtons();
-
             }
         });
 
-        benchmarkAuto.setVisibility(View.INVISIBLE);
-        scout.setVisibility(View.INVISIBLE);
-        view.setVisibility(View.INVISIBLE);
-
         eventPicker = (Spinner) findViewById(R.id.eventPicker);
-        downloadEventSpinnerDataIfNecessary();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
         scouterAutoComplete();
         eventPicker.setOnTouchListener(spinnerOnTouch);
         restorePreferences();
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
     private void savePreferences() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -236,30 +236,20 @@ private String getName(){
 
     }
 
-
-    private void downloadEventSpinnerDataIfNecessary() {
-        if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
-            downloadEventSpinnerData();
-        } else {
-            //setupEventSpinner();
-        }
-    }
-
     private void downloadEventSpinnerData() {
         final Dialog alert = createDownloadDialog("Please wait while Event data is downloaded...");
         alert.show();
 
-        blueAlliance.loadEventList(2016, new NetworkCallback() {
+        blueAlliance.loadEventList(COMPETITION_YEAR, new NetworkCallback() {
             @Override
             public void handleFinishDownload(final boolean success) {
                 MainScreen.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         alert.dismiss();
-                        if (!success)
+                        if (!success) {
                             alertUser("Failure", "Did not successfully download event list!").show();
-                        //setupEventSpinner();
-//                            mNavigationDrawerFragment.updateDrawerData();
+                        }
                     }
                 });
             }
@@ -341,7 +331,7 @@ private String getName(){
                 }
                 long epoch = dateObj.getTime();
 
-                if(epoch >= epochToday - (ONE_DAY_EPOCH * 1000)&& epoch <= epochToday + (ONE_DAY_EPOCH * 1000))
+                if(epoch >= epochToday - (ONE_DAY_EPOCH * COMPETITION_Threshold)&& epoch <= epochToday + (ONE_DAY_EPOCH * COMPETITION_Threshold))
                 {
                     eventsWeAreInArray.add(eventDataCur.getString(eventDataCur.getColumnIndex("title")));
                 }
