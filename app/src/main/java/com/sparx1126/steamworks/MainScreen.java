@@ -25,6 +25,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
@@ -34,6 +35,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
@@ -47,6 +50,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     private Spinner eventPicker;
     private static long ONE_DAY_EPOCH = 86400000;
     private AutoCompleteTextView scouter;
+    private Map scoutingInfos;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -54,15 +58,15 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
      */
     private GoogleApiClient client;
 
-    //Kevin is watching ( ͡° ͜ʖ ͡°)
+    //Kevin is watching ( ͡°͜ʖ ͡°)
     //Jack is too ༼ つ ◕_◕ ༽つ
-    //this push thing isn't working ;-;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
         blueAlliance = BlueAlliance.getInstance(this);
         dbHelper = DatabaseHelper.getInstance(this);
+        scoutingInfos = new HashMap();
 
         scout = (Button)findViewById(R.id.scout);
         scout.setOnClickListener(new View.OnClickListener() {
@@ -102,7 +106,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         eventPicker.setOnTouchListener(spinnerOnTouch);
         eventPicker.setOnKeyListener(spinnerOnKey);
     }
-
+//switching screens
     public void buttonClicked(View view) {
         Context context = MainScreen.this;
         Class destination = null;
@@ -119,6 +123,9 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                 destination = ViewScreen.class;
                 break;
         }
+
+        //ScoutingInfo currentInfo = null;
+        //if (scoutingInfos.containsKey())
 
         Intent intent = new Intent(context, destination);
         startActivity(intent);
@@ -187,6 +194,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         });
     }
 
+                //the warriors blew a 3-1 lead
     public AlertDialog alertUser(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
