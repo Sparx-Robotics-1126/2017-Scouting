@@ -66,6 +66,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     public static final String PREFS_SCOUTER = "scouterName";
     public static final String PREFS_EVENT = "Sparx-prefs";
     public static final String PREFS_Event_SELECTED = "eventSelected";
+    public static final String SCOUTER_INFO = "ScouterInfo";
     private Map scoutingInfos;
 
     /**
@@ -208,10 +209,26 @@ private String getName(){
                 break;
         }
 
-        //ScoutingInfo currentInfo = null;
-        //if (scoutingInfos.containsKey())
+        // set the currentScouting object I intend to pass to NOTHING
+        ScoutingInfo currentInfo = null;
+        // get the object editable from the team number text field on the screen
+        Editable editable = team.getText();
+        // convert that object to just a sequence of characters (i.e. "1126")
+        String teamNumberInAWord = editable.toString();
+        // look for i.e. "1126" in my map of already scouted teams
+        if (scoutingInfos.containsKey(teamNumberInAWord)) {
+            // set my temporary variable of scouting info to the one I found inside the map
+            currentInfo = (ScoutingInfo) scoutingInfos.get(teamNumberInAWord);
+        } else {
+            // create a new scouting info because I did not find it in my map
+            // which means it hasn't been scouted before
+            currentInfo = new ScoutingInfo();
+            // add the new scouting info into my map so that I can find it in the future
+            scoutingInfos.put(team.getText().toString(), currentInfo);
+        }
 
         Intent intent = new Intent(context, destination);
+        intent.putExtra(SCOUTER_INFO, currentInfo);
         startActivity(intent);
     }
 
