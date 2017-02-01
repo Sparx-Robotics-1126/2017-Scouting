@@ -79,7 +79,6 @@ private String getName(){
     //Kevin is watching ( ͡° ͜ʖ ͡°)
     //this push thing isn't working ;-;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
