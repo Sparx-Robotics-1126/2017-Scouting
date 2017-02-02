@@ -46,7 +46,7 @@ import java.util.Map;
 
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
-public class MainScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainScreen extends AppCompatActivity {
     private Button benchmarkAuto;
     private Button view;
     private Button scout;
@@ -222,6 +222,9 @@ private String getName(){
             // create a new scouting info because I did not find it in my map
             // which means it hasn't been scouted before
             currentInfo = new ScoutingInfo();
+            currentInfo.setEventKey(eventPicker.getSelectedItem().toString());
+            currentInfo.setNameOfScouter(getName());
+            currentInfo.setTeamKey(team.getText().toString());
             // add the new scouting info into my map so that I can find it in the future
             scoutingInfos.put(team.getText().toString(), currentInfo);
         }
@@ -230,6 +233,8 @@ private String getName(){
         intent.putExtra(SCOUTER_INFO, currentInfo);
         startActivity(intent);
     }
+
+
 
     private View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
@@ -366,18 +371,6 @@ private String getName(){
             eventDataCur.close();
         }
         return eventsWeAreInArray;
-    }
-
-    @Override
-    /**
-     * check for selected items in spinners
-     */
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Event current = dbHelper.getEvent((String) eventPicker.getSelectedView().getTag());
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> a) {
     }
 
     /**
