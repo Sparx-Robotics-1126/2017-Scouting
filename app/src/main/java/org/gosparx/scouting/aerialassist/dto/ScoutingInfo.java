@@ -12,6 +12,7 @@ import java.util.Vector;
 public class ScoutingInfo implements Parcelable {
     private String eventKey;
     private String teamKey;
+    private ScouterData currentData;
     public Vector<ScouterData> scouterData;
 
     public String getEventKey() {
@@ -32,6 +33,10 @@ public class ScoutingInfo implements Parcelable {
 
     public ScoutingInfo() {
         scouterData = new Vector<ScouterData>(250);
+    }
+
+    public ScouterData getCurrentData() {
+        return currentData;
     }
 
     // This is where you write the values you want to save to the `Parcel`.
@@ -81,7 +86,7 @@ public class ScoutingInfo implements Parcelable {
     };
 
     public void addScouter(String name) {
-        ScouterData currentData = new ScouterData();
+        currentData = new ScouterData();
         currentData.setNameOfScouter(name);
         scouterData.add(currentData);
     }
