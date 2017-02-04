@@ -18,7 +18,6 @@ import static com.sparx1126.steamworks.R.layout.scouting;
 public class ScoutingScreen extends AppCompatActivity {
     ImageButton home_scouting;
     private ScoutingInfo currentInfos;
-    public static final String SCOUTER_INFO = "ScouterInfo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class ScoutingScreen extends AppCompatActivity {
                 home_scoutingButtonClicked(v);
             }
         });
-        currentInfos = (ScoutingInfo)getIntent().getParcelableExtra(SCOUTER_INFO);
+        currentInfos = (ScoutingInfo)getIntent().getParcelableExtra(CommonDefs.SCOUTER_INFO);
         System.out.println("Oh no");
         System.out.println(currentInfos.getEventKey());
     }

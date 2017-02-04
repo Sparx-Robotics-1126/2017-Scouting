@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
 
     // Database Name
-    private static final String DATABASE_NAME = "RecycleRush";
+    private static final String DATABASE_NAME = "Steamworks";
 
     // Table Names
     private static final String TABLE_EVENTS = "events";

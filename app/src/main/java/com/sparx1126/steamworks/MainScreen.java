@@ -64,9 +64,6 @@ public class MainScreen extends AppCompatActivity {
     public static final int COMPETITION_Threshold = 44;
     public static final String PREFS_NAME = "Sparx-prefs";
     public static final String PREFS_SCOUTER = "scouterName";
-    public static final String PREFS_EVENT = "Sparx-prefs";
-    public static final String PREFS_Event_SELECTED = "eventSelected";
-    public static final String SCOUTER_INFO = "ScouterInfo";
     private Map scoutingInfos;
 
     /**
@@ -190,12 +187,15 @@ private String getName(){
         String scouterName = settings.getString(PREFS_SCOUTER, "");
         scouter.setText(scouterName);
     }
-//switching screens
+
+    // function called by any of the three buttons to switch screens
     public void buttonClicked(View view) {
+        // we grab the main screen as a type context for switching
         Context context = MainScreen.this;
+        // we create a destination variable. This is the screen we are going to switch to.
         Class destination = null;
 
-
+        // We set the screen we are going to swtich to.
         switch (view.getId()) {
             case R.id.benchmarkAuto:
                 destination = BenchmarkScreen.class;
@@ -208,29 +208,31 @@ private String getName(){
                 break;
         }
 
-        // set the currentScouting object I intend to pass to NOTHING
+        // set the currentScouting object I intend to pass to. Set it to NULL which means not
+        // created yet. This is a good practice because if useed and set to NULL it creashes better
         ScoutingInfo currentInfo = null;
-        // get the object editable from the team number text field on the screen
+        // get the object editable from the team number text field on the screen. The intentions
+        // is to get the text entered from it.
         Editable editable = team.getText();
-        // convert that object to just a sequence of characters (i.e. "1126")
-        String teamNumberInAWord = editable.toString();
+        // get from the object Editable a String (i.e. it could contain "1126")
+        String teamNumber = editable.toString();
         // look for i.e. "1126" in my map of already scouted teams
-        if (scoutingInfos.containsKey(teamNumberInAWord)) {
+        if (scoutingInfos.containsKey(teamNumber)) {
             // set my temporary variable of scouting info to the one I found inside the map
-            currentInfo = (ScoutingInfo) scoutingInfos.get(teamNumberInAWord);
+            currentInfo = (ScoutingInfo) scoutingInfos.get(teamNumber);
         } else {
             // create a new scouting info because I did not find it in my map
             // which means it hasn't been scouted before
             currentInfo = new ScoutingInfo();
             currentInfo.setEventKey(eventPicker.getSelectedItem().toString());
-            currentInfo.setNameOfScouter(getName());
             currentInfo.setTeamKey(team.getText().toString());
+            currentInfo.addScouter(getName());
             // add the new scouting info into my map so that I can find it in the future
             scoutingInfos.put(team.getText().toString(), currentInfo);
         }
 
         Intent intent = new Intent(context, destination);
-        intent.putExtra(SCOUTER_INFO, currentInfo);
+        intent.putExtra(CommonDefs.SCOUTER_INFO, currentInfo);
         startActivity(intent);
     }
 
