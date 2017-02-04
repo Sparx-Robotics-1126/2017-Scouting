@@ -223,7 +223,6 @@ private String getName(){
             // create a new scouting info because I did not find it in my map
             // which means it hasn't been scouted before
             currentInfo = new ScoutingInfo();
-            currentInfo.setEventKey();
             // add the new scouting info into my map so that I can find it in the future
             scoutingInfos.put(team.getText().toString(), currentInfo);
         }
