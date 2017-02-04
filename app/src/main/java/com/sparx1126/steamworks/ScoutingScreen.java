@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 
+import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
+
 import static com.sparx1126.steamworks.R.layout.scouting;
 
 /**
@@ -15,6 +17,8 @@ import static com.sparx1126.steamworks.R.layout.scouting;
 
 public class ScoutingScreen extends AppCompatActivity {
     ImageButton home_scouting;
+    private ScoutingInfo currentInfos;
+    public static final String SCOUTER_INFO = "ScouterInfo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +31,9 @@ public class ScoutingScreen extends AppCompatActivity {
                 home_scoutingButtonClicked(v);
             }
         });
+        currentInfos = (ScoutingInfo)getIntent().getParcelableExtra(SCOUTER_INFO);
+        System.out.println("Oh no");
+        System.out.println(currentInfos.getEventKey());
     }
 
     private void home_scoutingButtonClicked(View v) {

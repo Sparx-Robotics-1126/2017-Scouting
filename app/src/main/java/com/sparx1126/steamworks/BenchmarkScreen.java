@@ -7,6 +7,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 
+import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
+
 /**
  * Created by Amanda on 1/17/17.
  */
@@ -14,12 +16,11 @@ import android.widget.ImageButton;
 public class BenchmarkScreen extends AppCompatActivity {
 
     ImageButton home_auto;
-
+    private ScoutingInfo currentInfos;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.benchmark);
-
         home_auto = (ImageButton)findViewById(R.id.home_auto);
         home_auto.setOnClickListener(new View.OnClickListener() {
             @Override
