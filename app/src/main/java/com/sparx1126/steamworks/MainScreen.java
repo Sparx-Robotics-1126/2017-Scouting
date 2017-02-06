@@ -1,14 +1,21 @@
 package com.sparx1126.steamworks;
 
+import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +23,8 @@ import android.widget.AdapterView;
 import android.widget.AutoCompleteTextView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
 import com.google.android.gms.appindexing.Action;
@@ -32,8 +41,10 @@ import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Objects;
 
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
@@ -47,21 +58,41 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     private Spinner eventPicker;
     private static long ONE_DAY_EPOCH = 86400000;
     private AutoCompleteTextView scouter;
+    private EditText team;
+    boolean eventSelected = false;
+    boolean nameSelected = false;
+    boolean teamSelected = false;
+    boolean eventFilter = true;
+    public static final int COMPETITION_YEAR = 2017;
+    public static final int COMPETITION_Threshold = 1000;
+    public static final String PREFS_NAME = "Sparx-prefs";
+    public static final String PREFS_SCOUTER = "scouterName";
+    public static final String PREFS_EVENT = "Sparx-prefs";
+    public static final String PREFS_Event_SELECTED = "eventSelected";
+    public static final String PREFS_TEAM_NUMBER = "Team number";
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
-
+    private String getName(){
+        return scouter.getText().toString();
+    }
     //Kevin is watching ( ͡° ͜ʖ ͡°)
     //this push thing isn't working ;-;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_screen);
+
         blueAlliance = BlueAlliance.getInstance(this);
         dbHelper = DatabaseHelper.getInstance(this);
+        if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
+            downloadEventSpinnerData();
+        }
 
         scout = (Button)findViewById(R.id.scout);
         scout.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +101,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                 buttonClicked(v);
             }
         });
+        scout.setVisibility(View.INVISIBLE);
         benchmarkAuto = (Button)findViewById(R.id.benchmarkAuto);
         benchmarkAuto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +110,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
 
             }
         });
+        benchmarkAuto.setVisibility(View.INVISIBLE);
         view = (Button)findViewById(R.id.view_data);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,20 +119,96 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
 
             }
         });
-
-        scouter = (AutoCompleteTextView) findViewById(R.id.scouter);
-        benchmarkAuto.setVisibility(View.INVISIBLE);
-        scout.setVisibility(View.INVISIBLE);
         view.setVisibility(View.INVISIBLE);
 
+        scouter = (AutoCompleteTextView) findViewById(R.id. scouter);
+        scouter.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String[] students = getResources().getStringArray(R.array.students);
+                if(Arrays.asList(students).contains(scouter.getEditableText().toString())){
+                    nameSelected = true;
+                    showButtons();
+                    savePreferences();
+                }
+                else{
+                    benchmarkAuto.setVisibility(View.INVISIBLE);
+                    scout.setVisibility(View.INVISIBLE);
+                    view.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
+        team = (EditText) findViewById(R.id. team);
+        team.addTextChangedListener(new TextWatcher() {
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!Objects.equals("", team.getText().toString())){
+                    teamSelected = true;
+                    showButtons();
+                }
+                else{
+                    teamSelected = false;
+                    showButtons();
+                }
+
+            }
+        });
+
         eventPicker = (Spinner) findViewById(R.id.eventPicker);
-        downloadEventSpinnerDataIfNecessary();
+        scouterAutoComplete();
+        eventPicker.setOnTouchListener(spinnerOnTouch);
+        eventPicker.setOnItemSelectedListener(spinnerOnItemClick);
+        restorePreferences();
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        scouterAutoComplete();
-        eventPicker.setOnTouchListener(spinnerOnTouch);
-        eventPicker.setOnKeyListener(spinnerOnKey);
+    }
+    private void savePreferences() {
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+        String scouterName = getName();
+        editor.putString(PREFS_SCOUTER, scouterName);
+        int eventIndex = eventPicker.getSelectedItemPosition();
+        editor.putInt(PREFS_Event_SELECTED, eventIndex);
+        String teamNumber = team.getText().toString();
+        editor.putString(PREFS_TEAM_NUMBER, teamNumber);
+        editor.apply();
+    }
+    private void restorePreferences(){
+        // Restore preferences
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        String scouterName = settings.getString(PREFS_SCOUTER, "");
+        scouter.setText(scouterName);
+        int eventIndex = settings.getInt(PREFS_Event_SELECTED, 0);
+        eventPicker.setSelection(eventIndex);
+        String teamNumber = settings.getString(PREFS_TEAM_NUMBER, "");
+        team.setText(teamNumber);
     }
 
     public void buttonClicked(View view) {
@@ -124,27 +233,48 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     }
 
     private View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         public boolean onTouch(View v, MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_UP) {
+            if (event.getAction() == MotionEvent.ACTION_UP ) {
                 System.out.println("your code there");
                 setupEventSpinner();
-                benchmarkAuto.setVisibility(View.VISIBLE);
-                view.setVisibility(View.VISIBLE);
-                scout.setVisibility(View.VISIBLE);
+
+                eventSelected = true;
+                showButtons();
             }
             return false;
         }
     };
-
-
-    private static View.OnKeyListener spinnerOnKey = new View.OnKeyListener() {
-        public boolean onKey(View v, int keyCode, KeyEvent event) {
-            if (keyCode == KeyEvent.KEYCODE_DPAD_CENTER) {
-                System.out.println("your code here");
-                return true;
-            } else {
-                return false;
+    private AdapterView.OnItemSelectedListener spinnerOnItemClick = new AdapterView.OnItemSelectedListener() {
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            if(eventPicker.getSelectedItem().toString() == "Turn the event filter off?"){
+                eventFilter = false;
+                setupEventSpinner();
             }
+            if(eventPicker.getSelectedItem().toString() == "Turn the event filter on?"){
+                eventFilter = true;
+                setupEventSpinner();
+            }
+            //System.out.println(eventPicker.getSelectedItem().toString());
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) {
+        }
+    };
+
+    private void showButtons(){
+        if(eventSelected && nameSelected && teamSelected){
+            benchmarkAuto.setVisibility(View.VISIBLE);
+            view.setVisibility(View.VISIBLE);
+            scout.setVisibility(View.VISIBLE);
+        }
+        else{
+            benchmarkAuto.setVisibility(View.INVISIBLE);
+            view.setVisibility(View.INVISIBLE);
+            scout.setVisibility(View.INVISIBLE);
         }
     };
 
@@ -157,29 +287,20 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
 
     }
 
-    private void downloadEventSpinnerDataIfNecessary() {
-        if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
-            downloadEventSpinnerData();
-        } else {
-            //setupEventSpinner();
-        }
-    }
-
     private void downloadEventSpinnerData() {
         final Dialog alert = createDownloadDialog("Please wait while Event data is downloaded...");
         alert.show();
 
-        blueAlliance.loadEventList(2016, new NetworkCallback() {
+        blueAlliance.loadEventList(COMPETITION_YEAR, new NetworkCallback() {
             @Override
             public void handleFinishDownload(final boolean success) {
                 MainScreen.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         alert.dismiss();
-                        if (!success)
+                        if (!success) {
                             alertUser("Failure", "Did not successfully download event list!").show();
-                        //setupEventSpinner();
-//                            mNavigationDrawerFragment.updateDrawerData();
+                        }
                     }
                 });
             }
@@ -218,12 +339,31 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setupEventSpinner() {
 
         Cursor eventDataCur = dbHelper.createEventNameCursor();
         //Left that here because it's a way to dump all of the data into the console
         //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
         ArrayList<String> eventsWeAreInArray = fillInEventsNeerToday(eventDataCur);
+        String competition1 = "2017-03-29 Buckeye Regional";
+        String competition2 = "2017-03-15 Finger Lakes Regional ";
+        if(eventFilter) {
+            for (int i = (eventsWeAreInArray.size() - 1); 0 <= i; i--) {
+                //System.out.println(eventsWeAreInArray.get(i));
+                if (!Objects.equals(eventsWeAreInArray.get(i), competition1)) {
+                    if (!Objects.equals(eventsWeAreInArray.get(i), competition2)) {
+                        eventsWeAreInArray.remove(i);
+                    }
+                }
+            }
+        }
+        if(eventFilter){
+            eventsWeAreInArray.add("Turn the event filter off?");
+        }
+        else{
+            eventsWeAreInArray.add("Turn the event filter on?");
+        }
         cursorAdapterRegionalNames = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray); //selected item will look like a spinner set from XML
         cursorAdapterRegionalNames.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         eventPicker.setAdapter(cursorAdapterRegionalNames);
@@ -233,7 +373,6 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 System.out.println("selected");
             }
-
             public void onNothingSelected(AdapterView<?> adapterView) {
                 System.out.println("not selected");
                 return;
@@ -261,7 +400,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                 }
                 long epoch = dateObj.getTime();
 
-                if(epoch >= epochToday - (ONE_DAY_EPOCH * 1000)&& epoch <= epochToday + (ONE_DAY_EPOCH * 1000))
+                if(epoch >= epochToday - (ONE_DAY_EPOCH * COMPETITION_Threshold)&& epoch <= epochToday + (ONE_DAY_EPOCH * COMPETITION_Threshold))
                 {
                     eventsWeAreInArray.add(eventDataCur.getString(eventDataCur.getColumnIndex("title")));
                 }
@@ -319,4 +458,6 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
     }
+
+
 }
