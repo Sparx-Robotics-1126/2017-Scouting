@@ -13,6 +13,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
@@ -23,6 +24,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
 import com.google.android.gms.appindexing.Action;
@@ -67,6 +69,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     public static final String PREFS_SCOUTER = "scouterName";
     public static final String PREFS_EVENT = "Sparx-prefs";
     public static final String PREFS_Event_SELECTED = "eventSelected";
+    public static final String PREFS_TEAM_NUMBER = "Team number";
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -191,6 +194,10 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         SharedPreferences.Editor editor = settings.edit();
         String scouterName = getName();
         editor.putString(PREFS_SCOUTER, scouterName);
+        int eventIndex = eventPicker.getSelectedItemPosition();
+        editor.putInt(PREFS_Event_SELECTED, eventIndex);
+        String teamNumber = team.getText().toString();
+        editor.putString(PREFS_TEAM_NUMBER, teamNumber);
         editor.apply();
     }
     private void restorePreferences(){
@@ -198,6 +205,10 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         String scouterName = settings.getString(PREFS_SCOUTER, "");
         scouter.setText(scouterName);
+        int eventIndex = settings.getInt(PREFS_Event_SELECTED, 0);
+        eventPicker.setSelection(eventIndex);
+        String teamNumber = settings.getString(PREFS_TEAM_NUMBER, "");
+        team.setText(teamNumber);
     }
 
     public void buttonClicked(View view) {
