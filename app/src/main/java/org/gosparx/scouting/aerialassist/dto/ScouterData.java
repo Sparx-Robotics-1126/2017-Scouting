@@ -3,8 +3,6 @@ package org.gosparx.scouting.aerialassist.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.HashMap;
-
 /**
  * Created by Papa on 2/4/17.
  */
@@ -116,7 +114,7 @@ public class ScouterData implements Parcelable {
             }
         };
 
-        public String preferredGearRetrieval() {
+        public String getPreferredGearRetrieval() {
             return preferredGearRetrieval;
         }
 
@@ -131,25 +129,25 @@ public class ScouterData implements Parcelable {
         public void setPreferredShootingLocation(String preferredShootingLocation) {
             this.preferredShootingLocation = preferredShootingLocation; }
 
-        public String preferredScalePLace() {
+        public String getPreferredScalePlace() {
             return preferredScalePlace;
         }
 
-        public void preferredScalePlace(String preferredScalePlace) {
+        public void setPreferredScalePlace(String preferredScalePlace) {
             this.preferredScalePlace = preferredScalePlace;
         }
 
-        public String placesCanScaleFrom() {
+        public String getPlacesCanScaleFrom() {
             return placesCanScaleFrom;
         }
 
-        public void placesCanScaleFrom(String placesCanScaleFrom) {
+        public void setPlacesCanScaleFrom(String placesCanScaleFrom) {
             this.placesCanScaleFrom = placesCanScaleFrom;
         }
 
-        public void canShootLow(Boolean canShootLow) { this.canShootLow = canShootHigh(); }
+        public void setCanShootLow(Boolean canShootLow) { this.canShootLow = getCanShootHigh(); }
 
-        public Boolean canShootLow() {
+        public Boolean getCanShootLow() {
             return canShootLow;
         }
 
@@ -157,70 +155,70 @@ public class ScouterData implements Parcelable {
             return lowGoalRating;
         }
 
-        public void setLowGoalRating(int lowGoalRating) { this.lowGoalRating = ballsPerSecond(); }
+        public void setLowGoalRating(int lowGoalRating) { this.lowGoalRating = getBallsPerSecond(); }
 
-        public void abilityToScale(Boolean abilityToScale) { this.abilityToScale = canShootHigh(); }
+        public void setAbilityToScale(Boolean abilityToScale) { this.abilityToScale = getCanShootHigh(); }
 
-        public Boolean abilityToScale() {
+        public Boolean getAbilityToScale() {
             return abilityToScale;
         }
 
-        public String shootingLocation() {
+        public String getShootingLocation() {
             return shootingLocation;
         }
 
-        public void ShootingLocation(String shootingLocation) {
+        public void setShootingLocation(String shootingLocation) {
             this.shootingLocation = shootingLocation; }
 
-        public int ballsPerSecond() {
+        public int getBallsPerSecond() {
             return ballsPerSecond;
         }
 
-        public void ballsPerSecond(Boolean ballsPerSecond) { this.ballsPerSecond = ballsPerSecond(); }
+        public void setBallsPerSecond(int ballsPerSecond) { this.ballsPerSecond = getBallsPerSecond(); }
 
-        public String typeOfShooter() {
+        public String getTypeOfShooter() {
             return typeOfShooter;
         }
 
-        public void typeOfShooter(String typeOfShooter) {
+        public void setTypeOfShooter(String typeOfShooter) {
             this.typeOfShooter = typeOfShooter;
         }
 
-        public void canShootHigh(Boolean canShootHigh) { this.canShootHigh = canShootHigh(); }
+        public void setCanShootHigh(Boolean canShootHigh) { this.canShootHigh = getCanShootHigh(); }
 
-        public Boolean canShootHigh() {
+        public Boolean getCanShootHigh() {
             return canShootHigh;
         }
 
-        public int ballCapacity() {
+        public int getBallCapacity() {
             return ballCapacity;
         }
 
-        public void ballCapacity(Boolean canPickUpGearsFromRetrieval) { this.ballCapacity = ballCapacity(); }
+        public void setBallCapacity(int ballCapacity ) { this.ballCapacity = getBallCapacity(); }
 
-        public Boolean canPickUpGearsFromRetrieval() {
+        public Boolean getCanPickUpGearsFromRetrieval() {
             return canPickUpGearsFromRetrieval;
         }
 
         public void setCanPickUpGearsFromRetrieval(Boolean canPickUpGearsFromRetrieval) { this.canPickUpGearsFromRetrieval = canPickUpGearsFromRetrieval; }
 
-        public Boolean canPickUpGearsFromGround() {
+        public Boolean getCanPickUpGearsFromGround() {
             return canPickUpGearsFromGround;
         }
 
-        public void canPickUpGearsFromGround(Boolean canPickUpGearsFromGround) { this.canPickUpGearsFromGround = canPickUpGearsFromGround; }
+        public void setCanPickUpGearsFromGround(Boolean canPickUpGearsFromGround) { this.canPickUpGearsFromGround = canPickUpGearsFromGround; }
 
-        public Boolean canPickUpBallsFromGround() {
+        public Boolean getCanPickUpBallsFromGround() {
             return canPickUpBallsFromGround;
         }
 
-        public void canPickUpBallsFromGround(Boolean canPickUpBallsFromGround) { this.canPickUpBallsFromGround = canPickUpBallsFromGround; }
+        public void setCanPickUpBallsFromGround(Boolean canPickUpBallsFromGround) { this.canPickUpBallsFromGround = canPickUpBallsFromGround; }
 
-        public Boolean canPickUpBallsFromHopper() {
+        public Boolean getCanPickUpBallsFromHopper() {
             return canPickUpBallsFromHopper;
         }
 
-        public void canPickUpBallsFromHopper(Boolean canPickUpBallsFromHopper) { this.canPickUpBallsFromHopper = canPickUpBallsFromHopper; }
+        public void setCanPickUpBallsFromHopper(Boolean canPickUpBallsFromHopper) { this.canPickUpBallsFromHopper = canPickUpBallsFromHopper; }
 
         public String getNameOfScouter() {
             return nameOfScouter;

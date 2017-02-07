@@ -44,10 +44,10 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:inputType="textPersonName"
+        android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/drivesSpeed"
-        android:hint="Speed"
+        android:hint="Speed in feet per second"
         android:textSize="25px"
         android:layout_margin="10dp"
         android:layout_marginTop="0dp" />
@@ -295,7 +295,7 @@
             android:layout_height="72dp"
             android:inputType="numberDecimal"
             android:ems="10"
-            android:id="@+id/ballsPerSecondBenchText"
+            android:id="@+id/ballsPerSecondBenchInput"
             android:layout_weight="0.92"
             style="@android:style/TextAppearance.Material"
             android:textColor="@color/colorBlack"

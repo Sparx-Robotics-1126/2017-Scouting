@@ -447,11 +447,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         data.setTeamKey(c.getString(c.getColumnIndex(TABLE_BENCHMARKING_TEAM_KEY)));
         data.setEventKey(c.getString(c.getColumnIndex(TABLE_BENCHMARKING_EVENT_KEY)));
-        data.setNameOfScouter(c.getString(c.getColumnIndex(TABLE_BENCHMARKING_NAME)));
-
-        data.setDriveSystemDescription(c.getString(c.getColumnIndex(TABLE_BENCHMARKING_DRIVES_DESCRIPTION)));
-        data.setApproxSpeedFeetPerSecond(c.getDouble(c.getColumnIndex(TABLE_BENCHMARKING_DRIVES_APPROX_SPEED)));
-
         return data;
     }
 
@@ -1030,14 +1025,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{scouting.getTeamKey(), scouting.getEventKey(), scouting.getMatchKey(), scouting.getNameOfScouter()});
     }
 
-    public void setDoneSyncing(ScoutingInfo scouting){
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues cv = new ContentValues();
-        cv.put(TABLE_BENCHMARKING_LAST_SYNC, getDateTime());
-        db.update(TABLE_BENCHMARKING, cv, TABLE_BENCHMARKING_TEAM_KEY+" = ? AND "+TABLE_BENCHMARKING_EVENT_KEY
-                        +" = ? AND "+TABLE_BENCHMARKING_NAME+" = ?",
-                new String[]{scouting.getTeamKey(), scouting.getEventKey(), scouting.getNameOfScouter()});
-    }
 
     // returns a ContentValues (for saving to the database) containing the values from the given ScoutingInfo object.
     private ContentValues mapBenchmarking(ScoutingInfo scouting){
@@ -1045,9 +1032,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_BENCHMARKING_LAST_UPDATE, getDateTime());
         values.put(TABLE_BENCHMARKING_TEAM_KEY, scouting.getTeamKey());
         values.put(TABLE_BENCHMARKING_EVENT_KEY, scouting.getEventKey());
-        values.put(TABLE_BENCHMARKING_NAME, scouting.getNameOfScouter());
-        values.put(TABLE_BENCHMARKING_DRIVES_DESCRIPTION, scouting.getDriveSystemDescription());
-        values.put(TABLE_BENCHMARKING_DRIVES_APPROX_SPEED, scouting.getApproxSpeedFeetPerSecond());
 
         return values;
     }
@@ -1059,25 +1043,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_BENCHMARKING, null, values);
     }
 
-    public boolean doesBenchmarkingExist(ScoutingInfo scoutingInfo){
-        boolean retVal = false;
-        SQLiteDatabase db = getReadableDatabase();
 
-        Cursor c = db.query(TABLE_BENCHMARKING,
-                new String[]{"COUNT(*)"},
-                TABLE_BENCHMARKING_TEAM_KEY + " = ? AND "
-                        + TABLE_BENCHMARKING_NAME + " = ? AND " + TABLE_BENCHMARKING_EVENT_KEY + " = ?",
-                new String[]{scoutingInfo.getTeamKey(), scoutingInfo.getNameOfScouter(), scoutingInfo.getEventKey()},
-                null, null, null);
-
-        if(c != null && c.moveToNext())
-            retVal = c.getInt(0) > 0;
-
-        if (c != null) {
-            c.close();
-        }
-        return retVal;
-    }
 
     public boolean doesBenchmarkingExist(String eventKey, String teamKey){
         boolean retVal = false;
@@ -1100,15 +1066,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public void updateBenchmarking(ScoutingInfo scoutingInfo){
-        SQLiteDatabase db = getWritableDatabase();
 
-        db.update(TABLE_BENCHMARKING, mapBenchmarking(scoutingInfo),
-                TABLE_SCOUTING_EVENT_KEY + " = ? AND "
-                        + TABLE_BENCHMARKING_TEAM_KEY + " = ? AND "
-                        + TABLE_BENCHMARKING_NAME + " = ?",
-                new String[]{scoutingInfo.getEventKey(), scoutingInfo.getTeamKey(), scoutingInfo.getNameOfScouter()});
-    }
 
     public List<ScoutingInfo> getBenchmarking(String eventKey, String teamKey, String scouterName){
         SQLiteDatabase db = getReadableDatabase();

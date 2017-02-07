@@ -47,6 +47,7 @@ public class ScoutingInfo implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(eventKey);
         out.writeString(teamKey);
+        out.writeParcelable(currentData, flags);
     }
 
     // Using the `in` variable, we can retrieve the values that
@@ -55,6 +56,7 @@ public class ScoutingInfo implements Parcelable {
     private ScoutingInfo(Parcel in) {
         eventKey = in.readString();
         teamKey = in.readString();
+        currentData = in.readParcelable(ScouterData.class.getClassLoader());
     }
 
     // In the vast majority of cases you can simply return 0 for this.
