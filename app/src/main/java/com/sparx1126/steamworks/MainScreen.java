@@ -45,7 +45,6 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
-
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class MainScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
