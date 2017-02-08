@@ -34,6 +34,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
@@ -45,6 +46,8 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
@@ -71,6 +74,8 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     public static final String PREFS_Event_SELECTED = "eventSelected";
     public static final String PREFS_TEAM_NUMBER = "Team number";
 
+    private Map scoutingInfos;
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -93,6 +98,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
             downloadEventSpinnerData();
         }
+        scoutingInfos = new HashMap();
 
         scout = (Button)findViewById(R.id.scout);
         scout.setOnClickListener(new View.OnClickListener() {
@@ -211,14 +217,17 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         team.setText(teamNumber);
     }
 
+    // function called by any of the three buttons to switch screens
     public void buttonClicked(View view) {
+        // we grab the main screen as a type context for switching
         Context context = MainScreen.this;
+        // we create a destination variable. This is the screen we are going to switch to.
         Class destination = null;
 
-
+        // We set the screen we are going to swtich to.
         switch (view.getId()) {
             case R.id.benchmarkAuto:
-                destination = BenchmarkAutoScreen.class;
+                destination = BenchmarkScreen.class;
                 break;
             case R.id.scout:
                 destination = ScoutingScreen.class;
@@ -228,9 +237,35 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                 break;
         }
 
+        // set the currentScouting object I intend to pass to. Set it to NULL which means not
+        // created yet. This is a good practice because if useed and set to NULL it creashes better
+        ScoutingInfo currentInfo = null;
+        // get the object editable from the team number text field on the screen. The intentions
+        // is to get the text entered from it.
+        Editable editable = team.getText();
+        // get from the object Editable a String (i.e. it could contain "1126")
+        String teamNumber = editable.toString();
+        // look for i.e. "1126" in my map of already scouted teams
+        if (scoutingInfos.containsKey(teamNumber)) {
+            // set my temporary variable of scouting info to the one I found inside the map
+            currentInfo = (ScoutingInfo) scoutingInfos.get(teamNumber);
+        } else {
+            // create a new scouting info because I did not find it in my map
+            // which means it hasn't been scouted before
+            currentInfo = new ScoutingInfo();
+            currentInfo.setEventKey(eventPicker.getSelectedItem().toString());
+            currentInfo.setTeamKey(team.getText().toString());
+            currentInfo.addScouter(getName());
+            // add the new scouting info into my map so that I can find it in the future
+            scoutingInfos.put(team.getText().toString(), currentInfo);
+        }
+
         Intent intent = new Intent(context, destination);
+        intent.putExtra(CommonDefs.SCOUTER_INFO, currentInfo);
         startActivity(intent);
     }
+
+
 
     private View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
         @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -307,6 +342,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         });
     }
 
+                //the warriors blew a 3-1 lead
     public AlertDialog alertUser(String title, String message) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(title);
@@ -409,18 +445,6 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
             eventDataCur.close();
         }
         return eventsWeAreInArray;
-    }
-
-    @Override
-    /**
-     * check for selected items in spinners
-     */
-    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        Event current = dbHelper.getEvent((String) eventPicker.getSelectedView().getTag());
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> a) {
     }
 
     /**
