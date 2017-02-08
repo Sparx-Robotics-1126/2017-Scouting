@@ -21,9 +21,7 @@
 
         </activity>
 
-        <activity android:name=".BenchmarkAutoScreen"
-            android:windowSoftInputMode="stateHidden"/>
-        <activity android:name=".BenchmarkTeleopScreen"
+        <activity android:name=".BenchmarkScreen"
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ScoutingScreen"
             android:windowSoftInputMode="stateHidden"/>
