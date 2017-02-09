@@ -51,7 +51,7 @@ import java.util.Map;
 
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
-public class MainScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainScreen extends AppCompatActivity {
     private Button benchmarkAuto;
     private Button view;
     private Button scout;
