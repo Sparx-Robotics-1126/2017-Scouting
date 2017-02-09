@@ -228,33 +228,6 @@
 
         <TextView
             android:layout_width="323dp"
-            android:id="@+id/abilityToShootHighGoalBenchText"
-            android:layout_weight="0.92"
-            android:layout_marginRight="20dp"
-            android:layout_height="40dp"
-            android:textSize="25dp"
-            android:layout_marginLeft="10dp"
-            android:textColor="@color/colorBlack"
-            android:text="Ability To Shoot In High Goal" />
-
-        <ToggleButton
-            android:text="ToggleButton"
-            android:layout_height="72dp"
-            android:id="@+id/abilityToShootHighGoalBenchButton"
-            android:layout_width="130dp"
-            android:textOff="No"
-            android:textOn="Yes"
-            android:backgroundTint="@color/colorSparxRed"
-            android:textColor="@color/colorWhite"
-            android:layout_weight="1" />
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="323dp"
             android:id="@+id/typeOfShooterBenchText"
             android:layout_weight="0.92"
             android:layout_marginRight="20dp"
@@ -362,6 +335,34 @@
 
         <TextView
             android:layout_width="323dp"
+            android:id="@+id/abilityToShootHighGoalBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Ability To Shoot In High Goal" />
+
+        <ToggleButton
+            android:text="ToggleButton"
+            android:layout_height="72dp"
+            android:id="@+id/abilityToShootHighGoalBenchButton"
+            android:layout_width="130dp"
+            android:textOff="No"
+            android:textOn="Yes"
+            android:backgroundTint="@color/colorSparxRed"
+            android:textColor="@color/colorWhite"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
             android:id="@+id/accuracyHighBenchText"
             android:layout_weight="0.92"
             android:layout_marginRight="20dp"
@@ -410,6 +411,35 @@
             android:backgroundTint="@color/colorSparxRed"
             android:textColor="@color/colorWhite"
             android:layout_weight="1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/highGoalRatingBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="High Goal Rating (Out of 100)" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:ems="10"
+            android:id="@+id/highGoalRatingBenchInput"
+            android:layout_weight="0.92"
+            style="@android:style/TextAppearance.Material"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            android:textSize="30dp"
+            android:inputType="number" />
     </LinearLayout>
 
     <LinearLayout
@@ -526,6 +556,75 @@
             android:textSize="30dp"
             android:inputType="number" />
     </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/numberOfGearsPerMatchText"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Number of gears scored per match" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:ems="10"
+            android:id="@+id/numberOfGearsPerMatchInput"
+            android:layout_weight="0.45"
+            style="@android:style/TextAppearance.Material"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:inputType="number" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/numberOfBallsPerMatchBenchText"
+            android:layout_marginRight="20dp"
+            android:layout_height="40dp"
+            android:textSize="25dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Number of balls scored per match" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:ems="10"
+            android:id="@+id/lowGoalRatingBenchText"
+            android:layout_weight="0.45"
+            style="@android:style/TextAppearance.Material"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            android:inputType="number" />
+    </LinearLayout>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/commentsBench"
+        android:hint="Other comments"
+        android:textSize="25px"
+        android:layout_height="70dp"
+        android:layout_margin="5dp"
+        android:layout_marginBottom="0dp" />
+
 
     <Button
         android:text="Submit"
