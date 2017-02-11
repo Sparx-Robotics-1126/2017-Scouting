@@ -103,7 +103,7 @@ public class BenchmarkTeleopScreen extends AppCompatActivity {
 
     private void benchmarkAutoSwitcherButtonClicked(View v) {
         Context context = BenchmarkTeleopScreen.this;
-        Class destination = BenchmarkAutoScreen.class;
+        Class destination = BenchmarkScreen.class;
         Intent intent = new Intent(context, destination);
         startActivity(intent);
     }

@@ -29,6 +29,11 @@
             android:layout_width="100px" />
 
     </LinearLayout>
+    <Button
+        android:text="Use Camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cameraButton" />
 
     <EditText
         android:layout_width="match_parent"

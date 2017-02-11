@@ -39,6 +39,7 @@ import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
 
+import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,9 +50,12 @@ import java.util.Objects;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.view.View.INVISIBLE;
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
+import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.needToLoadTeams;
+import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.setLoadedTeams;
 
-public class MainScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainScreen extends AppCompatActivity {
     private Button benchmarkAuto;
     private Button view;
     private Button scout;
@@ -73,7 +77,6 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     public static final String PREFS_EVENT = "Sparx-prefs";
     public static final String PREFS_Event_SELECTED = "eventSelected";
     public static final String PREFS_TEAM_NUMBER = "Team number";
-
     private Map scoutingInfos;
 
     /**
@@ -81,6 +84,8 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
      * See https://g.co/AppIndexing/AndroidStudio for more information.
      */
     private GoogleApiClient client;
+    private String[] FLRSTeams;
+
     private String getName(){
         return scouter.getText().toString();
     }
@@ -107,7 +112,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                 buttonClicked(v);
             }
         });
-        scout.setVisibility(View.INVISIBLE);
+        scout.setVisibility(INVISIBLE);
         benchmarkAuto = (Button)findViewById(R.id.benchmarkAuto);
         benchmarkAuto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +121,9 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
 
             }
         });
-        benchmarkAuto.setVisibility(View.INVISIBLE);
+        benchmarkAuto.setVisibility(INVISIBLE);
+        team = (EditText) findViewById(R.id. team);
+        team.setVisibility(INVISIBLE);
         view = (Button)findViewById(R.id.view_data);
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,7 +132,8 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
 
             }
         });
-        view.setVisibility(View.INVISIBLE);
+        view.setVisibility(INVISIBLE);
+
 
         scouter = (AutoCompleteTextView) findViewById(R.id. scouter);
         scouter.addTextChangedListener(new TextWatcher() {
@@ -150,39 +158,25 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                     savePreferences();
                 }
                 else{
-                    benchmarkAuto.setVisibility(View.INVISIBLE);
-                    scout.setVisibility(View.INVISIBLE);
-                    view.setVisibility(View.INVISIBLE);
+                    nameSelected = false;
+                    showButtons();
                 }
             }
         });
 
-        team = (EditText) findViewById(R.id. team);
+
         team.addTextChangedListener(new TextWatcher() {
 
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
             }
-
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
             }
-
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
             public void afterTextChanged(Editable s) {
-                if(!Objects.equals("", team.getText().toString())){
-                    teamSelected = true;
-                    showButtons();
-                }
-                else{
-                    teamSelected = false;
-                    showButtons();
-                }
-
+               teamNumberChecker();
             }
         });
 
@@ -194,6 +188,30 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+    }
+   // @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    private void teamNumberChecker(){
+        if(!Objects.equals("", team.getText().toString())){
+            String[] FLRTeams = getResources().getStringArray(R.array.FLRTeams);
+            String[] buckeyeTeams = getResources().getStringArray(R.array.buckeyeTeams);
+            if((Arrays.asList(buckeyeTeams).contains(team.getText().toString())) && (Objects.equals(eventPicker.getSelectedItem().toString(), "2017-03-29 Buckeye Regional"))){
+                teamSelected = true;
+                showButtons();
+            }
+            else if(Arrays.asList(FLRTeams).contains(team.getText().toString()) && (Objects.equals(eventPicker.getSelectedItem().toString(), "2017-03-15 Finger Lakes Regional "))){
+                teamSelected = true;
+                showButtons();
+            }
+            else{
+                teamSelected = false;
+                showButtons();
+            }
+        }
+        else{
+            teamSelected = false;
+            showButtons();
+        }
     }
     private void savePreferences() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
@@ -273,10 +291,10 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
             if (event.getAction() == MotionEvent.ACTION_UP ) {
                 System.out.println("your code there");
                 setupEventSpinner();
-
                 eventSelected = true;
                 showButtons();
             }
+
             return false;
         }
     };
@@ -292,7 +310,9 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                 eventFilter = true;
                 setupEventSpinner();
             }
+teamNumberChecker();
             //System.out.println(eventPicker.getSelectedItem().toString());
+            showButtons();
         }
 
         @Override
@@ -301,15 +321,24 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     };
 
     private void showButtons(){
-        if(eventSelected && nameSelected && teamSelected){
-            benchmarkAuto.setVisibility(View.VISIBLE);
-            view.setVisibility(View.VISIBLE);
-            scout.setVisibility(View.VISIBLE);
+        if(eventSelected && nameSelected){
+        team.setVisibility(View.VISIBLE);
+            if(teamSelected){
+                benchmarkAuto.setVisibility(View.VISIBLE);
+                view.setVisibility(View.VISIBLE);
+                scout.setVisibility(View.VISIBLE);
+            }
+            else if(!teamSelected){
+                benchmarkAuto.setVisibility(INVISIBLE);
+                view.setVisibility(INVISIBLE);
+                scout.setVisibility(INVISIBLE);
+            }
         }
         else{
-            benchmarkAuto.setVisibility(View.INVISIBLE);
-            view.setVisibility(View.INVISIBLE);
-            scout.setVisibility(View.INVISIBLE);
+            team.setVisibility(INVISIBLE);
+            benchmarkAuto.setVisibility(INVISIBLE);
+            view.setVisibility(INVISIBLE);
+            scout.setVisibility(INVISIBLE);
         }
     };
 
@@ -415,6 +444,10 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         });*/
     }
 
+    private ArrayList<String> fillInTeams(Cursor eventDataCur) {
+        ArrayList<String> teamNamesArray = new ArrayList<String>();
+        return teamNamesArray;
+    }
     private long getTodayInEpoch() {
         Calendar c = Calendar.getInstance();
         long epochToday = c.getTime().getTime();
