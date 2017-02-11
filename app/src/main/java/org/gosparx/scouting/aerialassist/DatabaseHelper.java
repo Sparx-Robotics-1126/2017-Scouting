@@ -445,7 +445,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static ScoutingInfo mapBenchmarking(Cursor c) {
         ScoutingInfo data = new ScoutingInfo();
 
-        data.setTeamKey(c.getString(c.getColumnIndex(TABLE_BENCHMARKING_TEAM_KEY)));
+        data.setTeamNumber(Integer.parseInt(c.getString(c.getColumnIndex(TABLE_BENCHMARKING_TEAM_KEY))));
         data.setEventKey(c.getString(c.getColumnIndex(TABLE_BENCHMARKING_EVENT_KEY)));
         return data;
     }
@@ -1030,7 +1030,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private ContentValues mapBenchmarking(ScoutingInfo scouting){
         ContentValues values = new ContentValues();
         values.put(TABLE_BENCHMARKING_LAST_UPDATE, getDateTime());
-        values.put(TABLE_BENCHMARKING_TEAM_KEY, scouting.getTeamKey());
+        values.put(TABLE_BENCHMARKING_TEAM_KEY, scouting.getTeamNumber());
         values.put(TABLE_BENCHMARKING_EVENT_KEY, scouting.getEventKey());
 
         return values;
