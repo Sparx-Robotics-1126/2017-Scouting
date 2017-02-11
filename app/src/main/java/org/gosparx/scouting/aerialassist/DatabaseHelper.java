@@ -55,8 +55,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_EVENTS_YEAR = "year";
     private static final String TABLE_EVENTS_LOCATION = "location";
     private static final String TABLE_EVENTS_OFFICIAL = "official";
-    private static final String TABLE_EVENTS_START_DATE = "start_date";
+    public static final String TABLE_EVENTS_START_DATE = "start_date";
     private static final String TABLE_EVENTS_END_DATE = "end_date";
+    public static final String TABLE_EVENTS_TITLE = "title";
 
     // Teams Column Names
     private static final String TABLE_TEAMS_KEY = "key";

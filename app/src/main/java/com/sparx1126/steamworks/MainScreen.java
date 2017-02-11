@@ -69,9 +69,7 @@ public class MainScreen extends AppCompatActivity {
     private static final String OUR_COMPETITION_FINGERLAKES = "2017-03-15 Finger Lakes Regional ";
     private static final String FILTER_ON = "Turn the event filter on?";
     private static final String FILTER_OFF = "Turn the event filter off?";
-
     private Map scoutingInfoMap;
-    private String[] FLRSTeams;
 
     private String getName(){
         return scouterText.getText().toString();
@@ -120,12 +118,12 @@ public class MainScreen extends AppCompatActivity {
         view.setOnClickListener(buttonClicked);
         view.setVisibility(View.INVISIBLE);
 
-
-
         scouterText = (AutoCompleteTextView) findViewById(R.id.scouterText);
         scouterText.addTextChangedListener(scouterTextEntered);
-        // Initialize the auto text complete with the hard coded list in strings.xml
-        scouterAutoComplete();
+        String[] students = getResources().getStringArray(R.array.students);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>
+                (this, android.R.layout.simple_list_item_1, students);
+        scouterText.setAdapter(adapter);
 
         teamText = (EditText) findViewById(R.id.teamText);
         teamText.addTextChangedListener(teamTextEntered);
@@ -174,7 +172,6 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void restorePreferences(){
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         //the order matters
         String eventName = settings.getString(PREFS_EVENT, "");
         if(!eventName.isEmpty()) {
@@ -192,6 +189,7 @@ public class MainScreen extends AppCompatActivity {
         }
         String scouterName = settings.getString(PREFS_SCOUTER, "");
         scouterText.setText(scouterName);
+        scouterText.dismissDropDown();
         int teamNumber = settings.getInt(PREFS_TEAM, 0);
         if(teamNumber != 0) {
             teamText.setText(String.valueOf(teamNumber));
@@ -271,7 +269,6 @@ public class MainScreen extends AppCompatActivity {
             }
             else if (!getEventName().isEmpty()) {
                 String eventName = getEventName();
-                System.out.println(eventName);
                 editor.putString(PREFS_EVENT, eventName);
                 editor.apply();
                 eventSelected = true;
@@ -308,7 +305,7 @@ public class MainScreen extends AppCompatActivity {
                 showButtons();
             }
             else{
-nameSelected = false;
+                nameSelected = false;
                 showButtons();
             }
         }
@@ -354,15 +351,8 @@ nameSelected = false;
         }
     };
 
-    private void scouterAutoComplete(){
-        String[] students = getResources().getStringArray(R.array.students);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>
-                (this,android.R.layout.simple_list_item_1,students);
-        scouterText.setAdapter(adapter);
-    }
-
     private void downloadEventSpinnerData() {
-        final Dialog alert = createDownloadDialog("Please wait while Event data is downloaded...");
+        final Dialog alert = createPleaseWaitDialog("Please wait while Event data is downloaded...", R.string.downloading_data);
         alert.show();
 
         blueAlliance.loadEventList(COMPETITION_YEAR, new NetworkCallback() {
@@ -394,10 +384,6 @@ nameSelected = false;
         return builder.create();
     }
 
-    private AlertDialog createDownloadDialog(String message) {
-        return createPleaseWaitDialog(message, R.string.downloading_data);
-    }
-
     private AlertDialog createPleaseWaitDialog(String message, int titleID) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(titleID);
@@ -417,10 +403,9 @@ nameSelected = false;
         Cursor eventDataCur = dbHelper.createEventNameCursor();
         //Left that here because it's a way to dump all of the data into the console
         //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
-        ArrayList<String> eventsWeAreInArray = fillInEventsNeerToday(eventDataCur);
+        eventsWeAreInArray = fillInEventsNeerToday(eventDataCur);
         if(eventFilter) {
             for (int i = (eventsWeAreInArray.size() - 1); 0 <= i; i--) {
-                //System.out.println(eventsWeAreInArray.get(i));
                 if (!eventsWeAreInArray.get(i).contentEquals(OUR_COMPETITION_BUCKEYE)) {
                     if (!eventsWeAreInArray.get(i).contentEquals(OUR_COMPETITION_FINGERLAKES)) {
                         eventsWeAreInArray.remove(i);
@@ -453,7 +438,7 @@ nameSelected = false;
             while (eventDataCur.moveToNext()) {
                 Date dateObj = null;
                 try {
-                    String startDateStr = eventDataCur.getString(eventDataCur.getColumnIndex("start_date"));
+                    String startDateStr = eventDataCur.getString(eventDataCur.getColumnIndex(dbHelper.TABLE_EVENTS_START_DATE));
                     dateObj = cursorFormater.parse(startDateStr);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -462,7 +447,7 @@ nameSelected = false;
 
                 if(epoch >= epochToday - (ONE_DAY_EPOCH * COMPETITION_Threshold)&& epoch <= epochToday + (ONE_DAY_EPOCH * COMPETITION_Threshold))
                 {
-                    eventsWeAreInArray.add(eventDataCur.getString(eventDataCur.getColumnIndex("title")));
+                    eventsWeAreInArray.add(eventDataCur.getString(eventDataCur.getColumnIndex(dbHelper.TABLE_EVENTS_TITLE)));
                 }
             }
         } finally {
