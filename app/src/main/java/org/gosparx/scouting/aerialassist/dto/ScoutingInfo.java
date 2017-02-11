@@ -11,7 +11,7 @@ import java.util.Vector;
  */
 public class ScoutingInfo implements Parcelable {
     private String eventKey;
-    private String teamKey;
+    private int teamNumber;
     private ScouterData currentData;
     public Vector<ScouterData> scouterData;
 
@@ -23,12 +23,12 @@ public class ScoutingInfo implements Parcelable {
         this.eventKey = eventKey;
     }
 
-    public String getTeamKey() {
-        return teamKey;
+    public int getTeamNumber() {
+        return teamNumber;
     }
 
-    public void setTeamKey(String teamKey) {
-        this.teamKey = teamKey;
+    public void setTeamNumber(int teamNumber) {
+        this.teamNumber = teamNumber;
     }
 
     public ScoutingInfo() {
@@ -46,7 +46,7 @@ public class ScoutingInfo implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(eventKey);
-        out.writeString(teamKey);
+        out.writeInt(teamNumber);
         out.writeParcelable(currentData, flags);
     }
 
@@ -55,7 +55,7 @@ public class ScoutingInfo implements Parcelable {
     // private so that only the `CREATOR` field can access.
     private ScoutingInfo(Parcel in) {
         eventKey = in.readString();
-        teamKey = in.readString();
+        teamNumber = in.readInt();
         currentData = in.readParcelable(ScouterData.class.getClassLoader());
     }
 

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="122dp">
+
+        <ImageButton
+            app:srcCompat="@drawable/ic_home_black_24dp"
+            android:id="@+id/home_teleop"
+            android:layout_weight="0.10"
+            android:tint="@color/colorWhite"
+            android:backgroundTint="@color/colorSparxRed"
+            android:layout_height="110dp"
+            android:layout_marginTop="5px"
+            android:layout_width="100px"
+            android:minWidth="100px"
+            android:maxWidth="100px" />
+
+        <Button
+            android:text="To Auto"
+            android:layout_width="127dp"
+            android:id="@+id/benchmarkAutoSwitcher"
+            style="@android:style/Widget.Material.Button.Colored"
+            android:background="@color/colorSparxRed"
+            android:elevation="0dp"
+            android:layout_margin="10dp"
+            android:textSize="25sp"
+            android:layout_height="100dp"
+            android:alpha="60"
+            android:textColor="#FFFFFF"
+            android:layout_weight="0.56" />
+    </LinearLayout>
+
+    <Button
+        android:text="Use Camera"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/cameraButton" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editText2"
+        android:hint="Robot speed"
+        android:textSize="30sp"
+        android:layout_margin="20sp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:ems="10"
+        android:id="@+id/editText5"
+        android:textSize="30sp"
+        android:hint="Ammount of balls that can be held"
+        android:layout_margin="20sp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText3"
+        android:hint="Accuracy for low goal (if possible)"
+        android:textSize="30sp"
+        android:layout_margin="20sp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/editText4"
+        android:hint="Accuracy for high goal (if possible)"
+        android:textSize="30sp"
+        android:layout_margin="20sp"/>
+
+    <CheckBox
+        android:text="Ability To Scale?"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/checkBox6"
+        android:textSize="30sp"
+        android:layout_weight="0.05"
+        android:layout_margin="25sp"
+        android:buttonTint="@color/colorSparxRed"
+        android:minHeight="0dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:ems="10"
+        android:id="@+id/editText"
+        android:hint="Comments"
+        android:textSize="30sp"
+        android:inputType="textMultiLine"
+        android:layout_weight="0.17" />
+
+    <Button
+        android:text="Submit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/button2"
+        android:backgroundTint="@color/colorSparxRed"
+        style="@android:style/Widget.Material.Button.Colored"
+        android:layout_weight="0.26"
+        android:layout_marginTop="30sp"
+        android:elevation="13dp"
+        android:textColor="@color/colorWhite"
+        android:textSize="20sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp" />
+</LinearLayout>
