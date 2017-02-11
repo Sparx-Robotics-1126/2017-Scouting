@@ -1,6 +1,5 @@
 package com.sparx1126.steamworks;
 
-import android.annotation.TargetApi;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -8,15 +7,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -24,16 +18,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
-import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
@@ -46,7 +33,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,35 +41,36 @@ import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetwo
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.needToLoadTeams;
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.setLoadedTeams;
 
-public class MainScreen extends AppCompatActivity {
+public class MainScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
     private Button benchmarkAuto;
     private Button view;
     private Button scout;
-    private ArrayAdapter<String> cursorAdapterRegionalNames;
+    private ArrayList<String> eventsWeAreInArray;
+    private ArrayAdapter<String> eventNamesAdapter;
     private DatabaseHelper dbHelper;
     private BlueAlliance blueAlliance;
-    private Spinner eventPicker;
-    private static long ONE_DAY_EPOCH = 86400000;
-    private AutoCompleteTextView scouter;
-    private EditText team;
+    private Spinner eventSpinner;
+    private AutoCompleteTextView scouterText;
+    private EditText teamText;
     boolean eventSelected = false;
     boolean nameSelected = false;
     boolean teamSelected = false;
     boolean eventFilter = true;
-    public static final int COMPETITION_YEAR = 2017;
-    public static final int COMPETITION_Threshold = 1000;
-    public static final String PREFS_NAME = "Sparx-prefs";
-    public static final String PREFS_SCOUTER = "scouterName";
-    public static final String PREFS_EVENT = "Sparx-prefs";
-    public static final String PREFS_Event_SELECTED = "eventSelected";
-    public static final String PREFS_TEAM_NUMBER = "Team number";
-    private Map scoutingInfos;
+    SharedPreferences settings;
+    SharedPreferences.Editor editor;
+    private static long ONE_DAY_EPOCH = 86400000;
+    private static final int COMPETITION_YEAR = 2017;
+    private static final int COMPETITION_Threshold = 1000;
+    private static final String PREFS_NAME = "Sparx-prefs";
+    private static final String PREFS_SCOUTER = "scouterText";
+    private static final String PREFS_TEAM = "teamNumber";
+    private static final String PREFS_EVENT = "eventText";
+    private static final String OUR_COMPETITION_BUCKEYE = "2017-03-29 Buckeye Regional";
+    private static final String OUR_COMPETITION_FINGERLAKES = "2017-03-15 Finger Lakes Regional ";
+    private static final String FILTER_ON = "Turn the event filter on?";
+    private static final String FILTER_OFF = "Turn the event filter off?";
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
+    private Map scoutingInfoMap;
     private String[] FLRSTeams;
 
     private String getName(){
@@ -92,6 +79,18 @@ public class MainScreen extends AppCompatActivity {
     //Kevin is watching ( ͡° ͜ʖ ͡°)
     //this push thing isn't working ;-;
 
+    private int getTeamNumber() {
+        int value = 0;
+        String textEntered = teamText.getText().toString();
+        if (!textEntered.isEmpty()) {
+            value = Integer.parseInt(textEntered);
+        }
+        return value;
+    }
+
+    private String getEventName(){
+        return eventSpinner.getSelectedItem().toString();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,107 +99,63 @@ public class MainScreen extends AppCompatActivity {
 
         blueAlliance = BlueAlliance.getInstance(this);
         dbHelper = DatabaseHelper.getInstance(this);
+
+        // If the internet is available and we haven't gotten the data the download it
         if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
             downloadEventSpinnerData();
         }
-        scoutingInfos = new HashMap();
 
-        scout = (Button)findViewById(R.id.scout);
-        scout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buttonClicked(v);
-            }
-        });
-        scout.setVisibility(INVISIBLE);
-        benchmarkAuto = (Button)findViewById(R.id.benchmarkAuto);
-        benchmarkAuto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buttonClicked(v);
+        scoutingInfoMap = new HashMap();
 
-            }
-        });
-        benchmarkAuto.setVisibility(INVISIBLE);
-        team = (EditText) findViewById(R.id. team);
-        team.setVisibility(INVISIBLE);
-        view = (Button)findViewById(R.id.view_data);
-        view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                buttonClicked(v);
+        scout = (Button)findViewById(R.id.scoutButton);
+        scout.setOnClickListener(buttonClicked);
+        scout.setVisibility(View.INVISIBLE);
 
-            }
-        });
-        view.setVisibility(INVISIBLE);
+        benchmarkAuto = (Button)findViewById(R.id.benchmarkButton);
+        benchmarkAuto.setOnClickListener(buttonClicked);
+        benchmarkAuto.setVisibility(View.INVISIBLE);
 
+        view = (Button)findViewById(R.id.viewButton);
+        view.setOnClickListener(buttonClicked);
+        view.setVisibility(View.INVISIBLE);
 
-        scouter = (AutoCompleteTextView) findViewById(R.id. scouter);
-        scouter.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void afterTextChanged(Editable s) {
-                String[] students = getResources().getStringArray(R.array.students);
-                if(Arrays.asList(students).contains(scouter.getEditableText().toString())){
-                    nameSelected = true;
-                    showButtons();
-                    savePreferences();
-                }
-                else{
-                    nameSelected = false;
-                    showButtons();
-                }
-            }
-        });
-
-
-        team.addTextChangedListener(new TextWatcher() {
-
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            public void afterTextChanged(Editable s) {
-               teamNumberChecker();
-            }
-        });
-
-        eventPicker = (Spinner) findViewById(R.id.eventPicker);
+        scouterText = (AutoCompleteTextView) findViewById(R.id.scouterText);
+        scouterText.addTextChangedListener(scouterTextEntered);
+        // Initialize the auto text complete with the hard coded list in strings.xml
         scouterAutoComplete();
-        eventPicker.setOnTouchListener(spinnerOnTouch);
-        eventPicker.setOnItemSelectedListener(spinnerOnItemClick);
+
+        teamText = (EditText) findViewById(R.id.teamText);
+        teamText.addTextChangedListener(teamTextEntered);
+
+        eventSpinner = (Spinner) findViewById(R.id.eventSpinner);
+        eventSpinner.setOnTouchListener(spinnerOnTouch);
+        eventSpinner.setOnItemSelectedListener(spinnerOnItemClick);
+
+        eventsWeAreInArray =  new ArrayList<String>();
+        eventNamesAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray); //selected item will look like a spinner set from XML
+
+        settings = getSharedPreferences(PREFS_NAME, 0);
+        editor = settings.edit();
+
+        // restore the event, name, and team
         restorePreferences();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
-   // @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void teamNumberChecker(){
         if(!Objects.equals("", team.getText().toString())){
             String[] FLRTeams = getResources().getStringArray(R.array.FLRTeams);
             String[] buckeyeTeams = getResources().getStringArray(R.array.buckeyeTeams);
             if((Arrays.asList(buckeyeTeams).contains(team.getText().toString())) && (Objects.equals(eventPicker.getSelectedItem().toString(), "2017-03-29 Buckeye Regional"))){
                 teamSelected = true;
+                int teamNumber = getTeamNumber();
+                editor.putInt(PREFS_TEAM, teamNumber);
+                editor.apply();
                 showButtons();
             }
             else if(Arrays.asList(FLRTeams).contains(team.getText().toString()) && (Objects.equals(eventPicker.getSelectedItem().toString(), "2017-03-15 Finger Lakes Regional "))){
                 teamSelected = true;
+                int teamNumber = getTeamNumber();
+                editor.putInt(PREFS_TEAM, teamNumber);
+                editor.apply();
                 showButtons();
             }
             else{
@@ -213,106 +168,110 @@ public class MainScreen extends AppCompatActivity {
             showButtons();
         }
     }
-    private void savePreferences() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-        String scouterName = getName();
-        editor.putString(PREFS_SCOUTER, scouterName);
-        int eventIndex = eventPicker.getSelectedItemPosition();
-        editor.putInt(PREFS_Event_SELECTED, eventIndex);
-        String teamNumber = team.getText().toString();
-        editor.putString(PREFS_TEAM_NUMBER, teamNumber);
-        editor.apply();
-    }
+
     private void restorePreferences(){
-        // Restore preferences
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         String scouterName = settings.getString(PREFS_SCOUTER, "");
-        scouter.setText(scouterName);
-        int eventIndex = settings.getInt(PREFS_Event_SELECTED, 0);
-        eventPicker.setSelection(eventIndex);
-        String teamNumber = settings.getString(PREFS_TEAM_NUMBER, "");
-        team.setText(teamNumber);
+        scouterText.setText(scouterName);
+        int teamNumber = settings.getInt(PREFS_TEAM, 0);
+        if(teamNumber != 0) {
+            teamText.setText(String.valueOf(teamNumber));
+        }
+        String eventName = settings.getString(PREFS_EVENT, "");
+        if(!eventName.isEmpty()) {
+            setupEventSpinner();
+            if(eventNamesAdapter.getPosition(eventName) != -1) {
+                eventSpinner.setSelection(eventNamesAdapter.getPosition(eventName));
+            }
+            else {
+                eventFilter = false;
+                setupEventSpinner();
+                if(eventNamesAdapter.getPosition(eventName) != -1) {
+                    eventSpinner.setSelection(eventNamesAdapter.getPosition(eventName));
+                }
+            }
+        }
     }
 
     // function called by any of the three buttons to switch screens
-    public void buttonClicked(View view) {
-        // we grab the main screen as a type context for switching
-        Context context = MainScreen.this;
-        // we create a destination variable. This is the screen we are going to switch to.
-        Class destination = null;
+    public View.OnClickListener buttonClicked =  new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            // we grab the main screen as a type context for switching
+            Context context = MainScreen.this;
+            // we create a destination variable. This is the screen we are going to switch to.
+            Class destination = null;
 
-        // We set the screen we are going to swtich to.
-        switch (view.getId()) {
-            case R.id.benchmarkAuto:
-                destination = BenchmarkScreen.class;
-                break;
-            case R.id.scout:
-                destination = ScoutingScreen.class;
-                break;
-            case R.id.view_data:
-                destination = ViewScreen.class;
-                break;
-        }
-
-        // set the currentScouting object I intend to pass to. Set it to NULL which means not
-        // created yet. This is a good practice because if useed and set to NULL it creashes better
-        ScoutingInfo currentInfo = null;
-        // get the object editable from the team number text field on the screen. The intentions
-        // is to get the text entered from it.
-        Editable editable = team.getText();
-        // get from the object Editable a String (i.e. it could contain "1126")
-        String teamNumber = editable.toString();
-        // look for i.e. "1126" in my map of already scouted teams
-        if (scoutingInfos.containsKey(teamNumber)) {
-            // set my temporary variable of scouting info to the one I found inside the map
-            currentInfo = (ScoutingInfo) scoutingInfos.get(teamNumber);
-        } else {
-            // create a new scouting info because I did not find it in my map
-            // which means it hasn't been scouted before
-            currentInfo = new ScoutingInfo();
-            currentInfo.setEventKey(eventPicker.getSelectedItem().toString());
-            currentInfo.setTeamKey(team.getText().toString());
-            currentInfo.addScouter(getName());
-            // add the new scouting info into my map so that I can find it in the future
-            scoutingInfos.put(team.getText().toString(), currentInfo);
-        }
-
-        Intent intent = new Intent(context, destination);
-        intent.putExtra(CommonDefs.SCOUTER_INFO, currentInfo);
-        startActivity(intent);
-    }
-
-
-
-    private View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-        public boolean onTouch(View v, MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_UP ) {
-                System.out.println("your code there");
-                setupEventSpinner();
-                eventSelected = true;
-                showButtons();
+            // We set the screen we are going to swtich to.
+            switch (v.getId()) {
+                case R.id.benchmarkButton:
+                    destination = BenchmarkScreen.class;
+                    break;
+                case R.id.scoutButton:
+                    destination = ScoutingScreen.class;
+                    break;
+                case R.id.viewButton:
+                    destination = ViewScreen.class;
+                    break;
             }
 
+            // set the currentScouting object I intend to pass to. Set it to NULL which means not
+            // created yet. This is a good practice because if useed and set to NULL it creashes better
+            ScoutingInfo currentInfo = null;
+            // get the object editable from the teamText number text field on the screen. The intentions
+            // is to get the text entered from it.
+            Editable editable = teamText.getText();
+            // get from the object Editable a String (i.e. it could contain "1126")
+            String teamNumber = editable.toString();
+            // look for i.e. "1126" in my map of already scouted teams
+            if (scoutingInfoMap.containsKey(teamNumber)) {
+                // set my temporary variable of scouting info to the one I found inside the map
+                currentInfo = (ScoutingInfo) scoutingInfoMap.get(teamNumber);
+            } else {
+                // create a new scouting info because I did not find it in my map
+                // which means it hasn't been scouted before
+                currentInfo = new ScoutingInfo();
+                currentInfo.setEventKey(getEventName());
+                currentInfo.setTeamNumber(getTeamNumber());
+                currentInfo.addScouter(getScouterName());
+                // add the new scouting info into my map so that I can find it in the future
+                scoutingInfoMap.put(teamText.getText().toString(), currentInfo);
+            }
+
+            Intent intent = new Intent(context, destination);
+            intent.putExtra(CommonDefs.SCOUTER_INFO, currentInfo);
+            startActivity(intent);
+        }
+    };
+
+    private View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
+        public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_UP ) {
+                setupEventSpinner();
+            }
             return false;
         }
     };
+
     private AdapterView.OnItemSelectedListener spinnerOnItemClick = new AdapterView.OnItemSelectedListener() {
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if(eventPicker.getSelectedItem().toString() == "Turn the event filter off?"){
+            if(getEventName().contentEquals(FILTER_OFF)){
                 eventFilter = false;
                 setupEventSpinner();
             }
-            if(eventPicker.getSelectedItem().toString() == "Turn the event filter on?"){
+            else if(getEventName().contentEquals(FILTER_ON)){
                 eventFilter = true;
                 setupEventSpinner();
             }
-teamNumberChecker();
-            //System.out.println(eventPicker.getSelectedItem().toString());
-            showButtons();
+            else if (!getEventName().isEmpty()) {
+                String eventName = getEventName();
+                System.out.println(eventName);
+                editor.putString(PREFS_EVENT, eventName);
+                editor.apply();
+                eventSelected = true;
+                teamNumberChecker();
+                showButtons();
+            }
         }
 
         @Override
@@ -320,9 +279,57 @@ teamNumberChecker();
         }
     };
 
+    private TextWatcher scouterTextEntered = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            String[] students = getResources().getStringArray(R.array.students);
+            if(Arrays.asList(students).contains(scouterText.getEditableText().toString())){
+                nameSelected = true;
+                String scouterName = getScouterName();
+                editor.putString(PREFS_SCOUTER, scouterName);
+                editor.apply();
+                showButtons();
+            }
+            else{
+                benchmarkButton.setVisibility(View.INVISIBLE);
+                scoutButton.setVisibility(View.INVISIBLE);
+                viewButton.setVisibility(View.INVISIBLE);
+            }
+        }
+    };
+
+    private TextWatcher teamTextEntered = new TextWatcher() {
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            teamNumberChecker();
+        }
+    };
+
     private void showButtons(){
         if(eventSelected && nameSelected){
-        team.setVisibility(View.VISIBLE);
+        teamText.setVisibility(View.VISIBLE);
             if(teamSelected){
                 benchmarkAuto.setVisibility(View.VISIBLE);
                 view.setVisibility(View.VISIBLE);
@@ -335,20 +342,18 @@ teamNumberChecker();
             }
         }
         else{
-            team.setVisibility(INVISIBLE);
+            teamText.setVisibility(INVISIBLE);
             benchmarkAuto.setVisibility(INVISIBLE);
             view.setVisibility(INVISIBLE);
             scout.setVisibility(INVISIBLE);
         }
     };
 
-
     private void scouterAutoComplete(){
         String[] students = getResources().getStringArray(R.array.students);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this,android.R.layout.simple_list_item_1,students);
-        scouter.setAdapter(adapter);
-
+        scouterText.setAdapter(adapter);
     }
 
     private void downloadEventSpinnerData() {
@@ -402,52 +407,33 @@ teamNumberChecker();
         return builder.create();
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void setupEventSpinner() {
 
         Cursor eventDataCur = dbHelper.createEventNameCursor();
         //Left that here because it's a way to dump all of the data into the console
         //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
         ArrayList<String> eventsWeAreInArray = fillInEventsNeerToday(eventDataCur);
-        String competition1 = "2017-03-29 Buckeye Regional";
-        String competition2 = "2017-03-15 Finger Lakes Regional ";
         if(eventFilter) {
             for (int i = (eventsWeAreInArray.size() - 1); 0 <= i; i--) {
                 //System.out.println(eventsWeAreInArray.get(i));
-                if (!Objects.equals(eventsWeAreInArray.get(i), competition1)) {
-                    if (!Objects.equals(eventsWeAreInArray.get(i), competition2)) {
+                if (!eventsWeAreInArray.get(i).contentEquals(OUR_COMPETITION_BUCKEYE)) {
+                    if (!eventsWeAreInArray.get(i).contentEquals(OUR_COMPETITION_FINGERLAKES)) {
                         eventsWeAreInArray.remove(i);
                     }
                 }
             }
         }
         if(eventFilter){
-            eventsWeAreInArray.add("Turn the event filter off?");
+            eventsWeAreInArray.add(FILTER_OFF);
         }
         else{
-            eventsWeAreInArray.add("Turn the event filter on?");
+            eventsWeAreInArray.add(FILTER_ON);
         }
-        cursorAdapterRegionalNames = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray); //selected item will look like a spinner set from XML
-        cursorAdapterRegionalNames.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        eventPicker.setAdapter(cursorAdapterRegionalNames);
-        Spinner spnLocale = (Spinner)findViewById(R.id.eventPicker);
-
-        /*spnLocale.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                System.out.println("selected");
-            }
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                System.out.println("not selected");
-                return;
-            }
-        });*/
+        eventNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        eventSpinner.setAdapter(eventNamesAdapter);
+        Spinner spnLocale = (Spinner)findViewById(R.id.eventSpinner);
     }
 
-    private ArrayList<String> fillInTeams(Cursor eventDataCur) {
-        ArrayList<String> teamNamesArray = new ArrayList<String>();
-        return teamNamesArray;
-    }
     private long getTodayInEpoch() {
         Calendar c = Calendar.getInstance();
         long epochToday = c.getTime().getTime();
@@ -478,42 +464,4 @@ teamNumberChecker();
         }
         return eventsWeAreInArray;
     }
-
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("MainScreen Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
-
-
 }
