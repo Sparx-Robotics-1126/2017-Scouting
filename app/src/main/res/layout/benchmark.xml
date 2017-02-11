@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ScrollView01"
     android:layout_width="fill_parent"
@@ -395,7 +397,7 @@
             android:textSize="25dp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/colorBlack"
-            android:text="Can Pickup Balls From Human Player" />
+            android:text="Can Pickup Balls From Human" />
 
         <ToggleButton
             android:text="ToggleButton"
@@ -593,29 +595,52 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="72dp"
+        android:weightSum="1">
 
         <TextView
-            android:layout_width="wrap_content"
             android:id="@+id/whereCanScoreGearsBenchText"
             android:layout_marginRight="20dp"
-            android:layout_height="40dp"
             android:textSize="25dp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/colorBlack"
-            android:text="Where can they score gears from" />
-
-        <EditText
-            android:layout_width="130dp"
+            android:text="Where can they score gears"
             android:layout_height="72dp"
-            android:ems="10"
-            android:id="@+id/whereCanScoreGearsBenchInput"
-            android:layout_weight="0.45"
-            style="@android:style/TextAppearance.Material"
-            android:textColor="@color/colorBlack"
-            android:textAlignment="center"
-            android:textSize="18dp"
-            android:inputType="textMultiLine" />
+            android:layout_width="170dp" />
+
+        <CheckBox
+            android:text="Left"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.14"
+            android:id="@+id/canGearLeftBench"
+            app:buttonTint="@color/colorSparxRed"
+            style="@android:style/Widget.Material.CompoundButton.CheckBox"
+            android:textSize="25dp"
+            android:layout_margin="10dp"/>
+
+        <CheckBox
+            android:text="Center"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/canGearCenterBench"
+            android:layout_weight="0.14"
+            app:buttonTint="@color/colorSparxRed"
+            style="@android:style/Widget.Material.CompoundButton.CheckBox"
+            android:textSize="20dp"
+            android:layout_margin="10dp"/>
+
+        <CheckBox
+            android:text="Right"
+            android:layout_height="wrap_content"
+            android:id="@+id/canGearRightBench"
+            android:layout_weight="0.11"
+            android:layout_width="85dp"
+            app:buttonTint="@color/colorSparxRed"
+            style="@android:style/Widget.Material.CompoundButton.CheckBox"
+            android:layout_margin="10dp"
+            android:textSize="20dp"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -624,26 +649,41 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:layout_width="wrap_content"
             android:id="@+id/preferredScoreGearsBenchText"
             android:layout_marginRight="20dp"
-            android:layout_height="40dp"
-            android:textSize="25dp"
             android:layout_marginLeft="10dp"
             android:textColor="@color/colorBlack"
-            android:text="Preferred Gear Scoring Location" />
+            android:text="Preferred Gear Scoring Location"
+            android:layout_height="58dp"
+            android:layout_width="450dp"
+            android:textSize="30dp"
+            android:layout_marginTop="55dp" />
+        <RadioGroup
+            android:id="@+id/radioPreferredGear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
 
-        <EditText
-            android:layout_width="130dp"
-            android:layout_height="72dp"
-            android:ems="10"
-            android:id="@+id/preferredScoreGearsBenchInput"
-            android:layout_weight="0.23"
-            style="@android:style/TextAppearance.Material"
-            android:textColor="@color/colorBlack"
-            android:textAlignment="center"
-            android:textSize="25dp"
-            android:inputType="textMultiLine" />
+            <RadioButton
+                android:id="@+id/radioGearRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Center"
+                android:buttonTint="@color/colorSparxRed"/>
+
+            <RadioButton
+                android:id="@+id/radioGearCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Right"
+                android:buttonTint="@color/colorSparxRed"/>
+
+            <RadioButton
+                android:id="@+id/radioGearLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Left"
+                android:buttonTint="@color/colorSparxRed"/>
+        </RadioGroup>
     </LinearLayout>
 
     <LinearLayout
