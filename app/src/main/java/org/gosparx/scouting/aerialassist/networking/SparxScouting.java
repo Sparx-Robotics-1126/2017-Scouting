@@ -172,36 +172,7 @@ public class SparxScouting {
     }
 
 
-    public void getBenchmarking(Team team, Event event, final NetworkCallback callback){
-        String request = (BASE_URL + GET_BENCHMARKING_BY_TEAM_EVENT)
-                .replace("{TEAM_KEY}", team.getKey())
-                .replace("{EVENT_KEY}", event.getKey());
-        getBenchmarking(request, callback);
-    }
 
-    private void getBenchmarking(String request, final NetworkCallback callback){
-        Ion.with(context)
-                .load(request)
-                .as(new TypeToken<List<ScoutingInfo>>(){})
-                .setCallback(new FutureCallback<List<ScoutingInfo>>() {
-                    @Override
-                    public void onCompleted(Exception e, List<ScoutingInfo> result) {
-                        if (e != null) {
-                            Log.e(TAG, "Issue getting benchmarking data.", e);
-                            callback.handleFinishDownload(false);
-                            return;
-                        }
-
-                        for (ScoutingInfo sd : result) {
-                            if (dbHelper.doesBenchmarkingExist(sd))
-                                dbHelper.updateBenchmarking(sd);
-                            else
-                                dbHelper.createBenchmarking(sd);
-                        }
-                        callback.handleFinishDownload(true);
-                    }
-                });
-    }
 
     public void postAllBenchmarking(final NetworkCallback callback) {
         final List<ScoutingInfo> scoutingList = dbHelper.getAllBenchmarkingNeedingSyncing();
@@ -241,9 +212,7 @@ public class SparxScouting {
                                 System.out.println("Server Error");
                                 subCallback.handleFinishDownload(false);
                             } else {
-                                dbHelper.setDoneSyncing(scouting);
-                                System.out.println("Uploading");
-                                subCallback.handleFinishDownload(true);
+
                             }
                         }
                     });
