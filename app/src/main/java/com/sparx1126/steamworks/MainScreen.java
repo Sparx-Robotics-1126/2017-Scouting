@@ -41,7 +41,7 @@ import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetwo
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.needToLoadTeams;
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.setLoadedTeams;
 
-public class MainScreen extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainScreen extends AppCompatActivity {
     private Button benchmarkAuto;
     private Button view;
     private Button scout;
@@ -74,7 +74,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     private String[] FLRSTeams;
 
     private String getName(){
-        return scouter.getText().toString();
+        return scouterText.getText().toString();
     }
     //Kevin is watching ( ͡° ͜ʖ ͡°)
     //this push thing isn't working ;-;
@@ -102,6 +102,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
 
         // If the internet is available and we haven't gotten the data the download it
         if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
+
             downloadEventSpinnerData();
         }
 
@@ -119,6 +120,8 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         view.setOnClickListener(buttonClicked);
         view.setVisibility(View.INVISIBLE);
 
+
+
         scouterText = (AutoCompleteTextView) findViewById(R.id.scouterText);
         scouterText.addTextChangedListener(scouterTextEntered);
         // Initialize the auto text complete with the hard coded list in strings.xml
@@ -126,6 +129,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
 
         teamText = (EditText) findViewById(R.id.teamText);
         teamText.addTextChangedListener(teamTextEntered);
+        teamText.setVisibility(View.INVISIBLE);
 
         eventSpinner = (Spinner) findViewById(R.id.eventSpinner);
         eventSpinner.setOnTouchListener(spinnerOnTouch);
@@ -141,17 +145,17 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         restorePreferences();
     }
     private void teamNumberChecker(){
-        if(!Objects.equals("", team.getText().toString())){
+        if(!teamText.getText().toString().isEmpty()){
             String[] FLRTeams = getResources().getStringArray(R.array.FLRTeams);
             String[] buckeyeTeams = getResources().getStringArray(R.array.buckeyeTeams);
-            if((Arrays.asList(buckeyeTeams).contains(team.getText().toString())) && (Objects.equals(eventPicker.getSelectedItem().toString(), "2017-03-29 Buckeye Regional"))){
+            if((Arrays.asList(buckeyeTeams).contains(teamText.getText().toString())) && (eventSpinner.getSelectedItem().toString().contentEquals(OUR_COMPETITION_BUCKEYE))){
                 teamSelected = true;
                 int teamNumber = getTeamNumber();
                 editor.putInt(PREFS_TEAM, teamNumber);
                 editor.apply();
                 showButtons();
             }
-            else if(Arrays.asList(FLRTeams).contains(team.getText().toString()) && (Objects.equals(eventPicker.getSelectedItem().toString(), "2017-03-15 Finger Lakes Regional "))){
+            else if(Arrays.asList(FLRTeams).contains(teamText.getText().toString()) && (eventSpinner.getSelectedItem().toString().contentEquals(OUR_COMPETITION_FINGERLAKES))){
                 teamSelected = true;
                 int teamNumber = getTeamNumber();
                 editor.putInt(PREFS_TEAM, teamNumber);
@@ -170,12 +174,8 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
     }
 
     private void restorePreferences(){
-        String scouterName = settings.getString(PREFS_SCOUTER, "");
-        scouterText.setText(scouterName);
-        int teamNumber = settings.getInt(PREFS_TEAM, 0);
-        if(teamNumber != 0) {
-            teamText.setText(String.valueOf(teamNumber));
-        }
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        //the order matters
         String eventName = settings.getString(PREFS_EVENT, "");
         if(!eventName.isEmpty()) {
             setupEventSpinner();
@@ -189,6 +189,12 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                     eventSpinner.setSelection(eventNamesAdapter.getPosition(eventName));
                 }
             }
+        }
+        String scouterName = settings.getString(PREFS_SCOUTER, "");
+        scouterText.setText(scouterName);
+        int teamNumber = settings.getInt(PREFS_TEAM, 0);
+        if(teamNumber != 0) {
+            teamText.setText(String.valueOf(teamNumber));
         }
     }
 
@@ -232,7 +238,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
                 currentInfo = new ScoutingInfo();
                 currentInfo.setEventKey(getEventName());
                 currentInfo.setTeamNumber(getTeamNumber());
-                currentInfo.addScouter(getScouterName());
+                currentInfo.addScouter(getName());
                 // add the new scouting info into my map so that I can find it in the future
                 scoutingInfoMap.put(teamText.getText().toString(), currentInfo);
             }
@@ -296,15 +302,14 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
             String[] students = getResources().getStringArray(R.array.students);
             if(Arrays.asList(students).contains(scouterText.getEditableText().toString())){
                 nameSelected = true;
-                String scouterName = getScouterName();
+                String scouterName = getName();
                 editor.putString(PREFS_SCOUTER, scouterName);
                 editor.apply();
                 showButtons();
             }
             else{
-                benchmarkButton.setVisibility(View.INVISIBLE);
-                scoutButton.setVisibility(View.INVISIBLE);
-                viewButton.setVisibility(View.INVISIBLE);
+nameSelected = false;
+                showButtons();
             }
         }
     };
@@ -429,6 +434,7 @@ public class MainScreen extends AppCompatActivity implements AdapterView.OnItemS
         else{
             eventsWeAreInArray.add(FILTER_ON);
         }
+        eventNamesAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray);
         eventNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         eventSpinner.setAdapter(eventNamesAdapter);
         Spinner spnLocale = (Spinner)findViewById(R.id.eventSpinner);
