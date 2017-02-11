@@ -14,14 +14,15 @@ public class ScouterData implements Parcelable {
         private boolean canPickUpGearsFromGround;
         private boolean canPickUpGearsFromRetrieval;
         private String preferredGearRetrieval;
-        private int ballCapacity;
+        private float ballCapacity;
         private boolean canShootHigh;
         private String typeOfShooter;
-        private int ballsPerSecond;
+        private float ballsPerSecond;
         private String shootingLocation;
         private String preferredShootingLocation;
         private boolean canShootLow;
         private int lowGoalRating;
+        private int highGoalRating;
         private boolean abilityToScale;
         private String placesCanScaleFrom;
         private String preferredScalePlace;
@@ -29,6 +30,18 @@ public class ScouterData implements Parcelable {
         private double approxSpeedFeetPerSecond = 0.0;
         private Boolean canScoreInHighGoal = false;
         private Boolean canScoreInLowGoal = false;
+        private float highGoalAccuracy;
+        private int numberOfGearsScored;
+        private int numberOfBallsScored;
+        private String comments;
+        private boolean canPlayDefense;
+        private int ballsInHighCycle;
+        private int highCycleTime;
+        private float highShootingRange;
+        private boolean canPickUpBallsFromHuman;
+        private String preferredBallRetrieval;
+        private boolean canScoreGears;
+    
 
         // This is where you write the values you want to save to the `Parcel`.
         // The `Parcel` class has methods defined to help you save all of your values.
@@ -37,19 +50,25 @@ public class ScouterData implements Parcelable {
         @Override
         public void writeToParcel(Parcel out, int flags) {
             out.writeString(nameOfScouter);
+            out.writeString(comments);
             out.writeByte((byte) (canPickUpBallsFromHopper ? 1 : 0));
             out.writeByte((byte) (canPickUpBallsFromGround ? 1 : 0));
             out.writeByte((byte) (canPickUpGearsFromGround ? 1 : 0));
             out.writeByte((byte) (canPickUpGearsFromRetrieval ? 1 : 0));
+            out.writeByte((byte) (canPlayDefense ? 1: 0));
             out.writeString(preferredGearRetrieval);
-            out.writeInt(ballCapacity);
+            out.writeFloat(ballCapacity);
+            out.writeFloat(highGoalAccuracy);
             out.writeByte((byte) (canShootHigh ? 1 : 0));
             out.writeString(typeOfShooter);
-            out.writeInt(ballsPerSecond);
+            out.writeFloat(ballsPerSecond);
             out.writeString(shootingLocation);
             out.writeString(preferredShootingLocation);
             out.writeByte((byte) (canShootLow ? 1 : 0));
             out.writeInt(lowGoalRating);
+            out.writeInt(highGoalRating);
+            out.writeInt(numberOfGearsScored);
+            out.writeInt(numberOfBallsScored);
             out.writeByte((byte) (abilityToScale ? 1 : 0));
             out.writeString(placesCanScaleFrom);
             out.writeString(preferredScalePlace);
@@ -64,19 +83,24 @@ public class ScouterData implements Parcelable {
         // private so that only the `CREATOR` field can access.
         private ScouterData(Parcel in) {
             nameOfScouter = in.readString();
+            comments = in.readString();
             canPickUpBallsFromHopper = in.readByte() != 0;
             canPickUpBallsFromGround = in.readByte() != 0;
             canPickUpGearsFromGround = in.readByte() != 0;
             canPickUpGearsFromRetrieval = in.readByte() != 0;
             preferredGearRetrieval = in.readString();
             ballCapacity = in.readInt();
+            numberOfGearsScored = in.readInt();
+            numberOfBallsScored = in.readInt();
             canShootHigh = in.readByte() != 0;
             typeOfShooter = in.readString();
-            ballsPerSecond = in.readInt();
+            ballsPerSecond = in.readFloat();
+            highGoalAccuracy = in.readFloat();
             shootingLocation = in.readString();
             preferredShootingLocation = in.readString();
             canShootLow = in.readByte() != 0;
             lowGoalRating = in.readInt();
+            highGoalRating = in.readInt();
             abilityToScale = in.readByte() != 0;
             placesCanScaleFrom = in.readString();
             preferredScalePlace = in.readString();
@@ -84,6 +108,7 @@ public class ScouterData implements Parcelable {
             approxSpeedFeetPerSecond = in.readDouble();
             canScoreInHighGoal = in.readByte() != 0;
             canScoreInLowGoal = in.readByte() != 0;
+            canPlayDefense = in.readByte() != 0;
         }
 
         // In the vast majority of cases you can simply return 0 for this.
@@ -151,11 +176,35 @@ public class ScouterData implements Parcelable {
             return canShootLow;
         }
 
+        public void setCanPlayDefense(Boolean canPlayDefense) { this.canPlayDefense = getCanPlayDefense(); }
+
+        public Boolean getCanPlayDefense() {
+            return canPlayDefense;
+        }
+
+        public int getHighGoalRating() {
+        return highGoalRating;
+    }
+
+        public void setHighGoalRating(int highGoalRating) { this.highGoalRating = highGoalRating; }
+
         public int getLowGoalRating() {
             return lowGoalRating;
         }
 
-        public void setLowGoalRating(int lowGoalRating) { this.lowGoalRating = getBallsPerSecond(); }
+        public void setLowGoalRating(int lowGoalRating) { this.lowGoalRating = lowGoalRating; }
+
+        public int getNumberOfGearsScored() {
+        return numberOfGearsScored;
+    }
+
+        public void setNumberOfGearsScored (int numberOfGearsScored) { this.numberOfGearsScored = numberOfGearsScored; }
+
+        public int getNumberOfBallsScored() {
+        return numberOfBallsScored;
+    }
+
+        public void setNumberOfBallsScored (int numberOfBallsScored) { this.numberOfBallsScored = numberOfBallsScored; }
 
         public void setAbilityToScale(Boolean abilityToScale) { this.abilityToScale = getCanShootHigh(); }
 
@@ -167,14 +216,26 @@ public class ScouterData implements Parcelable {
             return shootingLocation;
         }
 
-        public void setShootingLocation(String shootingLocation) {
-            this.shootingLocation = shootingLocation; }
+        public void setShootingLocation(String shootingLocation) {this.shootingLocation = shootingLocation; }
 
-        public int getBallsPerSecond() {
+        public String getComments() {
+        return comments;
+    }
+
+        public void setComments(String comments) {this.comments = comments; }
+
+        public float getBallsPerSecond() {
             return ballsPerSecond;
         }
 
-        public void setBallsPerSecond(int ballsPerSecond) { this.ballsPerSecond = getBallsPerSecond(); }
+        public void setBallsPerSecond(float ballsPerSecond) { this.ballsPerSecond = ballsPerSecond; }
+
+
+        public float getHighGoalAccuracy() {
+        return ballsPerSecond;
+    }
+
+        public void setHighGoalAccuracy(float highGoalAccuracy) { this.highGoalAccuracy = highGoalAccuracy; }
 
         public String getTypeOfShooter() {
             return typeOfShooter;
@@ -184,17 +245,17 @@ public class ScouterData implements Parcelable {
             this.typeOfShooter = typeOfShooter;
         }
 
-        public void setCanShootHigh(Boolean canShootHigh) { this.canShootHigh = getCanShootHigh(); }
+        public void setCanShootHigh(Boolean canShootHigh) { this.canShootHigh = canShootHigh; }
 
         public Boolean getCanShootHigh() {
             return canShootHigh;
         }
 
-        public int getBallCapacity() {
-            return ballCapacity;
-        }
 
-        public void setBallCapacity(int ballCapacity ) { this.ballCapacity = getBallCapacity(); }
+        public float getBallCapacity() {return ballCapacity;}
+
+        public void setBallCapacity(float ballCapacity) { this.ballCapacity = ballCapacity; }
+
 
         public Boolean getCanPickUpGearsFromRetrieval() {
             return canPickUpGearsFromRetrieval;

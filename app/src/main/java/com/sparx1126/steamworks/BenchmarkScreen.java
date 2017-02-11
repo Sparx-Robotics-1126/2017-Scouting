@@ -44,6 +44,15 @@ public class BenchmarkScreen extends AppCompatActivity {
     private EditText typeOfShooter;
     private EditText ballsPerSecond;
     private EditText whereCanShoot;
+    private EditText preferredShootingLocation;
+    private EditText highGoalAccuracy;
+    private EditText highGoalRating;
+    private EditText lowGoalRating;
+    private EditText placesCanScale;
+    private EditText preferredScalePlace;
+    private EditText gearsScored;
+    private EditText ballsScored;
+    private EditText comments;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +80,220 @@ public class BenchmarkScreen extends AppCompatActivity {
         //  |   A
         // / \  B
 
-        // new
+        comments = (EditText) findViewById(R.id.commentsBench);
+        comments.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String textEntered = comments.getEditableText().toString();
+                currentInfo.getCurrentData().setComments(textEntered);
+            }
+        });
+/* No longer used in layout
+        ballsScored = (EditText) findViewById(R.id.numberOfBallsPerMatchBenchInput);
+        ballsScored.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String ballsScoredString = ballsScored.getEditableText().toString();
+                if (!ballsScoredString.isEmpty()) {
+                    int textEntered = Integer.parseInt(ballsScoredString);
+                    currentInfo.getCurrentData().setNumberOfBallsScored(textEntered);
+                }
+            }
+        });
+
+
+
+        gearsScored = (EditText) findViewById(R.id.numberOfGearsPerMatchInput);
+        gearsScored.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String gearsScoredString = gearsScored.getEditableText().toString();
+                if (!gearsScoredString.isEmpty()) {
+                    int textEntered = Integer.parseInt(gearsScoredString);
+                    currentInfo.getCurrentData().setNumberOfGearsScored(textEntered);
+                }
+            }
+        });
+*/
+
+
+
+        preferredScalePlace = (EditText) findViewById(R.id.preferredPlacesScaleInput);
+        preferredScalePlace.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String textEntered = preferredScalePlace.getEditableText().toString();
+                currentInfo.getCurrentData().setPreferredScalePlace(textEntered);
+            }
+        });
+
+
+
+        placesCanScale = (EditText) findViewById(R.id.placesCanScaleBenchInput);
+        placesCanScale.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String textEntered = placesCanScale.getEditableText().toString();
+                currentInfo.getCurrentData().setPlacesCanScaleFrom(textEntered);
+            }
+        });
+
+/* No longer used in layout
+        lowGoalRating = (EditText) findViewById(R.id.lowGoalRatingBenchInput);
+        lowGoalRating.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String lowGoalRatingString = lowGoalRating.getEditableText().toString();
+                if (!lowGoalRatingString.isEmpty()) {
+                    int textEntered = Integer.parseInt(lowGoalRatingString);
+                    currentInfo.getCurrentData().setLowGoalRating(textEntered);
+                }
+            }
+        });
+
+        highGoalRating = (EditText) findViewById(R.id.highGoalRatingBenchInput);
+        highGoalRating.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String highGoalRatingString = highGoalRating.getEditableText().toString();
+                if (!highGoalRatingString.isEmpty()) {
+                    int textEntered = Integer.parseInt(highGoalRatingString);
+                    currentInfo.getCurrentData().setHighGoalRating(textEntered);
+                }
+            }
+        });
+*/
+
+        highGoalAccuracy = (EditText) findViewById(R.id.accuracyHighBenchInput);
+        highGoalAccuracy.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String accuracyHighGoalString = highGoalAccuracy.getEditableText().toString();
+                if (!accuracyHighGoalString.isEmpty()) {
+                    float textEntered = Float.parseFloat(accuracyHighGoalString);
+                    currentInfo.getCurrentData().setBallCapacity(textEntered);
+                }
+            }
+        });
+
+         preferredShootingLocation = (EditText) findViewById(R.id.preferredShootingLocationBenchInput);
+        preferredShootingLocation.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String textEntered = preferredShootingLocation.getEditableText().toString();
+                currentInfo.getCurrentData().setPreferredShootingLocation(textEntered);
+                System.out.println(currentInfo.getCurrentData().getPreferredShootingLocation());
+            }
+        });
+/* No longer used in layout
         whereCanShoot = (EditText) findViewById(R.id.whereCanShootBenchInput);
         whereCanShoot.addTextChangedListener(new TextWatcher() {
 
@@ -94,6 +316,8 @@ public class BenchmarkScreen extends AppCompatActivity {
             }
         });
 
+   */
+
         ballsPerSecond = (EditText) findViewById(R.id.ballsPerSecondBenchInput);
         ballsPerSecond.addTextChangedListener(new TextWatcher() {
 
@@ -111,8 +335,10 @@ public class BenchmarkScreen extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String ballsSecondString = ballsPerSecond.getEditableText().toString();
-                int textEntered = Integer.getInteger(ballsSecondString);
-                currentInfo.getCurrentData().setBallsPerSecond(textEntered);
+                if (!ballsSecondString.isEmpty()) {
+                    float textEntered = Float.parseFloat(ballsSecondString);
+                    currentInfo.getCurrentData().setBallsPerSecond(textEntered);
+                }
             }
         });
         typeOfShooter = (EditText) findViewById(R.id.typeOfShooterBenchInput);
@@ -151,10 +377,14 @@ public class BenchmarkScreen extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void afterTextChanged(Editable s) {
-                String textEntered = maximumBallCapacity.getEditableText().toString();
-                currentInfo.getCurrentData().setBallCapacity(Integer.parseInt(textEntered));
+                String maximumBallCapacityString = maximumBallCapacity.getEditableText().toString();
+                if (!maximumBallCapacityString.isEmpty()) {
+                    float textEntered = Float.parseFloat(maximumBallCapacityString);
+                    currentInfo.getCurrentData().setBallCapacity(textEntered);
+                }
             }
         });
+
         drivesSpeed = (EditText) findViewById(R.id.drivesSpeed);
         drivesSpeed.addTextChangedListener(new TextWatcher()  {
 
@@ -172,10 +402,10 @@ public class BenchmarkScreen extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String textEntered = drivesSpeed.getEditableText().toString();
+                if (!textEntered.isEmpty()) {
                 currentInfo.getCurrentData().setApproxSpeedFeetPerSecond(Double.parseDouble(textEntered));
-            }
+            }}
         });
-
 
         driveSystem = (EditText) findViewById(R.id.drivesSystem);
         driveSystem.addTextChangedListener(new TextWatcher() {
