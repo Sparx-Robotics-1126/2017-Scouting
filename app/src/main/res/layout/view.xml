@@ -5,11 +5,11 @@
     android:weightSum="1">
 
     <TextView
-        android:text="View"
+        android:text="@string/view"
         android:layout_width="342dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:id="@+id/viewtext"
-        android:textSize="50dp"
+        android:textSize="50sp"
         android:layout_weight="0.05"
         />
 

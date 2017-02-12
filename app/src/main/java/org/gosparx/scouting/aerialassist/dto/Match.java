@@ -2,9 +2,6 @@ package org.gosparx.scouting.aerialassist.dto;
 
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by jbass on 3/1/14.
- */
 public class Match {
 
     private String key;
