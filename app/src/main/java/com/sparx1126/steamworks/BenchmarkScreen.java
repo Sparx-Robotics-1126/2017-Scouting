@@ -24,17 +24,11 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-/**
- * Created by Amanda on 1/17/17.
- */
+import java.util.Locale;
 
 public class BenchmarkScreen extends AppCompatActivity {
-    static final int REQUEST_TAKE_PHOTO  = 1;
-    String mCurrentPhotoPath;
+    private static final int REQUEST_TAKE_PHOTO  = 1;
     Button benchmarkAutoSwitcher;
-    Button cameraButton;
-    ImageButton home_auto;
     private ScoutingInfo currentInfo;
 
     // new
@@ -58,21 +52,21 @@ public class BenchmarkScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.benchmark);
 
-        home_auto = (ImageButton)findViewById(R.id.home_auto);
+        ImageButton home_auto = (ImageButton) findViewById(R.id.home_auto);
         home_auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                home_autoButtonClicked(v);
+                home_autoButtonClicked();
             }
         });
-        currentInfo = (ScoutingInfo)getIntent().getParcelableExtra(CommonDefs.SCOUTER_INFO);
+        currentInfo = getIntent().getParcelableExtra(CommonDefs.SCOUTER_INFO);
         System.out.println("Oooooooh no");
         System.out.println(currentInfo.getEventKey());
-        cameraButton = (Button)findViewById(R.id.cameraButton);
+        Button cameraButton = (Button) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cameraButton(v);
+                cameraButton();
             }
         });
 
@@ -425,8 +419,8 @@ public class BenchmarkScreen extends AppCompatActivity {
             public void afterTextChanged(Editable s) {
                 String textEntered = driveSystem.getEditableText().toString();
                 ScouterData currentData = currentInfo.getCurrentData();
-                currentInfo.getCurrentData().setDriveSystemDescription(textEntered);
-                System.out.println(currentInfo.getCurrentData().getDriveSystemDescription());
+                currentData.setDriveSystemDescription(textEntered);
+                System.out.println(currentData.getDriveSystemDescription());
             }
         });
     }
@@ -455,27 +449,24 @@ public class BenchmarkScreen extends AppCompatActivity {
 
     private File createImageFile() throws IOException {
         // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
         String imageFileName = "Steamworks " + timeStamp;
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
+
+        return File.createTempFile(
                 imageFileName,  /* prefix */
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
     }
-    private void home_autoButtonClicked(View v) {
+    private void home_autoButtonClicked() {
         Context context = BenchmarkScreen.this;
         Class destination = MainScreen.class;
         Intent intent = new Intent(context, destination);
         startActivity(intent);
     }
 
-    private void cameraButton(View v) {
+    private void cameraButton() {
         dispatchTakePictureIntent();
     }
 

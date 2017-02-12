@@ -13,7 +13,7 @@ public class ScoutingInfo implements Parcelable {
     private String eventKey;
     private int teamNumber;
     private ScouterData currentData;
-    public Vector<ScouterData> scouterData;
+    private Vector<ScouterData> scouterData;
 
     public String getEventKey() {
         return eventKey;
@@ -32,7 +32,7 @@ public class ScoutingInfo implements Parcelable {
     }
 
     public ScoutingInfo() {
-        scouterData = new Vector<ScouterData>(250);
+        scouterData = new Vector<>(250);
     }
 
     public ScouterData getCurrentData() {

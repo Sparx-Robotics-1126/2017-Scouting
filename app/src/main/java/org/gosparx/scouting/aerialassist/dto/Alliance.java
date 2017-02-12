@@ -2,9 +2,6 @@ package org.gosparx.scouting.aerialassist.dto;
 
 import java.util.List;
 
-/**
- * Created by jbass on 3/1/14.
- */
 public class Alliance {
     private int score;
     private List<String> teams;

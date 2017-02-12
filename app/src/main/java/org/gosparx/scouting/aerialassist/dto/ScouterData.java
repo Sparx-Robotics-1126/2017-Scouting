@@ -3,10 +3,6 @@ package org.gosparx.scouting.aerialassist.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-/**
- * Created by Papa on 2/4/17.
- */
-
 public class ScouterData implements Parcelable {
         private String nameOfScouter;
         private boolean canPickUpBallsFromHopper;
@@ -170,15 +166,15 @@ public class ScouterData implements Parcelable {
             this.placesCanScaleFrom = placesCanScaleFrom;
         }
 
-        public void setCanShootLow(Boolean canShootLow) { this.canShootLow = getCanShootHigh(); }
+        public void setCanShootLow(Boolean canShootLow) { this.canShootLow = canShootLow; }
 
         public Boolean getCanShootLow() {
             return canShootLow;
         }
 
-        public void setCanPlayDefense(Boolean canPlayDefense) { this.canPlayDefense = getCanPlayDefense(); }
+        public void setCanPlayDefense(Boolean canPlayDefense) { this.canPlayDefense = canPlayDefense; }
 
-        public Boolean getCanPlayDefense() {
+        private Boolean getCanPlayDefense() {
             return canPlayDefense;
         }
 
@@ -206,7 +202,7 @@ public class ScouterData implements Parcelable {
 
         public void setNumberOfBallsScored (int numberOfBallsScored) { this.numberOfBallsScored = numberOfBallsScored; }
 
-        public void setAbilityToScale(Boolean abilityToScale) { this.abilityToScale = getCanShootHigh(); }
+        public void setAbilityToScale(Boolean abilityToScale) { this.abilityToScale = abilityToScale; }
 
         public Boolean getAbilityToScale() {
             return abilityToScale;
@@ -247,7 +243,7 @@ public class ScouterData implements Parcelable {
 
         public void setCanShootHigh(Boolean canShootHigh) { this.canShootHigh = canShootHigh; }
 
-        public Boolean getCanShootHigh() {
+        private Boolean getCanShootHigh() {
             return canShootHigh;
         }
 
@@ -285,7 +281,7 @@ public class ScouterData implements Parcelable {
             return nameOfScouter;
         }
 
-        public void setNameOfScouter(String nameOfScouter) {
+        void setNameOfScouter(String nameOfScouter) {
             this.nameOfScouter = nameOfScouter;
         }
 
@@ -321,6 +317,6 @@ public class ScouterData implements Parcelable {
             this.canScoreInLowGoal = canScoreInLowGoal;
         }
 
-    public ScouterData() {
+    ScouterData() {
     }
 }
