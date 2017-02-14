@@ -30,7 +30,8 @@
         android:hint="@string/scouterName"
         android:layout_above="@+id/teamText"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="12dp"/>
+        android:layout_marginBottom="12dp"
+        android:layout_alignEnd="@+id/benchmarkButton" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -43,7 +44,8 @@
         android:layout_marginBottom="20dp"
         android:layout_above="@+id/benchmarkButton"
         android:layout_alignParentStart="true"
-        android:inputType="number" />
+        android:inputType="number"
+        android:layout_alignEnd="@+id/scouterText" />
 
     <Button
         android:text="@string/benchmark"
