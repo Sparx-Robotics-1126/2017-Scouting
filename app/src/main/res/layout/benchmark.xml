@@ -590,7 +590,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:weightSum="1">
 
         <TextView
             android:layout_width="wrap_content"
@@ -602,16 +603,40 @@
             android:textColor="@color/colorBlack"
             android:text="@string/gearsScoreWhere" />
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="72dp"
-            android:ems="10"
-            android:id="@+id/whereCanScoreGearsBenchInput"
-            android:layout_weight="0.45"
-            android:textColor="@color/colorBlack"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:inputType="textMultiLine" />
+
+        <CheckBox
+            android:text="Left"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.14"
+            android:id="@+id/canGearLeftBench"
+            app:buttonTint="@color/colorSparxRed"
+            style="@android:style/Widget.Material.CompoundButton.CheckBox"
+            android:textSize="25dp"
+            android:layout_margin="10dp"/>
+
+        <CheckBox
+            android:text="Center"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/canGearCenterBench"
+            android:layout_weight="0.14"
+            app:buttonTint="@color/colorSparxRed"
+            style="@android:style/Widget.Material.CompoundButton.CheckBox"
+            android:textSize="20dp"
+            android:layout_margin="10dp"/>
+
+        <CheckBox
+            android:text="Right"
+            android:layout_height="wrap_content"
+            android:id="@+id/canGearRightBench"
+            android:layout_weight="0.11"
+            android:layout_width="85dp"
+            app:buttonTint="@color/colorSparxRed"
+            style="@android:style/Widget.Material.CompoundButton.CheckBox"
+            android:layout_margin="10dp"
+            android:textSize="20dp"/>
+
     </LinearLayout>
 
     <LinearLayout
@@ -629,16 +654,32 @@
             android:textColor="@color/colorBlack"
             android:text="@string/gearsPreferred" />
 
-        <EditText
-            android:layout_width="0dp"
-            android:layout_height="72dp"
-            android:ems="10"
-            android:id="@+id/preferredScoreGearsBenchInput"
-            android:layout_weight="0.23"
-            android:textColor="@color/colorBlack"
-            android:textAlignment="center"
-            android:textSize="25sp"
-            android:inputType="textMultiLine" />
+        <RadioGroup
+            android:id="@+id/radioPreferredGear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/radioGearRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Center"
+                android:buttonTint="@color/colorSparxRed"/>
+
+            <RadioButton
+                android:id="@+id/radioGearCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Right"
+                android:buttonTint="@color/colorSparxRed"/>
+
+            <RadioButton
+                android:id="@+id/radioGearLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Left"
+                android:buttonTint="@color/colorSparxRed"/>
+        </RadioGroup>
     </LinearLayout>
 
     <LinearLayout
