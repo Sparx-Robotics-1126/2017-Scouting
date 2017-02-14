@@ -37,7 +37,7 @@ public class ScouterData implements Parcelable {
         private boolean canPickUpBallsFromHuman;
         private String preferredBallRetrieval;
         private boolean canScoreGears;
-    
+
 
         // This is where you write the values you want to save to the `Parcel`.
         // The `Parcel` class has methods defined to help you save all of your values.
