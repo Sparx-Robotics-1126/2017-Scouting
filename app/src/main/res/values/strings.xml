@@ -24,7 +24,7 @@
     <string name="highGoalAccuracy">Accuracy From High Goal</string>
     <string name="ballsHopper">Can Pickup Balls From Hopper</string>
     <string name="ballsFloor">Can Pickup Balls From Floor</string>
-    <string name="ballsHuman">Can Pickup Balls From Human Player</string>
+    <string name="ballsHuman">Can Pickup Balls From Human</string>
     <string name="ballRetrievalPreferred">Preferred Ball Retrieval Location</string>
     <string name="ballCapacity">Maximum Ball Capacity</string>
     <string name="gears">Gears</string>
@@ -34,7 +34,7 @@
     <string name="gearsFromRetrievalPreffered">Preferred Gear Retrieval Location</string>
     <string name="floor">Floor</string>
     <string name="gearsRetrieval">Retrieval Zone</string>
-    <string name="gearsScoreWhere">Where can they score gears from</string>
+    <string name="gearsScoreWhere">Where can they score gears</string>
     <string name="gearsPreferred">Preferred Gear Scoring Location</string>
     <string name="lowGoal">Low Goal</string>
     <string name="lowGoalAbility">Ability To Shoot In Low Goal</string>
@@ -53,6 +53,8 @@
     <string name="scout">Scout</string>
     <string name="view">View</string>
     <string name="scoutingHere">Scouting Here</string>
+    <string name="autoSection">Auto</string>
+    <string name="crossedBase">Crossed Baseline</string>
     <string-array name="students">
         <item>Michael Anderson</item>
         <item>Tyler Armstrong</item>

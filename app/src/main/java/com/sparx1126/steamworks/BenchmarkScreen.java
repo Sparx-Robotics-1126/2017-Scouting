@@ -37,16 +37,16 @@ public class BenchmarkScreen extends AppCompatActivity {
     private EditText maximumBallCapacity;
     private EditText typeOfShooter;
     private EditText ballsPerSecond;
-    private EditText whereCanShoot;
     private EditText preferredShootingLocation;
     private EditText highGoalAccuracy;
-    private EditText highGoalRating;
-    private EditText lowGoalRating;
     private EditText placesCanScale;
     private EditText preferredScalePlace;
-    private EditText gearsScored;
-    private EditText ballsScored;
     private EditText comments;
+    //No longer used in layout private EditText gearsScored;
+    //No longer used in layout private EditText ballsScored;
+    //No longer used in layout private EditText highGoalRating;
+    //No longer used in layout private EditText lowGoalRating;
+    //No longer used in layout private EditText whereCanShoot;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
