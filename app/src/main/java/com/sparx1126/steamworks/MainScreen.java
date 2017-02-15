@@ -72,7 +72,7 @@ public class MainScreen extends AppCompatActivity {
         return scouterText.getText().toString();
     }
     //Kevin is watching ( ͡° ͜ʖ ͡°)
-    //this push thing isn't working ;-;
+    //this push thing isn't working ;-; 
 
     private int getTeamNumber() {
         int value = 0;
