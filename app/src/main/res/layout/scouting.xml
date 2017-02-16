@@ -1,31 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ScrollView01"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="10dp"
-    android:fillViewport="false">
+    android:layout_height="fill_parent">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:weightSum="1">
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
 
-    <ImageButton
-            app:srcCompat="@drawable/ic_home_black_24dp"
-            android:id="@+id/home_scouting"
-            android:layout_weight="0.03"
-            android:tint="@color/colorWhite"
-            android:backgroundTint="@color/colorSparxRed"
-            android:layout_height="110dp"
-            android:layout_marginTop="5dp"
-            android:minWidth="100dp"
-            android:maxWidth="100dp"
+        <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:contentDescription="@string/home"/>
+            android:layout_height="122dp">
+
+            <ImageButton
+                app:srcCompat="@drawable/ic_home_black_24dp"
+                android:id="@+id/home_auto"
+                android:layout_weight="0.14"
+                android:tint="@color/colorWhite"
+                android:backgroundTint="@color/colorSparxRed"
+                android:layout_height="110dp"
+                android:layout_marginTop="5dp"
+                android:minWidth="100dp"
+                android:maxWidth="100dp"
+                android:layout_width="0dp"
+                android:contentDescription="@string/home"/>
+
+        </LinearLayout>
 
     <!-- Begin Auto Section -->
     <TextView
@@ -281,10 +285,11 @@
         android:textSize="50sp"
         android:layout_marginBottom="10dp"/>
 
-    <LinearLayout
+        <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="72dp">
+        android:layout_height="72dp"
+        android:layout_weight="2">
 
         <TextView
             android:layout_width="323dp"
@@ -307,9 +312,447 @@
             android:textColor="@color/colorBlack"
             android:textAlignment="center"
             android:textSize="30sp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.92">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/gearsCollectedFromFloorText"
+                android:layout_weight="0.57"
+                android:layout_marginEnd="20dp"
+                android:layout_height="88dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Number Of Gears Collected From Floor" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/gearsCollectedFromFloorInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp"/>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/gearsCollectedFromHumanText"
+                android:layout_weight="0.73"
+                android:layout_marginEnd="20dp"
+                android:layout_height="84dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Number Of Gears Collected From Human" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/gearsCollectedFromHumanInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+//dab
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/gearsDeliveredText"
+                android:layout_marginEnd="20dp"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Number Of Gears Delivered" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/gearsDeliveredInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+            android:layout_width="323dp"
+            android:id="@+id/numberOfGearsFromFloorText"
+            android:layout_marginEnd="20dp"
+            android:layout_height="85dp"
+            android:textSize="25sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Number Of Gears Collected From Floor" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/numberOfGearsFromFloorInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/numberOfGearsFromHumanText"
+                android:layout_marginEnd="20dp"
+                android:layout_height="85dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Number Of Gears Collected From Human" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/numberOfGearsFromHumanInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <TextView
+            android:text="Fuel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/fuelHeadline"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textSize="50sp"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/numberOfBallsScoredHighGoalText"
+                android:layout_weight="0.73"
+                android:layout_marginEnd="20dp"
+                android:layout_height="87dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Number Of Balls Scored In A High Goal Cycle" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/numberOfBallsScoredHighGoalInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+            android:layout_width="323dp"
+            android:id="@+id/numberOfHighGoalCyclesText"
+            android:layout_weight="0.73"
+            android:layout_marginEnd="20dp"
+            android:layout_height="87dp"
+            android:textSize="25sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="Number Of Balls Scored In A High Goal Cycle" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/numberOfHighGoalCyclesInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.48">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/timesCollectedFromHumanText"
+                android:layout_marginEnd="20dp"
+                android:layout_height="match_parent"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Number Of Times Collected Balls From Human" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/timesCollectedFromHumanInput"
+                android:layout_weight="0.51"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/timesCollectedFromHopperText"
+                android:layout_weight="0.73"
+                android:layout_marginEnd="20dp"
+                android:layout_height="87dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Number Of Times Collected Balls From Hopper" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/timesCollectedFromHopperInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/timesCollectedFromFloorText"
+                android:layout_weight="0.73"
+                android:layout_marginEnd="20dp"
+                android:layout_height="87dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Number Of Times Collected Balls From Floor" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/timesCollectedFromFloorInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/fuelScoredLowGoalCycleText"
+                android:layout_marginEnd="20dp"
+                android:layout_height="87dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Approximate Fuel Scored In A Low Goal Cycle" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/fuelScoredLowGoalCycleInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/numberOfLowGoalCyclesText"
+                android:layout_marginEnd="20dp"
+                android:layout_height="wrap_content"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Number Of Low Goal Cycles" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/numberOfLowGoalCyclesInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/highGoalAccuracyText"
+                android:layout_marginEnd="20dp"
+                android:layout_height="87dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="High Goal Accuracy (Poor, Good, Excellent)" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/highGoalAccuracyInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="30sp" />
+        </LinearLayout>
+        <TextView
+            android:text="End Game"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/endGameHeadline"
+            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
+            android:textSize="50sp"
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/didTheyScaleText"
+                android:layout_marginEnd="20dp"
+                android:layout_height="87dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Did They Scale?" />
+
+            <RadioButton
+                android:text="Yes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/didScaleRadioButton"
+                android:layout_weight="1" />
+
+            <RadioButton
+                android:text="No"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/didNotScaleRadioButton"
+                android:layout_weight="1" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="323dp"
+                android:id="@+id/scaledFromWhereText"
+                android:layout_marginEnd="20dp"
+                android:layout_height="87dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="If They Scaled, Where?" />
+
+            <EditText
+                android:layout_width="130dp"
+                android:layout_height="72dp"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/scaledFromWhereInput"
+                android:layout_weight="0.92"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"
+                android:textSize="20sp"
+                android:hint="Where They Scaled From" />
+
+        </LinearLayout>
     </LinearLayout>
-
-
-</LinearLayout>
 
     </ScrollView>
