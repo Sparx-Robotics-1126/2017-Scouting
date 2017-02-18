@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-import org.gosparx.scouting.aerialassist.dto.ScouterData;
+import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
 
 import java.io.File;
@@ -418,7 +418,7 @@ public class BenchmarkScreen extends AppCompatActivity {
             @Override
             public void afterTextChanged(Editable s) {
                 String textEntered = driveSystem.getEditableText().toString();
-                ScouterData currentData = currentInfo.getCurrentData();
+                BenchmarkingData currentData = currentInfo.getCurrentData();
                 currentData.setDriveSystemDescription(textEntered);
                 System.out.println(currentData.getDriveSystemDescription());
             }

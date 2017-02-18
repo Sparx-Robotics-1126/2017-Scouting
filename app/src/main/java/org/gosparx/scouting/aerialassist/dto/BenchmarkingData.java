@@ -3,7 +3,7 @@ package org.gosparx.scouting.aerialassist.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ScouterData implements Parcelable {
+public class BenchmarkingData implements Parcelable {
         private String nameOfScouter;
         private boolean canPickUpBallsFromHopper;
         private boolean canPickUpBallsFromGround;
@@ -37,7 +37,9 @@ public class ScouterData implements Parcelable {
         private boolean canPickUpBallsFromHuman;
         private String preferredBallRetrieval;
         private boolean canScoreGears;
-
+        private Boolean canScoreGearsRight;
+        private Boolean canScoreGearsCenter;
+        private Boolean canScoreGearsLeft;
 
         // This is where you write the values you want to save to the `Parcel`.
         // The `Parcel` class has methods defined to help you save all of your values.
@@ -72,12 +74,15 @@ public class ScouterData implements Parcelable {
             out.writeDouble(approxSpeedFeetPerSecond);
             out.writeByte((byte) (canScoreInHighGoal ? 1 : 0));
             out.writeByte((byte) (canScoreInLowGoal ? 1 : 0));
+            out.writeByte((byte) (canScoreGearsLeft ? 1: 0));
+            out.writeByte((byte) (canScoreGearsCenter ? 1: 0));
+            out.writeByte((byte) (canScoreGearsRight ? 1: 0));
         }
 
         // Using the `in` variable, we can retrieve the values that
         // we originally wrote into the `Parcel`.  This constructor is usually
         // private so that only the `CREATOR` field can access.
-        private ScouterData(Parcel in) {
+        private BenchmarkingData(Parcel in) {
             nameOfScouter = in.readString();
             comments = in.readString();
             canPickUpBallsFromHopper = in.readByte() != 0;
@@ -105,6 +110,9 @@ public class ScouterData implements Parcelable {
             canScoreInHighGoal = in.readByte() != 0;
             canScoreInLowGoal = in.readByte() != 0;
             canPlayDefense = in.readByte() != 0;
+            canScoreGearsRight = in.readByte() != 0;
+            canScoreGearsCenter = in.readByte() != 0;
+            canScoreGearsLeft = in.readByte() != 0;
         }
 
         // In the vast majority of cases you can simply return 0 for this.
@@ -118,20 +126,20 @@ public class ScouterData implements Parcelable {
         // After implementing the `Parcelable` interface, we need to create the
         // `Parcelable.Creator<MyParcelable> CREATOR` constant for our class;
         // Notice how it has our class specified as its type.
-        public static final Parcelable.Creator<ScouterData> CREATOR
-                = new Parcelable.Creator<ScouterData>() {
+        public static final Parcelable.Creator<BenchmarkingData> CREATOR
+                = new Parcelable.Creator<BenchmarkingData>() {
 
             // This simply calls our new constructor (typically private) and
             // passes along the unmarshalled `Parcel`, and then returns the new object!
             @Override
-            public ScouterData createFromParcel(Parcel in) {
-                return new ScouterData(in);
+            public BenchmarkingData createFromParcel(Parcel in) {
+                return new BenchmarkingData(in);
             }
 
             // We just need to copy this and change the type to match our class.
             @Override
-            public ScouterData[] newArray(int size) {
-                return new ScouterData[size];
+            public BenchmarkingData[] newArray(int size) {
+                return new BenchmarkingData[size];
             }
         };
 
@@ -259,6 +267,19 @@ public class ScouterData implements Parcelable {
 
         public void setCanPickUpGearsFromRetrieval(Boolean canPickUpGearsFromRetrieval) { this.canPickUpGearsFromRetrieval = canPickUpGearsFromRetrieval; }
 
+        public Boolean getCanScoreGearsLeft() {return canScoreGearsLeft;}
+
+        public void setCanScoreGearsLeft(Boolean canScoreGearsLeft) { this.canScoreGearsLeft = canScoreGearsLeft; }
+
+        public Boolean getCanScoreGearsCenter() {return canScoreGearsCenter;}
+
+        public void setCanScoreGearsCenter(Boolean canScoreGearsCenter) { this.canScoreGearsCenter = canScoreGearsCenter; }
+
+    public Boolean getCanScoreGearsRight() {return canScoreGearsRight;}
+
+    public void setCanScoreGearsRight(Boolean canScoreGearsRight) { this.canScoreGearsRight = canScoreGearsRight; }
+
+
         public Boolean getCanPickUpGearsFromGround() {
             return canPickUpGearsFromGround;
         }
@@ -317,6 +338,6 @@ public class ScouterData implements Parcelable {
             this.canScoreInLowGoal = canScoreInLowGoal;
         }
 
-    ScouterData() {
+    BenchmarkingData() {
     }
 }
