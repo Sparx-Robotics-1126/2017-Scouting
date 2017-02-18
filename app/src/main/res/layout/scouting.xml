@@ -18,7 +18,6 @@
 
             <ImageButton
                 app:srcCompat="@drawable/ic_home_black_24dp"
-                android:id="@+id/home_auto"
                 android:layout_weight="0.14"
                 android:tint="@color/colorWhite"
                 android:backgroundTint="@color/colorSparxRed"
@@ -27,7 +26,8 @@
                 android:minWidth="100dp"
                 android:maxWidth="100dp"
                 android:layout_width="0dp"
-                android:contentDescription="@string/home"/>
+                android:contentDescription="@string/home"
+                android:id="@+id/home_scouting" />
 
         </LinearLayout>
 

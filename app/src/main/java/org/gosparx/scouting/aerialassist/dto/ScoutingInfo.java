@@ -12,8 +12,8 @@ import java.util.Vector;
 public class ScoutingInfo implements Parcelable {
     private String eventKey;
     private int teamNumber;
-    private ScouterData currentData;
-    private Vector<ScouterData> scouterData;
+    private BenchmarkingData currentData;
+    private Vector<BenchmarkingData> scouterData;
 
     public String getEventKey() {
         return eventKey;
@@ -35,7 +35,7 @@ public class ScoutingInfo implements Parcelable {
         scouterData = new Vector<>(250);
     }
 
-    public ScouterData getCurrentData() {
+    public BenchmarkingData getCurrentData() {
         return currentData;
     }
 
@@ -56,7 +56,7 @@ public class ScoutingInfo implements Parcelable {
     private ScoutingInfo(Parcel in) {
         eventKey = in.readString();
         teamNumber = in.readInt();
-        currentData = in.readParcelable(ScouterData.class.getClassLoader());
+        currentData = in.readParcelable(BenchmarkingData.class.getClassLoader());
     }
 
     // In the vast majority of cases you can simply return 0 for this.
@@ -88,7 +88,7 @@ public class ScoutingInfo implements Parcelable {
     };
 
     public void addScouter(String name) {
-        currentData = new ScouterData();
+        currentData = new BenchmarkingData();
         currentData.setNameOfScouter(name);
         scouterData.add(currentData);
     }
