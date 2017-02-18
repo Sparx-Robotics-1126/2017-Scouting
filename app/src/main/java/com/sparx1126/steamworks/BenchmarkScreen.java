@@ -42,8 +42,8 @@ public class BenchmarkScreen extends AppCompatActivity {
     private EditText placesCanScale;
     private EditText preferredScalePlace;
     private EditText comments;
-    private EditText ballsInHighCycle; //int
-    private EditText highCycleTime; //int
+    private EditText ballsInHighCycle;
+    private EditText highCycleTime;
     private EditText shootingRange; //float
     private EditText preferredBallRetrieval; //String
     //daberoni
@@ -83,6 +83,54 @@ public class BenchmarkScreen extends AppCompatActivity {
         //  |   A
         // / \  B
 
+        shootingRange = (EditText) findViewById(R.id.shootingRangeBenchInput);
+        shootingRange.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String shootingRangeString = shootingRange.getEditableText().toString();
+                if (!shootingRangeString.isEmpty()) {
+                    float textEntered = Float.parseFloat(shootingRangeString);
+                    currentInfo.getCurrentData().setHighShootingRange(textEntered);
+                }
+            }
+        });
+
+        highCycleTime = (EditText) findViewById(R.id.cycleTimeHighBenchInput);
+        highCycleTime.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String highCycleTimeString = highCycleTime.getEditableText().toString();
+                if (!highCycleTimeString.isEmpty()) {
+                    int textEntered = Integer.parseInt(highCycleTimeString);
+                    currentInfo.getCurrentData().setHighCycleTime(textEntered);
+                }
+            }
+        });
+
         ballsInHighCycle = (EditText) findViewById(R.id.ballsInCycleBenchInput);
         ballsInHighCycle.addTextChangedListener(new TextWatcher() {
 
@@ -99,11 +147,10 @@ public class BenchmarkScreen extends AppCompatActivity {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void afterTextChanged(Editable s) {
-                String ballsScoredString = ballsInHighCycle.getEditableText().toString();
-                if (!ballsScoredString.isEmpty()) {
-                    int textEntered = Integer.parseInt(ballsScoredString);
+                String ballsInHighCycleString = ballsInHighCycle.getEditableText().toString();
+                if (!ballsInHighCycleString.isEmpty()) {
+                    int textEntered = Integer.parseInt(ballsInHighCycleString);
                     currentInfo.getCurrentData().setBallsInHighCycle(textEntered);
-                    System.out.println(textEntered);
                 }
             }
         });
