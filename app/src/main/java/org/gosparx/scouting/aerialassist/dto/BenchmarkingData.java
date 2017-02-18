@@ -110,7 +110,9 @@ public class BenchmarkingData implements Parcelable {
             canScoreInHighGoal = in.readByte() != 0;
             canScoreInLowGoal = in.readByte() != 0;
             canPlayDefense = in.readByte() != 0;
-            
+            canScoreGearsRight = in.readByte() != 0;
+            canScoreGearsCenter = in.readByte() != 0;
+            canScoreGearsLeft = in.readByte() != 0;
         }
 
         // In the vast majority of cases you can simply return 0 for this.
@@ -264,6 +266,19 @@ public class BenchmarkingData implements Parcelable {
         }
 
         public void setCanPickUpGearsFromRetrieval(Boolean canPickUpGearsFromRetrieval) { this.canPickUpGearsFromRetrieval = canPickUpGearsFromRetrieval; }
+
+        public Boolean getCanScoreGearsLeft() {return canScoreGearsLeft;}
+
+        public void setCanScoreGearsLeft(Boolean canScoreGearsLeft) { this.canScoreGearsLeft = canScoreGearsLeft; }
+
+        public Boolean getCanScoreGearsCenter() {return canScoreGearsCenter;}
+
+        public void setCanScoreGearsCenter(Boolean canScoreGearsCenter) { this.canScoreGearsCenter = canScoreGearsCenter; }
+
+    public Boolean getCanScoreGearsRight() {return canScoreGearsRight;}
+
+    public void setCanScoreGearsRight(Boolean canScoreGearsRight) { this.canScoreGearsRight = canScoreGearsRight; }
+
 
         public Boolean getCanPickUpGearsFromGround() {
             return canPickUpGearsFromGround;
