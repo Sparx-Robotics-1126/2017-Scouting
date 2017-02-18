@@ -64,12 +64,14 @@ public class BenchmarkingData implements Parcelable {
             out.writeByte((byte) (canPickUpGearsFromGround ? 1 : 0));
             out.writeByte((byte) (canPickUpGearsFromRetrieval ? 1 : 0));
             out.writeByte((byte) (canPlayDefense ? 1: 0));
+            out.writeByte((byte) (canScale ? 1: 0));
             out.writeString(preferredGearRetrieval);
             out.writeFloat(ballCapacity);
             out.writeFloat(highGoalAccuracy);
             out.writeByte((byte) (canShootHigh ? 1 : 0));
             out.writeByte((byte) (canPickUpBallsFromHuman ? 1 : 0));
             out.writeString(typeOfShooter);
+            out.writeString(autoAbilities);
             out.writeFloat(ballsPerSecond);
             out.writeFloat(highShootingRange);
             out.writeString(shootingLocation);
@@ -77,6 +79,8 @@ public class BenchmarkingData implements Parcelable {
             out.writeString(preferredBallRetrieval);
             out.writeByte((byte) (canShootLow ? 1 : 0));
             out.writeInt(lowGoalRating);
+            out.writeInt(lowCycleTime);
+            out.writeInt(numberOfLowCycles);
             out.writeInt(highGoalRating);
             out.writeInt(highCycleTime);
             out.writeInt(numberOfGearsScored);
@@ -111,7 +115,9 @@ public class BenchmarkingData implements Parcelable {
             canPickUpGearsFromRetrieval = in.readByte() != 0;
             preferredGearRetrieval = in.readString();
             ballCapacity = in.readInt();
+            lowCycleTime = in.readInt();
             gearsCycleTime = in.readInt();
+            numberOfLowCycles = in.readInt();
             highCycleTime = in.readInt();
             numberOfGearsScored = in.readInt();
             numberOfBallsScored = in.readInt();
@@ -121,6 +127,7 @@ public class BenchmarkingData implements Parcelable {
             highShootingRange = in.readFloat();
             highGoalAccuracy = in.readFloat();
             shootingLocation = in.readString();
+            autoAbilities = in.readString();
             preferredShootingLocation = in.readString();
             canShootLow = in.readByte() != 0;
             lowGoalRating = in.readInt();
@@ -138,6 +145,7 @@ public class BenchmarkingData implements Parcelable {
             canScoreGearsCenter = in.readByte() != 0;
             canScoreGearsLeft = in.readByte() != 0;
             canScoreGears = in.readByte() != 0;
+            canScale = in.readByte() != 0;
             canPickUpBallsFromHuman = in.readByte() != 0;
             ballsInHighCycle = in.readInt();
             preferredScoreGearsRight = in.readByte() != 0;
@@ -190,6 +198,13 @@ public class BenchmarkingData implements Parcelable {
         public void setPreferredBallRetrieval(String preferredBallRetrieval) {
         this.preferredBallRetrieval = preferredBallRetrieval; }
 
+    public String getAutoAbilities() {
+        return autoAbilities;
+    }
+
+    public void setAutoAbilities(String autoAbilities) {
+        this.autoAbilities = autoAbilities; }
+
 
         public String getPreferredShootingLocation() {
             return preferredShootingLocation;
@@ -226,6 +241,14 @@ public class BenchmarkingData implements Parcelable {
             return canPlayDefense;
         }
 
+
+        public void setCanScale(Boolean canScale) { this.canScale = canScale; }
+
+        private Boolean getCanScale() {
+        return canScale;
+    }
+
+
         public void setCanPickUpBallsFromHuman(Boolean canPickUpBallsFromHuman) { this.canPickUpBallsFromHuman = canPickUpBallsFromHuman; }
 
         private Boolean getCanPickUpBallsFromHuman() {return canPickUpBallsFromHuman; }
@@ -235,6 +258,11 @@ public class BenchmarkingData implements Parcelable {
     }
 
         public void setBallsInHighCycle(int ballsInHighCycle) { this.ballsInHighCycle = ballsInHighCycle; }
+
+
+        public int getLowCycleTime() { return lowCycleTime; }
+
+        public void setLowCycleTime(int lowCycleTime) { this.lowCycleTime = lowCycleTime; }
 
         public int getGearsCycleTime() {return gearsCycleTime;}
 
@@ -258,9 +286,11 @@ public class BenchmarkingData implements Parcelable {
 
         public void setLowGoalRating(int lowGoalRating) { this.lowGoalRating = lowGoalRating; }
 
-        public int getNumberOfGearsScored() {
-        return numberOfGearsScored;
-    }
+        public int getNumberOfGearsScored() { return numberOfGearsScored; }
+
+        public void setNumberOfLowCycles (int numberOfLowCycles) { this.numberOfLowCycles = numberOfLowCycles; }
+
+        public int getNumberOfLowCycles() { return numberOfLowCycles; }
 
         public void setNumberOfGearsScored (int numberOfGearsScored) { this.numberOfGearsScored = numberOfGearsScored; }
 

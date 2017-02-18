@@ -162,110 +162,6 @@
             android:textSize="20dp"
             android:layout_margin="10dp"/>
     </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="72dp">
-
-        <TextView
-            android:id="@+id/scoresHighAutoText"
-            android:layout_marginEnd="20dp"
-            android:textSize="25sp"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/colorBlack"
-            android:text="Scores High?"
-            android:layout_width="160dp"
-            android:layout_height="72dp" />
-
-        <RadioGroup
-            android:id="@+id/scoresHighAutoGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <RadioButton
-                android:id="@+id/scoresHighNeverAuto"
-                android:layout_width="95dp"
-                android:layout_height="wrap_content"
-                android:text="Never"
-                android:buttonTint="@color/colorSparxRed"
-                android:textSize="20dp"/>
-
-
-
-        <RadioButton
-        android:id="@+id/scoresHighSometimesAuto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Sometimes"
-            android:textSize="20dp"
-        android:buttonTint="@color/colorSparxRed"
-            android:layout_marginRight="10dp" />
-
-        <RadioButton
-        android:id="@+id/scoresHighOftenAuto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Often"
-        android:buttonTint="@color/colorSparxRed"
-        android:textSize="20dp"/>
-
-        </RadioGroup>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="72dp">
-
-        <TextView
-            android:id="@+id/scoresLowAutoText"
-            android:layout_marginEnd="20dp"
-            android:textSize="25sp"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/colorBlack"
-            android:text="Scores Low?"
-            android:layout_width="160dp"
-            android:layout_height="72dp" />
-
-        <RadioGroup
-            android:id="@+id/scoresLowAutoGroup"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <RadioButton
-                android:id="@+id/scoresLowNeverAuto"
-                android:layout_width="95dp"
-                android:layout_height="wrap_content"
-                android:text="Never"
-                android:buttonTint="@color/colorSparxRed"
-                android:textSize="20dp"/>
-
-
-
-            <RadioButton
-                android:id="@+id/scoresLowSometimesAuto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sometimes"
-                android:textSize="20dp"
-                android:buttonTint="@color/colorSparxRed"
-                android:layout_marginRight="10dp" />
-
-            <RadioButton
-                android:id="@+id/scoresLowOftenAuto"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Often"
-                android:buttonTint="@color/colorSparxRed"
-                android:textSize="20dp"/>
-
-        </RadioGroup>
-    </LinearLayout>
 <!-- Begin Teleop Section -->
 
     <TextView
@@ -407,6 +303,112 @@
             android:textSize="50sp"
             android:layout_marginBottom="10dp"/>
 
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="72dp">
+
+            <TextView
+                android:id="@+id/scoresHighAutoText"
+                android:layout_marginEnd="20dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Scores High?"
+                android:layout_width="160dp"
+                android:layout_height="72dp" />
+
+            <RadioGroup
+                android:id="@+id/scoresHighAutoGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <RadioButton
+                    android:id="@+id/scoresHighNeverAuto"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
+                    android:text="Never"
+                    android:buttonTint="@color/colorSparxRed"
+                    android:textSize="20dp"/>
+
+
+
+                <RadioButton
+                    android:id="@+id/scoresHighSometimesAuto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sometimes"
+                    android:textSize="20dp"
+                    android:buttonTint="@color/colorSparxRed"
+                    android:layout_marginRight="10dp" />
+
+                <RadioButton
+                    android:id="@+id/scoresHighOftenAuto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Often"
+                    android:buttonTint="@color/colorSparxRed"
+                    android:textSize="20dp"/>
+
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="72dp">
+
+            <TextView
+                android:id="@+id/scoresLowAutoText"
+                android:layout_marginEnd="20dp"
+                android:textSize="25sp"
+                android:layout_marginStart="10dp"
+                android:textColor="@color/colorBlack"
+                android:text="Scores Low?"
+                android:layout_width="160dp"
+                android:layout_height="72dp" />
+
+            <RadioGroup
+                android:id="@+id/scoresLowAutoGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <RadioButton
+                    android:id="@+id/scoresLowNeverAuto"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
+                    android:text="Never"
+                    android:buttonTint="@color/colorSparxRed"
+                    android:textSize="20dp"/>
+
+
+
+                <RadioButton
+                    android:id="@+id/scoresLowSometimesAuto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sometimes"
+                    android:textSize="20dp"
+                    android:buttonTint="@color/colorSparxRed"
+                    android:layout_marginRight="10dp" />
+
+                <RadioButton
+                    android:id="@+id/scoresLowOftenAuto"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Often"
+                    android:buttonTint="@color/colorSparxRed"
+                    android:textSize="20dp"/>
+
+            </RadioGroup>
+        </LinearLayout>
+
+
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -435,33 +437,7 @@
                 android:textSize="30sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
 
-            <TextView
-            android:layout_width="323dp"
-            android:id="@+id/numberOfHighGoalCyclesText"
-            android:layout_weight="0.73"
-            android:layout_marginEnd="20dp"
-            android:layout_height="87dp"
-            android:textSize="25sp"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/colorBlack"
-            android:text="Number Of Balls Scored In A High Goal Cycle" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/numberOfHighGoalCyclesInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-        </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
