@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ScrollView01"
     android:layout_width="fill_parent"
@@ -294,7 +295,7 @@
         <TextView
             android:layout_width="323dp"
             android:id="@+id/gearsScoredTeleText"
-            android:layout_weight="0.92"
+            android:layout_weight="0.05"
             android:layout_marginEnd="20dp"
             android:layout_height="40dp"
             android:textSize="25sp"
@@ -308,71 +309,11 @@
             android:inputType="number"
             android:ems="10"
             android:id="@+id/gearsScoredTeleInput"
-            android:layout_weight="0.92"
+            android:layout_weight="1.58"
             android:textColor="@color/colorBlack"
             android:textAlignment="center"
             android:textSize="30sp"/>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.92">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/gearsCollectedFromFloorText"
-                android:layout_weight="0.57"
-                android:layout_marginEnd="20dp"
-                android:layout_height="88dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number Of Gears Collected From Floor" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/gearsCollectedFromFloorInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/gearsCollectedFromHumanText"
-                android:layout_weight="0.73"
-                android:layout_marginEnd="20dp"
-                android:layout_height="84dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number Of Gears Collected From Human" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/gearsCollectedFromHumanInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-//dab
         </LinearLayout>
 
         <LinearLayout
@@ -666,25 +607,50 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:layout_width="323dp"
+                android:layout_width="260dp"
                 android:id="@+id/highGoalAccuracyText"
                 android:layout_marginEnd="20dp"
                 android:layout_height="87dp"
                 android:textSize="25sp"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/colorBlack"
-                android:text="High Goal Accuracy (Poor, Good, Excellent)" />
+                android:text="High Goal Accuracy" />
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/highGoalAccuracyInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
+            <RadioGroup
+                android:id="@+id/highGoalAccuracyScoutGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <RadioButton
+                    android:id="@+id/highGoalAccuracyScoutPoor"
+                    android:layout_width="95dp"
+                    android:layout_height="wrap_content"
+                    android:text="Poor"
+                    android:buttonTint="@color/colorSparxRed"
+                    android:textSize="20dp"/>
+
+
+
+                <RadioButton
+                    android:id="@+id/highGoalAccuracyScoutOk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Ok"
+                    android:textSize="20dp"
+                    android:buttonTint="@color/colorSparxRed"
+                    android:layout_marginRight="10dp" />
+
+                <RadioButton
+                    android:id="@+id/highGoalAccuracyScoutGreat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Great"
+                    android:buttonTint="@color/colorSparxRed"
+                    android:textSize="20dp"/>
+
+            </RadioGroup>
         </LinearLayout>
         <TextView
             android:text="End Game"
@@ -710,19 +676,32 @@
                 android:textColor="@color/colorBlack"
                 android:text="Did They Scale?" />
 
+            <RadioGroup
+                android:id="@+id/scalesScoutingGroup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
             <RadioButton
                 android:text="Yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/didScaleRadioButton"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                app:buttonTint="@color/colorSparxRed"
+                android:textSize="20dp"/>
 
             <RadioButton
                 android:text="No"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/didNotScaleRadioButton"
-                android:layout_weight="1" />
+                android:layout_weight="1"
+                app:buttonTint="@color/colorSparxRed"
+                android:textSize="20dp"
+                android:layout_marginLeft="10dp"/>
+
+            </RadioGroup>
         </LinearLayout>
 
         <LinearLayout
@@ -743,7 +722,7 @@
             <EditText
                 android:layout_width="130dp"
                 android:layout_height="72dp"
-                android:inputType="number"
+                android:inputType="text"
                 android:ems="10"
                 android:id="@+id/scaledFromWhereInput"
                 android:layout_weight="0.92"
