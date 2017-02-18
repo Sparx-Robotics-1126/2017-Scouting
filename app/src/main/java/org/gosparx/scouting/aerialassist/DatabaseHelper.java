@@ -44,8 +44,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_BENCHMARKING = "benchmarking";
 
     // Events Column Names
-    private static final String TABLE_EVENTS_KEY = "key";
-    private static final String TABLE_EVENTS_NAME = "name";
+    public static final String TABLE_EVENTS_KEY = "key";
+    public static final String TABLE_EVENTS_NAME = "name";
     private static final String TABLE_EVENTS_SHORT_NAME = "short_name";
     private static final String TABLE_EVENTS_EVENT_CODE = "event_code";
     private static final String TABLE_EVENTS_EVENT_TYPE_STRING = "event_type_string";
@@ -61,7 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_TEAMS_KEY = "key";
     private static final String TABLE_TEAMS_NAME = "name";
     private static final String TABLE_TEAMS_NICKNAME = "nickname";
-    private static final String TABLE_TEAMS_TEAM_NUMBER = "team_number";
+    public static final String TABLE_TEAMS_TEAM_NUMBER = "team_number";
     private static final String TABLE_TEAMS_WEBSITE = "website";
     private static final String TABLE_TEAMS_CITY = "city";
     private static final String TABLE_TEAMS_STATE = "state";
@@ -501,7 +501,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.update(TABLE_EVENTS, mapEvent(event), TABLE_EVENTS_KEY + " = ?", new String[]{event.getKey()});
     }
 
-    private Event getEvent(String eventKey){
+    public Event getEvent(String eventKey){
         SQLiteDatabase db = getReadableDatabase();
         String selectQuery = "SELECT * FROM " + TABLE_EVENTS
                 + " WHERE " + TABLE_EVENTS_KEY + " = ?";
@@ -613,13 +613,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor createTeamCursor(Event event){
         SQLiteDatabase db = getReadableDatabase();
-
-        return db.query(TABLE_TEAMS+","+TABLE_E2T,
+        Cursor c = db.query(TABLE_TEAMS+","+TABLE_E2T,
                 new String[]{"*", TABLE_TEAMS+".rowid AS _id", TABLE_TEAMS+".key AS team_key"},
                 TABLE_TEAMS+"."+TABLE_TEAMS_KEY+" = "+TABLE_E2T+"."+TABLE_E2T_TEAM
                         +" AND "+TABLE_E2T+"."+TABLE_E2T_EVENT+" = ?",
                 new String[]{event.getKey()},
                 null, null, TABLE_TEAMS+"."+TABLE_TEAMS_TEAM_NUMBER+" ASC");
+
+        return c;
     }
 
     public void createE2TAssociation(String eventKey, String teamKey){

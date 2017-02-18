@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,9 +20,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
+import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
@@ -36,6 +40,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Vector;
 
 import static android.view.View.INVISIBLE;
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
@@ -67,6 +72,8 @@ public class MainScreen extends AppCompatActivity {
     private static final String FILTER_ON = "Turn the event filter on?";
     private static final String FILTER_OFF = "Turn the event filter off?";
     private Map<String, ScoutingInfo> scoutingInfoMap;
+    private Map<String, String> eventNamesToKey;
+    private Vector<String> teamsList;
 
     private String getName(){
         return scouterText.getText().toString();
@@ -102,6 +109,7 @@ public class MainScreen extends AppCompatActivity {
         }
 
         scoutingInfoMap = new HashMap<>();
+        eventNamesToKey = new HashMap<>();
 
         scout = (Button)findViewById(R.id.scoutButton);
         scout.setOnClickListener(buttonClicked);
@@ -135,37 +143,29 @@ public class MainScreen extends AppCompatActivity {
 
         settings = getSharedPreferences(PREFS_NAME, 0);
 
+        teamsList = new Vector<>();
+
         // restore the event, name, and team
         restorePreferences();
     }
     private void teamNumberChecker(){
         if(!teamText.getText().toString().isEmpty()){
-            String[] FLRTeams = getResources().getStringArray(R.array.FLRTeams);
-            String[] buckeyeTeams = getResources().getStringArray(R.array.buckeyeTeams);
+            //no value until event picker is validated
             SharedPreferences.Editor editor = settings.edit();
-            if((Arrays.asList(buckeyeTeams).contains(teamText.getText().toString())) && (eventSpinner.getSelectedItem().toString().contentEquals(OUR_COMPETITION_BUCKEYE))){
+            if(teamsList.contains(teamText.getText().toString())){
                 teamSelected = true;
                 int teamNumber = getTeamNumber();
                 editor.putInt(PREFS_TEAM, teamNumber);
                 editor.apply();
-                showButtons();
-            }
-            else if(Arrays.asList(FLRTeams).contains(teamText.getText().toString()) && (eventSpinner.getSelectedItem().toString().contentEquals(OUR_COMPETITION_FINGERLAKES))){
-                teamSelected = true;
-                int teamNumber = getTeamNumber();
-                editor.putInt(PREFS_TEAM, teamNumber);
-                editor.apply();
-                showButtons();
             }
             else{
                 teamSelected = false;
-                showButtons();
             }
         }
         else{
             teamSelected = false;
-            showButtons();
         }
+        showButtons();
     }
 
     private void restorePreferences(){
@@ -270,8 +270,7 @@ public class MainScreen extends AppCompatActivity {
                 editor.putString(PREFS_EVENT, eventName);
                 editor.apply();
                 eventSelected = true;
-                teamNumberChecker();
-                showButtons();
+                downloadTeamDataIfNecessary();
             }
         }
 
@@ -324,7 +323,7 @@ public class MainScreen extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-            teamNumberChecker();
+            downloadTeamDataIfNecessary();
         }
     };
 
@@ -442,7 +441,10 @@ public class MainScreen extends AppCompatActivity {
                     long ONE_DAY_EPOCH = 86400000;
                     if(epoch >= epochToday - (ONE_DAY_EPOCH * COMPETITION_Threshold)&& epoch <= epochToday + (ONE_DAY_EPOCH * COMPETITION_Threshold))
                     {
-                        eventsWeAreInArray.add(eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_TITLE)));
+                        String eventName = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_TITLE));
+                        String eventKey = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_KEY));
+                        eventsWeAreInArray.add(eventName);
+                        eventNamesToKey.put(eventName, eventKey);
                     }
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -452,5 +454,60 @@ public class MainScreen extends AppCompatActivity {
             eventDataCur.close();
         }
         return eventsWeAreInArray;
+    }
+
+    public Event getSelectedEvent() {
+        //no value until event picker is validated
+        Event current = dbHelper.getEvent(eventNamesToKey.get(getEventName()));
+        return current;
+
+    }
+
+    private void downloadTeamDataIfNecessary() {
+        Event selectedEvent = this.getSelectedEvent();
+        if (selectedEvent != null) {
+            if (isNetworkAvailable(this)) {
+                final Dialog alert = createPleaseWaitDialog();
+                alert.show();
+                //get the event
+                final Event e = getSelectedEvent();
+                BlueAlliance ba = BlueAlliance.getInstance(this);
+                //load teams for the event
+                ba.loadTeams(e, new NetworkCallback() {
+                    @Override
+                    public void handleFinishDownload(final boolean success) {
+                        MainScreen.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                alert.dismiss();
+                                if (!success) {
+                                    alertUser().show();
+                                }
+                                setupTeamSpinner(e);
+                            }
+
+                        });
+                    }
+                });
+            } else {
+                setupTeamSpinner(getSelectedEvent());
+            }
+        }
+    }
+
+    private void setupTeamSpinner(Event e) {
+        Cursor teamCursor = dbHelper.createTeamCursor(e);
+        // this clears the list
+        teamsList.clear();
+        int index = 0;
+        try {
+            while (teamCursor.moveToNext()) {
+                String teamnumber = teamCursor.getString(teamCursor.getColumnIndex(DatabaseHelper.TABLE_TEAMS_TEAM_NUMBER));
+                teamsList.add(teamnumber);
+            }
+        } finally {
+            teamCursor.close();
+        }
+        teamNumberChecker();
     }
 }
