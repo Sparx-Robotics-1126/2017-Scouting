@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -20,9 +19,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.dto.Event;
@@ -71,7 +68,7 @@ public class MainScreen extends AppCompatActivity {
     private static final String OUR_COMPETITION_FINGERLAKES = "2017-03-15 Finger Lakes Regional ";
     private static final String FILTER_ON = "Turn the event filter on?";
     private static final String FILTER_OFF = "Turn the event filter off?";
-    private Map<String, ScoutingInfo> scoutingInfoMap;
+    private Map<Integer, ScoutingInfo> scoutingInfoMap;
     private Map<String, String> eventNamesToKey;
     private Vector<String> teamsList;
 
@@ -79,7 +76,7 @@ public class MainScreen extends AppCompatActivity {
         return scouterText.getText().toString();
     }
     //Kevin is watching ( ͡° ͜ʖ ͡°)
-    //this push thing isn't working ;-; 
+    //this push thing isn't working ;-;
 
     private int getTeamNumber() {
         int value = 0;
@@ -94,6 +91,12 @@ public class MainScreen extends AppCompatActivity {
         return eventSpinner.getSelectedItem().toString();
     }
 
+    public Event getSelectedEvent() {
+        //no value until event picker is validated
+        Event current = dbHelper.getEvent(eventNamesToKey.get(getEventName()));
+        return current;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -104,7 +107,6 @@ public class MainScreen extends AppCompatActivity {
 
         // If the internet is available and we haven't gotten the data the download it
         if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
-
             downloadEventSpinnerData();
         }
 
@@ -126,8 +128,7 @@ public class MainScreen extends AppCompatActivity {
         scouterText = (AutoCompleteTextView) findViewById(R.id.scouterText);
         scouterText.addTextChangedListener(scouterTextEntered);
         String[] students = getResources().getStringArray(R.array.students);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>
-                (this, android.R.layout.simple_list_item_1, students);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, students);
         scouterText.setAdapter(adapter);
 
         teamText = (EditText) findViewById(R.id.teamText);
@@ -148,11 +149,13 @@ public class MainScreen extends AppCompatActivity {
         // restore the event, name, and team
         restorePreferences();
     }
+
     private void teamNumberChecker(){
-        if(!teamText.getText().toString().isEmpty()){
+        String teamTextValue = teamText.getText().toString();
+        if(!teamTextValue.isEmpty()){
             //no value until event picker is validated
             SharedPreferences.Editor editor = settings.edit();
-            if(teamsList.contains(teamText.getText().toString())){
+            if(teamsList.contains(teamTextValue)){
                 teamSelected = true;
                 int teamNumber = getTeamNumber();
                 editor.putInt(PREFS_TEAM, teamNumber);
@@ -218,24 +221,20 @@ public class MainScreen extends AppCompatActivity {
             // set the currentScouting object I intend to pass to. Set it to NULL which means not
             // created yet. This is a good practice because if useed and set to NULL it creashes better
             ScoutingInfo currentInfo;
-            // get the object editable from the teamText number text field on the screen. The intentions
-            // is to get the text entered from it.
-            Editable editable = teamText.getText();
-            // get from the object Editable a String (i.e. it could contain "1126")
-            String teamNumber = editable.toString();
-            // look for i.e. "1126" in my map of already scouted teams
-            if (scoutingInfoMap.containsKey(teamNumber)) {
+            // look for i.e. 1126 in my map of already scouted teams
+            int teamNumberValue = getTeamNumber();
+            if (scoutingInfoMap.containsKey(teamNumberValue)) {
                 // set my temporary variable of scouting info to the one I found inside the map
-                currentInfo = scoutingInfoMap.get(teamNumber);
+                currentInfo = scoutingInfoMap.get(teamNumberValue);
             } else {
                 // create a new scouting info because I did not find it in my map
                 // which means it hasn't been scouted before
                 currentInfo = new ScoutingInfo();
                 currentInfo.setEventKey(getEventName());
-                currentInfo.setTeamNumber(getTeamNumber());
+                currentInfo.setTeamNumber(teamNumberValue);
                 currentInfo.addScouter(getName());
                 // add the new scouting info into my map so that I can find it in the future
-                scoutingInfoMap.put(teamText.getText().toString(), currentInfo);
+                scoutingInfoMap.put(teamNumberValue, currentInfo);
             }
 
             Intent intent = new Intent(context, destination);
@@ -265,9 +264,8 @@ public class MainScreen extends AppCompatActivity {
                 setupEventSpinner();
             }
             else if (!getEventName().isEmpty()) {
-                String eventName = getEventName();
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString(PREFS_EVENT, eventName);
+                editor.putString(PREFS_EVENT, getEventName());
                 editor.apply();
                 eventSelected = true;
                 downloadTeamDataIfNecessary();
@@ -294,10 +292,10 @@ public class MainScreen extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable s) {
             String[] students = getResources().getStringArray(R.array.students);
-            if(Arrays.asList(students).contains(scouterText.getEditableText().toString())){
+            String scouterName = getName();
+            if(Arrays.asList(students).contains(scouterName)){
                 nameSelected = true;
                 SharedPreferences.Editor editor = settings.edit();
-                String scouterName = getName();
                 editor.putString(PREFS_SCOUTER, scouterName);
                 editor.apply();
                 showButtons();
@@ -397,7 +395,6 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void setupEventSpinner() {
-
         Cursor eventDataCur = dbHelper.createEventNameCursor();
         //Left that here because it's a way to dump all of the data into the console
         //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
@@ -410,13 +407,12 @@ public class MainScreen extends AppCompatActivity {
                     }
                 }
             }
-        }
-        if(eventFilter){
             eventsWeAreInArray.add(FILTER_OFF);
         }
-        else{
+        else {
             eventsWeAreInArray.add(FILTER_ON);
         }
+
         eventNamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray);
         eventNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         eventSpinner.setAdapter(eventNamesAdapter);
@@ -426,6 +422,7 @@ public class MainScreen extends AppCompatActivity {
         Calendar c = Calendar.getInstance();
         return c.getTime().getTime();
     }
+
     private ArrayList<String> fillInEventsNeerToday(Cursor eventDataCur){
         ArrayList<String> eventsWeAreInArray = new ArrayList<>();
         SimpleDateFormat cursorFormater = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
@@ -439,7 +436,8 @@ public class MainScreen extends AppCompatActivity {
                     long epoch = dateObj.getTime();
 
                     long ONE_DAY_EPOCH = 86400000;
-                    if(epoch >= epochToday - (ONE_DAY_EPOCH * COMPETITION_Threshold)&& epoch <= epochToday + (ONE_DAY_EPOCH * COMPETITION_Threshold))
+                    long window = ONE_DAY_EPOCH * COMPETITION_Threshold;
+                    if((epoch >= (epochToday - window)) && (epoch <= (epochToday + window)))
                     {
                         String eventName = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_TITLE));
                         String eventKey = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_KEY));
@@ -456,47 +454,36 @@ public class MainScreen extends AppCompatActivity {
         return eventsWeAreInArray;
     }
 
-    public Event getSelectedEvent() {
-        //no value until event picker is validated
-        Event current = dbHelper.getEvent(eventNamesToKey.get(getEventName()));
-        return current;
-
-    }
-
     private void downloadTeamDataIfNecessary() {
-        Event selectedEvent = this.getSelectedEvent();
-        if (selectedEvent != null) {
-            if (isNetworkAvailable(this)) {
-                final Dialog alert = createPleaseWaitDialog();
-                alert.show();
-                //get the event
-                final Event e = getSelectedEvent();
-                BlueAlliance ba = BlueAlliance.getInstance(this);
-                //load teams for the event
-                ba.loadTeams(e, new NetworkCallback() {
-                    @Override
-                    public void handleFinishDownload(final boolean success) {
-                        MainScreen.this.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                alert.dismiss();
-                                if (!success) {
-                                    alertUser().show();
-                                }
-                                setupTeamSpinner(e);
+        if (isNetworkAvailable(this)) {
+            final Dialog alert = createPleaseWaitDialog();
+            alert.show();
+            //get the event
+            BlueAlliance ba = BlueAlliance.getInstance(this);
+            //load teams for the event
+            ba.loadTeams(getSelectedEvent(), new NetworkCallback() {
+                @Override
+                public void handleFinishDownload(final boolean success) {
+                    MainScreen.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            alert.dismiss();
+                            if (!success) {
+                                alertUser().show();
                             }
+                            setupTeamSpinner();
+                        }
 
-                        });
-                    }
-                });
-            } else {
-                setupTeamSpinner(getSelectedEvent());
-            }
+                    });
+                }
+            });
+        } else {
+            setupTeamSpinner();
         }
     }
 
-    private void setupTeamSpinner(Event e) {
-        Cursor teamCursor = dbHelper.createTeamCursor(e);
+    private void setupTeamSpinner() {
+        Cursor teamCursor = dbHelper.createTeamCursor(getSelectedEvent());
         // this clears the list
         teamsList.clear();
         int index = 0;
