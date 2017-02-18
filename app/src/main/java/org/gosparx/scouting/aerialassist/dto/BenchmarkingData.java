@@ -37,9 +37,9 @@ public class BenchmarkingData implements Parcelable {
         private boolean canPickUpBallsFromHuman;
         private String preferredBallRetrieval;
         private boolean canScoreGears;
-        private Boolean canScoreGearsRight;
-        private Boolean canScoreGearsCenter;
-        private Boolean canScoreGearsLeft;
+        private boolean canScoreGearsRight;
+        private boolean canScoreGearsCenter;
+        private boolean canScoreGearsLeft;
 
         // This is where you write the values you want to save to the `Parcel`.
         // The `Parcel` class has methods defined to help you save all of your values.
@@ -74,9 +74,9 @@ public class BenchmarkingData implements Parcelable {
             out.writeDouble(approxSpeedFeetPerSecond);
             out.writeByte((byte) (canScoreInHighGoal ? 1 : 0));
             out.writeByte((byte) (canScoreInLowGoal ? 1 : 0));
-            out.writeByte((byte) (canScoreGearsLeft ? 1: 0));
-            out.writeByte((byte) (canScoreGearsCenter ? 1: 0));
-            out.writeByte((byte) (canScoreGearsRight ? 1: 0));
+            out.writeByte((byte) (canScoreGearsLeft ? 1 : 0));
+            out.writeByte((byte) (canScoreGearsCenter ? 1 : 0));
+            out.writeByte((byte) (canScoreGearsRight ? 1 : 0));
         }
 
         // Using the `in` variable, we can retrieve the values that
