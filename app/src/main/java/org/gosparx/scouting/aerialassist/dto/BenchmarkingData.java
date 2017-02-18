@@ -43,10 +43,12 @@ public class BenchmarkingData implements Parcelable {
         private boolean preferredScoreGearsLeft;
         private boolean preferredScoreGearsRight;
         private boolean preferredScoreGearsCenter;
-        private int gearCycleTime;
+        private int gearsCycleTime;
         private int lowCycleTime;
         private int numberOfLowCycles;
         private boolean canScale;
+        private String autoAbilities;
+
 
 
         // This is where you write the values you want to save to the `Parcel`.
@@ -94,6 +96,7 @@ public class BenchmarkingData implements Parcelable {
             out.writeByte((byte) (preferredScoreGearsCenter ? 1 : 0));
             out.writeByte((byte) (preferredScoreGearsLeft ? 1 : 0));
             out.writeByte((byte) (preferredScoreGearsRight ? 1 : 0));
+            out.writeInt(gearsCycleTime);
         }
 
         // Using the `in` variable, we can retrieve the values that
@@ -108,6 +111,7 @@ public class BenchmarkingData implements Parcelable {
             canPickUpGearsFromRetrieval = in.readByte() != 0;
             preferredGearRetrieval = in.readString();
             ballCapacity = in.readInt();
+            gearsCycleTime = in.readInt();
             highCycleTime = in.readInt();
             numberOfGearsScored = in.readInt();
             numberOfBallsScored = in.readInt();
@@ -232,13 +236,15 @@ public class BenchmarkingData implements Parcelable {
 
         public void setBallsInHighCycle(int ballsInHighCycle) { this.ballsInHighCycle = ballsInHighCycle; }
 
+        public int getGearsCycleTime() {return gearsCycleTime;}
+
+        public void setGearsCycleTime(int gearCycleTime) { this.gearsCycleTime = gearsCycleTime; }
 
         public int getHighGoalRating() {
         return highGoalRating;
     }
 
         public void setHighGoalRating(int highGoalRating) { this.highGoalRating = highGoalRating; }
-
 
         public int getHighCycleTime() {
         return highGoalRating;
