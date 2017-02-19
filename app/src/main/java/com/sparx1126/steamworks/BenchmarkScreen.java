@@ -68,7 +68,7 @@ public class BenchmarkScreen extends AppCompatActivity {
                 home_autoButtonClicked();
             }
         });
-        currentInfo = getIntent().getParcelableExtra(CommonDefs.SCOUTER_INFO);
+        currentInfo = getIntent().getParcelableExtra(getResources().getString(R.string.scouterInfo));
         System.out.println("Oooooooh no");
         System.out.println(currentInfo.getEventKey());
         Button cameraButton = (Button) findViewById(R.id.cameraButton);

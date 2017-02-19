@@ -58,7 +58,6 @@ public class MainScreen extends AppCompatActivity {
     private boolean teamSelected = false;
     private boolean eventFilter = true;
     private SharedPreferences settings;
-    public static final int COMPETITION_YEAR = 2017;
     private static final int COMPETITION_Threshold = 1000;
     private static final String PREFS_NAME = "Sparx-prefs";
     private static final String PREFS_SCOUTER = "scouterText";
@@ -92,9 +91,7 @@ public class MainScreen extends AppCompatActivity {
     }
 
     public Event getSelectedEvent() {
-        //no value until event picker is validated
-        Event current = dbHelper.getEvent(eventNamesToKey.get(getEventName()));
-        return current;
+        return dbHelper.getEvent(eventNamesToKey.get(getEventName()));
     }
 
     @Override
@@ -104,11 +101,6 @@ public class MainScreen extends AppCompatActivity {
 
         blueAlliance = BlueAlliance.getInstance(this);
         dbHelper = DatabaseHelper.getInstance(this);
-
-        // If the internet is available and we haven't gotten the data the download it
-        if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
-            downloadEventSpinnerData();
-        }
 
         scoutingInfoMap = new HashMap<>();
         eventNamesToKey = new HashMap<>();
@@ -204,7 +196,6 @@ public class MainScreen extends AppCompatActivity {
             Context context = MainScreen.this;
             // we create a destination variable. This is the screen we are going to switch to.
             Class destination = null;
-
             // We set the screen we are going to swtich to.
             switch (v.getId()) {
                 case R.id.benchmarkButton:
@@ -217,7 +208,6 @@ public class MainScreen extends AppCompatActivity {
                     destination = ViewScreen.class;
                     break;
             }
-
             // set the currentScouting object I intend to pass to. Set it to NULL which means not
             // created yet. This is a good practice because if useed and set to NULL it creashes better
             ScoutingInfo currentInfo;
@@ -236,17 +226,16 @@ public class MainScreen extends AppCompatActivity {
                 // add the new scouting info into my map so that I can find it in the future
                 scoutingInfoMap.put(teamNumberValue, currentInfo);
             }
-
             Intent intent = new Intent(context, destination);
-            intent.putExtra(CommonDefs.SCOUTER_INFO, currentInfo);
+            intent.putExtra(getResources().getString(R.string.scouterInfo), currentInfo);
             startActivity(intent);
         }
     };
 
     private final View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            if (event.getAction() == MotionEvent.ACTION_UP ) {
-                setupEventSpinner();
+            if (getEventName().isEmpty()) {
+                downloadEventSpinnerData();
             }
             return false;
         }
@@ -256,10 +245,12 @@ public class MainScreen extends AppCompatActivity {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
             if(getEventName().contentEquals(FILTER_OFF)){
+                eventSelected = false;
                 eventFilter = false;
                 setupEventSpinner();
             }
             else if(getEventName().contentEquals(FILTER_ON)){
+                eventSelected = false;
                 eventFilter = true;
                 setupEventSpinner();
             }
@@ -271,24 +262,16 @@ public class MainScreen extends AppCompatActivity {
                 downloadTeamDataIfNecessary();
             }
         }
-
         @Override
         public void onNothingSelected(AdapterView<?> parent) {
         }
     };
 
     private final TextWatcher scouterTextEntered = new TextWatcher() {
-
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         @Override
         public void afterTextChanged(Editable s) {
             String[] students = getResources().getStringArray(R.array.students);
@@ -308,26 +291,19 @@ public class MainScreen extends AppCompatActivity {
     };
 
     private final TextWatcher teamTextEntered = new TextWatcher() {
-
         @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-        }
-
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-        }
-
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
         @Override
         public void afterTextChanged(Editable s) {
-            downloadTeamDataIfNecessary();
+            teamNumberChecker();
         }
     };
 
     private void showButtons(){
         if(eventSelected && nameSelected){
-        teamText.setVisibility(View.VISIBLE);
+            teamText.setVisibility(View.VISIBLE);
             if(teamSelected){
                 benchmarkAuto.setVisibility(View.VISIBLE);
                 view.setVisibility(View.VISIBLE);
@@ -345,26 +321,6 @@ public class MainScreen extends AppCompatActivity {
             view.setVisibility(INVISIBLE);
             scout.setVisibility(INVISIBLE);
         }
-    }
-
-    private void downloadEventSpinnerData() {
-        final Dialog alert = createPleaseWaitDialog();
-        alert.show();
-
-        blueAlliance.loadEventList(new NetworkCallback() {
-            @Override
-            public void handleFinishDownload(final boolean success) {
-                MainScreen.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        alert.dismiss();
-                        if (!success) {
-                            alertUser().show();
-                        }
-                    }
-                });
-            }
-        });
     }
 
     private AlertDialog alertUser() {
@@ -394,25 +350,50 @@ public class MainScreen extends AppCompatActivity {
         return builder.create();
     }
 
+    private void downloadEventSpinnerData() {
+        // If the internet is available and we haven't gotten the data the download it
+        if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
+            final Dialog alert = createPleaseWaitDialog();
+            alert.show();
+            blueAlliance.loadEventList(String.valueOf(getResources().getInteger(R.integer.competitionYear)), new NetworkCallback() {
+                @Override
+                public void handleFinishDownload(final boolean success) {
+                    MainScreen.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            alert.dismiss();
+                            if (success) {
+                                setupEventSpinner();
+                            }
+                            else {
+                                alertUser().show();
+                            }
+                        }
+                    });
+                }
+            });
+        }
+    }
+
     private void setupEventSpinner() {
         Cursor eventDataCur = dbHelper.createEventNameCursor();
         //Left that here because it's a way to dump all of the data into the console
         //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
-        eventsWeAreInArray = fillInEventsNeerToday(eventDataCur);
-        if(eventFilter) {
-            for (int i = (eventsWeAreInArray.size() - 1); 0 <= i; i--) {
-                if (!eventsWeAreInArray.get(i).contentEquals(OUR_COMPETITION_BUCKEYE)) {
-                    if (!eventsWeAreInArray.get(i).contentEquals(OUR_COMPETITION_FINGERLAKES)) {
-                        eventsWeAreInArray.remove(i);
+        if(eventDataCur.getCount() > 0) {
+            eventsWeAreInArray = fillInEventsNearToday(eventDataCur);
+            if (eventFilter) {
+                for (int i = (eventsWeAreInArray.size() - 1); 0 <= i; i--) {
+                    if (!eventsWeAreInArray.get(i).contentEquals(OUR_COMPETITION_BUCKEYE)) {
+                        if (!eventsWeAreInArray.get(i).contentEquals(OUR_COMPETITION_FINGERLAKES)) {
+                            eventsWeAreInArray.remove(i);
+                        }
                     }
                 }
+                eventsWeAreInArray.add(FILTER_OFF);
+            } else {
+                eventsWeAreInArray.add(FILTER_ON);
             }
-            eventsWeAreInArray.add(FILTER_OFF);
         }
-        else {
-            eventsWeAreInArray.add(FILTER_ON);
-        }
-
         eventNamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray);
         eventNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         eventSpinner.setAdapter(eventNamesAdapter);
@@ -423,7 +404,7 @@ public class MainScreen extends AppCompatActivity {
         return c.getTime().getTime();
     }
 
-    private ArrayList<String> fillInEventsNeerToday(Cursor eventDataCur){
+    private ArrayList<String> fillInEventsNearToday(Cursor eventDataCur){
         ArrayList<String> eventsWeAreInArray = new ArrayList<>();
         SimpleDateFormat cursorFormater = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
         long epochToday = getTodayInEpoch();
@@ -468,17 +449,17 @@ public class MainScreen extends AppCompatActivity {
                         @Override
                         public void run() {
                             alert.dismiss();
-                            if (!success) {
+                            if (success) {
+                                setupTeamSpinner();
+                            }
+                            else {
                                 alertUser().show();
                             }
-                            setupTeamSpinner();
                         }
 
                     });
                 }
             });
-        } else {
-            setupTeamSpinner();
         }
     }
 

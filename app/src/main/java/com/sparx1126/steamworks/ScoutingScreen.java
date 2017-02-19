@@ -24,8 +24,7 @@ public class ScoutingScreen extends AppCompatActivity {
                 home_scoutingButtonClicked(v);
             }
         });
-        ScoutingInfo currentInfos = getIntent().getParcelableExtra(CommonDefs.SCOUTER_INFO);
-        System.out.println("Oh no");
+        ScoutingInfo currentInfos = getIntent().getParcelableExtra(getResources().getString(R.string.scouterInfo));
         System.out.println(currentInfos.getEventKey());
     }
 
