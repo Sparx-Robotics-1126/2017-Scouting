@@ -42,6 +42,15 @@ public class BenchmarkScreen extends AppCompatActivity {
     private EditText placesCanScale;
     private EditText preferredScalePlace;
     private EditText comments;
+    private EditText ballsInHighCycle;
+    private EditText highCycleTime;
+    private EditText shootingRange; //float
+    private EditText preferredBallRetrieval; //String
+    //daberoni
+    private EditText gearCycleTime; //int
+    private EditText lowCycleTime; //int
+    private EditText numberOfLowCycles; //int
+    private EditText autoAbilities; //String
     //No longer used in layout private EditText gearsScored;
     //No longer used in layout private EditText ballsScored;
     //No longer used in layout private EditText highGoalRating;
@@ -73,6 +82,78 @@ public class BenchmarkScreen extends AppCompatActivity {
         // <o/  D
         //  |   A
         // / \  B
+
+        shootingRange = (EditText) findViewById(R.id.shootingRangeBenchInput);
+        shootingRange.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String shootingRangeString = shootingRange.getEditableText().toString();
+                if (!shootingRangeString.isEmpty()) {
+                    float textEntered = Float.parseFloat(shootingRangeString);
+                    currentInfo.getCurrentData().setHighShootingRange(textEntered);
+                }
+            }
+        });
+
+        highCycleTime = (EditText) findViewById(R.id.cycleTimeHighBenchInput);
+        highCycleTime.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String highCycleTimeString = highCycleTime.getEditableText().toString();
+                if (!highCycleTimeString.isEmpty()) {
+                    int textEntered = Integer.parseInt(highCycleTimeString);
+                    currentInfo.getCurrentData().setHighCycleTime(textEntered);
+                }
+            }
+        });
+
+        ballsInHighCycle = (EditText) findViewById(R.id.ballsInCycleBenchInput);
+        ballsInHighCycle.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void afterTextChanged(Editable s) {
+                String ballsInHighCycleString = ballsInHighCycle.getEditableText().toString();
+                if (!ballsInHighCycleString.isEmpty()) {
+                    int textEntered = Integer.parseInt(ballsInHighCycleString);
+                    currentInfo.getCurrentData().setBallsInHighCycle(textEntered);
+                }
+            }
+        });
 
         comments = (EditText) findViewById(R.id.commentsBench);
         comments.addTextChangedListener(new TextWatcher() {

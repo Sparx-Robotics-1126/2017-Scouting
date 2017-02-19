@@ -37,9 +37,19 @@ public class BenchmarkingData implements Parcelable {
         private boolean canPickUpBallsFromHuman;
         private String preferredBallRetrieval;
         private boolean canScoreGears;
-        private Boolean canScoreGearsRight;
-        private Boolean canScoreGearsCenter;
-        private Boolean canScoreGearsLeft;
+        private boolean canScoreGearsRight;
+        private boolean canScoreGearsCenter;
+        private boolean canScoreGearsLeft;
+        private boolean preferredScoreGearsLeft;
+        private boolean preferredScoreGearsRight;
+        private boolean preferredScoreGearsCenter;
+        private int gearsCycleTime;
+        private int lowCycleTime;
+        private int numberOfLowCycles;
+        private boolean canScale;
+        private String autoAbilities;
+
+
 
         // This is where you write the values you want to save to the `Parcel`.
         // The `Parcel` class has methods defined to help you save all of your values.
@@ -54,17 +64,25 @@ public class BenchmarkingData implements Parcelable {
             out.writeByte((byte) (canPickUpGearsFromGround ? 1 : 0));
             out.writeByte((byte) (canPickUpGearsFromRetrieval ? 1 : 0));
             out.writeByte((byte) (canPlayDefense ? 1: 0));
+            out.writeByte((byte) (canScale ? 1: 0));
             out.writeString(preferredGearRetrieval);
             out.writeFloat(ballCapacity);
             out.writeFloat(highGoalAccuracy);
             out.writeByte((byte) (canShootHigh ? 1 : 0));
+            out.writeByte((byte) (canPickUpBallsFromHuman ? 1 : 0));
             out.writeString(typeOfShooter);
+            out.writeString(autoAbilities);
             out.writeFloat(ballsPerSecond);
+            out.writeFloat(highShootingRange);
             out.writeString(shootingLocation);
             out.writeString(preferredShootingLocation);
+            out.writeString(preferredBallRetrieval);
             out.writeByte((byte) (canShootLow ? 1 : 0));
             out.writeInt(lowGoalRating);
+            out.writeInt(lowCycleTime);
+            out.writeInt(numberOfLowCycles);
             out.writeInt(highGoalRating);
+            out.writeInt(highCycleTime);
             out.writeInt(numberOfGearsScored);
             out.writeInt(numberOfBallsScored);
             out.writeByte((byte) (abilityToScale ? 1 : 0));
@@ -74,9 +92,15 @@ public class BenchmarkingData implements Parcelable {
             out.writeDouble(approxSpeedFeetPerSecond);
             out.writeByte((byte) (canScoreInHighGoal ? 1 : 0));
             out.writeByte((byte) (canScoreInLowGoal ? 1 : 0));
-            out.writeByte((byte) (canScoreGearsLeft ? 1: 0));
-            out.writeByte((byte) (canScoreGearsCenter ? 1: 0));
-            out.writeByte((byte) (canScoreGearsRight ? 1: 0));
+            out.writeByte((byte) (canScoreGearsLeft ? 1 : 0));
+            out.writeByte((byte) (canScoreGearsCenter ? 1 : 0));
+            out.writeByte((byte) (canScoreGearsRight ? 1 : 0));
+            out.writeByte((byte) (canScoreGears ? 1 : 0));
+            out.writeInt(ballsInHighCycle);
+            out.writeByte((byte) (preferredScoreGearsCenter ? 1 : 0));
+            out.writeByte((byte) (preferredScoreGearsLeft ? 1 : 0));
+            out.writeByte((byte) (preferredScoreGearsRight ? 1 : 0));
+            out.writeInt(gearsCycleTime);
         }
 
         // Using the `in` variable, we can retrieve the values that
@@ -91,19 +115,26 @@ public class BenchmarkingData implements Parcelable {
             canPickUpGearsFromRetrieval = in.readByte() != 0;
             preferredGearRetrieval = in.readString();
             ballCapacity = in.readInt();
+            lowCycleTime = in.readInt();
+            gearsCycleTime = in.readInt();
+            numberOfLowCycles = in.readInt();
+            highCycleTime = in.readInt();
             numberOfGearsScored = in.readInt();
             numberOfBallsScored = in.readInt();
             canShootHigh = in.readByte() != 0;
             typeOfShooter = in.readString();
             ballsPerSecond = in.readFloat();
+            highShootingRange = in.readFloat();
             highGoalAccuracy = in.readFloat();
             shootingLocation = in.readString();
+            autoAbilities = in.readString();
             preferredShootingLocation = in.readString();
             canShootLow = in.readByte() != 0;
             lowGoalRating = in.readInt();
             highGoalRating = in.readInt();
             abilityToScale = in.readByte() != 0;
             placesCanScaleFrom = in.readString();
+            preferredBallRetrieval = in.readString();
             preferredScalePlace = in.readString();
             driveSystemDescription = in.readString();
             approxSpeedFeetPerSecond = in.readDouble();
@@ -113,6 +144,15 @@ public class BenchmarkingData implements Parcelable {
             canScoreGearsRight = in.readByte() != 0;
             canScoreGearsCenter = in.readByte() != 0;
             canScoreGearsLeft = in.readByte() != 0;
+            canScoreGears = in.readByte() != 0;
+            canScale = in.readByte() != 0;
+            canPickUpBallsFromHuman = in.readByte() != 0;
+            ballsInHighCycle = in.readInt();
+            preferredScoreGearsRight = in.readByte() != 0;
+            preferredScoreGearsCenter = in.readByte() != 0;
+            preferredScoreGearsLeft = in.readByte() != 0;
+
+
         }
 
         // In the vast majority of cases you can simply return 0 for this.
@@ -151,6 +191,21 @@ public class BenchmarkingData implements Parcelable {
             this.preferredGearRetrieval = preferredGearRetrieval;
         }
 
+        public String getPreferredBallRetrieval() {
+        return preferredBallRetrieval;
+    }
+
+        public void setPreferredBallRetrieval(String preferredBallRetrieval) {
+        this.preferredBallRetrieval = preferredBallRetrieval; }
+
+    public String getAutoAbilities() {
+        return autoAbilities;
+    }
+
+    public void setAutoAbilities(String autoAbilities) {
+        this.autoAbilities = autoAbilities; }
+
+
         public String getPreferredShootingLocation() {
             return preferredShootingLocation;
         }
@@ -186,11 +241,44 @@ public class BenchmarkingData implements Parcelable {
             return canPlayDefense;
         }
 
+
+        public void setCanScale(Boolean canScale) { this.canScale = canScale; }
+
+        private Boolean getCanScale() {
+        return canScale;
+    }
+
+
+        public void setCanPickUpBallsFromHuman(Boolean canPickUpBallsFromHuman) { this.canPickUpBallsFromHuman = canPickUpBallsFromHuman; }
+
+        private Boolean getCanPickUpBallsFromHuman() {return canPickUpBallsFromHuman; }
+
+        public int getBallsInHighCycle() {
+        return ballsInHighCycle;
+    }
+
+        public void setBallsInHighCycle(int ballsInHighCycle) { this.ballsInHighCycle = ballsInHighCycle; }
+
+
+        public int getLowCycleTime() { return lowCycleTime; }
+
+        public void setLowCycleTime(int lowCycleTime) { this.lowCycleTime = lowCycleTime; }
+
+        public int getGearsCycleTime() {return gearsCycleTime;}
+
+        public void setGearsCycleTime(int gearCycleTime) { this.gearsCycleTime = gearsCycleTime; }
+
         public int getHighGoalRating() {
         return highGoalRating;
     }
 
         public void setHighGoalRating(int highGoalRating) { this.highGoalRating = highGoalRating; }
+
+        public int getHighCycleTime() {
+        return highGoalRating;
+    }
+
+        public void setHighCycleTime(int highGoalRating) { this.highGoalRating = highGoalRating; }
 
         public int getLowGoalRating() {
             return lowGoalRating;
@@ -198,9 +286,11 @@ public class BenchmarkingData implements Parcelable {
 
         public void setLowGoalRating(int lowGoalRating) { this.lowGoalRating = lowGoalRating; }
 
-        public int getNumberOfGearsScored() {
-        return numberOfGearsScored;
-    }
+        public int getNumberOfGearsScored() { return numberOfGearsScored; }
+
+        public void setNumberOfLowCycles (int numberOfLowCycles) { this.numberOfLowCycles = numberOfLowCycles; }
+
+        public int getNumberOfLowCycles() { return numberOfLowCycles; }
 
         public void setNumberOfGearsScored (int numberOfGearsScored) { this.numberOfGearsScored = numberOfGearsScored; }
 
@@ -234,6 +324,12 @@ public class BenchmarkingData implements Parcelable {
 
         public void setBallsPerSecond(float ballsPerSecond) { this.ballsPerSecond = ballsPerSecond; }
 
+        public float getHighShootingRange() {
+        return ballsPerSecond;
+    }
+
+        public void setHighShootingRange(float ballsPerSecond) { this.ballsPerSecond = ballsPerSecond; }
+
 
         public float getHighGoalAccuracy() {
         return ballsPerSecond;
@@ -266,6 +362,26 @@ public class BenchmarkingData implements Parcelable {
         }
 
         public void setCanPickUpGearsFromRetrieval(Boolean canPickUpGearsFromRetrieval) { this.canPickUpGearsFromRetrieval = canPickUpGearsFromRetrieval; }
+
+        public Boolean getCanScoreGears() {return canScoreGears;}
+
+        public void setCanScoreGears(Boolean canScoreGears) { this.canScoreGears = canScoreGears; }
+
+
+        public Boolean getPreferredScoreGearsLeft() {return preferredScoreGearsLeft;}
+
+        public void setPreferredScoreGearsLeft(Boolean preferredScoreGearsLeft) { this.preferredScoreGearsLeft = preferredScoreGearsLeft; }
+
+
+        public Boolean getPreferredScoreGearsRight() {return preferredScoreGearsRight;}
+
+        public void setPreferredScoreGearsRight(Boolean preferredScoreGearsRight) { this.preferredScoreGearsRight = preferredScoreGearsRight; }
+
+        public Boolean getPreferredScoreGearsCenter() {return preferredScoreGearsCenter;}
+
+        public void setPreferredScoreGearsCenter(Boolean preferredScoreGearsCenter) { this.preferredScoreGearsCenter = preferredScoreGearsCenter; }
+
+
 
         public Boolean getCanScoreGearsLeft() {return canScoreGearsLeft;}
 
