@@ -170,7 +170,7 @@ class SparxScouting {
 
 
 
-    public void postAllBenchmarking(final NetworkCallback callback) {
+    /*public void postAllBenchmarking(final NetworkCallback callback) {
         final List<ScoutingInfo> scoutingList = dbHelper.getAllBenchmarkingNeedingSyncing();
         String request = (BASE_URL + POST_BENCHMARKING);
         if(scoutingList.isEmpty())
@@ -211,6 +211,6 @@ class SparxScouting {
                         }
                     });
         }
-    }
+    }*/
 
 }

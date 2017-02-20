@@ -36,7 +36,7 @@ public class ViewScreen extends AppCompatActivity {
         home_view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                home_scoutingButtonClicked(v);
+                finish();
             }
         });
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
@@ -81,12 +81,4 @@ public class ViewScreen extends AppCompatActivity {
             }
         });
     }
-
-    private void home_scoutingButtonClicked(View v) {
-        Context context = ViewScreen.this;
-        Class destination = MainScreen.class;
-        Intent intent = new Intent(context, destination);
-        startActivity(intent);
-    }
-
 }

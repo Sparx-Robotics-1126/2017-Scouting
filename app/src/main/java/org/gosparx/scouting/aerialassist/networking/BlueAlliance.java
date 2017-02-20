@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.sparx1126.steamworks.R;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.dto.Event;
@@ -57,8 +58,8 @@ public class BlueAlliance {
         ion.cancelAll();
     }
 
-    public void loadEventList(final NetworkCallback callback){
-        String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", Integer.toString(com.sparx1126.steamworks.MainScreen.COMPETITION_YEAR));
+    public void loadEventList(String year, final NetworkCallback callback){
+        String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", year);
         Ion.with(context)
                 .load(request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2016:" + versionName)
