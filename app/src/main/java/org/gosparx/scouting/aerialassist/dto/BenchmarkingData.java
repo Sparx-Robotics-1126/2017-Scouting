@@ -3,457 +3,315 @@ package org.gosparx.scouting.aerialassist.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class BenchmarkingData implements Parcelable {
-        private String nameOfScouter;
-        private boolean canPickUpBallsFromHopper;
-        private boolean canPickUpBallsFromGround;
-        private boolean canPickUpGearsFromGround;
-        private boolean canPickUpGearsFromRetrieval;
-        private String preferredGearRetrieval;
-        private float ballCapacity;
-        private boolean canShootHigh;
-        private String typeOfShooter;
-        private float ballsPerSecond;
-        private String shootingLocation;
-        private String preferredShootingLocation;
-        private boolean canShootLow;
-        private int lowGoalRating;
-        private int highGoalRating;
-        private boolean abilityToScale;
-        private String placesCanScaleFrom;
-        private String preferredScalePlace;
-        private String driveSystemDescription;
-        private double approxSpeedFeetPerSecond = 0.0;
-        private Boolean canScoreInHighGoal = false;
-        private Boolean canScoreInLowGoal = false;
-        private float highGoalAccuracy;
-        private int numberOfGearsScored;
-        private int numberOfBallsScored;
-        private String comments;
-        private boolean canPlayDefense;
-        private int ballsInHighCycle;
-        private int highCycleTime;
-        private float highShootingRange;
-        private boolean canPickUpBallsFromHuman;
-        private String preferredBallRetrieval;
-        private boolean canScoreGears;
-        private boolean canScoreGearsRight;
-        private boolean canScoreGearsCenter;
-        private boolean canScoreGearsLeft;
-        private boolean preferredScoreGearsLeft;
-        private boolean preferredScoreGearsRight;
-        private boolean preferredScoreGearsCenter;
-        private int gearsCycleTime;
-        private int lowCycleTime;
-        private int numberOfLowCycles;
-        private boolean canScale;
-        private String autoAbilities;
+public class BenchmarkingData{
+    private String nameOfScouter;
+    private String driveSystem;
+    private double drivesSpeed;
+    private boolean canPlayDefenseBenchButton;
+    private boolean abilityToShootHighGoalBenchButton;
+    private String typeOfShooterBenchInput;
+    private double ballsPerSecondBenchInput;
+    private int ballsInCycleBenchInput;
+    private int cycleTimeHighBenchInput;
+    private double shootingRangeBenchInput;
+    private String preferredShootingLocationBenchInput;
+    private double accuracyHighBenchInput;
+    private boolean pickupBallHopperBenchButton;
+    private boolean pickupBallFloorBenchButton;
+    private boolean pickupBallHumanBenchButton;
+    private String pickupBallPreferredBenchInput;
+    private int maximumBallCapacityBenchInput;
+    private boolean canScoreGearsBenchButton;
+    private boolean pickupGearFloorBenchButton;
+    private boolean pickupGearRetrievalBenchButton;
+    private boolean pickupGearPreferredBenchButton;
+    private boolean canGearLeftBench;
+    private boolean canGearCenterBench;
+    private boolean canGearRightBench;
+    private String radioPreferredGear;
+    private int cycleTimeGearsBenchInput;
+    private boolean abilityToShootLowGoalBenchButton;
+    private int cycleTimeLowBenchInput;
+    private int cycleNumberLowBenchInput;
+    private boolean abilityScaleBenchButton;
+    private String placesCanScaleBenchInput;
+    private String preferredPlacesScaleInput;
+    private String autoAbilitiesBench;
+    private String commentsBench;
 
-
-
-        // This is where you write the values you want to save to the `Parcel`.
-        // The `Parcel` class has methods defined to help you save all of your values.
-        // Note that there are only methods defined for simple values, lists, and other Parcelable objects.
-        // You may need to make several classes Parcelable to send the data you want.
-        @Override
-        public void writeToParcel(Parcel out, int flags) {
-            out.writeString(nameOfScouter);
-            out.writeString(comments);
-            out.writeByte((byte) (canPickUpBallsFromHopper ? 1 : 0));
-            out.writeByte((byte) (canPickUpBallsFromGround ? 1 : 0));
-            out.writeByte((byte) (canPickUpGearsFromGround ? 1 : 0));
-            out.writeByte((byte) (canPickUpGearsFromRetrieval ? 1 : 0));
-            out.writeByte((byte) (canPlayDefense ? 1: 0));
-            out.writeByte((byte) (canScale ? 1: 0));
-            out.writeString(preferredGearRetrieval);
-            out.writeFloat(ballCapacity);
-            out.writeFloat(highGoalAccuracy);
-            out.writeByte((byte) (canShootHigh ? 1 : 0));
-            out.writeByte((byte) (canPickUpBallsFromHuman ? 1 : 0));
-            out.writeString(typeOfShooter);
-            out.writeString(autoAbilities);
-            out.writeFloat(ballsPerSecond);
-            out.writeFloat(highShootingRange);
-            out.writeString(shootingLocation);
-            out.writeString(preferredShootingLocation);
-            out.writeString(preferredBallRetrieval);
-            out.writeByte((byte) (canShootLow ? 1 : 0));
-            out.writeInt(lowGoalRating);
-            out.writeInt(lowCycleTime);
-            out.writeInt(numberOfLowCycles);
-            out.writeInt(highGoalRating);
-            out.writeInt(highCycleTime);
-            out.writeInt(numberOfGearsScored);
-            out.writeInt(numberOfBallsScored);
-            out.writeByte((byte) (abilityToScale ? 1 : 0));
-            out.writeString(placesCanScaleFrom);
-            out.writeString(preferredScalePlace);
-            out.writeString(driveSystemDescription);
-            out.writeDouble(approxSpeedFeetPerSecond);
-            out.writeByte((byte) (canScoreInHighGoal ? 1 : 0));
-            out.writeByte((byte) (canScoreInLowGoal ? 1 : 0));
-            out.writeByte((byte) (canScoreGearsLeft ? 1 : 0));
-            out.writeByte((byte) (canScoreGearsCenter ? 1 : 0));
-            out.writeByte((byte) (canScoreGearsRight ? 1 : 0));
-            out.writeByte((byte) (canScoreGears ? 1 : 0));
-            out.writeInt(ballsInHighCycle);
-            out.writeByte((byte) (preferredScoreGearsCenter ? 1 : 0));
-            out.writeByte((byte) (preferredScoreGearsLeft ? 1 : 0));
-            out.writeByte((byte) (preferredScoreGearsRight ? 1 : 0));
-            out.writeInt(gearsCycleTime);
-        }
-
-        // Using the `in` variable, we can retrieve the values that
-        // we originally wrote into the `Parcel`.  This constructor is usually
-        // private so that only the `CREATOR` field can access.
-        private BenchmarkingData(Parcel in) {
-            nameOfScouter = in.readString();
-            comments = in.readString();
-            canPickUpBallsFromHopper = in.readByte() != 0;
-            canPickUpBallsFromGround = in.readByte() != 0;
-            canPickUpGearsFromGround = in.readByte() != 0;
-            canPickUpGearsFromRetrieval = in.readByte() != 0;
-            preferredGearRetrieval = in.readString();
-            ballCapacity = in.readInt();
-            lowCycleTime = in.readInt();
-            gearsCycleTime = in.readInt();
-            numberOfLowCycles = in.readInt();
-            highCycleTime = in.readInt();
-            numberOfGearsScored = in.readInt();
-            numberOfBallsScored = in.readInt();
-            canShootHigh = in.readByte() != 0;
-            typeOfShooter = in.readString();
-            ballsPerSecond = in.readFloat();
-            highShootingRange = in.readFloat();
-            highGoalAccuracy = in.readFloat();
-            shootingLocation = in.readString();
-            autoAbilities = in.readString();
-            preferredShootingLocation = in.readString();
-            canShootLow = in.readByte() != 0;
-            lowGoalRating = in.readInt();
-            highGoalRating = in.readInt();
-            abilityToScale = in.readByte() != 0;
-            placesCanScaleFrom = in.readString();
-            preferredBallRetrieval = in.readString();
-            preferredScalePlace = in.readString();
-            driveSystemDescription = in.readString();
-            approxSpeedFeetPerSecond = in.readDouble();
-            canScoreInHighGoal = in.readByte() != 0;
-            canScoreInLowGoal = in.readByte() != 0;
-            canPlayDefense = in.readByte() != 0;
-            canScoreGearsRight = in.readByte() != 0;
-            canScoreGearsCenter = in.readByte() != 0;
-            canScoreGearsLeft = in.readByte() != 0;
-            canScoreGears = in.readByte() != 0;
-            canScale = in.readByte() != 0;
-            canPickUpBallsFromHuman = in.readByte() != 0;
-            ballsInHighCycle = in.readInt();
-            preferredScoreGearsRight = in.readByte() != 0;
-            preferredScoreGearsCenter = in.readByte() != 0;
-            preferredScoreGearsLeft = in.readByte() != 0;
-
-
-        }
-
-        // In the vast majority of cases you can simply return 0 for this.
-        // There are cases where you need to use the constant `CONTENTS_FILE_DESCRIPTOR`
-        // But this is out of scope of this tutorial
-        @Override
-        public int describeContents() {
-            return 0;
-        }
-
-        // After implementing the `Parcelable` interface, we need to create the
-        // `Parcelable.Creator<MyParcelable> CREATOR` constant for our class;
-        // Notice how it has our class specified as its type.
-        public static final Parcelable.Creator<BenchmarkingData> CREATOR
-                = new Parcelable.Creator<BenchmarkingData>() {
-
-            // This simply calls our new constructor (typically private) and
-            // passes along the unmarshalled `Parcel`, and then returns the new object!
-            @Override
-            public BenchmarkingData createFromParcel(Parcel in) {
-                return new BenchmarkingData(in);
-            }
-
-            // We just need to copy this and change the type to match our class.
-            @Override
-            public BenchmarkingData[] newArray(int size) {
-                return new BenchmarkingData[size];
-            }
-        };
-
-        public String getPreferredGearRetrieval() {
-            return preferredGearRetrieval;
-        }
-
-        public void setPreferredGearRetrieval(String preferredGearRetrieval) {
-            this.preferredGearRetrieval = preferredGearRetrieval;
-        }
-
-        public String getPreferredBallRetrieval() {
-        return preferredBallRetrieval;
+    BenchmarkingData(String student) {
+        this.nameOfScouter = student;
     }
 
-        public void setPreferredBallRetrieval(String preferredBallRetrieval) {
-        this.preferredBallRetrieval = preferredBallRetrieval; }
-
-    public String getAutoAbilities() {
-        return autoAbilities;
+    public String getNameOfScouter() {
+        return nameOfScouter;
     }
 
-    public void setAutoAbilities(String autoAbilities) {
-        this.autoAbilities = autoAbilities; }
-
-
-        public String getPreferredShootingLocation() {
-            return preferredShootingLocation;
-        }
-
-        public void setPreferredShootingLocation(String preferredShootingLocation) {
-            this.preferredShootingLocation = preferredShootingLocation; }
-
-        public String getPreferredScalePlace() {
-            return preferredScalePlace;
-        }
-
-        public void setPreferredScalePlace(String preferredScalePlace) {
-            this.preferredScalePlace = preferredScalePlace;
-        }
-
-        public String getPlacesCanScaleFrom() {
-            return placesCanScaleFrom;
-        }
-
-        public void setPlacesCanScaleFrom(String placesCanScaleFrom) {
-            this.placesCanScaleFrom = placesCanScaleFrom;
-        }
-
-        public void setCanShootLow(Boolean canShootLow) { this.canShootLow = canShootLow; }
-
-        public Boolean getCanShootLow() {
-            return canShootLow;
-        }
-
-        public void setCanPlayDefense(Boolean canPlayDefense) { this.canPlayDefense = canPlayDefense; }
-
-        private Boolean getCanPlayDefense() {
-            return canPlayDefense;
-        }
-
-
-        public void setCanScale(Boolean canScale) { this.canScale = canScale; }
-
-        private Boolean getCanScale() {
-        return canScale;
+    public void setNameOfScouter(String nameOfScouter) {
+        this.nameOfScouter = nameOfScouter;
     }
 
-
-        public void setCanPickUpBallsFromHuman(Boolean canPickUpBallsFromHuman) { this.canPickUpBallsFromHuman = canPickUpBallsFromHuman; }
-
-        private Boolean getCanPickUpBallsFromHuman() {return canPickUpBallsFromHuman; }
-
-        public int getBallsInHighCycle() {
-        return ballsInHighCycle;
+    public String getDriveSystem() {
+        return driveSystem;
     }
 
-        public void setBallsInHighCycle(int ballsInHighCycle) { this.ballsInHighCycle = ballsInHighCycle; }
-
-
-        public int getLowCycleTime() { return lowCycleTime; }
-
-        public void setLowCycleTime(int lowCycleTime) { this.lowCycleTime = lowCycleTime; }
-
-        public int getGearsCycleTime() {return gearsCycleTime;}
-
-        public void setGearsCycleTime(int gearCycleTime) { this.gearsCycleTime = gearsCycleTime; }
-
-        public int getHighGoalRating() {
-        return highGoalRating;
+    public void setDriveSystem(String driveSystem) {
+        this.driveSystem = driveSystem;
     }
 
-        public void setHighGoalRating(int highGoalRating) { this.highGoalRating = highGoalRating; }
-
-        public int getHighCycleTime() {
-        return highGoalRating;
+    public double getDrivesSpeed() {
+        return drivesSpeed;
     }
 
-        public void setHighCycleTime(int highGoalRating) { this.highGoalRating = highGoalRating; }
-
-        public int getLowGoalRating() {
-            return lowGoalRating;
-        }
-
-        public void setLowGoalRating(int lowGoalRating) { this.lowGoalRating = lowGoalRating; }
-
-        public int getNumberOfGearsScored() { return numberOfGearsScored; }
-
-        public void setNumberOfLowCycles (int numberOfLowCycles) { this.numberOfLowCycles = numberOfLowCycles; }
-
-        public int getNumberOfLowCycles() { return numberOfLowCycles; }
-
-        public void setNumberOfGearsScored (int numberOfGearsScored) { this.numberOfGearsScored = numberOfGearsScored; }
-
-        public int getNumberOfBallsScored() {
-        return numberOfBallsScored;
+    public void setDrivesSpeed(double drivesSpeed) {
+        this.drivesSpeed = drivesSpeed;
     }
 
-        public void setNumberOfBallsScored (int numberOfBallsScored) { this.numberOfBallsScored = numberOfBallsScored; }
-
-        public void setAbilityToScale(Boolean abilityToScale) { this.abilityToScale = abilityToScale; }
-
-        public Boolean getAbilityToScale() {
-            return abilityToScale;
-        }
-
-        public String getShootingLocation() {
-            return shootingLocation;
-        }
-
-        public void setShootingLocation(String shootingLocation) {this.shootingLocation = shootingLocation; }
-
-        public String getComments() {
-        return comments;
+    public boolean isCanPlayDefenseBenchButton() {
+        return canPlayDefenseBenchButton;
     }
 
-        public void setComments(String comments) {this.comments = comments; }
-
-        public float getBallsPerSecond() {
-            return ballsPerSecond;
-        }
-
-        public void setBallsPerSecond(float ballsPerSecond) { this.ballsPerSecond = ballsPerSecond; }
-
-        public float getHighShootingRange() {
-        return ballsPerSecond;
+    public void setCanPlayDefenseBenchButton(boolean canPlayDefenseBenchButton) {
+        this.canPlayDefenseBenchButton = canPlayDefenseBenchButton;
     }
 
-        public void setHighShootingRange(float ballsPerSecond) { this.ballsPerSecond = ballsPerSecond; }
-
-
-        public float getHighGoalAccuracy() {
-        return ballsPerSecond;
+    public boolean isAbilityToShootHighGoalBenchButton() {
+        return abilityToShootHighGoalBenchButton;
     }
 
-        public void setHighGoalAccuracy(float highGoalAccuracy) { this.highGoalAccuracy = highGoalAccuracy; }
+    public void setAbilityToShootHighGoalBenchButton(boolean abilityToShootHighGoalBenchButton) {
+        this.abilityToShootHighGoalBenchButton = abilityToShootHighGoalBenchButton;
+    }
 
-        public String getTypeOfShooter() {
-            return typeOfShooter;
-        }
+    public String getTypeOfShooterBenchInput() {
+        return typeOfShooterBenchInput;
+    }
 
-        public void setTypeOfShooter(String typeOfShooter) {
-            this.typeOfShooter = typeOfShooter;
-        }
+    public void setTypeOfShooterBenchInput(String typeOfShooterBenchInput) {
+        this.typeOfShooterBenchInput = typeOfShooterBenchInput;
+    }
 
-        public void setCanShootHigh(Boolean canShootHigh) { this.canShootHigh = canShootHigh; }
+    public double getBallsPerSecondBenchInput() {
+        return ballsPerSecondBenchInput;
+    }
 
-        private Boolean getCanShootHigh() {
-            return canShootHigh;
-        }
+    public void setBallsPerSecondBenchInput(double ballsPerSecondBenchInput) {
+        this.ballsPerSecondBenchInput = ballsPerSecondBenchInput;
+    }
 
+    public int getBallsInCycleBenchInput() {
+        return ballsInCycleBenchInput;
+    }
 
-        public float getBallCapacity() {return ballCapacity;}
+    public void setBallsInCycleBenchInput(int ballsInCycleBenchInput) {
+        this.ballsInCycleBenchInput = ballsInCycleBenchInput;
+    }
 
-        public void setBallCapacity(float ballCapacity) { this.ballCapacity = ballCapacity; }
+    public int getCycleTimeHighBenchInput() {
+        return cycleTimeHighBenchInput;
+    }
 
+    public void setCycleTimeHighBenchInput(int cycleTimeHighBenchInput) {
+        this.cycleTimeHighBenchInput = cycleTimeHighBenchInput;
+    }
 
-        public Boolean getCanPickUpGearsFromRetrieval() {
-            return canPickUpGearsFromRetrieval;
-        }
+    public double getShootingRangeBenchInput() {
+        return shootingRangeBenchInput;
+    }
 
-        public void setCanPickUpGearsFromRetrieval(Boolean canPickUpGearsFromRetrieval) { this.canPickUpGearsFromRetrieval = canPickUpGearsFromRetrieval; }
+    public void setShootingRangeBenchInput(double shootingRangeBenchInput) {
+        this.shootingRangeBenchInput = shootingRangeBenchInput;
+    }
 
-        public Boolean getCanScoreGears() {return canScoreGears;}
+    public String getPreferredShootingLocationBenchInput() {
+        return preferredShootingLocationBenchInput;
+    }
 
-        public void setCanScoreGears(Boolean canScoreGears) { this.canScoreGears = canScoreGears; }
+    public void setPreferredShootingLocationBenchInput(String preferredShootingLocationBenchInput) {
+        this.preferredShootingLocationBenchInput = preferredShootingLocationBenchInput;
+    }
 
+    public double getAccuracyHighBenchInput() {
+        return accuracyHighBenchInput;
+    }
 
-        public Boolean getPreferredScoreGearsLeft() {return preferredScoreGearsLeft;}
+    public void setAccuracyHighBenchInput(double accuracyHighBenchInput) {
+        this.accuracyHighBenchInput = accuracyHighBenchInput;
+    }
 
-        public void setPreferredScoreGearsLeft(Boolean preferredScoreGearsLeft) { this.preferredScoreGearsLeft = preferredScoreGearsLeft; }
+    public boolean isPickupBallHopperBenchButton() {
+        return pickupBallHopperBenchButton;
+    }
 
+    public void setPickupBallHopperBenchButton(boolean pickupBallHopperBenchButton) {
+        this.pickupBallHopperBenchButton = pickupBallHopperBenchButton;
+    }
 
-        public Boolean getPreferredScoreGearsRight() {return preferredScoreGearsRight;}
+    public boolean isPickupBallFloorBenchButton() {
+        return pickupBallFloorBenchButton;
+    }
 
-        public void setPreferredScoreGearsRight(Boolean preferredScoreGearsRight) { this.preferredScoreGearsRight = preferredScoreGearsRight; }
+    public void setPickupBallFloorBenchButton(boolean pickupBallFloorBenchButton) {
+        this.pickupBallFloorBenchButton = pickupBallFloorBenchButton;
+    }
 
-        public Boolean getPreferredScoreGearsCenter() {return preferredScoreGearsCenter;}
+    public boolean isPickupBallHumanBenchButton() {
+        return pickupBallHumanBenchButton;
+    }
 
-        public void setPreferredScoreGearsCenter(Boolean preferredScoreGearsCenter) { this.preferredScoreGearsCenter = preferredScoreGearsCenter; }
+    public void setPickupBallHumanBenchButton(boolean pickupBallHumanBenchButton) {
+        this.pickupBallHumanBenchButton = pickupBallHumanBenchButton;
+    }
 
+    public String getPickupBallPreferredBenchInput() {
+        return pickupBallPreferredBenchInput;
+    }
 
+    public void setPickupBallPreferredBenchInput(String pickupBallPreferredBenchInput) {
+        this.pickupBallPreferredBenchInput = pickupBallPreferredBenchInput;
+    }
 
-        public Boolean getCanScoreGearsLeft() {return canScoreGearsLeft;}
+    public int getMaximumBallCapacityBenchInput() {
+        return maximumBallCapacityBenchInput;
+    }
 
-        public void setCanScoreGearsLeft(Boolean canScoreGearsLeft) { this.canScoreGearsLeft = canScoreGearsLeft; }
+    public void setMaximumBallCapacityBenchInput(int maximumBallCapacityBenchInput) {
+        this.maximumBallCapacityBenchInput = maximumBallCapacityBenchInput;
+    }
 
-        public Boolean getCanScoreGearsCenter() {return canScoreGearsCenter;}
+    public boolean isCanScoreGearsBenchButton() {
+        return canScoreGearsBenchButton;
+    }
 
-        public void setCanScoreGearsCenter(Boolean canScoreGearsCenter) { this.canScoreGearsCenter = canScoreGearsCenter; }
+    public void setCanScoreGearsBenchButton(boolean canScoreGearsBenchButton) {
+        this.canScoreGearsBenchButton = canScoreGearsBenchButton;
+    }
 
-    public Boolean getCanScoreGearsRight() {return canScoreGearsRight;}
+    public boolean isPickupGearFloorBenchButton() {
+        return pickupGearFloorBenchButton;
+    }
 
-    public void setCanScoreGearsRight(Boolean canScoreGearsRight) { this.canScoreGearsRight = canScoreGearsRight; }
+    public void setPickupGearFloorBenchButton(boolean pickupGearFloorBenchButton) {
+        this.pickupGearFloorBenchButton = pickupGearFloorBenchButton;
+    }
 
+    public boolean isPickupGearRetrievalBenchButton() {
+        return pickupGearRetrievalBenchButton;
+    }
 
-        public Boolean getCanPickUpGearsFromGround() {
-            return canPickUpGearsFromGround;
-        }
+    public void setPickupGearRetrievalBenchButton(boolean pickupGearRetrievalBenchButton) {
+        this.pickupGearRetrievalBenchButton = pickupGearRetrievalBenchButton;
+    }
 
-        public void setCanPickUpGearsFromGround(Boolean canPickUpGearsFromGround) { this.canPickUpGearsFromGround = canPickUpGearsFromGround; }
+    public boolean isPickupGearPreferredBenchButton() {
+        return pickupGearPreferredBenchButton;
+    }
 
-        public Boolean getCanPickUpBallsFromGround() {
-            return canPickUpBallsFromGround;
-        }
+    public void setPickupGearPreferredBenchButton(boolean pickupGearPreferredBenchButton) {
+        this.pickupGearPreferredBenchButton = pickupGearPreferredBenchButton;
+    }
 
-        public void setCanPickUpBallsFromGround(Boolean canPickUpBallsFromGround) { this.canPickUpBallsFromGround = canPickUpBallsFromGround; }
+    public boolean isCanGearLeftBench() {
+        return canGearLeftBench;
+    }
 
-        public Boolean getCanPickUpBallsFromHopper() {
-            return canPickUpBallsFromHopper;
-        }
+    public void setCanGearLeftBench(boolean canGearLeftBench) {
+        this.canGearLeftBench = canGearLeftBench;
+    }
 
-        public void setCanPickUpBallsFromHopper(Boolean canPickUpBallsFromHopper) { this.canPickUpBallsFromHopper = canPickUpBallsFromHopper; }
+    public boolean isCanGearCenterBench() {
+        return canGearCenterBench;
+    }
 
-        public String getNameOfScouter() {
-            return nameOfScouter;
-        }
+    public void setCanGearCenterBench(boolean canGearCenterBench) {
+        this.canGearCenterBench = canGearCenterBench;
+    }
 
-        void setNameOfScouter(String nameOfScouter) {
-            this.nameOfScouter = nameOfScouter;
-        }
+    public boolean isCanGearRightBench() {
+        return canGearRightBench;
+    }
 
-        public String getDriveSystemDescription() {
-            return driveSystemDescription;
-        }
+    public void setCanGearRightBench(boolean canGearRightBench) {
+        this.canGearRightBench = canGearRightBench;
+    }
 
-        public void setDriveSystemDescription(String driveSystemDescription) {
-            this.driveSystemDescription = driveSystemDescription;
-        }
+    public String getRadioPreferredGear() {
+        return radioPreferredGear;
+    }
 
-        public double getApproxSpeedFeetPerSecond() {
-            return approxSpeedFeetPerSecond;
-        }
+    public void setRadioPreferredGear(String radioPreferredGear) {
+        this.radioPreferredGear = radioPreferredGear;
+    }
 
-        public void setApproxSpeedFeetPerSecond(double approxSpeedFeetPerSecond) {
-            this.approxSpeedFeetPerSecond = approxSpeedFeetPerSecond;
-        }
+    public int getCycleTimeGearsBenchInput() {
+        return cycleTimeGearsBenchInput;
+    }
 
-        public Boolean getCanScoreInHighGoal() {
-            return canScoreInHighGoal;
-        }
+    public void setCycleTimeGearsBenchInput(int cycleTimeGearsBenchInput) {
+        this.cycleTimeGearsBenchInput = cycleTimeGearsBenchInput;
+    }
 
-        public void setCanScoreInHighGoal(Boolean canScoreInHighGoal) {
-            this.canScoreInHighGoal = canScoreInHighGoal;
-        }
+    public boolean isAbilityToShootLowGoalBenchButton() {
+        return abilityToShootLowGoalBenchButton;
+    }
 
-        public Boolean getCanScoreInLowGoal() {
-            return canScoreInLowGoal;
-        }
+    public void setAbilityToShootLowGoalBenchButton(boolean abilityToShootLowGoalBenchButton) {
+        this.abilityToShootLowGoalBenchButton = abilityToShootLowGoalBenchButton;
+    }
 
-        public void setCanScoreInLowGoal(Boolean canScoreInLowGoal) {
-            this.canScoreInLowGoal = canScoreInLowGoal;
-        }
+    public int getCycleTimeLowBenchInput() {
+        return cycleTimeLowBenchInput;
+    }
 
-    BenchmarkingData() {
+    public void setCycleTimeLowBenchInput(int cycleTimeLowBenchInput) {
+        this.cycleTimeLowBenchInput = cycleTimeLowBenchInput;
+    }
+
+    public int getCycleNumberLowBenchInput() {
+        return cycleNumberLowBenchInput;
+    }
+
+    public void setCycleNumberLowBenchInput(int cycleNumberLowBenchInput) {
+        this.cycleNumberLowBenchInput = cycleNumberLowBenchInput;
+    }
+
+    public boolean isAbilityScaleBenchButton() {
+        return abilityScaleBenchButton;
+    }
+
+    public void setAbilityScaleBenchButton(boolean abilityScaleBenchButton) {
+        this.abilityScaleBenchButton = abilityScaleBenchButton;
+    }
+
+    public String getPlacesCanScaleBenchInput() {
+        return placesCanScaleBenchInput;
+    }
+
+    public void setPlacesCanScaleBenchInput(String placesCanScaleBenchInput) {
+        this.placesCanScaleBenchInput = placesCanScaleBenchInput;
+    }
+
+    public String getPreferredPlacesScaleInput() {
+        return preferredPlacesScaleInput;
+    }
+
+    public void setPreferredPlacesScaleInput(String preferredPlacesScaleInput) {
+        this.preferredPlacesScaleInput = preferredPlacesScaleInput;
+    }
+
+    public String getAutoAbilitiesBench() {
+        return autoAbilitiesBench;
+    }
+
+    public void setAutoAbilitiesBench(String autoAbilitiesBench) {
+        this.autoAbilitiesBench = autoAbilitiesBench;
+    }
+
+    public String getCommentsBench() {
+        return commentsBench;
+    }
+
+    public void setCommentsBench(String commentsBench) {
+        this.commentsBench = commentsBench;
     }
 }

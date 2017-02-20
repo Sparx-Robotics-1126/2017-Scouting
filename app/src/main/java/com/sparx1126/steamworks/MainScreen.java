@@ -67,7 +67,6 @@ public class MainScreen extends AppCompatActivity {
     private static final String OUR_COMPETITION_FINGERLAKES = "2017-03-15 Finger Lakes Regional ";
     private static final String FILTER_ON = "Turn the event filter on?";
     private static final String FILTER_OFF = "Turn the event filter off?";
-    private Map<Integer, ScoutingInfo> scoutingInfoMap;
     private Map<String, String> eventNamesToKey;
     private Vector<String> teamsList;
 
@@ -87,7 +86,11 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private String getEventName(){
-        return eventSpinner.getSelectedItem().toString();
+        String eventName = "";
+        if(eventSpinner.getSelectedItem() != null) {
+            eventName = eventSpinner.getSelectedItem().toString();
+        }
+        return eventName;
     }
 
     public Event getSelectedEvent() {
@@ -102,7 +105,6 @@ public class MainScreen extends AppCompatActivity {
         blueAlliance = BlueAlliance.getInstance(this);
         dbHelper = DatabaseHelper.getInstance(this);
 
-        scoutingInfoMap = new HashMap<>();
         eventNamesToKey = new HashMap<>();
 
         scout = (Button)findViewById(R.id.scoutButton);
@@ -140,6 +142,16 @@ public class MainScreen extends AppCompatActivity {
 
         // restore the event, name, and team
         restorePreferences();
+    }
+
+    protected void onStart() {
+        super.onStart();
+        System.out.println("onStart");
+    }
+
+    protected void onStop() {
+        super.onStop();
+        System.out.println("onStop");
     }
 
     private void teamNumberChecker(){
@@ -208,26 +220,13 @@ public class MainScreen extends AppCompatActivity {
                     destination = ViewScreen.class;
                     break;
             }
-            // set the currentScouting object I intend to pass to. Set it to NULL which means not
-            // created yet. This is a good practice because if useed and set to NULL it creashes better
-            ScoutingInfo currentInfo;
             // look for i.e. 1126 in my map of already scouted teams
             int teamNumberValue = getTeamNumber();
-            if (scoutingInfoMap.containsKey(teamNumberValue)) {
-                // set my temporary variable of scouting info to the one I found inside the map
-                currentInfo = scoutingInfoMap.get(teamNumberValue);
-            } else {
-                // create a new scouting info because I did not find it in my map
-                // which means it hasn't been scouted before
-                currentInfo = new ScoutingInfo();
-                currentInfo.setEventKey(getEventName());
-                currentInfo.setTeamNumber(teamNumberValue);
-                currentInfo.addScouter(getName());
-                // add the new scouting info into my map so that I can find it in the future
-                scoutingInfoMap.put(teamNumberValue, currentInfo);
-            }
+            // set the currentScouting object I intend to pass to. Set it to NULL which means not
+            // created yet. This is a good practice because if useed and set to NULL it creashes better
+            ScoutingInfo.addInfo(teamNumberValue, getEventName(), getName());
+
             Intent intent = new Intent(context, destination);
-            intent.putExtra(getResources().getString(R.string.scouterInfo), currentInfo);
             startActivity(intent);
         }
     };

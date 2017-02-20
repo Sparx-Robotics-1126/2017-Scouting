@@ -48,14 +48,14 @@
 
     <EditText
         android:layout_width="match_parent"
-        android:inputType="textPersonName"
         android:ems="10"
         android:id="@+id/drivesSystem"
         android:hint="@string/drivesTypeHint"
         android:textSize="25sp"
         android:layout_height="70dp"
         android:layout_margin="5dp"
-        android:layout_marginBottom="0dp" />
+        android:layout_marginBottom="0dp"
+        android:inputType="text" />
 
     <EditText
         android:layout_width="match_parent"
@@ -87,7 +87,7 @@
         <ToggleButton
             android:text="@string/toggleButton"
             android:layout_height="72dp"
-            android:id="@+id/canPlayDefenseBenchInput"
+            android:id="@+id/canPlayDefenseBenchButton"
             android:layout_width="130dp"
             android:textOff="@string/no"
             android:textOn="@string/yes"
@@ -157,7 +157,7 @@
             android:ems="10"
             android:id="@+id/typeOfShooterBenchInput"
             android:layout_weight="0.92"
-            android:inputType="textMultiLine" />
+            android:inputType="text" />
 
     </LinearLayout>
 
@@ -496,7 +496,7 @@
         <ToggleButton
             android:text="@string/toggleButton"
             android:layout_height="72dp"
-            android:id="@+id/canScoreGearsBenchInput"
+            android:id="@+id/canScoreGearsBenchButton"
             android:layout_width="130dp"
             android:textOff="@string/no"
             android:textOn="@string/yes"
@@ -1029,7 +1029,7 @@
     -->
     <Button
         android:text="@string/submit"
-        android:id="@+id/SubmitTeleopBenchmark"
+        android:id="@+id/submitTeleopBenchmark"
         android:backgroundTint="@color/colorSparxRed"
         android:layout_weight="0.15"
         android:layout_marginTop="50sp"
