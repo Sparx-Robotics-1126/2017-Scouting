@@ -18,25 +18,29 @@ public class ExpandableListDataPump {
         BenchmarkingData benchmarkingData = displayedInfo.getBenchmarkingData();
 
         List<String> drives = new ArrayList<String>();
-        drives.add("Drive System: " + benchmarkingData.getDriveSystem());
-        drives.add("Speed: " + benchmarkingData.getDrivesSpeed() + "m/s");
-        drives.add("Can play defense: " + benchmarkingData.isCanPlayDefenseBenchButton());
+        drives.add("<font color=\"black\"><b>Drive System: </b></font> " + benchmarkingData.getDriveSystem());
+        String drivesSpeed = "";
+        if(benchmarkingData.getDrivesSpeed() != Double.MAX_VALUE) {
+            drivesSpeed = String.valueOf(benchmarkingData.getDrivesSpeed());
+        }
+        drives.add("<font color=\"black\"><b>Speed: </b></font> " + drivesSpeed + " m/s");
+        drives.add("<font color=\"black\"><b>Can play defense: </b></font>" + benchmarkingData.isCanPlayDefenseBenchButton());
         List<String> shooting = new ArrayList<String>();
-        shooting.add("Can Shoot High: " + benchmarkingData.isAbilityToShootHighGoalBenchButton());
-        shooting.add("Ability to shoot low: " + benchmarkingData.isAbilityToShootLowGoalBenchButton());
-        shooting.add("Type of shooter: " + benchmarkingData.getTypeOfShooterBenchInput());
-        shooting.add("Balls per second: " + benchmarkingData.getBallsPerSecondBenchInput());
-        shooting.add("Balls per second: " + benchmarkingData.getBallsPerSecondBenchInput());
-        shooting.add("Balls in one cycle: " + benchmarkingData.getBallsInCycleBenchInput());
-        shooting.add("Cycle time High: " + benchmarkingData.getCycleTimeHighBenchInput());
-        shooting.add("Shooting range: " + benchmarkingData.getShootingRangeBenchInput());
-        shooting.add("Preferred shooting place: " + benchmarkingData.getPreferredShootingLocationBenchInput());
-        shooting.add("High Goal Shooting accuracy: " + benchmarkingData.getAccuracyHighBenchInput() + "%");
-        shooting.add("Can get balls from Hopper: "  + benchmarkingData.isPickupBallHopperBenchButton());
-        shooting.add("Can get balls from Floor: "  + benchmarkingData.isPickupBallFloorBenchButton());
-        shooting.add("Can get balls from Human: "  + benchmarkingData.isPickupBallHumanBenchButton());
-        shooting.add("Prefers to get balls from: " + benchmarkingData.getPickupBallPreferredBenchInput());
-        shooting.add("can hold: " + benchmarkingData.getMaximumBallCapacityBenchInput() + "balls");
+        shooting.add("<font color=\"black\"><b>Can Shoot High: </b></font>" + benchmarkingData.isAbilityToShootHighGoalBenchButton());
+        shooting.add("<font color=\"black\"><b>Ability to shoot low: </b></font>" + benchmarkingData.isAbilityToShootLowGoalBenchButton());
+        shooting.add("<font color=\"black\"><b>Type of shooter: </b></font>" + benchmarkingData.getTypeOfShooterBenchInput());
+        shooting.add("<font color=\"black\"><b>Balls per second: </b></font>" + benchmarkingData.getBallsPerSecondBenchInput());
+        shooting.add("<font color=\"black\"><b><Balls per second: /b></font>" + benchmarkingData.getBallsPerSecondBenchInput());
+        shooting.add("<font color=\"black\"><b>Balls in one cycle: </b></font>" + benchmarkingData.getBallsInCycleBenchInput());
+        shooting.add("<font color=\"black\"><b>Cycle time High: </b></font>" + benchmarkingData.getCycleTimeHighBenchInput());
+        shooting.add("<font color=\"black\"><b>Shooting range: </b></font>" + benchmarkingData.getShootingRangeBenchInput());
+        shooting.add("<font color=\"black\"><b>Preferred shooting place: </b></font>" + benchmarkingData.getPreferredShootingLocationBenchInput());
+        shooting.add("<font color=\"black\"><b>High Goal  accuracy: </b></font>" + benchmarkingData.getAccuracyHighBenchInput() + "%");
+        shooting.add("<font color=\"black\"><b>Can get balls from Hopper: </b></font>"  + benchmarkingData.isPickupBallHopperBenchButton());
+        shooting.add("<font color=\"black\"><b>Can get balls from Floor: </b></font>"  + benchmarkingData.isPickupBallFloorBenchButton());
+        shooting.add("<font color=\"black\"><b>Can get balls from Human: </b></font>"  + benchmarkingData.isPickupBallHumanBenchButton());
+        shooting.add("<font color=\"black\"><b>Prefers to get balls from: </b></font>" + benchmarkingData.getPickupBallPreferredBenchInput());
+        shooting.add("<font color=\"black\"><b>can hold: </b></font>" + benchmarkingData.getMaximumBallCapacityBenchInput() + "balls");
 
         List<String> gears = new ArrayList<String>();
         gears.add("Can Score Gears: ");
