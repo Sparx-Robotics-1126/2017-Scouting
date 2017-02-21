@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main_screen"
     android:layout_width="match_parent"
@@ -9,13 +8,12 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.sparx1126.steamworks.MainScreen"
-    android:background="@color/colorWhite">
+    tools:context="com.sparx1126.steamworks.MainScreen" >
 
     <requestFocus />
 
     <Spinner
-        android:id="@+id/eventPicker"
+        android:id="@+id/eventSpinner"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/horiz_margin"
@@ -24,84 +22,74 @@
 
     <AutoCompleteTextView
         android:layout_width="wrap_content"
-        android:layout_height="100px"
-        android:id="@+id/scouter"
-        android:minWidth="100px"
+        android:layout_height="100dp"
+        android:id="@+id/scouterText"
+        android:minWidth="100dp"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
-        android:textSize="35px"
-        android:hint="Scouter Name"
-        android:layout_above="@+id/team"
-        android:layout_alignParentLeft="true"
+        android:textSize="35sp"
+        android:hint="@string/scouterName"
+        android:layout_above="@+id/teamText"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="12dp" />
+        android:layout_marginBottom="12dp"
+        android:layout_alignEnd="@+id/benchmarkButton" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:id="@+id/teamText"
+        android:minWidth="100dp"
+        android:textSize="35sp"
+        android:hint="@string/teamNumber"
+        android:completionHint=" fhg "
+        android:layout_marginBottom="20dp"
+        android:layout_above="@+id/benchmarkButton"
+        android:layout_alignParentStart="true"
+        android:inputType="number"
+        android:layout_alignEnd="@+id/scouterText" />
 
     <Button
-        android:text="Benchmark"
-        android:id="@+id/benchmarkAuto"
+        android:text="@string/benchmark"
+        android:id="@+id/benchmarkButton"
         android:elevation="0dp"
-        style="@android:style/Widget.Material.Button.Colored"
         android:backgroundTint="#c40000"
         android:minHeight="75dip"
         android:textSize="20sp"
         android:textColor="@color/colorWhite"
         android:layout_width="wrap_content"
-        android:layout_height="150px"
-        android:layout_above="@+id/scout"
-        android:layout_alignParentRight="true"
+        android:layout_height="150dp"
+        android:layout_above="@+id/scoutButton"
         android:layout_alignParentEnd="true"
-        android:layout_marginRight="5dp"
         android:layout_marginEnd="5dp"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <Button
-        android:text="Scout"
+        android:text="@string/scout"
         android:layout_width="wrap_content"
-        android:layout_height="150px"
-        android:id="@+id/scout"
+        android:layout_height="150dp"
+        android:id="@+id/scoutButton"
         android:elevation="0dp"
-        style="@android:style/Widget.Material.Button.Colored"
         android:backgroundTint="#C40000"
         android:minHeight="75dip"
         android:textSize="22sp"
         android:textColor="@color/colorWhite"
-        android:layout_above="@+id/view_data"
-        android:layout_alignParentLeft="true"
+        android:layout_above="@+id/viewButton"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/benchmarkAuto"
-        android:layout_alignEnd="@+id/benchmarkAuto"
+        android:layout_alignEnd="@+id/benchmarkButton"
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"/>
 
     <Button
-        android:text="View"
+        android:text="@string/view"
         android:layout_width="wrap_content"
-        android:id="@+id/view_data"
+        android:id="@+id/viewButton"
         android:elevation="0dp"
-        style="@android:style/Widget.Material.Button.Colored"
         android:minHeight="75dip"
         android:textSize="22sp"
         android:backgroundTint="@color/colorSparxRed"
         android:textColor="@color/colorWhite"
-        android:layout_height="150px"
+        android:layout_height="150dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/scout"
-        android:layout_alignEnd="@+id/scout" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="100px"
-        android:id="@+id/team"
-        android:minWidth="100px"
-        android:textSize="35px"
-        android:hint="Team Number"
-        android:completionHint=" fhg "
-        android:layout_marginBottom="20dp"
-        android:layout_above="@+id/benchmarkAuto"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:inputType="number" />
+        android:layout_alignEnd="@+id/scoutButton" />
 
 </RelativeLayout>

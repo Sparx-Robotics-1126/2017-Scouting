@@ -4,6 +4,8 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+    <!-- kevin is bad -->
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
@@ -138,30 +140,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="0.92">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/ballsPerSecondBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/ballsPerSec" />
-
-        </LinearLayout>
-
         <TextView
             android:layout_width="323dp"
             android:id="@+id/typeOfShooterBenchText"
+            android:layout_weight="0.92"
             android:layout_marginEnd="20dp"
-            android:layout_height="0dp"
+            android:layout_height="40dp"
             android:textSize="25sp"
             android:layout_marginStart="10dp"
             android:textColor="@color/colorBlack"
@@ -180,6 +164,34 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/ballsPerSecondBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginEnd="20dp"
+            android:layout_height="40dp"
+            android:textSize="25sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="@string/ballsPerSec" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:inputType="numberDecimal"
+            android:ems="10"
+            android:id="@+id/ballsPerSecondBenchInput"
+            android:layout_weight="0.92"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            android:textSize="30sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
     <TextView
@@ -193,18 +205,7 @@
         android:textColor="@color/colorBlack"
         android:text="@string/ballsNumber" />
 
-        <EditText
-            android:layout_width="130dp"
-            android:layout_height="72dp"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/ballsPerSecondBenchInput"
-            android:layout_weight="0.92"
-            android:textColor="@color/colorBlack"
-            android:textAlignment="center"
-            android:textSize="30sp"/>
-
-        <EditText
+    <EditText
         android:layout_width="130dp"
         android:layout_height="72dp"
         android:inputType="number"
@@ -231,7 +232,7 @@
         android:textColor="@color/colorBlack"
         android:text="@string/cycleTime" />
 
-        <EditText
+    <EditText
         android:layout_width="130dp"
         android:layout_height="72dp"
         android:inputType="number"
@@ -595,14 +596,15 @@
         android:weightSum="1">
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="197dp"
             android:id="@+id/whereCanScoreGearsBenchText"
             android:layout_marginEnd="20dp"
-            android:layout_height="40dp"
+            android:layout_height="77dp"
             android:textSize="25sp"
             android:layout_marginStart="10dp"
             android:textColor="@color/colorBlack"
-            android:text="@string/gearsScoreWhere" />
+            android:text="@string/gearsScoreWhere"
+            android:layout_weight="0.22" />
 
 
         <CheckBox
@@ -664,14 +666,14 @@
                 android:id="@+id/radioGearRight"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Center"
+                android:text="Right"
                 android:buttonTint="@color/colorSparxRed"/>
 
             <RadioButton
                 android:id="@+id/radioGearCenter"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Right"
+                android:text="Center"
                 android:buttonTint="@color/colorSparxRed"/>
 
             <RadioButton

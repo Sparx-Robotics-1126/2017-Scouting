@@ -17,9 +17,6 @@ import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.util.List;
 
-/**
- * Created by jbass on 3/1/14.
- */
 public class BlueAlliance {
     private static final String TAG = "BlueAlliance";
     private static final String BASE_URL = "https://www.thebluealliance.com";
@@ -29,9 +26,9 @@ public class BlueAlliance {
     private static final String GET_TEAM_LIST = "/api/v2/event/{EVENT_KEY}/teams";
     private static BlueAlliance blueAlliance;
     private Context context;
-    private Ion ion;
+    private final Ion ion;
     private String versionName;
-    private DatabaseHelper dbHelper;
+    private final DatabaseHelper dbHelper;
     private BlueAlliance(Context context){
         this.context = context;
         ion = Ion.getInstance(context, TAG);
@@ -60,9 +57,8 @@ public class BlueAlliance {
         ion.cancelAll();
     }
 
-    public void loadEventList(final int year){loadEventList(year, null);}
-    public void loadEventList(final int year, final NetworkCallback callback){
-        String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", Integer.toString(year));
+    public void loadEventList(final NetworkCallback callback){
+        String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", Integer.toString(com.sparx1126.steamworks.MainScreen.COMPETITION_YEAR));
         Ion.with(context)
                 .load(request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2016:" + versionName)
@@ -93,7 +89,6 @@ public class BlueAlliance {
                 });
     }
 
-    public void loadEvent(final String eventKey){loadEvent(eventKey, null);}
     public void loadEvent(final String eventCode, final NetworkCallback callback){
         String request = (BASE_URL+GET_EVENT).replace("{EVENT_KEY}", eventCode);
         Ion.with(context)
@@ -124,7 +119,6 @@ public class BlueAlliance {
                 });
     }
 
-    public void loadMatches(final Event event){loadMatches(event, null);}
     public void loadMatches(final Event event, final NetworkCallback callback){
         String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", event.getKey());
         Ion.with(context)
@@ -156,7 +150,6 @@ public class BlueAlliance {
                 });
     }
 
-    public void loadTeams(final Event event){loadTeams(event, null);}
     public void loadTeams(final Event event, final NetworkCallback callback){
         String request = (BASE_URL+GET_TEAM_LIST).replace("{EVENT_KEY}", event.getKey());
         Ion.with(context)

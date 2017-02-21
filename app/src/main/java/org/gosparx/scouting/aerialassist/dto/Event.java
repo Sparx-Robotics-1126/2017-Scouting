@@ -4,9 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.Date;
 
-/**
- * Created by jbass on 3/1/14.
- */
 public class Event {
 
     private String key;

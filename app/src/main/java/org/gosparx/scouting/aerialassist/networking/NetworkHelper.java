@@ -5,21 +5,17 @@ import android.net.ConnectivityManager;
 
 import java.util.Date;
 
-/**
- * Created by jbass on 4/5/14.
- */
 public class NetworkHelper {
 
-    public static final long MS_IN_DAY = 86400000;
+    private static final long MS_IN_DAY = 86400000;
 
-    public static final String PREF_FILE_NAME = "NETWORK_PREFERENCES";
-    public static final String PREF_LOAD_EVENT_LIST = "LOAD_EVENT_LIST";
-    public static final String PREF_LOAD_MATCH = "LOAD_MATCH";
-    public static final String PREF_LOAD_TEAMS = "LOAD_TEAMS";
+    private static final String PREF_FILE_NAME = "NETWORK_PREFERENCES";
+    private static final String PREF_LOAD_EVENT_LIST = "LOAD_EVENT_LIST";
+    private static final String PREF_LOAD_MATCH = "LOAD_MATCH";
+    private static final String PREF_LOAD_TEAMS = "LOAD_TEAMS";
 
     public static boolean isNetworkAvailable(Context context) {
-        boolean result = ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
-        return result;
+        return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
     }
 
 
@@ -44,14 +40,14 @@ public class NetworkHelper {
         return new Date().after(new Date(timeOfLastSync + NetworkHelper.MS_IN_DAY));
     }
 
-    public static void setLoadedEventList(Context c){
+    static void setLoadedEventList(Context c){
         setPrefCurrentTime(c, PREF_LOAD_EVENT_LIST);
     }
 
-    public static void setLoadedMatchList(Context c){
+    static void setLoadedMatchList(Context c){
         setPrefCurrentTime(c, PREF_LOAD_MATCH);
     }
-    public static void setLoadedTeams(Context c){
+    static void setLoadedTeams(Context c){
         setPrefCurrentTime(c, PREF_LOAD_TEAMS);
     }
 
@@ -59,6 +55,6 @@ public class NetworkHelper {
         context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
                 .edit()
                 .putLong(pref, new Date().getTime())
-                .commit();
+                .apply();
     }
 }

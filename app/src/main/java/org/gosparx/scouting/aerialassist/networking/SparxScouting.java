@@ -18,10 +18,7 @@ import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.util.List;
 
-/**
- * Created by jbass on 3/7/14.
- */
-public class SparxScouting {
+class SparxScouting {
     private static final String TAG = "SparxScouting";
     private static final String BASE_URL = "http://scouting-2016.appspot.com";
     // hello
@@ -33,14 +30,13 @@ public class SparxScouting {
     private static final String GET_SCOUTING_BY_TEAM_EVENT = "/api/2016/v1/ScoutingData/{TEAM_KEY}/{EVENT_KEY}";
     private static final String GET_SCOUTING_BY_TEAM_EVENT_MATCH = "/api/2016/v1/ScoutingData/{TEAM_KEY}/{EVENT_KEY}/{MATCH_KEY}";
     private static final String GET_BENCHMARKING_BY_TEAM_EVENT = "/api/2016/v1/BenchmarkingData/{TEAM_KEY}/{EVENT_KEY}";
-    public static SparxScouting sparxScouting;
+    private static SparxScouting sparxScouting;
     private Context context;
-    private Ion ion;
-    private DatabaseHelper dbHelper;
+    private final DatabaseHelper dbHelper;
 
     private SparxScouting(Context context) {
         this.context = context;
-        ion = Ion.getInstance(context, TAG);
+        Ion ion = Ion.getInstance(context, TAG);
         ion.configure().setLogging(TAG, Log.DEBUG);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
         ion.configure().setGson(gson);
@@ -172,36 +168,7 @@ public class SparxScouting {
     }
 
 
-    public void getBenchmarking(Team team, Event event, final NetworkCallback callback){
-        String request = (BASE_URL + GET_BENCHMARKING_BY_TEAM_EVENT)
-                .replace("{TEAM_KEY}", team.getKey())
-                .replace("{EVENT_KEY}", event.getKey());
-        getBenchmarking(request, callback);
-    }
 
-    private void getBenchmarking(String request, final NetworkCallback callback){
-        Ion.with(context)
-                .load(request)
-                .as(new TypeToken<List<ScoutingInfo>>(){})
-                .setCallback(new FutureCallback<List<ScoutingInfo>>() {
-                    @Override
-                    public void onCompleted(Exception e, List<ScoutingInfo> result) {
-                        if (e != null) {
-                            Log.e(TAG, "Issue getting benchmarking data.", e);
-                            callback.handleFinishDownload(false);
-                            return;
-                        }
-
-                        for (ScoutingInfo sd : result) {
-                            if (dbHelper.doesBenchmarkingExist(sd))
-                                dbHelper.updateBenchmarking(sd);
-                            else
-                                dbHelper.createBenchmarking(sd);
-                        }
-                        callback.handleFinishDownload(true);
-                    }
-                });
-    }
 
     public void postAllBenchmarking(final NetworkCallback callback) {
         final List<ScoutingInfo> scoutingList = dbHelper.getAllBenchmarkingNeedingSyncing();
@@ -240,10 +207,6 @@ public class SparxScouting {
                                 Log.e(TAG, "Issue saving ScoutingInfo to Server!", e);
                                 System.out.println("Server Error");
                                 subCallback.handleFinishDownload(false);
-                            } else {
-                                dbHelper.setDoneSyncing(scouting);
-                                System.out.println("Uploading");
-                                subCallback.handleFinishDownload(true);
                             }
                         }
                     });
