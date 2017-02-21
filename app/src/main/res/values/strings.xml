@@ -55,6 +55,7 @@
     <string name="scoutingHere">Scouting Here</string>
     <string name="autoSection">Auto</string>
     <string name="crossedBase">Crossed Baseline</string>
+    <string name="driveSys"><b>Drives System: </b></string>
     <string-array name="students">
         <item>Michael Anderson</item>
         <item>Tyler Armstrong</item>
@@ -87,7 +88,7 @@
         <item>Ethen Nguyen</item>
         <item>Logan Ogden</item>
         <item>Nicolas Pietrantoni</item>
-        <item>Darwin Pray</item>
+        <item>Darwinch Pray</item>
         <item>Peyton Roemer</item>
         <item>Justin Rogers</item>
         <item>Levi Seibert</item>
