@@ -140,7 +140,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/typeOfShooterLinear" >
 
         <TextView
             android:layout_width="323dp"
@@ -166,7 +167,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/ballsPerSecondLinear" >
 
         <TextView
             android:layout_width="323dp"
@@ -194,7 +196,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/ballsPerCycleLinear">
 
     <TextView
         android:layout_width="323dp"
@@ -222,7 +225,9 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/cycleTimeLinear">
+
     <TextView
         android:layout_width="323dp"
         android:id="@+id/cycleTimeHighBenchText"
@@ -249,7 +254,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/maxShootingRangeLinear">
         <TextView
             android:layout_width="323dp"
             android:id="@+id/shootingRangeBenchText"
@@ -276,7 +282,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/prefPlaceToShootLinear">
 
         <TextView
             android:layout_width="323dp"
@@ -303,7 +310,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/accuracyHighGoalLinear">
 
         <TextView
             android:layout_width="323dp"
@@ -507,6 +515,132 @@
             android:layout_weight="1" />
     </LinearLayout>
 
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:id="@+id/whereCanScoreGearsLinear" >
+        <TextView
+            android:layout_width="197dp"
+            android:id="@+id/whereCanScoreGearsBenchText"
+            android:layout_marginEnd="20dp"
+            android:layout_height="77dp"
+            android:textSize="25sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="@string/gearsScoreWhere"
+            android:layout_weight="0.22" />
+
+
+        <CheckBox
+            android:text="Left"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.14"
+            android:id="@+id/canGearLeftBench"
+            app:buttonTint="@color/colorSparxRed"
+            style="@android:style/Widget.Material.CompoundButton.CheckBox"
+            android:textSize="25dp"
+            android:layout_margin="10dp"/>
+
+        <CheckBox
+            android:text="Center"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/canGearCenterBench"
+            android:layout_weight="0.14"
+            app:buttonTint="@color/colorSparxRed"
+            style="@android:style/Widget.Material.CompoundButton.CheckBox"
+            android:textSize="20dp"
+            android:layout_margin="10dp"/>
+
+        <CheckBox
+            android:text="Right"
+            android:layout_height="wrap_content"
+            android:id="@+id/canGearRightBench"
+            android:layout_weight="0.11"
+            android:layout_width="85dp"
+            app:buttonTint="@color/colorSparxRed"
+            style="@android:style/Widget.Material.CompoundButton.CheckBox"
+            android:layout_margin="10dp"
+            android:textSize="20dp"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/prefScoringPlaceLinear" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/preferredScoreGearsBenchText"
+            android:layout_marginEnd="20dp"
+            android:layout_height="40dp"
+            android:textSize="25sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="@string/gearsPreferred" />
+
+        <RadioGroup
+            android:id="@+id/radioPreferredGear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" >
+
+            <RadioButton
+                android:id="@+id/radioGearRight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Right"
+                android:buttonTint="@color/colorSparxRed"/>
+
+            <RadioButton
+                android:id="@+id/radioGearCenter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Center"
+                android:buttonTint="@color/colorSparxRed"/>
+
+            <RadioButton
+                android:id="@+id/radioGearLeft"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Left"
+                android:buttonTint="@color/colorSparxRed"/>
+        </RadioGroup>
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/gearCycleTimeLinear" >
+
+        <TextView
+            android:layout_width="323dp"
+            android:id="@+id/cycleTimeGearsBenchText"
+            android:layout_weight="0.92"
+            android:layout_marginEnd="20dp"
+            android:layout_height="40dp"
+            android:textSize="25sp"
+            android:layout_marginStart="10dp"
+            android:textColor="@color/colorBlack"
+            android:text="@string/cycleTime" />
+
+        <EditText
+            android:layout_width="130dp"
+            android:layout_height="72dp"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/cycleTimeGearsBenchInput"
+            android:layout_weight="0.92"
+            android:textColor="@color/colorBlack"
+            android:textAlignment="center"
+            android:textSize="30sp"/>
+    </LinearLayout>
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
@@ -591,128 +725,7 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1">
 
-        <TextView
-            android:layout_width="197dp"
-            android:id="@+id/whereCanScoreGearsBenchText"
-            android:layout_marginEnd="20dp"
-            android:layout_height="77dp"
-            android:textSize="25sp"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/colorBlack"
-            android:text="@string/gearsScoreWhere"
-            android:layout_weight="0.22" />
-
-
-        <CheckBox
-            android:text="Left"
-            android:layout_width="85dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="0.14"
-            android:id="@+id/canGearLeftBench"
-            app:buttonTint="@color/colorSparxRed"
-            style="@android:style/Widget.Material.CompoundButton.CheckBox"
-            android:textSize="25dp"
-            android:layout_margin="10dp"/>
-
-        <CheckBox
-            android:text="Center"
-            android:layout_width="85dp"
-            android:layout_height="wrap_content"
-            android:id="@+id/canGearCenterBench"
-            android:layout_weight="0.14"
-            app:buttonTint="@color/colorSparxRed"
-            style="@android:style/Widget.Material.CompoundButton.CheckBox"
-            android:textSize="20dp"
-            android:layout_margin="10dp"/>
-
-        <CheckBox
-            android:text="Right"
-            android:layout_height="wrap_content"
-            android:id="@+id/canGearRightBench"
-            android:layout_weight="0.11"
-            android:layout_width="85dp"
-            app:buttonTint="@color/colorSparxRed"
-            style="@android:style/Widget.Material.CompoundButton.CheckBox"
-            android:layout_margin="10dp"
-            android:textSize="20dp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:id="@+id/preferredScoreGearsBenchText"
-            android:layout_marginEnd="20dp"
-            android:layout_height="40dp"
-            android:textSize="25sp"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/colorBlack"
-            android:text="@string/gearsPreferred" />
-
-        <RadioGroup
-            android:id="@+id/radioPreferredGear"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" >
-
-            <RadioButton
-                android:id="@+id/radioGearRight"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Right"
-                android:buttonTint="@color/colorSparxRed"/>
-
-            <RadioButton
-                android:id="@+id/radioGearCenter"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Center"
-                android:buttonTint="@color/colorSparxRed"/>
-
-            <RadioButton
-                android:id="@+id/radioGearLeft"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Left"
-                android:buttonTint="@color/colorSparxRed"/>
-        </RadioGroup>
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <TextView
-            android:layout_width="323dp"
-            android:id="@+id/cycleTimeGearsBenchText"
-            android:layout_weight="0.92"
-            android:layout_marginEnd="20dp"
-            android:layout_height="40dp"
-            android:textSize="25sp"
-            android:layout_marginStart="10dp"
-            android:textColor="@color/colorBlack"
-            android:text="@string/cycleTime" />
-
-        <EditText
-            android:layout_width="130dp"
-            android:layout_height="72dp"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/cycleTimeGearsBenchInput"
-            android:layout_weight="0.92"
-            android:textColor="@color/colorBlack"
-            android:textAlignment="center"
-            android:textSize="30sp"/>
-    </LinearLayout>
     <!-- Begin Low Goal Section -->
 
     <TextView
@@ -755,7 +768,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/lowGoalCycleTimeLinear">
         <TextView
             android:layout_width="323dp"
             android:id="@+id/cycleTimeLowBenchText"
@@ -782,7 +796,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/lowGoalNumberOfCyclesLinear">
         <TextView
             android:layout_width="323dp"
             android:id="@+id/cycleNumberLowBenchText"
@@ -847,7 +862,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/placesCanScaleFromLinear">
 
         <TextView
             android:layout_width="323dp"
@@ -875,7 +891,8 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/prefPlaceToScaleLinear">
 
         <TextView
             android:layout_width="323dp"

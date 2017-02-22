@@ -16,6 +16,9 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import android.widget.LinearLayout;
+
+import com.google.android.gms.common.api.GoogleApiClient;
 
 import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
@@ -27,12 +30,30 @@ import java.util.Date;
 import java.util.Locale;
 
 public class BenchmarkScreen extends AppCompatActivity {
-    private static final int REQUEST_TAKE_PHOTO  = 1;
-
+    private static final int REQUEST_TAKE_PHOTO = 1;
+    private Button benchmarkAutoSwitcher;
     private ScoutingInfo currentInfo;
     private BenchmarkingData currentData;
 
     // new
+    //High Goal related Linears
+    private LinearLayout typeOfShooterLinear;
+    private LinearLayout ballsPerSecondLinear;
+    private LinearLayout ballsPerCycleLinear;
+    private LinearLayout cycleTimeLinear;
+    private LinearLayout maxShootingRangeLinear;
+    private LinearLayout prefPlaceToShootLinear;
+    private LinearLayout accuracyHighGoalLinear;
+    //Gear related Linears
+    private LinearLayout whereCanScoreGearsLinear;
+    private LinearLayout prefScoringPlaceLinear;
+    private LinearLayout gearCycleTimeLinear;
+    //Low Goal related Linears
+    private LinearLayout lowGoalCycleTimeLinear;
+    private LinearLayout lowGoalNumberOfCyclesLinear;
+    //Scaling related Linear
+    private LinearLayout placesCanScaleFromLinear;
+    private LinearLayout prefPlaceToScaleLinear;
     private EditText driveSystem;
     private EditText drivesSpeed;
     private ToggleButton canPlayDefenseBenchButton;
@@ -75,6 +96,24 @@ public class BenchmarkScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.benchmark);
 
+        typeOfShooterLinear = (LinearLayout) findViewById(R.id.typeOfShooterLinear);
+        ballsPerSecondLinear = (LinearLayout) findViewById(R.id.ballsPerSecondLinear);
+        ballsPerCycleLinear = (LinearLayout) findViewById(R.id.ballsPerCycleLinear);
+        cycleTimeLinear = (LinearLayout) findViewById(R.id.cycleTimeLinear);
+        maxShootingRangeLinear = (LinearLayout) findViewById(R.id.maxShootingRangeLinear);
+        prefPlaceToShootLinear = (LinearLayout) findViewById(R.id.prefPlaceToShootLinear);
+        accuracyHighGoalLinear = (LinearLayout) findViewById(R.id.accuracyHighGoalLinear);
+        whereCanScoreGearsLinear = (LinearLayout) findViewById(R.id.whereCanScoreGearsLinear);
+        prefScoringPlaceLinear = (LinearLayout) findViewById(R.id.prefScoringPlaceLinear);
+        gearCycleTimeLinear = (LinearLayout) findViewById(R.id.gearCycleTimeLinear);
+        lowGoalCycleTimeLinear = (LinearLayout) findViewById(R.id.lowGoalCycleTimeLinear);
+        lowGoalNumberOfCyclesLinear = (LinearLayout) findViewById(R.id.lowGoalNumberOfCyclesLinear);
+        placesCanScaleFromLinear = (LinearLayout) findViewById(R.id.placesCanScaleFromLinear);
+        prefPlaceToScaleLinear = (LinearLayout) findViewById(R.id.prefPlaceToScaleLinear);
+        hideHighGoal();
+        hideGear();
+        lowGoalHide();
+        scaleHide();
         ImageButton home_auto = (ImageButton) findViewById(R.id.home_auto);
         home_auto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +135,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         drivesSpeed = (EditText) findViewById(R.id.drivesSpeed);
         canPlayDefenseBenchButton = (ToggleButton) findViewById(R.id.canPlayDefenseBenchButton);
         abilityToShootHighGoalBenchButton = (ToggleButton) findViewById(R.id.abilityToShootHighGoalBenchButton);
+        abilityToShootHighGoalBenchButton.setOnClickListener(highGoalButtonClicked);
         typeOfShooterBenchInput = (EditText) findViewById(R.id.typeOfShooterBenchInput);
         ballsPerSecondBenchInput = (EditText) findViewById(R.id.ballsPerSecondBenchInput);
         ballsInCycleBenchInput = (EditText) findViewById(R.id.ballsInCycleBenchInput);
@@ -109,6 +149,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         pickupBallPreferredBenchInput = (EditText) findViewById(R.id.pickupBallPreferredBenchInput);
         maximumBallCapacityBenchInput = (EditText) findViewById(R.id.maximumBallCapacityBenchInput);
         canScoreGearsBenchButton = (ToggleButton) findViewById(R.id.canScoreGearsBenchButton);
+        canScoreGearsBenchButton.setOnClickListener(canGearButtonClicked);
         pickupGearFloorBenchButton = (ToggleButton) findViewById(R.id.pickupGearFloorBenchButton);
         pickupGearRetrievalBenchButton = (ToggleButton) findViewById(R.id.pickupGearRetrievalBenchButton);
         pickupGearPreferredBenchButton = (ToggleButton) findViewById(R.id.pickupGearPreferredBenchButton);
@@ -120,9 +161,11 @@ public class BenchmarkScreen extends AppCompatActivity {
         radioGearLeft = (RadioButton) findViewById(R.id.radioGearLeft);
         cycleTimeGearsBenchInput = (EditText) findViewById(R.id.cycleTimeGearsBenchInput);
         abilityToShootLowGoalBenchButton = (ToggleButton) findViewById(R.id.abilityToShootLowGoalBenchButton);
+        abilityToShootLowGoalBenchButton.setOnClickListener(lowGoalButtonClicked);
         cycleTimeLowBenchInput = (EditText) findViewById(R.id.cycleTimeLowBenchInput);
         cycleNumberLowBenchInput = (EditText) findViewById(R.id.cycleNumberLowBenchInput);
         abilityScaleBenchButton = (ToggleButton) findViewById(R.id.abilityScaleBenchButton);
+        abilityScaleBenchButton.setOnClickListener(canScaleButtonClicked);
         placesCanScaleBenchInput = (EditText) findViewById(R.id.placesCanScaleBenchInput);
         preferredPlacesScaleInput = (EditText) findViewById(R.id.preferredPlacesScaleInput);
         autoAbilitiesBench = (EditText) findViewById(R.id.autoAbilitiesBench);
@@ -211,9 +254,84 @@ public class BenchmarkScreen extends AppCompatActivity {
         currentData.setCommentsBench(commentsBench.getText().toString());
     }
 
-    void SetStringIntoTextView(TextView item, String _value){
-        if((_value != null) && !_value.isEmpty()) {
-            item.setText(_value);
+    private final View.OnClickListener highGoalButtonClicked =  new View.OnClickListener() {
+            @Override
+        public void onClick(View v) {
+            hideHighGoal();
+        }
+    };
+
+    public void hideHighGoal(){
+        if(abilityToShootInHighGoalButton.isChecked()==(false)){
+            typeOfShooterLinear.setVisibility(View.GONE);
+            ballsPerSecondLinear.setVisibility(View.GONE);
+            ballsPerCycleLinear.setVisibility(View.GONE);
+            cycleTimeLinear.setVisibility(View.GONE);
+            maxShootingRangeLinear.setVisibility(View.GONE);
+            prefPlaceToShootLinear.setVisibility(View.GONE);
+            accuracyHighGoalLinear.setVisibility(View.GONE);
+        }
+        else{
+            typeOfShooterLinear.setVisibility(View.VISIBLE);
+            ballsPerSecondLinear.setVisibility(View.VISIBLE);
+            cycleTimeLinear.setVisibility(View.VISIBLE);
+            ballsPerCycleLinear.setVisibility(View.VISIBLE);
+            maxShootingRangeLinear.setVisibility(View.VISIBLE);
+            prefPlaceToShootLinear.setVisibility(View.VISIBLE);
+            accuracyHighGoalLinear.setVisibility(View.VISIBLE);
+        }
+    }
+    private final View.OnClickListener canGearButtonClicked =  new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            hideGear();
+        }
+    };
+
+    public void hideGear(){
+        if(canScoreGearsButton.isChecked()==(false)){
+            whereCanScoreGearsLinear.setVisibility(View.GONE);
+            prefScoringPlaceLinear.setVisibility(View.GONE);
+            gearCycleTimeLinear.setVisibility(View.GONE);
+        }
+        else{
+            whereCanScoreGearsLinear.setVisibility(View.VISIBLE);
+            prefScoringPlaceLinear.setVisibility(View.VISIBLE);
+            gearCycleTimeLinear.setVisibility(View.VISIBLE);
+        }
+    }
+    private final View.OnClickListener lowGoalButtonClicked =  new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            lowGoalHide();
+        }
+    };
+    public void lowGoalHide(){
+        if(abilityToShootLowGoalBenchButton.isChecked()==(false)){
+            lowGoalCycleTimeLinear.setVisibility(View.GONE);
+            lowGoalNumberOfCyclesLinear.setVisibility(View.GONE);
+        }
+        else{
+            lowGoalCycleTimeLinear.setVisibility(View.VISIBLE);
+            lowGoalNumberOfCyclesLinear.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private final View.OnClickListener canScaleButtonClicked =  new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            scaleHide();
+        }
+    };
+
+    public void scaleHide(){
+        if(abilityScaleBenchButton.isChecked()==(false)){
+            placesCanScaleFromLinear.setVisibility(View.GONE);
+            prefPlaceToScaleLinear.setVisibility(View.GONE);
+        }
+        else{
+            placesCanScaleFromLinear.setVisibility(View.VISIBLE);
+            prefPlaceToScaleLinear.setVisibility(View.VISIBLE);
         }
     }
 
