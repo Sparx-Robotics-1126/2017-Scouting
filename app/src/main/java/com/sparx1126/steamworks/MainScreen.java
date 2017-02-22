@@ -135,6 +135,7 @@ public class MainScreen extends AppCompatActivity {
 
         settings = getSharedPreferences(PREFS_NAME, 0);
 
+
         // restore the event, name, and team
         restorePreferences();
     }
