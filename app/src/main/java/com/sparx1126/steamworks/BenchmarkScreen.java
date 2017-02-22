@@ -22,11 +22,6 @@ import android.widget.LinearLayout;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
@@ -43,11 +38,7 @@ import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetwo
 
 public class BenchmarkScreen extends AppCompatActivity {
     private static final int REQUEST_TAKE_PHOTO = 1;
-<<<<<<< HEAD
     private Button benchmarkAutoSwitcher;
-=======
-
->>>>>>> netWOOOORKIT
     private ScoutingInfo currentInfo;
     private BenchmarkingData currentData;
 
@@ -106,11 +97,6 @@ public class BenchmarkScreen extends AppCompatActivity {
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
     private Button submitTeleopBenchmark;
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,9 +159,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         preferredPlacesScaleInput = (EditText) findViewById(R.id.preferredPlacesScaleInput);
         autoAbilitiesBench = (EditText) findViewById(R.id.autoAbilitiesBench);
         commentsBench = (EditText) findViewById(R.id.commentsBench);
-
         submitTeleopBenchmark = (Button) findViewById(R.id.submitTeleopBenchmark);
-<<<<<<< HEAD
         typeOfShooterLinear = (LinearLayout) findViewById(R.id.typeOfShooterLinear);
         ballsPerSecondLinear = (LinearLayout) findViewById(R.id.ballsPerSecondLinear);
         ballsPerCycleLinear = (LinearLayout) findViewById(R.id.ballsPerCycleLinear);
@@ -190,49 +174,43 @@ public class BenchmarkScreen extends AppCompatActivity {
         lowGoalNumberOfCyclesLinear = (LinearLayout) findViewById(R.id.lowGoalNumberOfCyclesLinear);
         placesCanScaleFromLinear = (LinearLayout) findViewById(R.id.placesCanScaleFromLinear);
         prefPlaceToScaleLinear = (LinearLayout) findViewById(R.id.prefPlaceToScaleLinear);
-=======
-        submitTeleopBenchmark.setOnClickListener(submitButtonClicked);
->>>>>>> netWOOOORKIT
 
         // <o/  D
         //  |   A
         // / \  B
 
         updateScreen();
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
     }
 
     protected void onDestroy() {
         super.onDestroy();
         currentData.setDriveSystem(driveSystem.getText().toString());
         String valueAsSring = drivesSpeed.getText().toString();
-        if (!valueAsSring.isEmpty()) {
+        if(!valueAsSring.isEmpty()) {
             currentData.setDrivesSpeed(Double.parseDouble(valueAsSring));
         }
         currentData.setCanPlayDefenseBenchButton(canPlayDefenseBenchButton.isChecked());
         currentData.setAbilityToShootHighGoalBenchButton(abilityToShootHighGoalBenchButton.isChecked());
         currentData.setTypeOfShooterBenchInput(typeOfShooterBenchInput.getText().toString());
         valueAsSring = ballsPerSecondBenchInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
+        if(!valueAsSring.isEmpty()) {
             currentData.setBallsPerSecondBenchInput(Double.parseDouble(valueAsSring));
         }
         valueAsSring = ballsInCycleBenchInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
+        if(!valueAsSring.isEmpty()) {
             currentData.setBallsInCycleBenchInput(Integer.parseInt(valueAsSring));
         }
         valueAsSring = cycleTimeHighBenchInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
+        if(!valueAsSring.isEmpty()) {
             currentData.setCycleTimeHighBenchInput(Integer.parseInt(valueAsSring));
         }
         valueAsSring = shootingRangeBenchInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
+        if(!valueAsSring.isEmpty()) {
             currentData.setShootingRangeBenchInput(Double.parseDouble(valueAsSring));
         }
         currentData.setPreferredShootingLocationBenchInput(preferredShootingLocationBenchInput.getText().toString());
         valueAsSring = accuracyHighBenchInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
+        if(!valueAsSring.isEmpty()) {
             currentData.setAccuracyHighBenchInput(Double.parseDouble(valueAsSring));
         }
         currentData.setPickupBallHopperBenchButton(pickupBallHopperBenchButton.isChecked());
@@ -240,7 +218,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         currentData.setPickupBallHumanBenchButton(pickupBallHumanBenchButton.isChecked());
         currentData.setPickupBallPreferredBenchInput(pickupBallPreferredBenchInput.getText().toString());
         valueAsSring = maximumBallCapacityBenchInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
+        if(!valueAsSring.isEmpty()) {
             currentData.setMaximumBallCapacityBenchInput(Integer.parseInt(valueAsSring));
         }
         currentData.setCanScoreGearsBenchButton(canScoreGearsBenchButton.isChecked());
@@ -250,24 +228,26 @@ public class BenchmarkScreen extends AppCompatActivity {
         currentData.setCanGearLeftBench(canGearLeftBench.isChecked());
         currentData.setCanGearCenterBench(canGearCenterBench.isChecked());
         currentData.setCanGearRightBench(canGearRightBench.isChecked());
-        if (radioGearRight.isChecked()) {
+        if(radioGearRight.isChecked()) {
             currentData.setRadioPreferredGear("radioGearRight");
-        } else if (radioGearCenter.isChecked()) {
+        }
+        else if(radioGearCenter.isChecked()) {
             currentData.setRadioPreferredGear("radioGearCenter");
-        } else if (radioGearLeft.isChecked()) {
+        }
+        else if(radioGearLeft.isChecked()) {
             currentData.setRadioPreferredGear("radioGearLeft");
         }
         valueAsSring = cycleTimeGearsBenchInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
+        if(!valueAsSring.isEmpty()) {
             currentData.setCycleTimeGearsBenchInput(Integer.parseInt(valueAsSring));
         }
         currentData.setAbilityToShootLowGoalBenchButton(abilityToShootLowGoalBenchButton.isChecked());
         valueAsSring = cycleTimeLowBenchInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
+        if(!valueAsSring.isEmpty()) {
             currentData.setCycleTimeLowBenchInput(Integer.parseInt(valueAsSring));
         }
         valueAsSring = cycleNumberLowBenchInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
+        if(!valueAsSring.isEmpty()) {
             currentData.setCycleNumberLowBenchInput(Integer.parseInt(valueAsSring));
         }
         currentData.setAbilityScaleBenchButton(abilityScaleBenchButton.isChecked());
@@ -277,7 +257,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         currentData.setCommentsBench(commentsBench.getText().toString());
     }
 
-<<<<<<< HEAD
     private final View.OnClickListener highGoalButtonClicked =  new View.OnClickListener() {
             @Override
         public void onClick(View v) {
@@ -356,7 +335,9 @@ public class BenchmarkScreen extends AppCompatActivity {
         else{
             placesCanScaleFromLinear.setVisibility(View.VISIBLE);
             prefPlaceToScaleLinear.setVisibility(View.VISIBLE);
-=======
+        }
+    }
+
     private final View.OnClickListener submitButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -418,13 +399,6 @@ public class BenchmarkScreen extends AppCompatActivity {
             }
         });
         return builder.create();
-    }
-
-    void SetStringIntoTextView(TextView item, String _value) {
-        if ((_value != null) && !_value.isEmpty()) {
-            item.setText(_value);
->>>>>>> netWOOOORKIT
-        }
     }
 
     private void dispatchTakePictureIntent() {
@@ -504,8 +478,8 @@ public class BenchmarkScreen extends AppCompatActivity {
         canGearLeftBench.setChecked(currentData.isCanGearLeftBench());
         canGearCenterBench.setChecked(currentData.isCanGearCenterBench());
         canGearRightBench.setChecked(currentData.isCanGearRightBench());
-        if (currentData.getRadioPreferredGear() != null) {
-            switch (currentData.getRadioPreferredGear()) {
+        if(currentData.getRadioPreferredGear() != null) {
+            switch(currentData.getRadioPreferredGear()) {
                 case "radioGearRight":
                     radioGearRight.setChecked(true);
                     break;
@@ -546,39 +520,4 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
     }
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    public Action getIndexApiAction() {
-        Thing object = new Thing.Builder()
-                .setName("BenchmarkScreen Page") // TODO: Define a title for the content shown.
-                // TODO: Make sure this auto-generated URL is correct.
-                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-                .build();
-        return new Action.Builder(Action.TYPE_VIEW)
-                .setObject(object)
-                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-                .build();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client.connect();
-        AppIndex.AppIndexApi.start(client, getIndexApiAction());
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        AppIndex.AppIndexApi.end(client, getIndexApiAction());
-        client.disconnect();
-    }
 }
