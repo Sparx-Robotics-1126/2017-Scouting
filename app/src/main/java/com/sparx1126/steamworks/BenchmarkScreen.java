@@ -258,21 +258,35 @@ public class BenchmarkScreen extends AppCompatActivity {
 
     private void updateScreen() {
         SetStringIntoTextView(driveSystem, currentData.getDriveSystem());
-        SetStringIntoTextView(drivesSpeed, String.valueOf(currentData.getDrivesSpeed()));
+        if(currentData.getDrivesSpeed() != Double.MAX_VALUE) {
+            SetStringIntoTextView(drivesSpeed, String.valueOf(currentData.getDrivesSpeed()));
+        }
         canPlayDefenseBenchButton.setChecked(currentData.isCanPlayDefenseBenchButton());
         abilityToShootHighGoalBenchButton.setChecked(currentData.isAbilityToShootHighGoalBenchButton());
         SetStringIntoTextView(typeOfShooterBenchInput, currentData.getTypeOfShooterBenchInput());
-        SetStringIntoTextView(ballsPerSecondBenchInput, String.valueOf(currentData.getBallsPerSecondBenchInput()));
-        SetStringIntoTextView(ballsInCycleBenchInput, String.valueOf(currentData.getBallsInCycleBenchInput()));
-        SetStringIntoTextView(cycleTimeHighBenchInput, String.valueOf(currentData.getCycleTimeHighBenchInput()));
-        SetStringIntoTextView(shootingRangeBenchInput, String.valueOf(currentData.getShootingRangeBenchInput()));
+        if(currentData.getBallsPerSecondBenchInput() != Double.MAX_VALUE) {
+            SetStringIntoTextView(ballsPerSecondBenchInput, String.valueOf(currentData.getBallsPerSecondBenchInput()));
+        }
+        if(currentData.getBallsInCycleBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(ballsInCycleBenchInput, String.valueOf(currentData.getBallsInCycleBenchInput()));
+        }
+        if(currentData.getCycleTimeHighBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(cycleTimeHighBenchInput, String.valueOf(currentData.getCycleTimeHighBenchInput()));
+        }
+        if(currentData.getShootingRangeBenchInput() != Double.MAX_VALUE) {
+            SetStringIntoTextView(shootingRangeBenchInput, String.valueOf(currentData.getShootingRangeBenchInput()));
+        }
         SetStringIntoTextView(preferredShootingLocationBenchInput, currentData.getPreferredShootingLocationBenchInput());
-        SetStringIntoTextView(accuracyHighBenchInput, String.valueOf(currentData.getAccuracyHighBenchInput()));
+        if(currentData.getAccuracyHighBenchInput() != Double.MAX_VALUE) {
+            SetStringIntoTextView(accuracyHighBenchInput, String.valueOf(currentData.getAccuracyHighBenchInput()));
+        }
         pickupBallHopperBenchButton.setChecked(currentData.isPickupBallHopperBenchButton());
         pickupBallFloorBenchButton.setChecked(currentData.isPickupBallFloorBenchButton());
         pickupBallHumanBenchButton.setChecked(currentData.isPickupBallHumanBenchButton());
         SetStringIntoTextView(pickupBallPreferredBenchInput, currentData.getPickupBallPreferredBenchInput());
-        SetStringIntoTextView(maximumBallCapacityBenchInput, String.valueOf(currentData.getMaximumBallCapacityBenchInput()));
+        if(currentData.getMaximumBallCapacityBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(maximumBallCapacityBenchInput, String.valueOf(currentData.getMaximumBallCapacityBenchInput()));
+        }
         canScoreGearsBenchButton.setChecked(currentData.isCanScoreGearsBenchButton());
         pickupGearFloorBenchButton.setChecked(currentData.isPickupGearFloorBenchButton());
         pickupGearRetrievalBenchButton.setChecked(currentData.isPickupGearRetrievalBenchButton());
@@ -295,10 +309,16 @@ public class BenchmarkScreen extends AppCompatActivity {
                     break;
             }
         }
-        SetStringIntoTextView(cycleTimeGearsBenchInput, String.valueOf(currentData.getCycleTimeGearsBenchInput()));
+        if(currentData.getCycleTimeGearsBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(cycleTimeGearsBenchInput, String.valueOf(currentData.getCycleTimeGearsBenchInput()));
+        }
         abilityToShootLowGoalBenchButton.setChecked(currentData.isAbilityToShootLowGoalBenchButton());
-        SetStringIntoTextView(cycleTimeLowBenchInput, String.valueOf(currentData.getCycleTimeLowBenchInput()));
-        SetStringIntoTextView(cycleNumberLowBenchInput, String.valueOf(currentData.getCycleNumberLowBenchInput()));
+        if (currentData.getCycleTimeLowBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(cycleTimeLowBenchInput, String.valueOf(currentData.getCycleTimeLowBenchInput()));
+        }
+        if(currentData.getCycleNumberLowBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(cycleNumberLowBenchInput, String.valueOf(currentData.getCycleNumberLowBenchInput()));
+        }
         abilityScaleBenchButton.setChecked(currentData.isAbilityScaleBenchButton());
         SetStringIntoTextView(placesCanScaleBenchInput, currentData.getPlacesCanScaleBenchInput());
         SetStringIntoTextView(preferredPlacesScaleInput, currentData.getPreferredPlacesScaleInput());

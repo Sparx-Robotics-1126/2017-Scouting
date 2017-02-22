@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,7 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         }
         TextView expandedListTextView = (TextView) convertView
                 .findViewById(R.id.expandedListItem);
-        expandedListTextView.setText(expandedListText);
+        expandedListTextView.setText(Html.fromHtml(expandedListText));
         return convertView;
     }
 

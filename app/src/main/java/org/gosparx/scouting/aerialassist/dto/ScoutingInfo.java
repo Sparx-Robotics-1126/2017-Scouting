@@ -28,7 +28,7 @@ public class ScoutingInfo {
         return currentInfo;
     }
 
-    private int teamNumber;
+    private int teamNumber = Integer.MAX_VALUE;
     private String eventName;
     private String student;
     private BenchmarkingData benchmarkingData;
