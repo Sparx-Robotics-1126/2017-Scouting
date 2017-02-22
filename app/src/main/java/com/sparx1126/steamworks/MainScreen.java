@@ -58,6 +58,7 @@ public class MainScreen extends AppCompatActivity {
     private boolean teamSelected = false;
     private boolean eventFilter = true;
     private SharedPreferences settings;
+    private static final String COMPETITION_YEAR = "2017";
     private static final int COMPETITION_Threshold = 1000;
     private static final String PREFS_NAME = "Sparx-prefs";
     private static final String PREFS_SCOUTER = "scouterText";
@@ -233,7 +234,7 @@ public class MainScreen extends AppCompatActivity {
 
     private final View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
-            if (getEventName().isEmpty()) {
+            if (getEventName().isEmpty() && (event.getAction() == MotionEvent.ACTION_UP)) {
                 downloadEventSpinnerData();
             }
             return false;
@@ -354,7 +355,7 @@ public class MainScreen extends AppCompatActivity {
         if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
             final Dialog alert = createPleaseWaitDialog();
             alert.show();
-            blueAlliance.loadEventList(String.valueOf(getResources().getInteger(R.integer.competitionYear)), new NetworkCallback() {
+            blueAlliance.loadEventList(COMPETITION_YEAR, new NetworkCallback() {
                 @Override
                 public void handleFinishDownload(final boolean success) {
                     MainScreen.this.runOnUiThread(new Runnable() {

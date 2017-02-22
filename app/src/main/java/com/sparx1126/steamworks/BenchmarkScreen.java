@@ -96,24 +96,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.benchmark);
 
-        typeOfShooterLinear = (LinearLayout) findViewById(R.id.typeOfShooterLinear);
-        ballsPerSecondLinear = (LinearLayout) findViewById(R.id.ballsPerSecondLinear);
-        ballsPerCycleLinear = (LinearLayout) findViewById(R.id.ballsPerCycleLinear);
-        cycleTimeLinear = (LinearLayout) findViewById(R.id.cycleTimeLinear);
-        maxShootingRangeLinear = (LinearLayout) findViewById(R.id.maxShootingRangeLinear);
-        prefPlaceToShootLinear = (LinearLayout) findViewById(R.id.prefPlaceToShootLinear);
-        accuracyHighGoalLinear = (LinearLayout) findViewById(R.id.accuracyHighGoalLinear);
-        whereCanScoreGearsLinear = (LinearLayout) findViewById(R.id.whereCanScoreGearsLinear);
-        prefScoringPlaceLinear = (LinearLayout) findViewById(R.id.prefScoringPlaceLinear);
-        gearCycleTimeLinear = (LinearLayout) findViewById(R.id.gearCycleTimeLinear);
-        lowGoalCycleTimeLinear = (LinearLayout) findViewById(R.id.lowGoalCycleTimeLinear);
-        lowGoalNumberOfCyclesLinear = (LinearLayout) findViewById(R.id.lowGoalNumberOfCyclesLinear);
-        placesCanScaleFromLinear = (LinearLayout) findViewById(R.id.placesCanScaleFromLinear);
-        prefPlaceToScaleLinear = (LinearLayout) findViewById(R.id.prefPlaceToScaleLinear);
-        hideHighGoal();
-        hideGear();
-        lowGoalHide();
-        scaleHide();
         ImageButton home_auto = (ImageButton) findViewById(R.id.home_auto);
         home_auto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,6 +153,20 @@ public class BenchmarkScreen extends AppCompatActivity {
         autoAbilitiesBench = (EditText) findViewById(R.id.autoAbilitiesBench);
         commentsBench = (EditText) findViewById(R.id.commentsBench);
         submitTeleopBenchmark = (Button) findViewById(R.id.submitTeleopBenchmark);
+        typeOfShooterLinear = (LinearLayout) findViewById(R.id.typeOfShooterLinear);
+        ballsPerSecondLinear = (LinearLayout) findViewById(R.id.ballsPerSecondLinear);
+        ballsPerCycleLinear = (LinearLayout) findViewById(R.id.ballsPerCycleLinear);
+        cycleTimeLinear = (LinearLayout) findViewById(R.id.cycleTimeLinear);
+        maxShootingRangeLinear = (LinearLayout) findViewById(R.id.maxShootingRangeLinear);
+        prefPlaceToShootLinear = (LinearLayout) findViewById(R.id.prefPlaceToShootLinear);
+        accuracyHighGoalLinear = (LinearLayout) findViewById(R.id.accuracyHighGoalLinear);
+        whereCanScoreGearsLinear = (LinearLayout) findViewById(R.id.whereCanScoreGearsLinear);
+        prefScoringPlaceLinear = (LinearLayout) findViewById(R.id.prefScoringPlaceLinear);
+        gearCycleTimeLinear = (LinearLayout) findViewById(R.id.gearCycleTimeLinear);
+        lowGoalCycleTimeLinear = (LinearLayout) findViewById(R.id.lowGoalCycleTimeLinear);
+        lowGoalNumberOfCyclesLinear = (LinearLayout) findViewById(R.id.lowGoalNumberOfCyclesLinear);
+        placesCanScaleFromLinear = (LinearLayout) findViewById(R.id.placesCanScaleFromLinear);
+        prefPlaceToScaleLinear = (LinearLayout) findViewById(R.id.prefPlaceToScaleLinear);
 
         // <o/  D
         //  |   A
@@ -262,7 +258,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     };
 
     public void hideHighGoal(){
-        if(abilityToShootInHighGoalButton.isChecked()==(false)){
+        if(abilityToShootHighGoalBenchButton.isChecked()==(false)){
             typeOfShooterLinear.setVisibility(View.GONE);
             ballsPerSecondLinear.setVisibility(View.GONE);
             ballsPerCycleLinear.setVisibility(View.GONE);
@@ -289,7 +285,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     };
 
     public void hideGear(){
-        if(canScoreGearsButton.isChecked()==(false)){
+        if(canScoreGearsBenchButton.isChecked()==(false)){
             whereCanScoreGearsLinear.setVisibility(View.GONE);
             prefScoringPlaceLinear.setVisibility(View.GONE);
             gearCycleTimeLinear.setVisibility(View.GONE);
@@ -442,6 +438,16 @@ public class BenchmarkScreen extends AppCompatActivity {
         SetStringIntoTextView(preferredPlacesScaleInput, currentData.getPreferredPlacesScaleInput());
         SetStringIntoTextView(autoAbilitiesBench, currentData.getAutoAbilitiesBench());
         SetStringIntoTextView(commentsBench, currentData.getCommentsBench());
+        hideHighGoal();
+        hideGear();
+        lowGoalHide();
+        scaleHide();
+    }
+
+    void SetStringIntoTextView(TextView item, String _value){
+        if((_value != null) && !_value.isEmpty()) {
+            item.setText(_value);
+        }
     }
 
 }
