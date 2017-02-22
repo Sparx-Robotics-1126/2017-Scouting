@@ -1018,7 +1018,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{scouting.getTeamKey(), scouting.getEventKey(), scouting.getMatchKey(), scouting.getNameOfScouter()});
     }
 
-
     // returns a ContentValues (for saving to the database) containing the values from the given ScoutingInfo object.
     private ContentValues mapBenchmarking(ScoutingInfo scouting){
         ContentValues values = new ContentValues();
