@@ -1,4 +1,5 @@
 <resources>
+    <string name="uploading_data">Uploading data</string>
     <string name="app_name">SteamWorks</string>
     <string name="cancel">Cancel</string>
     <string name="downloading_data">Downloading data</string>

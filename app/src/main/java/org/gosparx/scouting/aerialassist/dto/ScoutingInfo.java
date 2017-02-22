@@ -28,6 +28,10 @@ public class ScoutingInfo {
         return currentInfo;
     }
 
+    public static synchronized Map<Integer, ScoutingInfo> getInfoMap(){
+        return scoutingInfoMap;
+    }
+
     private int teamNumber = Integer.MAX_VALUE;
     private String eventName;
     private String student;
