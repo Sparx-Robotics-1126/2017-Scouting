@@ -40,7 +40,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_TEAMS = "teams";
     private static final String TABLE_E2T = "events_to_teams";
     private static final String TABLE_MATCHES = "matches";
-    private static final String TABLE_SCOUTING = "scouting";
+    private static final String TABLE_SCOUTING = "scouting_screen";
     private static final String TABLE_BENCHMARKING = "benchmarking";
 
     // Events Column Names

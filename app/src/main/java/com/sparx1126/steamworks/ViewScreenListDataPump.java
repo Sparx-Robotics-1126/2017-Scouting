@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class ExpandableListDataPump {
+public class ViewScreenListDataPump {
     public static HashMap<String, List<String>> getData() {
         HashMap<String, List<String> > expandableListDetail = new HashMap<String, List<String>>();
 
@@ -69,7 +69,7 @@ public class ExpandableListDataPump {
         gears.add("<font color=\"black\"><b>Can Score Gears: </b></font>"  + benchmarkingData.isCanScoreGearsBenchButton());
         gears.add("<font color=\"black\"><b>Can get gears from floor: </b></font>"  + benchmarkingData.isPickupGearFloorBenchButton());
         gears.add("<font color=\"black\"><b>Can get gears from retrieval: </b></font>" + benchmarkingData.isPickupGearRetrievalBenchButton());
-        gears.add("<font color=\"black\"><b>Prefers to get gears from retrieval: </b></font>"  + benchmarkingData.isPickupGearPreferredBenchButton());
+        gears.add("<font color=\"black\"><b>Prefers to get gears from retrieval: </b></font>"  + benchmarkingData.getRadioPreferredGear());
         gears.add("<font color=\"black\"><b>Can score gears left: </b></font>" + benchmarkingData.isCanGearLeftBench());
         String cycleTimeGearsBenchInput="";
         if(benchmarkingData.getCycleTimeGearsBenchInput() != Integer.MAX_VALUE) {

@@ -20,8 +20,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.LinearLayout;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-
 import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
@@ -38,29 +36,9 @@ import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetwo
 
 public class BenchmarkScreen extends AppCompatActivity {
     private static final int REQUEST_TAKE_PHOTO = 1;
-    private Button benchmarkAutoSwitcher;
     private ScoutingInfo currentInfo;
     private BenchmarkingData currentData;
 
-    // new
-    //High Goal related Linears
-    private LinearLayout typeOfShooterLinear;
-    private LinearLayout ballsPerSecondLinear;
-    private LinearLayout ballsPerCycleLinear;
-    private LinearLayout cycleTimeLinear;
-    private LinearLayout maxShootingRangeLinear;
-    private LinearLayout prefPlaceToShootLinear;
-    private LinearLayout accuracyHighGoalLinear;
-    //Gear related Linears
-    private LinearLayout whereCanScoreGearsLinear;
-    private LinearLayout prefScoringPlaceLinear;
-    private LinearLayout gearCycleTimeLinear;
-    //Low Goal related Linears
-    private LinearLayout lowGoalCycleTimeLinear;
-    private LinearLayout lowGoalNumberOfCyclesLinear;
-    //Scaling related Linear
-    private LinearLayout placesCanScaleFromLinear;
-    private LinearLayout prefPlaceToScaleLinear;
     private EditText driveSystem;
     private EditText drivesSpeed;
     private ToggleButton canPlayDefenseBenchButton;
@@ -80,7 +58,8 @@ public class BenchmarkScreen extends AppCompatActivity {
     private ToggleButton canScoreGearsBenchButton;
     private ToggleButton pickupGearFloorBenchButton;
     private ToggleButton pickupGearRetrievalBenchButton;
-    private ToggleButton pickupGearPreferredBenchButton;
+    private RadioButton radioFloor;
+    private RadioButton radioZone;
     private CheckBox canGearLeftBench;
     private CheckBox canGearCenterBench;
     private CheckBox canGearRightBench;
@@ -97,13 +76,32 @@ public class BenchmarkScreen extends AppCompatActivity {
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
     private Button submitTeleopBenchmark;
+    // new
+    //High Goal related Linears
+    private LinearLayout typeOfShooterLinear;
+    private LinearLayout ballsPerSecondLinear;
+    private LinearLayout ballsPerCycleLinear;
+    private LinearLayout cycleTimeLinear;
+    private LinearLayout maxShootingRangeLinear;
+    private LinearLayout prefPlaceToShootLinear;
+    private LinearLayout accuracyHighGoalLinear;
+    //Gear related Linears
+    private LinearLayout whereCanScoreGearsLinear;
+    private LinearLayout prefScoringPlaceLinear;
+    private LinearLayout gearCycleTimeLinear;
+    //Low Goal related Linears
+    private LinearLayout lowGoalCycleTimeLinear;
+    private LinearLayout lowGoalNumberOfCyclesLinear;
+    //Scaling related Linear
+    private LinearLayout placesCanScaleFromLinear;
+    private LinearLayout prefPlaceToScaleLinear;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.benchmark);
+        setContentView(R.layout.benchmark_screen);
 
-        ImageButton home_auto = (ImageButton) findViewById(R.id.home_auto);
+        ImageButton home_auto = (ImageButton) findViewById(R.id.home_benchmark);
         home_auto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,7 +139,8 @@ public class BenchmarkScreen extends AppCompatActivity {
         canScoreGearsBenchButton.setOnClickListener(canGearButtonClicked);
         pickupGearFloorBenchButton = (ToggleButton) findViewById(R.id.pickupGearFloorBenchButton);
         pickupGearRetrievalBenchButton = (ToggleButton) findViewById(R.id.pickupGearRetrievalBenchButton);
-        pickupGearPreferredBenchButton = (ToggleButton) findViewById(R.id.pickupGearPreferredBenchButton);
+        radioFloor = (RadioButton) findViewById(R.id.radioFloor);
+        radioZone = (RadioButton) findViewById(R.id.radioZone);
         canGearLeftBench = (CheckBox) findViewById(R.id.canGearLeftBench);
         canGearCenterBench = (CheckBox) findViewById(R.id.canGearCenterBench);
         canGearRightBench = (CheckBox) findViewById(R.id.canGearRightBench);
@@ -160,6 +159,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         autoAbilitiesBench = (EditText) findViewById(R.id.autoAbilitiesBench);
         commentsBench = (EditText) findViewById(R.id.commentsBench);
         submitTeleopBenchmark = (Button) findViewById(R.id.submitTeleopBenchmark);
+        submitTeleopBenchmark.setOnClickListener(submitButtonClicked);
         typeOfShooterLinear = (LinearLayout) findViewById(R.id.typeOfShooterLinear);
         ballsPerSecondLinear = (LinearLayout) findViewById(R.id.ballsPerSecondLinear);
         ballsPerCycleLinear = (LinearLayout) findViewById(R.id.ballsPerCycleLinear);
@@ -224,7 +224,12 @@ public class BenchmarkScreen extends AppCompatActivity {
         currentData.setCanScoreGearsBenchButton(canScoreGearsBenchButton.isChecked());
         currentData.setPickupGearFloorBenchButton(pickupGearFloorBenchButton.isChecked());
         currentData.setPickupGearRetrievalBenchButton(pickupGearRetrievalBenchButton.isChecked());
-        currentData.setPickupGearPreferredBenchButton(pickupGearPreferredBenchButton.isChecked());
+        if(radioFloor.isChecked()) {
+            currentData.setPickupGearPreferred("radioFloor");
+        }
+        else if(radioZone.isChecked()) {
+            currentData.setPickupGearPreferred("radioZone");
+        }
         currentData.setCanGearLeftBench(canGearLeftBench.isChecked());
         currentData.setCanGearCenterBench(canGearCenterBench.isChecked());
         currentData.setCanGearRightBench(canGearRightBench.isChecked());
@@ -257,12 +262,104 @@ public class BenchmarkScreen extends AppCompatActivity {
         currentData.setCommentsBench(commentsBench.getText().toString());
     }
 
+    private void updateScreen() {
+        SetStringIntoTextView(driveSystem, currentData.getDriveSystem());
+        if(currentData.getDrivesSpeed() != Double.MAX_VALUE) {
+            SetStringIntoTextView(drivesSpeed, String.valueOf(currentData.getDrivesSpeed()));
+        }
+        canPlayDefenseBenchButton.setChecked(currentData.isCanPlayDefenseBenchButton());
+        abilityToShootHighGoalBenchButton.setChecked(currentData.isAbilityToShootHighGoalBenchButton());
+        SetStringIntoTextView(typeOfShooterBenchInput, currentData.getTypeOfShooterBenchInput());
+        if(currentData.getBallsPerSecondBenchInput() != Double.MAX_VALUE) {
+            SetStringIntoTextView(ballsPerSecondBenchInput, String.valueOf(currentData.getBallsPerSecondBenchInput()));
+        }
+        if(currentData.getBallsInCycleBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(ballsInCycleBenchInput, String.valueOf(currentData.getBallsInCycleBenchInput()));
+        }
+        if(currentData.getCycleTimeHighBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(cycleTimeHighBenchInput, String.valueOf(currentData.getCycleTimeHighBenchInput()));
+        }
+        if(currentData.getShootingRangeBenchInput() != Double.MAX_VALUE) {
+            SetStringIntoTextView(shootingRangeBenchInput, String.valueOf(currentData.getShootingRangeBenchInput()));
+        }
+        SetStringIntoTextView(preferredShootingLocationBenchInput, currentData.getPreferredShootingLocationBenchInput());
+        if(currentData.getAccuracyHighBenchInput() != Double.MAX_VALUE) {
+            SetStringIntoTextView(accuracyHighBenchInput, String.valueOf(currentData.getAccuracyHighBenchInput()));
+        }
+        pickupBallHopperBenchButton.setChecked(currentData.isPickupBallHopperBenchButton());
+        pickupBallFloorBenchButton.setChecked(currentData.isPickupBallFloorBenchButton());
+        pickupBallHumanBenchButton.setChecked(currentData.isPickupBallHumanBenchButton());
+        SetStringIntoTextView(pickupBallPreferredBenchInput, currentData.getPickupBallPreferredBenchInput());
+        if(currentData.getMaximumBallCapacityBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(maximumBallCapacityBenchInput, String.valueOf(currentData.getMaximumBallCapacityBenchInput()));
+        }
+        canScoreGearsBenchButton.setChecked(currentData.isCanScoreGearsBenchButton());
+        pickupGearFloorBenchButton.setChecked(currentData.isPickupGearFloorBenchButton());
+        pickupGearRetrievalBenchButton.setChecked(currentData.isPickupGearRetrievalBenchButton());
+        if(currentData.getPickupGearPreferred() != null) {
+            switch(currentData.getPickupGearPreferred()) {
+                case "radioFloor":
+                    radioFloor.setChecked(true);
+                    break;
+                case "radioZone":
+                    radioZone.setChecked(true);
+                    break;
+                default:
+                    break;
+            }
+        }
+        canGearLeftBench.setChecked(currentData.isCanGearLeftBench());
+        canGearCenterBench.setChecked(currentData.isCanGearCenterBench());
+        canGearRightBench.setChecked(currentData.isCanGearRightBench());
+        if(currentData.getRadioPreferredGear() != null) {
+            switch(currentData.getRadioPreferredGear()) {
+                case "radioGearRight":
+                    radioGearRight.setChecked(true);
+                    break;
+                case "radioGearCenter":
+                    radioGearCenter.setChecked(true);
+                    break;
+                case "radioGearLeft":
+                    radioGearLeft.setChecked(true);
+                    break;
+                default:
+                    break;
+            }
+        }
+        if(currentData.getCycleTimeGearsBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(cycleTimeGearsBenchInput, String.valueOf(currentData.getCycleTimeGearsBenchInput()));
+        }
+        abilityToShootLowGoalBenchButton.setChecked(currentData.isAbilityToShootLowGoalBenchButton());
+        if (currentData.getCycleTimeLowBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(cycleTimeLowBenchInput, String.valueOf(currentData.getCycleTimeLowBenchInput()));
+        }
+        if(currentData.getCycleNumberLowBenchInput() != Integer.MAX_VALUE) {
+            SetStringIntoTextView(cycleNumberLowBenchInput, String.valueOf(currentData.getCycleNumberLowBenchInput()));
+        }
+        abilityScaleBenchButton.setChecked(currentData.isAbilityScaleBenchButton());
+        SetStringIntoTextView(placesCanScaleBenchInput, currentData.getPlacesCanScaleBenchInput());
+        SetStringIntoTextView(preferredPlacesScaleInput, currentData.getPreferredPlacesScaleInput());
+        SetStringIntoTextView(autoAbilitiesBench, currentData.getAutoAbilitiesBench());
+        SetStringIntoTextView(commentsBench, currentData.getCommentsBench());
+        hideHighGoal();
+        hideGear();
+        lowGoalHide();
+        scaleHide();
+    }
+
+    void SetStringIntoTextView(TextView item, String _value){
+        if((_value != null) && !_value.isEmpty()) {
+            item.setText(_value);
+        }
+    }
+
     private final View.OnClickListener highGoalButtonClicked =  new View.OnClickListener() {
             @Override
         public void onClick(View v) {
             hideHighGoal();
         }
     };
+
 
     public void hideHighGoal(){
         if(abilityToShootHighGoalBenchButton.isChecked()==(false)){
@@ -439,85 +536,4 @@ public class BenchmarkScreen extends AppCompatActivity {
     private void cameraButton() {
         dispatchTakePictureIntent();
     }
-
-    private void updateScreen() {
-        SetStringIntoTextView(driveSystem, currentData.getDriveSystem());
-        if(currentData.getDrivesSpeed() != Double.MAX_VALUE) {
-            SetStringIntoTextView(drivesSpeed, String.valueOf(currentData.getDrivesSpeed()));
-        }
-        canPlayDefenseBenchButton.setChecked(currentData.isCanPlayDefenseBenchButton());
-        abilityToShootHighGoalBenchButton.setChecked(currentData.isAbilityToShootHighGoalBenchButton());
-        SetStringIntoTextView(typeOfShooterBenchInput, currentData.getTypeOfShooterBenchInput());
-        if(currentData.getBallsPerSecondBenchInput() != Double.MAX_VALUE) {
-            SetStringIntoTextView(ballsPerSecondBenchInput, String.valueOf(currentData.getBallsPerSecondBenchInput()));
-        }
-        if(currentData.getBallsInCycleBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(ballsInCycleBenchInput, String.valueOf(currentData.getBallsInCycleBenchInput()));
-        }
-        if(currentData.getCycleTimeHighBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(cycleTimeHighBenchInput, String.valueOf(currentData.getCycleTimeHighBenchInput()));
-        }
-        if(currentData.getShootingRangeBenchInput() != Double.MAX_VALUE) {
-            SetStringIntoTextView(shootingRangeBenchInput, String.valueOf(currentData.getShootingRangeBenchInput()));
-        }
-        SetStringIntoTextView(preferredShootingLocationBenchInput, currentData.getPreferredShootingLocationBenchInput());
-        if(currentData.getAccuracyHighBenchInput() != Double.MAX_VALUE) {
-            SetStringIntoTextView(accuracyHighBenchInput, String.valueOf(currentData.getAccuracyHighBenchInput()));
-        }
-        pickupBallHopperBenchButton.setChecked(currentData.isPickupBallHopperBenchButton());
-        pickupBallFloorBenchButton.setChecked(currentData.isPickupBallFloorBenchButton());
-        pickupBallHumanBenchButton.setChecked(currentData.isPickupBallHumanBenchButton());
-        SetStringIntoTextView(pickupBallPreferredBenchInput, currentData.getPickupBallPreferredBenchInput());
-        if(currentData.getMaximumBallCapacityBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(maximumBallCapacityBenchInput, String.valueOf(currentData.getMaximumBallCapacityBenchInput()));
-        }
-        canScoreGearsBenchButton.setChecked(currentData.isCanScoreGearsBenchButton());
-        pickupGearFloorBenchButton.setChecked(currentData.isPickupGearFloorBenchButton());
-        pickupGearRetrievalBenchButton.setChecked(currentData.isPickupGearRetrievalBenchButton());
-        pickupGearPreferredBenchButton.setChecked(currentData.isPickupGearPreferredBenchButton());
-        canGearLeftBench.setChecked(currentData.isCanGearLeftBench());
-        canGearCenterBench.setChecked(currentData.isCanGearCenterBench());
-        canGearRightBench.setChecked(currentData.isCanGearRightBench());
-        if(currentData.getRadioPreferredGear() != null) {
-            switch(currentData.getRadioPreferredGear()) {
-                case "radioGearRight":
-                    radioGearRight.setChecked(true);
-                    break;
-                case "radioGearCenter":
-                    radioGearCenter.setChecked(true);
-                    break;
-                case "radioGearLeft":
-                    radioGearLeft.setChecked(true);
-                    break;
-                default:
-                    break;
-            }
-        }
-        if(currentData.getCycleTimeGearsBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(cycleTimeGearsBenchInput, String.valueOf(currentData.getCycleTimeGearsBenchInput()));
-        }
-        abilityToShootLowGoalBenchButton.setChecked(currentData.isAbilityToShootLowGoalBenchButton());
-        if (currentData.getCycleTimeLowBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(cycleTimeLowBenchInput, String.valueOf(currentData.getCycleTimeLowBenchInput()));
-        }
-        if(currentData.getCycleNumberLowBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(cycleNumberLowBenchInput, String.valueOf(currentData.getCycleNumberLowBenchInput()));
-        }
-        abilityScaleBenchButton.setChecked(currentData.isAbilityScaleBenchButton());
-        SetStringIntoTextView(placesCanScaleBenchInput, currentData.getPlacesCanScaleBenchInput());
-        SetStringIntoTextView(preferredPlacesScaleInput, currentData.getPreferredPlacesScaleInput());
-        SetStringIntoTextView(autoAbilitiesBench, currentData.getAutoAbilitiesBench());
-        SetStringIntoTextView(commentsBench, currentData.getCommentsBench());
-        hideHighGoal();
-        hideGear();
-        lowGoalHide();
-        scaleHide();
-    }
-
-    void SetStringIntoTextView(TextView item, String _value){
-        if((_value != null) && !_value.isEmpty()) {
-            item.setText(_value);
-        }
-    }
-
 }

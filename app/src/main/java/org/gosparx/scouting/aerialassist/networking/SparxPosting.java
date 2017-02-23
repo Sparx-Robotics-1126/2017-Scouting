@@ -22,7 +22,7 @@ import java.util.Map;
 
 public class SparxPosting {
     private static final String TAG = "SparxPosting";
-    private static final String BASE_URL = "http://scouting-2016.appspot.com";
+    private static final String BASE_URL = "http://scouting_screen-2016.appspot.com";
     private static final String POST_SCOUTING = "/api/2016/v1/ScoutingData";
     private static final String POST_BENCHMARKING = "/api/2016/v1/BenchmarkingData";
     private static final String GET_SCOUTING_BY_TEAM = "/api/20165/v1/ScoutingData/{TEAM_KEY}";
@@ -124,7 +124,7 @@ public class SparxPosting {
                     @Override
                     public void onCompleted(Exception e, List<Scouting> result) {
                         if (e != null) {
-                            Log.e(TAG, "Issue getting scouting data.", e);
+                            Log.e(TAG, "Issue getting scouting_screen data.", e);
                             callback.handleFinishDownload(false);
                             return;
                         }
@@ -149,7 +149,7 @@ public class SparxPosting {
                     @Override
                     public void onCompleted(Exception e, List<Scouting> result) {
                         if (e != null) {
-                            Log.e(TAG, "Issue getting scouting data.", e);
+                            Log.e(TAG, "Issue getting scouting_screen data.", e);
                             callback.handleFinishDownload(false);
                             return;
                         }
@@ -164,7 +164,7 @@ public class SparxPosting {
                     }
                 });
     }
-    
+
     public void postAllBenchmarking(final NetworkCallback callback) {
         final Map<Integer, ScoutingInfo> scoutingInfoMap = ScoutingInfo.getInfoMap();
         String request = (BASE_URL + POST_BENCHMARKING);
