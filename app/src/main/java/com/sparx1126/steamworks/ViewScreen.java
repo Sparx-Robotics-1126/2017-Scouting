@@ -19,7 +19,7 @@ import static com.sparx1126.steamworks.R.layout.view_screen;
  */
 
 public class ViewScreen extends AppCompatActivity {
-    ImageButton home_view;
+    ImageButton home;
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
@@ -29,8 +29,8 @@ public class ViewScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(view_screen);
-        home_view = (ImageButton)findViewById(R.id.home_view);
-        home_view.setOnClickListener(new View.OnClickListener() {
+        home = (ImageButton)findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

@@ -101,8 +101,8 @@ public class BenchmarkScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.benchmark_screen);
 
-        ImageButton home_auto = (ImageButton) findViewById(R.id.home_benchmark);
-        home_auto.setOnClickListener(new View.OnClickListener() {
+        ImageButton home = (ImageButton) findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();

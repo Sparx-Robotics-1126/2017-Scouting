@@ -1,1073 +1,475 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/scrollView01"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    style="@style/Screen">
 
     <!-- kevin is bad -->
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1">
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="122dp">
+        <ImageButton android:id="@+id/home"
+            style="@style/HomeButton"/>
 
-            <ImageButton
-                app:srcCompat="@drawable/ic_home_black_24dp"
-                android:id="@+id/home_benchmark"
-                android:layout_weight="0.14"
-                android:tint="@color/colorWhite"
-                android:backgroundTint="@color/colorSparxRed"
-                android:layout_height="110dp"
-                android:layout_marginTop="5dp"
-                android:minWidth="100dp"
-                android:maxWidth="100dp"
-                android:layout_width="0dp"
-                android:contentDescription="@string/home"/>
-
-        </LinearLayout>
-        <Button
-            android:text="@string/camera"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+        <Button android:text="@string/camera"
             android:id="@+id/cameraButton"
-            android:backgroundTint="@color/colorSparxRed"
-            android:textColor="@color/colorWhite"/>
+            style="@style/BigButton"/>
+
         <!-- Begin Drives Section -->
-        <TextView
-            android:text="@string/drives"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/drivesHeadlineBench"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="50sp"
-            android:layout_marginBottom="10dp" />
+        <TextView android:text="@string/drives"
+            style="@style/HeaderText" />
 
-        <EditText
-            android:layout_width="match_parent"
-            android:ems="10"
-            android:id="@+id/drivesSystem"
+        <EditText android:id="@+id/drivesSystem"
             android:hint="@string/drivesTypeHint"
-            android:textSize="25sp"
-            android:layout_height="70dp"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="0dp"
-            android:inputType="text" />
+            android:inputType="text"
+            style="@style/LongEditText"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:inputType="numberDecimal"
-            android:ems="10"
-            android:id="@+id/drivesSpeed"
+        <EditText android:id="@+id/drivesSpeed"
             android:hint="@string/drivesSpeedHint"
-            android:textSize="25sp"
-            android:layout_margin="10dp"
-            android:layout_marginTop="0dp" />
+            android:inputType="numberDecimal"
+            style="@style/LongEditText"/>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="70dp">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/canPlayDefenseBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/defenseCanPlay" />
+            <TextView android:labelFor="@+id/canPlayDefenseBenchButton"
+                android:text="@string/defenseCanPlay"
+                style="@style/NormalTextView"/>
 
-            <ToggleButton
-                android:text="@string/toggleButton"
-                android:layout_height="72dp"
-                android:id="@+id/canPlayDefenseBenchButton"
-                android:layout_width="130dp"
-                android:textOff="@string/no"
-                android:textOn="@string/yes"
-                android:backgroundTint="@color/colorSparxRed"
-                android:textColor="@color/colorWhite"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
+            <ToggleButton android:id="@+id/canPlayDefenseBenchButton"
+                style="@style/YesNoToggle"/>
+
         </LinearLayout>
-        <!-- Begin high goal Section -->
-        <TextView
-            android:text="@string/highGoal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/highHeadlineBench"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="50sp"
-            android:layout_marginBottom="10dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <!-- Begin high goal Section -->
+        <TextView android:id="@+id/highHeadlineBench"
+            android:text="@string/highGoal"
+            style="@style/HeaderText"/>
+
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/abilityToShootHighGoalBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/highGoalAbility" />
+            <TextView android:labelFor="@+id/abilityToShootHighGoalBenchButton"
+                android:text="@string/highGoalAbility"
+                style="@style/NormalTextView"/>
 
-            <ToggleButton
-                android:text="@string/toggleButton"
-                android:layout_height="72dp"
-                android:id="@+id/abilityToShootHighGoalBenchButton"
-                android:layout_width="130dp"
-                android:textOff="@string/no"
-                android:textOn="@string/yes"
-                android:backgroundTint="@color/colorSparxRed"
-                android:textColor="@color/colorWhite"
-                android:layout_weight="1" />
+            <ToggleButton android:id="@+id/abilityToShootHighGoalBenchButton"
+                style="@style/YesNoToggle"/>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/typeOfShooterLinear" >
+            android:id="@+id/typeOfShooterLinear">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/typeOfShooterBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/shooterType" />
+            <TextView android:labelFor="@+id/typeOfShooterBenchInput"
+                android:text="@string/shooterType"
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:ems="10"
-                android:id="@+id/typeOfShooterBenchInput"
-                android:layout_weight="0.92"
-                android:inputType="text" />
+            <EditText android:id="@+id/typeOfShooterBenchInput"
+                android:inputType="text"
+                style="@style/ShortEditText" />
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/ballsPerSecondLinear" >
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/ballsPerSecondBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/ballsPerSec" />
+            <TextView android:labelFor="@+id/ballsPerSecondBenchInput"
+                android:text="@string/ballsPerSec"
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
+            <EditText android:id="@+id/ballsPerSecondBenchInput"
                 android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/ballsPerSecondBenchInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
+                style="@style/ShortEditText"/>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/ballsPerCycleLinear">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/ballsInACycleBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/ballsNumber" />
+            <TextView android:labelFor="@+id/ballsInCycleBenchInput"
+                android:text="@string/ballsNumber"
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
+            <EditText android:id="@+id/ballsInCycleBenchInput"
                 android:inputType="number"
-                android:ems="10"
-                android:id="@+id/ballsInCycleBenchInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
+                style="@style/ShortEditText"/>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/cycleTimeLinear">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/cycleTimeHighBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/cycleTime" />
+            <TextView android:labelFor="@+id/cycleTimeHighBenchInput"
+                android:text="@string/cycleTime"
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
+            <EditText android:id="@+id/cycleTimeHighBenchInput"
                 android:inputType="number"
-                android:ems="10"
-                android:id="@+id/cycleTimeHighBenchInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
+                style="@style/ShortEditText"/>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/maxShootingRangeLinear">
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/shootingRangeBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/shootRange" />
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:ems="10"
-                android:id="@+id/shootingRangeBenchInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"
-                android:inputType="numberDecimal" />
+            <TextView android:labelFor="@+id/shootingRangeBenchInput"
+                android:text="@string/shootRange"
+                style="@style/NormalTextView"/>
+
+            <EditText android:id="@+id/shootingRangeBenchInput"
+                android:inputType="numberDecimal"
+                style="@style/ShortEditText"/>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/prefPlaceToShootLinear">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/preferredShootingLocationBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/shootPreferred" />
+            <TextView android:labelFor="@+id/preferredShootingLocationBenchInput"
+                android:text="@string/shootPreferred"
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:ems="10"
-                android:id="@+id/preferredShootingLocationBenchInput"
-                android:layout_weight="0.92"
-                android:inputType="textMultiLine" />
+            <EditText android:id="@+id/preferredShootingLocationBenchInput"
+                style="@style/MultiShortEditText"/>
 
         </LinearLayout>
 
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/accuracyHighGoalLinear">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/accuracyHighBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/highGoalAccuracy" />
+            <TextView android:labelFor="@+id/accuracyHighBenchInput"
+                android:text="@string/highGoalAccuracy"
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
+            <EditText android:id="@+id/accuracyHighBenchInput"
                 android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/accuracyHighBenchInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
+                style="@style/ShortEditText"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/pickupBallHopperBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/ballsHopper" />
+            <TextView android:labelFor="@+id/pickupBallHopperBenchButton"
+                android:text="@string/ballsHopper"
+                style="@style/NormalTextView"/>
 
-            <ToggleButton
-                android:text="@string/toggleButton"
-                android:layout_height="72dp"
-                android:id="@+id/pickupBallHopperBenchButton"
-                android:layout_width="130dp"
-                android:textOff="@string/no"
-                android:textOn="@string/yes"
-                android:backgroundTint="@color/colorSparxRed"
-                android:textColor="@color/colorWhite"
-                android:layout_weight="1" />
+            <ToggleButton android:id="@+id/pickupBallHopperBenchButton"
+                style="@style/YesNoToggle"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/pickupBallFloorBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/ballsFloor"/>
+            <TextView android:labelFor="@+id/pickupBallFloorBenchButton"
+                android:text="@string/ballsFloor"
+                style="@style/NormalTextView"/>
 
-            <ToggleButton
-                android:text="@string/toggleButton"
-                android:layout_height="72dp"
-                android:id="@+id/pickupBallFloorBenchButton"
-                android:layout_width="130dp"
-                android:textOff="@string/no"
-                android:textOn="@string/yes"
-                android:backgroundTint="@color/colorSparxRed"
-                android:textColor="@color/colorWhite"
-                android:layout_weight="1" />
+            <ToggleButton android:id="@+id/pickupBallFloorBenchButton"
+                style="@style/YesNoToggle"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/pickupBallHumanBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/ballsHuman" />
+            <TextView android:labelFor="@+id/pickupBallHumanBenchButton"
+                android:text="@string/ballsHuman"
+                style="@style/NormalTextView"/>
 
-            <ToggleButton
-                android:text="@string/toggleButton"
-                android:layout_height="72dp"
-                android:id="@+id/pickupBallHumanBenchButton"
-                android:layout_width="130dp"
-                android:textOff="@string/no"
-                android:textOn="@string/yes"
-                android:backgroundTint="@color/colorSparxRed"
-                android:textColor="@color/colorWhite"
-                android:layout_weight="1" />
+            <ToggleButton android:id="@+id/pickupBallHumanBenchButton"
+                style="@style/YesNoToggle"/>
         </LinearLayout>
 
-
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/pickupBallPreferredBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/ballRetrievalPreferred" />
+            <TextView android:labelFor="@+id/pickupBallPreferredBenchInput"
+                android:text="@string/ballRetrievalPreferred"
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
+            <EditText android:id="@+id/pickupBallPreferredBenchInput"
                 android:inputType="text"
-                android:ems="10"
-                android:id="@+id/pickupBallPreferredBenchInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
+                style="@style/ShortEditText"/>
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/maximumBallCapacityBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/ballCapacity" />
+            <TextView android:labelFor="@+id/maximumBallCapacityBenchInput"
+                android:text="@string/ballCapacity"
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
+            <EditText android:id="@+id/maximumBallCapacityBenchInput"
                 android:inputType="number"
-                android:ems="10"
-                android:id="@+id/maximumBallCapacityBenchInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
+                style="@style/ShortEditText"/>
         </LinearLayout>
 
         <!--Begin Gears Section -->
         <TextView
             android:text="@string/gears"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/gearsHeadlineBench"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="50sp"
-            android:layout_marginBottom="10dp" />
+            style="@style/HeaderText"/>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/canScoreGearsBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/gearsScore" />
+            <TextView android:labelFor="@+id/canScoreGearsBenchButton"
+                android:text="@string/gearsScore"
+                style="@style/NormalTextView"/>
 
-            <ToggleButton
-                android:text="@string/toggleButton"
-                android:layout_height="72dp"
-                android:id="@+id/canScoreGearsBenchButton"
-                android:layout_width="130dp"
-                android:textOff="@string/no"
-                android:textOn="@string/yes"
-                android:backgroundTint="@color/colorSparxRed"
-                android:textColor="@color/colorWhite"
-                android:layout_weight="1" />
+            <ToggleButton android:id="@+id/canScoreGearsBenchButton"
+                style="@style/YesNoToggle"/>
         </LinearLayout>
 
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:weightSum="1"
             android:id="@+id/whereCanScoreGearsLinear" >
 
-            <TextView
-                android:layout_width="197dp"
-                android:id="@+id/whereCanScoreGearsBenchText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="77dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
+            <TextView android:id="@+id/whereCanScoreGearsBenchText"
                 android:text="@string/gearsScoreWhere"
-                android:layout_weight="0.22"/>
+                style="@style/CheckBoxTextView"/>
 
-            <CheckBox
+            <CheckBox android:id="@+id/canGearLeftBench"
                 android:text="Left"
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.14"
-                android:id="@+id/canGearLeftBench"
-                app:buttonTint="@color/colorSparxRed"
-                style="@android:style/Widget.Material.CompoundButton.CheckBox"
-                android:textSize="20dp"
-                android:layout_margin="10dp"/>
+                style="@style/Checkbox"/>
 
-            <CheckBox
+            <CheckBox android:id="@+id/canGearCenterBench"
                 android:text="Center"
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/canGearCenterBench"
-                android:layout_weight="0.14"
-                app:buttonTint="@color/colorSparxRed"
-                style="@android:style/Widget.Material.CompoundButton.CheckBox"
-                android:textSize="20dp"
-                android:layout_margin="10dp"/>
+                style="@style/Checkbox"/>
 
-            <CheckBox
+            <CheckBox android:id="@+id/canGearRightBench"
                 android:text="Right"
-                android:layout_height="wrap_content"
-                android:id="@+id/canGearRightBench"
-                android:layout_weight="0.11"
-                android:layout_width="85dp"
-                app:buttonTint="@color/colorSparxRed"
-                style="@android:style/Widget.Material.CompoundButton.CheckBox"
-                android:textSize="20dp"
-                android:layout_margin="10dp"/>
+                style="@style/Checkbox"/>
 
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:id="@+id/prefScoringPlaceLinear" >
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:id="@+id/preferredScoreGearsBenchText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/gearsPreferred" />
+            <TextView android:id="@+id/preferredScoreGearsBenchText"
+                android:text="@string/gearsPreferred"
+                style="@style/RadioTextView"/>
 
-            <RadioGroup
-                android:id="@+id/radioPreferredGear"
+            <RadioGroup android:id="@+id/radioPreferredGear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
-                <RadioButton
-                    android:id="@+id/radioGearRight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <RadioButton android:id="@+id/radioGearRight"
                     android:text="Right"
-                    android:buttonTint="@color/colorSparxRed"/>
+                    style="@style/RadioButton"/>
 
-                <RadioButton
-                    android:id="@+id/radioGearCenter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <RadioButton android:id="@+id/radioGearCenter"
                     android:text="Center"
-                    android:buttonTint="@color/colorSparxRed"/>
+                    style="@style/RadioButton"/>
 
-                <RadioButton
-                    android:id="@+id/radioGearLeft"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <RadioButton android:id="@+id/radioGearLeft"
                     android:text="Left"
-                    android:buttonTint="@color/colorSparxRed"/>
+                    style="@style/RadioButton"/>
+
             </RadioGroup>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/gearCycleTimeLinear" >
 
             <TextView
-                android:layout_width="323dp"
-                android:id="@+id/cycleTimeGearsBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/cycleTime" />
+                android:labelFor="@+id/cycleTimeGearsBenchInput"
+                android:text="@string/cycleTime"
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
+            <EditText android:id="@+id/cycleTimeGearsBenchInput"
                 android:inputType="number"
-                android:ems="10"
-                android:id="@+id/cycleTimeGearsBenchInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
+                style="@style/ShortEditText"/>
+
         </LinearLayout>
-        <LinearLayout
-            android:orientation="horizontal"
+
+        <LinearLayout android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView android:labelFor="@+id/pickupGearFloorBenchButton"
+                android:text="@string/gearsFloor"
+                style="@style/NormalTextView"/>
+
+            <ToggleButton android:id="@+id/pickupGearFloorBenchButton"
+                style="@style/YesNoToggle"/>
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="323dp"
-                android:id="@+id/pickupGearFloorBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/gearsFloor" />
+                android:labelFor="@+id/pickupGearRetrievalBenchButton"
+                android:text="@string/gearsFromRetrieval"
+                style="@style/NormalTextView"/>
 
-            <ToggleButton
-                android:text="@string/toggleButton"
-                android:layout_height="72dp"
-                android:id="@+id/pickupGearFloorBenchButton"
-                android:layout_width="130dp"
-                android:textOff="@string/no"
-                android:textOn="@string/yes"
-                android:backgroundTint="@color/colorSparxRed"
-                android:textColor="@color/colorWhite"
-                android:layout_weight="1" />
+            <ToggleButton android:id="@+id/pickupGearRetrievalBenchButton"
+                style="@style/YesNoToggle"/>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/pickupGearRetrievalBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/gearsFromRetrieval" />
+            <TextView android:id="@+id/pickupGearPreferredBenchText"
+                android:text="@string/gearsFromRetrievalPreffered"
+                style="@style/RadioTextView"/>
 
-            <ToggleButton
-                android:text="@string/toggleButton"
-                android:layout_height="72dp"
-                android:id="@+id/pickupGearRetrievalBenchButton"
-                android:layout_width="130dp"
-                android:textOff="@string/no"
-                android:textOn="@string/yes"
-                android:backgroundTint="@color/colorSparxRed"
-                android:textColor="@color/colorWhite"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:id="@+id/pickupGearPreferredBenchText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/gearsFromRetrievalPreffered" />
-
-            <RadioGroup
-                android:id="@+id/radioPickupGearPreferred"
+            <RadioGroup android:id="@+id/radioPickupGearPreferred"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" >
 
-                <RadioButton
-                    android:id="@+id/radioFloor"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <RadioButton android:id="@+id/radioFloor"
                     android:text="@string/floor"
-                    android:buttonTint="@color/colorSparxRed"/>
+                    style="@style/RadioButton"/>
 
-                <RadioButton
-                    android:id="@+id/radioZone"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                <RadioButton android:id="@+id/radioZone"
                     android:text="@string/gearsRetrieval"
-                    android:buttonTint="@color/colorSparxRed"/>
+                    style="@style/RadioButton"/>
             </RadioGroup>
+
         </LinearLayout>
 
-
         <!-- Begin Low Goal Section -->
+        <TextView android:text="@string/lowGoal"
+            style="@style/HeaderText"/>
 
-        <TextView
-            android:text="@string/lowGoal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/lowHeadlineBench"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="50sp"
-            android:layout_marginBottom="10dp" />
-
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/abilityToShootLowGoalBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/lowGoalAbility" />
+            <TextView android:labelFor="@+id/abilityToShootLowGoalBenchButton"
+                android:text="@string/lowGoalAbility"
+                style="@style/NormalTextView"/>
 
-            <ToggleButton
-                android:text="@string/toggleButton"
-                android:layout_height="72dp"
-                android:id="@+id/abilityToShootLowGoalBenchButton"
-                android:layout_width="130dp"
-                android:textOff="@string/no"
-                android:textOn="@string/yes"
-                android:backgroundTint="@color/colorSparxRed"
-                android:textColor="@color/colorWhite"
-                android:layout_weight="1" />
+            <ToggleButton android:id="@+id/abilityToShootLowGoalBenchButton"
+                style="@style/YesNoToggle"/>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/lowGoalCycleTimeLinear">
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/cycleTimeLowBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/cycleTime" />
+
+            <TextView android:labelFor="@+id/cycleTimeLowBenchInput"
+                android:text="@string/cycleTime"
+                style="@style/NormalTextView"/>
 
             <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
                 android:id="@+id/cycleTimeLowBenchInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
+                android:inputType="number"
+                style="@style/ShortEditText"/>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/lowGoalNumberOfCyclesLinear">
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/cycleNumberLowBenchText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/cycleNumber" />
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
+            <TextView android:labelFor="@+id/cycleNumberLowBenchInput"
+                android:text="@string/cycleNumber"
+                style="@style/NormalTextView"/>
+
+            <EditText android:id="@+id/cycleNumberLowBenchInput"
                 android:inputType="number"
-                android:ems="10"
-                android:id="@+id/cycleNumberLowBenchInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
+                style="@style/ShortEditText"/>
+
         </LinearLayout>
 
         <!-- Begin Scaling Section -->
-        <TextView
-            android:text="@string/scaling"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/scalingHeadlineBench"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="50sp"
-            android:layout_marginBottom="10dp" />
+        <TextView android:text="@string/scaling"
+            style="@style/HeaderText"/>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <TextView
-                android:layout_width="323dp"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
+            <TextView android:labelFor="@+id/abilityScaleBenchButton"
                 android:text="@string/scaleAbility"
-                android:id="@+id/abilityToScaleBenchText" />
+                style="@style/NormalTextView"/>
 
-            <ToggleButton
-                android:text="@string/toggleButton"
-                android:layout_height="72dp"
-                android:id="@+id/abilityScaleBenchButton"
-                android:layout_width="130dp"
-                android:textOff="@string/no"
-                android:textOn="@string/yes"
-                android:backgroundTint="@color/colorSparxRed"
-                android:textColor="@color/colorWhite"
-                android:layout_weight="1" />
+            <ToggleButton android:id="@+id/abilityScaleBenchButton"
+                style="@style/YesNoToggle"/>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/placesCanScaleFromLinear">
 
-            <TextView
-                android:layout_width="323dp"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
+            <TextView android:labelFor="@+id/placesCanScaleBenchInput"
                 android:text="@string/scalePlaces"
-                android:id="@+id/placesCanScaleBenchText" />
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:ems="10"
-                android:id="@+id/placesCanScaleBenchInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="15sp"
-                android:inputType="textMultiLine" />
+            <EditText android:id="@+id/placesCanScaleBenchInput"
+                style="@style/MultiShortEditText"/>
+
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/prefPlaceToScaleLinear">
 
-            <TextView
-                android:layout_width="323dp"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
+            <TextView android:labelFor="@+id/preferredPlacesScaleInput"
                 android:text="@string/scalePreferredPlace"
-                android:id="@+id/preferredPlacesScaleBenchText" />
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:ems="10"
-                android:id="@+id/preferredPlacesScaleInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"
-                android:inputType="textMultiLine" />
+            <EditText android:id="@+id/preferredPlacesScaleInput"
+                style="@style/MultiShortEditText"/>
+
         </LinearLayout>
+
         <!-- Begin Other Section -->
+        <TextView android:text="@string/other"
+            style="@style/HeaderText"/>
 
-        <TextView
-            android:text="@string/other"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/otherHeadlineBench"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="50sp"
-            android:layout_marginBottom="10dp" />
-
-
-        <EditText
-            android:layout_width="match_parent"
-            android:ems="10"
-            android:id="@+id/autoAbilitiesBench"
+        <EditText android:id="@+id/autoAbilitiesBench"
             android:hint="@string/autoAbilities"
-            android:textSize="18sp"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="0dp"
-            android:layout_weight="0.14"
-            android:layout_height="80dp"
-            android:inputType="textMultiLine" />
+            style="@style/MultiLongEditText"/>
 
-        <EditText
-            android:layout_width="match_parent"
-            android:ems="10"
-            android:id="@+id/commentsBench"
+        <EditText android:id="@+id/commentsBench"
             android:hint="@string/otherComments"
-            android:textSize="25sp"
-            android:layout_margin="5dp"
-            android:layout_marginBottom="0dp"
-            android:layout_weight="0.14"
-            android:layout_height="80dp"
-            android:inputType="textMultiLine" />
+            style="@style/MultiLongEditText"/>
 
-
-
-        <!-- ^^^ NEW STUFF ENDS HERE ^^^ -->
-
-
-        <!--
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="323dp"
-                    android:id="@+id/whereCanShootBenchText"
-                    android:layout_weight="0.92"
-                    android:layout_marginRight="20dp"
-                    android:layout_height="40dp"
-                    android:textSize="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/colorBlack"
-                    android:text="Where Can They Shoot From" />
-
-                <EditText
-                    android:layout_width="130dp"
-                    android:layout_height="72dp"
-                    android:ems="10"
-                    android:id="@+id/whereCanShootBenchInput"
-                    android:layout_weight="0.92"
-                    android:inputType="textMultiLine" />
-
-            </LinearLayout>
-        -->
-
-
-
-        <!--
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:id="@+id/numberOfGearsPerMatchText"
-                    android:layout_marginRight="20dp"
-                    android:layout_height="40dp"
-                    android:textSize="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/colorBlack"
-                    android:text="Number of gears scored per match" />
-
-                <EditText
-                    android:layout_width="130dp"
-                    android:layout_height="72dp"
-                    android:ems="10"
-                    android:id="@+id/numberOfGearsPerMatchInput"
-                    android:layout_weight="0.45"
-                    style="@android:style/TextAppearance.Material"
-                    android:textColor="@color/colorBlack"
-                    android:textAlignment="center"
-                    android:textSize="25dp"
-                    android:inputType="number" />
-            </LinearLayout>
-        -->
-        <!--
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:id="@+id/numberOfBallsPerMatchBenchText"
-                    android:layout_marginRight="20dp"
-                    android:layout_height="40dp"
-                    android:textSize="25dp"
-                    android:layout_marginLeft="10dp"
-                    android:textColor="@color/colorBlack"
-                    android:text="Number of balls scored per match" />
-
-                <EditText
-                    android:layout_width="130dp"
-                    android:layout_height="72dp"
-                    android:ems="10"
-                    android:id="@+id/numberOfBallsPerMatchBenchInput"
-                    android:layout_weight="0.45"
-                    style="@android:style/TextAppearance.Material"
-                    android:textColor="@color/colorBlack"
-                    android:textAlignment="center"
-                    android:textSize="25dp"
-                    android:inputType="number" />
-            </LinearLayout>
-            -->
-        <Button
+        <Button android:id="@+id/submitTeleopBenchmark"
             android:text="@string/submit"
-            android:id="@+id/submitTeleopBenchmark"
-            android:backgroundTint="@color/colorSparxRed"
-            android:layout_weight="0.15"
-            android:layout_marginTop="50sp"
-            android:elevation="13dp"
-            android:layout_margin="50sp"
-            android:textColor="@color/colorWhite"
-            android:textSize="20sp"
-            android:layout_height="100dp"
-            android:layout_width="match_parent" />
-
-
+            style="@style/BigButton"/>
 
     </LinearLayout>
 

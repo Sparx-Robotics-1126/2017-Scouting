@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ScrollView01"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    style="@style/Screen">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:weightSum="1">
@@ -18,17 +13,8 @@
             android:layout_height="122dp">
 
             <ImageButton
-                app:srcCompat="@drawable/ic_home_black_24dp"
-                android:layout_weight="0.14"
-                android:tint="@color/colorWhite"
-                android:backgroundTint="@color/colorSparxRed"
-                android:layout_height="110dp"
-                android:layout_marginTop="5dp"
-                android:minWidth="100dp"
-                android:maxWidth="100dp"
-                android:layout_width="0dp"
-                android:contentDescription="@string/home"
-                android:id="@+id/home_scouting" />
+                android:id="@+id/home"
+                style="@style/HomeButton"/>
 
         </LinearLayout>
 
@@ -80,14 +66,14 @@
 
             <TextView
                 android:layout_width="323dp"
-                android:id="@+id/hoppersDumpedAutoText"
                 android:layout_weight="0.92"
                 android:layout_marginEnd="20dp"
                 android:layout_height="40dp"
                 android:textSize="25sp"
                 android:layout_marginStart="10dp"
                 android:textColor="@color/colorBlack"
-                android:text="Number of Hoppers Dumped" />
+                android:text="Number of Hoppers Dumped"
+                android:labelFor="@+id/hoppersDumpedAutoInput"/>
 
             <EditText
                 android:layout_width="130dp"
@@ -124,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.14"
                 android:id="@+id/putGearLeftAuto"
-                app:buttonTint="@color/colorSparxRed"
+                android:buttonTint="@color/colorSparxRed"
                 style="@android:style/Widget.Material.CompoundButton.CheckBox"
                 android:textSize="25dp"
                 android:layout_margin="10dp"/>
@@ -135,7 +121,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/putGearCenterAuto"
                 android:layout_weight="0.14"
-                app:buttonTint="@color/colorSparxRed"
+                android:buttonTint="@color/colorSparxRed"
                 style="@android:style/Widget.Material.CompoundButton.CheckBox"
                 android:textSize="20dp"
                 android:layout_margin="10dp"/>
@@ -146,7 +132,7 @@
                 android:id="@+id/putGearRightAuto"
                 android:layout_weight="0.11"
                 android:layout_width="85dp"
-                app:buttonTint="@color/colorSparxRed"
+                android:buttonTint="@color/colorSparxRed"
                 style="@android:style/Widget.Material.CompoundButton.CheckBox"
                 android:layout_margin="10dp"
                 android:textSize="20dp"/>
@@ -653,7 +639,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/didScaleRadioButton"
                     android:layout_weight="1"
-                    app:buttonTint="@color/colorSparxRed"
+                    android:buttonTint="@color/colorSparxRed"
                     android:textSize="20dp"/>
 
                 <RadioButton
@@ -662,7 +648,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/didNotScaleRadioButton"
                     android:layout_weight="1"
-                    app:buttonTint="@color/colorSparxRed"
+                    android:buttonTint="@color/colorSparxRed"
                     android:textSize="20dp"
                     android:layout_marginLeft="10dp"/>
 
@@ -719,7 +705,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.14"
                 android:id="@+id/matchScouted"
-                app:buttonTint="@color/colorSparxRed"
+                android:buttonTint="@color/colorSparxRed"
                 style="@android:style/Widget.Material.CompoundButton.CheckBox"
                 android:textSize="25dp"
                 android:layout_margin="10dp"/>
