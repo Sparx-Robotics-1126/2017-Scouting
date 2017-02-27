@@ -4,10 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-
-/**
- * Scouting information collected via team interview
- */
 public class ScoutingInfo {
     private static Map<Integer, ScoutingInfo> scoutingInfoMap;
     private static ScoutingInfo currentInfo;
@@ -36,13 +32,15 @@ public class ScoutingInfo {
     private String eventName;
     private String student;
     private BenchmarkingData benchmarkingData;
+    private ScoutingData scoutingBeingEnteredData;
     private Vector<ScoutingData> scoutingDatas;
 
     private ScoutingInfo(int teamNumber, String eventName, String student) {
         this.teamNumber = teamNumber;
         this.eventName = eventName;
         this.student = student;
-        benchmarkingData = new BenchmarkingData(student);
+        benchmarkingData = new BenchmarkingData();
+        scoutingBeingEnteredData = new ScoutingData();
         scoutingDatas = new Vector<>(250);
     }
 
@@ -68,8 +66,13 @@ public class ScoutingInfo {
         return benchmarkingData;
     }
 
-    public void addScoutingData(ScoutingData data) {
-        scoutingDatas.add(data);
+    public ScoutingData getScoutingBeingEnteredData() {
+        return scoutingBeingEnteredData;
+    }
+
+    public void addScoutingData() {
+        scoutingDatas.add(scoutingBeingEnteredData);
+        scoutingBeingEnteredData = new ScoutingData();
     }
 }
 

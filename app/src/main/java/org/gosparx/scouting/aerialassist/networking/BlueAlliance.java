@@ -62,7 +62,7 @@ public class BlueAlliance {
         String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", year);
         Ion.with(context)
                 .load(request)
-                .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2016:" + versionName)
+                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2016:" + versionName)
                 .as(new TypeToken<List<Event>>(){})
                 .setCallback(new FutureCallback<List<Event>>() {
                     @Override
@@ -94,7 +94,7 @@ public class BlueAlliance {
         String request = (BASE_URL+GET_EVENT).replace("{EVENT_KEY}", eventCode);
         Ion.with(context)
                 .load(request)
-                .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2016:" + versionName)
+                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2016:" + versionName)
                 .as(new TypeToken<Event>() {
                 })
                 .setCallback(new FutureCallback<Event>() {
@@ -124,7 +124,7 @@ public class BlueAlliance {
         String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", event.getKey());
         Ion.with(context)
                 .load(request)
-                .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2016:" + versionName)
+                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2016:" + versionName)
                 .noCache()
                 .as(new TypeToken<List<Match>>(){})
                 .setCallback(new FutureCallback<List<Match>>() {
@@ -155,7 +155,7 @@ public class BlueAlliance {
         String request = (BASE_URL+GET_TEAM_LIST).replace("{EVENT_KEY}", event.getKey());
         Ion.with(context)
                 .load(request)
-                .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2016:" + versionName)
+                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2016:" + versionName)
                 .as(new TypeToken<List<Team>>() {})
                 .setCallback(new FutureCallback<List<Team>>() {
                     @Override

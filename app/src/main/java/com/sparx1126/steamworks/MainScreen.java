@@ -71,37 +71,10 @@ public class MainScreen extends AppCompatActivity {
     private Map<String, String> eventNamesToKey;
     private Vector<String> teamsList;
 
-    private String getName(){
-        return scouterText.getText().toString();
-    }
-    //Kevin is watching ( ͡° ͜ʖ ͡°)
-    //this push thing isn't working ;-;
-
-    private int getTeamNumber() {
-        int value = 0;
-        String textEntered = teamText.getText().toString();
-        if (!textEntered.isEmpty()) {
-            value = Integer.parseInt(textEntered);
-        }
-        return value;
-    }
-
-    private String getEventName(){
-        String eventName = "";
-        if(eventSpinner.getSelectedItem() != null) {
-            eventName = eventSpinner.getSelectedItem().toString();
-        }
-        return eventName;
-    }
-
-    public Event getSelectedEvent() {
-        return dbHelper.getEvent(eventNamesToKey.get(getEventName()));
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_screen);
+        setContentView(R.layout.main_screen);
 
         blueAlliance = BlueAlliance.getInstance(this);
         dbHelper = DatabaseHelper.getInstance(this);
@@ -145,14 +118,31 @@ public class MainScreen extends AppCompatActivity {
         restorePreferences();
     }
 
-    protected void onStart() {
-        super.onStart();
-        System.out.println("onStart");
+    private String getScouterName(){
+        return scouterText.getText().toString();
+    }
+    //Kevin is watching ( ͡° ͜ʖ ͡°)
+    //this push thing isn't working ;-;
+
+    private int getTeamNumber() {
+        int value = 0;
+        String textEntered = teamText.getText().toString();
+        if (!textEntered.isEmpty()) {
+            value = Integer.parseInt(textEntered);
+        }
+        return value;
     }
 
-    protected void onStop() {
-        super.onStop();
-        System.out.println("onStop");
+    private String getEventName(){
+        String eventName = "";
+        if(eventSpinner.getSelectedItem() != null) {
+            eventName = eventSpinner.getSelectedItem().toString();
+        }
+        return eventName;
+    }
+
+    public Event getSelectedEvent() {
+        return dbHelper.getEvent(eventNamesToKey.get(getEventName()));
     }
 
     private void teamNumberChecker(){
@@ -225,7 +215,7 @@ public class MainScreen extends AppCompatActivity {
             int teamNumberValue = getTeamNumber();
             // set the currentScouting object I intend to pass to. Set it to NULL which means not
             // created yet. This is a good practice because if useed and set to NULL it creashes better
-            ScoutingInfo.addInfo(teamNumberValue, getEventName(), getName());
+            ScoutingInfo.addInfo(teamNumberValue, getEventName(), getScouterName());
 
             Intent intent = new Intent(context, destination);
             startActivity(intent);
@@ -275,7 +265,7 @@ public class MainScreen extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable s) {
             String[] students = getResources().getStringArray(R.array.students);
-            String scouterName = getName();
+            String scouterName = getScouterName();
             if(Arrays.asList(students).contains(scouterName)){
                 nameSelected = true;
                 SharedPreferences.Editor editor = settings.edit();

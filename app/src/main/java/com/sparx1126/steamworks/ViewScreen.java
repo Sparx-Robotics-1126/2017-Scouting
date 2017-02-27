@@ -1,11 +1,8 @@
 package com.sparx1126.steamworks;
 
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -15,14 +12,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.sparx1126.steamworks.R.layout.view;
+import static com.sparx1126.steamworks.R.layout.view_screen;
 
 /**
  * Created by Amanda on 1/21/17.
  */
 
 public class ViewScreen extends AppCompatActivity {
-    ImageButton home_view;
+    ImageButton home;
     ExpandableListView expandableListView;
     ExpandableListAdapter expandableListAdapter;
     List<String> expandableListTitle;
@@ -31,16 +28,16 @@ public class ViewScreen extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(view);
-        home_view = (ImageButton)findViewById(R.id.home_view);
-        home_view.setOnClickListener(new View.OnClickListener() {
+        setContentView(view_screen);
+        home = (ImageButton)findViewById(R.id.home);
+        home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
         expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
-        expandableListDetail = ExpandableListDataPump.getData();
+        expandableListDetail = ViewScreenListDataPump.getData();
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);

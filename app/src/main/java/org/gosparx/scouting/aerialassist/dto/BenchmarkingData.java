@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class BenchmarkingData{
-    private String nameOfScouter;
     private String driveSystem;
     private double drivesSpeed = Double.MAX_VALUE;
     private boolean canPlayDefenseBenchButton;
@@ -24,7 +23,7 @@ public class BenchmarkingData{
     private boolean canScoreGearsBenchButton;
     private boolean pickupGearFloorBenchButton;
     private boolean pickupGearRetrievalBenchButton;
-    private boolean pickupGearPreferredBenchButton;
+    private String radioPickupGearPreferred;
     private boolean canGearLeftBench;
     private boolean canGearCenterBench;
     private boolean canGearRightBench;
@@ -38,18 +37,6 @@ public class BenchmarkingData{
     private String preferredPlacesScaleInput;
     private String autoAbilitiesBench;
     private String commentsBench;
-
-    BenchmarkingData(String student) {
-        this.nameOfScouter = student;
-    }
-
-    public String getNameOfScouter() {
-        return nameOfScouter;
-    }
-
-    public void setNameOfScouter(String nameOfScouter) {
-        this.nameOfScouter = nameOfScouter;
-    }
 
     public String getDriveSystem() {
         return driveSystem;
@@ -203,12 +190,12 @@ public class BenchmarkingData{
         this.pickupGearRetrievalBenchButton = pickupGearRetrievalBenchButton;
     }
 
-    public boolean isPickupGearPreferredBenchButton() {
-        return pickupGearPreferredBenchButton;
+    public String getPickupGearPreferred() {
+        return radioPickupGearPreferred;
     }
 
-    public void setPickupGearPreferredBenchButton(boolean pickupGearPreferredBenchButton) {
-        this.pickupGearPreferredBenchButton = pickupGearPreferredBenchButton;
+    public void setPickupGearPreferred(String radioPickupGearPreferred) {
+        this.radioPickupGearPreferred = radioPickupGearPreferred;
     }
 
     public boolean isCanGearLeftBench() {
