@@ -10,10 +10,12 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
+import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Scouting;
 import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
+import org.gosparx.scouting.aerialassist.dto.ScoutingInfoTTWOO;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.util.Iterator;
@@ -22,13 +24,13 @@ import java.util.Map;
 
 public class SparxPosting {
     private static final String TAG = "SparxPosting";
-    private static final String BASE_URL = "http://scouting_screen-2016.appspot.com";
-    private static final String POST_SCOUTING = "/api/2016/v1/ScoutingData";
-    private static final String POST_BENCHMARKING = "/api/2016/v1/BenchmarkingData";
-    private static final String GET_SCOUTING_BY_TEAM = "/api/20165/v1/ScoutingData/{TEAM_KEY}";
-    private static final String GET_SCOUTING_BY_TEAM_EVENT = "/api/2016/v1/ScoutingData/{TEAM_KEY}/{EVENT_KEY}";
-    private static final String GET_SCOUTING_BY_TEAM_EVENT_MATCH = "/api/2016/v1/ScoutingData/{TEAM_KEY}/{EVENT_KEY}/{MATCH_KEY}";
-    private static final String GET_BENCHMARKING_BY_TEAM_EVENT = "/api/2016/v1/BenchmarkingData/{TEAM_KEY}/{EVENT_KEY}";
+    private static final String BASE_URL = "http://172.20.10.6:8080";
+    private static final String POST_SCOUTING = "/api/2017/v1/ScoutingData";
+    private static final String POST_BENCHMARKING = "/api/2017/v1/BenchmarkingData";
+    private static final String GET_SCOUTING_BY_TEAM = "/api/2017/v1/ScoutingData/{TEAM_KEY}";
+    private static final String GET_SCOUTING_BY_TEAM_EVENT = "/api/2017/v1/ScoutingData/{TEAM_KEY}/{EVENT_KEY}";
+    private static final String GET_SCOUTING_BY_TEAM_EVENT_MATCH = "/api/2017/v1/ScoutingData/{TEAM_KEY}/{EVENT_KEY}/{MATCH_KEY}";
+    private static final String GET_BENCHMARKING_BY_TEAM_EVENT = "/api/2017/v1/BenchmarkingData/{TEAM_KEY}/{EVENT_KEY}";
     private static SparxPosting SparxPosting;
     private Context context;
     private final DatabaseHelper dbHelper;
@@ -194,15 +196,16 @@ public class SparxPosting {
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
             ScoutingInfo scoutingInfo = (ScoutingInfo)pair.getValue();
+            BenchmarkingData benchmarkingData = (BenchmarkingData)scoutingInfo.getBenchmarkingData();
             Ion.with(context)
                     .load(request)
-                    .setJsonPojoBody(scoutingInfo)
+                    .setJsonPojoBody(benchmarkingData)
                     .asString()
                     .setCallback(new FutureCallback<String>() {
                         @Override
                         public void onCompleted(Exception e, String result) {
                             if ((e != null) || ((result != null) && (!result.isEmpty()))) {
-                                Log.e(TAG, "Issue saving ScoutingInfo to Server!", e);
+                                Log.e(TAG, "Issue saving Benchmarking to Server!", e);
                                 System.out.println("Server Error");
                                 subCallback.handleFinishDownload(false);
                             }
