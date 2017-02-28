@@ -29,6 +29,7 @@ public class BenchmarkingData{
     private boolean canGearCenterBench;
     private boolean canGearRightBench;
     private String radioPreferredGear;
+    private String radioPreferredBall;
     private int cycleTimeGearsBenchInput = Integer.MAX_VALUE;
     private boolean abilityToShootLowGoalBenchButton;
     private int cycleTimeLowBenchInput = Integer.MAX_VALUE;
@@ -241,6 +242,14 @@ public class BenchmarkingData{
 
     public void setRadioPreferredGear(String radioPreferredGear) {
         this.radioPreferredGear = radioPreferredGear;
+    }
+
+    public String getRadioPreferredBall() {
+        return radioPreferredBall;
+    }
+
+    public void setRadioPreferredBall(String radioPreferredBall) {
+        this.radioPreferredBall = radioPreferredBall;
     }
 
     public int getCycleTimeGearsBenchInput() {
