@@ -4,6 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class BenchmarkingData{
+    private final int teamNumber;
+    private final String eventName;
+    private final String student;
     private String driveSystem;
     private double drivesSpeed = Double.MAX_VALUE;
     private boolean canPlayDefenseBenchButton;
@@ -38,6 +41,12 @@ public class BenchmarkingData{
     private String preferredPlacesScaleInput;
     private String autoAbilitiesBench;
     private String commentsBench;
+
+    public BenchmarkingData(int teamNumber, String eventName, String student) {
+        this.teamNumber = teamNumber;
+        this.eventName = eventName;
+        this.student = student;
+    }
 
     public String getDriveSystem() {
         return driveSystem;

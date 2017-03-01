@@ -39,7 +39,7 @@ public class ScoutingInfo {
         this.teamNumber = teamNumber;
         this.eventName = eventName;
         this.student = student;
-        benchmarkingData = new BenchmarkingData();
+        benchmarkingData = new BenchmarkingData(teamNumber, eventName, student);
         scoutingBeingEnteredData = new ScoutingData();
         scoutingDatas = new Vector<>(250);
     }
