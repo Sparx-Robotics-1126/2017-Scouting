@@ -15,7 +15,6 @@ import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Scouting;
 import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
-import org.gosparx.scouting.aerialassist.dto.ScoutingInfoTTWOO;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.util.Iterator;
