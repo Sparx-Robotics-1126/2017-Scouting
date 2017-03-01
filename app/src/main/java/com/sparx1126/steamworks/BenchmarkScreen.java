@@ -53,7 +53,6 @@ public class BenchmarkScreen extends AppCompatActivity {
     private ToggleButton pickupBallHopperBenchButton;
     private ToggleButton pickupBallFloorBenchButton;
     private ToggleButton pickupBallHumanBenchButton;
-    private EditText pickupBallPreferredBenchInput;
     private EditText maximumBallCapacityBenchInput;
     private ToggleButton canScoreGearsBenchButton;
     private ToggleButton pickupGearFloorBenchButton;
@@ -113,11 +112,11 @@ public class BenchmarkScreen extends AppCompatActivity {
         });
         currentInfo = ScoutingInfo.getCurrentInfo();
         currentData = currentInfo.getBenchmarkingData();
-        Button cameraButton = (Button) findViewById(R.id.cameraButton);
+        ImageButton cameraButton = (ImageButton) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cameraButton();
+                dispatchTakePictureIntent();
             }
         });
 
@@ -136,7 +135,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         pickupBallHopperBenchButton = (ToggleButton) findViewById(R.id.pickupBallHopperBenchButton);
         pickupBallFloorBenchButton = (ToggleButton) findViewById(R.id.pickupBallFloorBenchButton);
         pickupBallHumanBenchButton = (ToggleButton) findViewById(R.id.pickupBallHumanBenchButton);
-        //pickupBallPreferredBenchInput = (EditText) findViewById(R.id.pickupBallPreferredBenchInput);
         maximumBallCapacityBenchInput = (EditText) findViewById(R.id.maximumBallCapacityBenchInput);
         canScoreGearsBenchButton = (ToggleButton) findViewById(R.id.canScoreGearsBenchButton);
         canScoreGearsBenchButton.setOnClickListener(canGearButtonClicked);
@@ -222,7 +220,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         currentData.setPickupBallHopperBenchButton(pickupBallHopperBenchButton.isChecked());
         currentData.setPickupBallFloorBenchButton(pickupBallFloorBenchButton.isChecked());
         currentData.setPickupBallHumanBenchButton(pickupBallHumanBenchButton.isChecked());
-        //currentData.setPickupBallPreferredBenchInput(pickupBallPreferredBenchInput.getText().toString());
         valueAsSring = maximumBallCapacityBenchInput.getText().toString();
         if(!valueAsSring.isEmpty()) {
             currentData.setMaximumBallCapacityBenchInput(Integer.parseInt(valueAsSring));
@@ -249,13 +246,13 @@ public class BenchmarkScreen extends AppCompatActivity {
             currentData.setRadioPreferredGear("radioGearLeft");
         }
         if(radioBallHopper.isChecked()) {
-            currentData.setRadioPreferredGear("radioBallHopper");
+            currentData.setPickupBallPreferredBenchInput("radioBallHopper");
         }
         else if(radioBallFloor.isChecked()) {
-            currentData.setRadioPreferredGear("radioBallFloor");
+            currentData.setPickupBallPreferredBenchInput("radioBallFloor");
         }
         else if(radioBallHuman.isChecked()) {
-            currentData.setRadioPreferredGear("radioBallHuman");
+            currentData.setPickupBallPreferredBenchInput("radioBallHuman");
         }
         valueAsSring = cycleTimeGearsBenchInput.getText().toString();
         if(!valueAsSring.isEmpty()) {
@@ -285,9 +282,9 @@ public class BenchmarkScreen extends AppCompatActivity {
         canPlayDefenseBenchButton.setChecked(currentData.isCanPlayDefenseBenchButton());
         abilityToShootHighGoalBenchButton.setChecked(currentData.isAbilityToShootHighGoalBenchButton());
         SetStringIntoTextView(typeOfShooterBenchInput, currentData.getTypeOfShooterBenchInput());
-        /* if(currentData.getsPerSecondBenchInput() != Double.MAX_VALUE) {
+        if(currentData.getBallsPerSecondBenchInput() != Double.MAX_VALUE) {
             SetStringIntoTextView(ballsPerSecondBenchInput, String.valueOf(currentData.getBallsPerSecondBenchInput()));
-        }*/
+        }
         if(currentData.getBallsInCycleBenchInput() != Integer.MAX_VALUE) {
             SetStringIntoTextView(ballsInCycleBenchInput, String.valueOf(currentData.getBallsInCycleBenchInput()));
         }
@@ -304,7 +301,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         pickupBallHopperBenchButton.setChecked(currentData.isPickupBallHopperBenchButton());
         pickupBallFloorBenchButton.setChecked(currentData.isPickupBallFloorBenchButton());
         pickupBallHumanBenchButton.setChecked(currentData.isPickupBallHumanBenchButton());
-        SetStringIntoTextView(pickupBallPreferredBenchInput, currentData.getPickupBallPreferredBenchInput());
         if(currentData.getMaximumBallCapacityBenchInput() != Integer.MAX_VALUE) {
             SetStringIntoTextView(maximumBallCapacityBenchInput, String.valueOf(currentData.getMaximumBallCapacityBenchInput()));
         }
@@ -341,8 +337,8 @@ public class BenchmarkScreen extends AppCompatActivity {
                     break;
             }
         }
-        if(currentData.getRadioPreferredBall() != null) {
-            switch(currentData.getRadioPreferredBall()) {
+        if(currentData.getPickupBallPreferredBenchInput() != null) {
+            switch(currentData.getPickupBallPreferredBenchInput()) {
                 case "radioBallHopper":
                     radioBallHopper.setChecked(true);
                     break;
@@ -561,9 +557,5 @@ public class BenchmarkScreen extends AppCompatActivity {
                 ".jpg",         /* suffix */
                 storageDir      /* directory */
         );
-    }
-
-    private void cameraButton() {
-        dispatchTakePictureIntent();
     }
 }
