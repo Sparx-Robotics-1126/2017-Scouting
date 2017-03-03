@@ -28,9 +28,20 @@
 
     <style name="BigButton">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_height">150dp</item>
         <item name="android:backgroundTint">@color/colorSparxRed</item>
         <item name="android:textColor">@color/colorWhite</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:layout_marginBottom">20dp</item>
+    </style>
+
+    <style name="SectionText" parent="android:Widget.TextView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">80dp</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="android:textSize">70sp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="HeaderText" parent="android:Widget.TextView">
@@ -43,7 +54,7 @@
 
     <style name="NormalTextView" parent="android:Widget.TextView">
         <item name="android:layout_width">323dp</item>
-        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:textSize">25sp</item>
         <item name="android:layout_marginEnd">20dp</item>
         <item name="android:layout_marginStart">10dp</item>

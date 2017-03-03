@@ -225,18 +225,18 @@
                     style="@style/RadioTextView"/>
 
                 <RadioGroup android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <RadioButton android:id="@+id/radioBallHopper"
-                        android:text="Hopper"
+                        android:text="@string/hopper"
                         style="@style/RadioButton"/>
 
                     <RadioButton android:id="@+id/radioBallFloor"
-                        android:text="Floor"
+                        android:text="@string/floor"
                         style="@style/RadioButton"/>
 
                     <RadioButton android:id="@+id/radioBallHuman"
-                        android:text="Human"
+                        android:text="@string/human"
                         style="@style/RadioButton"/>
                 </RadioGroup>
 
@@ -283,8 +283,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/whereCanScoreGearsLinear" >
 
-                <TextView android:id="@+id/whereCanScoreGearsBenchText"
-                    android:text="@string/gearsScoreWhere"
+                <TextView android:text="@string/gearsScoreWhere"
                     style="@style/CheckBoxTextView"/>
 
                 <CheckBox android:id="@+id/canGearLeftBench"
@@ -310,7 +309,7 @@
                     style="@style/RadioTextView"/>
 
                 <RadioGroup android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content">
 
                     <RadioButton android:id="@+id/radioGearRight"
                         android:text="Right"
