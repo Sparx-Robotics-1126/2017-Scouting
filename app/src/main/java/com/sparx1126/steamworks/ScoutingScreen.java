@@ -43,10 +43,9 @@ public class ScoutingScreen extends AppCompatActivity {
     private RadioButton highGoalAccuracyScoutPoor;
     private RadioButton highGoalAccuracyScoutOk;
     private RadioButton highGoalAccuracyScoutGreat;
-    private RadioButton didScaleRadioButton;
-    private RadioButton didNotScaleRadioButton;
+    private ToggleButton didScaleInput;
     private EditText scaledFromWhereInput;
-    private CheckBox matchScouted;
+    private ToggleButton matchScoutedInput;
 
     //   Zzzzz  |\      _,,,--,,_
     //          /,`.-'`'   ._  \-;;,_
@@ -92,17 +91,16 @@ public class ScoutingScreen extends AppCompatActivity {
         highGoalAccuracyScoutPoor = (RadioButton) findViewById(R.id.highGoalAccuracyScoutPoor);
         highGoalAccuracyScoutOk = (RadioButton) findViewById(R.id.highGoalAccuracyScoutOk);
         highGoalAccuracyScoutGreat = (RadioButton) findViewById(R.id.highGoalAccuracyScoutGreat);
-        didScaleRadioButton = (RadioButton) findViewById(R.id.didScaleRadioButton);
-        didNotScaleRadioButton = (RadioButton) findViewById(R.id.didNotScaleRadioButton);
+        didScaleInput = (ToggleButton) findViewById(R.id.didTheyScale);
         scaledFromWhereInput = (EditText) findViewById(R.id.scaledFromWhereInput);
-        matchScouted = (CheckBox) findViewById(R.id.matchScouted);
+        matchScoutedInput = (ToggleButton) findViewById(R.id.matchScouted);
 
         updateScreen();
     }
 
     protected void onDestroy() {
         super.onDestroy();
-        scoutingBeingEntered.setMatchScouted(matchScouted.isChecked());
+        scoutingBeingEntered.setMatchScouted(matchScoutedInput.isChecked());
         scoutingBeingEntered.setCrossedBaseline(crossedBaseLineAutoInput.isChecked());
         String valueAsSring = hoppersDumpedAutoInput.getText().toString();
         if (!valueAsSring.isEmpty()) {
@@ -172,13 +170,9 @@ public class ScoutingScreen extends AppCompatActivity {
         } else if (highGoalAccuracyScoutGreat.isChecked()) {
             scoutingBeingEntered.setHighGoalAccuracy("highGoalAccuracyScoutGreat");
         }
-        if (didScaleRadioButton.isChecked()) {
-            scoutingBeingEntered.setDidScale("didScaleRadioButton");
-        } else if (didNotScaleRadioButton.isChecked()) {
-            scoutingBeingEntered.setDidScale("didNotScaleRadioButton");
-        }
+        scoutingBeingEntered.setDidScale(didScaleInput.isChecked());
         scoutingBeingEntered.setWhereScaled(scaledFromWhereInput.getText().toString());
-        if(matchScouted.isChecked()) {
+        if(matchScoutedInput.isChecked()) {
             currentInfo.addScoutingData();
         }
     }
@@ -266,18 +260,7 @@ public class ScoutingScreen extends AppCompatActivity {
                     break;
             }
         }
-        if (scoutingBeingEntered.getDidScale() != null) {
-            switch (scoutingBeingEntered.getDidScale()) {
-                case "didScaleRadioButton":
-                    didScaleRadioButton.setChecked(true);
-                    break;
-                case "didNotScaleRadioButton":
-                    didNotScaleRadioButton.setChecked(true);
-                    break;
-                default:
-                    break;
-            }
-        }
+        didScaleInput.setChecked(scoutingBeingEntered.isDidScale());
         SetStringIntoTextView(scaledFromWhereInput, scoutingBeingEntered.getWhereScaled());
     }
 

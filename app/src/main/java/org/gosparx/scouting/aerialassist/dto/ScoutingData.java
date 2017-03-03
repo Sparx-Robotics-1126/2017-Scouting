@@ -21,7 +21,7 @@ public class ScoutingData {
     private int fuelInLowCycle = Integer.MAX_VALUE;
     private int numberOfLowCycles = Integer.MAX_VALUE;
     private String highGoalAccuracy;
-    private String didScale;
+    private boolean didScale;
     private String whereScaled;
     private boolean matchScouted;
 
@@ -136,11 +136,11 @@ public class ScoutingData {
 
     public void setHighGoalAccuracy(String highGoalAccuracy) { this.highGoalAccuracy = highGoalAccuracy; }
 
-    public String getDidScale() {
+    public boolean isDidScale() {
         return didScale;
     }
 
-    public void setDidScale(String didScale) { this.didScale = didScale; }
+    public void setDidScale(boolean didScale) { this.didScale = didScale; }
 
     public String getWhereScaled() {
         return whereScaled;

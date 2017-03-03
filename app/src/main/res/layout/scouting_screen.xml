@@ -2,713 +2,363 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Screen">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:weightSum="1">
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="122dp">
-
-            <ImageButton
-                android:id="@+id/home"
-                style="@style/HomeButton"/>
-
-        </LinearLayout>
+        <ImageButton android:id="@+id/home"
+            style="@style/HomeButton"/>
 
         <!-- Begin Auto Section -->
-        <TextView
-            android:text="@string/autoSection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/autoHeadline"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="70sp"
-            android:layout_marginBottom="10dp" />
+        <TextView android:text="@string/autoSection"
+            style="@style/SectionText" />
 
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="70dp">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/crossedBaseLineAutoText"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="@string/crossedBase" />
-
-            <ToggleButton
-                android:text="@string/toggleButton"
-                android:layout_height="72dp"
-                android:id="@+id/crossedBaseLineAutoInput"
-                android:layout_width="130dp"
-                android:textOff="@string/no"
-                android:textOn="@string/yes"
-                android:backgroundTint="@color/colorSparxRed"
-                android:textColor="@color/colorWhite"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="72dp">
-
-            <TextView
-                android:layout_width="323dp"
-                android:layout_weight="0.92"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number of Hoppers Dumped"
-                android:labelFor="@+id/hoppersDumpedAutoInput"/>
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/hoppersDumpedAutoInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="72dp">
-
-            <TextView
-                android:layout_width="96dp"
-                android:id="@+id/radioDeliveredGearAutoInput"
-                android:layout_marginEnd="20dp"
-                android:layout_height="122dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Gears scored in"
-                android:layout_weight="0.13" />
-
-            <CheckBox
-                android:text="Left"
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.14"
-                android:id="@+id/putGearLeftAuto"
-                android:buttonTint="@color/colorSparxRed"
-                style="@android:style/Widget.Material.CompoundButton.CheckBox"
-                android:textSize="25dp"
-                android:layout_margin="10dp"/>
-
-            <CheckBox
-                android:text="Center"
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/putGearCenterAuto"
-                android:layout_weight="0.14"
-                android:buttonTint="@color/colorSparxRed"
-                style="@android:style/Widget.Material.CompoundButton.CheckBox"
-                android:textSize="20dp"
-                android:layout_margin="10dp"/>
-
-            <CheckBox
-                android:text="Right"
-                android:layout_height="wrap_content"
-                android:id="@+id/putGearRightAuto"
-                android:layout_weight="0.11"
-                android:layout_width="85dp"
-                android:buttonTint="@color/colorSparxRed"
-                style="@android:style/Widget.Material.CompoundButton.CheckBox"
-                android:layout_margin="10dp"
-                android:textSize="20dp"/>
-        </LinearLayout>
-        <!-- Begin Teleop Section -->
-
-        <TextView
-            android:text="Teleop"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/teleopHeadline"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="70sp"
-            android:layout_marginBottom="10dp"/>
-
-        <TextView
-            android:text="Gears"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/gearsHeadline"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="50sp"
-            android:layout_marginBottom="10dp"/>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_weight="2">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/gearsScoredTeleText"
-                android:layout_weight="0.05"
-                android:layout_marginEnd="20dp"
-                android:layout_height="40dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number Of Gears Scored" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/gearsScoredTeleInput"
-                android:layout_weight="1.58"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/gearsDeliveredText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number Of Gears Delivered" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/gearsDeliveredInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/numberOfGearsFromFloorText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="85dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number Of Gears Collected From Floor" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/numberOfGearsFromFloorInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/numberOfGearsFromHumanText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="85dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number Of Gears Collected From Human" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/numberOfGearsFromHumanInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-        </LinearLayout>
-
-        <TextView
-            android:text="Fuel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/fuelHeadline"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="50sp"
-            android:layout_marginBottom="10dp"/>
-
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="72dp">
-
-            <TextView
-                android:id="@+id/scoresHighAutoText"
-                android:layout_marginEnd="20dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Scores High?"
-                android:layout_width="160dp"
-                android:layout_height="72dp" />
-
-            <RadioGroup
-                android:id="@+id/scoresHighAutoGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-                <RadioButton
-                    android:id="@+id/scoresHighNeverAuto"
-                    android:layout_width="95dp"
-                    android:layout_height="wrap_content"
-                    android:text="Never"
-                    android:buttonTint="@color/colorSparxRed"
-                    android:textSize="20dp"/>
-
-
-
-                <RadioButton
-                    android:id="@+id/scoresHighSometimesAuto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sometimes"
-                    android:textSize="20dp"
-                    android:buttonTint="@color/colorSparxRed"
-                    android:layout_marginRight="10dp" />
-
-                <RadioButton
-                    android:id="@+id/scoresHighOftenAuto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Often"
-                    android:buttonTint="@color/colorSparxRed"
-                    android:textSize="20dp"/>
-
-            </RadioGroup>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="72dp">
-
-            <TextView
-                android:id="@+id/scoresLowAutoText"
-                android:layout_marginEnd="20dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Scores Low?"
-                android:layout_width="160dp"
-                android:layout_height="72dp" />
-
-            <RadioGroup
-                android:id="@+id/scoresLowAutoGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-                <RadioButton
-                    android:id="@+id/scoresLowNeverAuto"
-                    android:layout_width="95dp"
-                    android:layout_height="wrap_content"
-                    android:text="Never"
-                    android:buttonTint="@color/colorSparxRed"
-                    android:textSize="20dp"/>
-
-
-
-                <RadioButton
-                    android:id="@+id/scoresLowSometimesAuto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sometimes"
-                    android:textSize="20dp"
-                    android:buttonTint="@color/colorSparxRed"
-                    android:layout_marginRight="10dp" />
-
-                <RadioButton
-                    android:id="@+id/scoresLowOftenAuto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Often"
-                    android:buttonTint="@color/colorSparxRed"
-                    android:textSize="20dp"/>
-
-            </RadioGroup>
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/numberOfBallsScoredHighGoalText"
-                android:layout_weight="0.73"
-                android:layout_marginEnd="20dp"
-                android:layout_height="87dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number Of Balls Scored In A High Goal Cycle" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/numberOfBallsScoredHighGoalInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-        </LinearLayout>
-
-
-
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.48">
+            android:background="@color/colorGrayLight2">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/timesCollectedFromHumanText"
-                android:layout_marginEnd="20dp"
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView android:labelFor="@+id/crossedBaseLineAutoInput"
+                    android:text="@string/crossedBase"
+                    style="@style/NormalTextView"/>
+
+                <ToggleButton android:id="@+id/crossedBaseLineAutoInput"
+                    style="@style/YesNoToggle"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView android:labelFor="@+id/hoppersDumpedAutoInput"
+                    android:text="@string/number_of_hoppers_dumped"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/hoppersDumpedAutoInput"
+                    android:inputType="number"
+                    style="@style/ShortEditText"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView android:text="@string/gears_scored_in"
+                    style="@style/CheckBoxTextView"/>
+
+                <CheckBox android:text="Left"
+                    android:id="@+id/putGearLeftAuto"
+                    style="@style/Checkbox"/>
+
+                <CheckBox android:text="Center"
+                    android:id="@+id/putGearCenterAuto"
+                    style="@style/Checkbox"/>
+
+                <CheckBox android:text="Right"
+                    android:id="@+id/putGearRightAuto"
+                    style="@style/Checkbox"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Begin Teleop Section -->
+
+        <TextView android:text="@string/teleop"
+            style="@style/SectionText"/>
+
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorGrayLight1">
+
+            <TextView android:text="@string/gears"
+                style="@style/HeaderText"/>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:labelFor="@+id/gearsScoredTeleInput"
+                    android:text="@string/number_of_gears_scored"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/gearsScoredTeleInput"
+                    android:inputType="number"
+                    style="@style/ShortEditText"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:labelFor="@+id/gearsDeliveredInput"
+                    android:text="@string/number_of_gears_delivered"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/gearsDeliveredInput"
+                    android:inputType="number"
+                    style="@style/ShortEditText"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:labelFor="@+id/numberOfGearsFromFloorInput"
+                    android:text="@string/number_of_gears_collected_from_floor"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/numberOfGearsFromFloorInput"
+                    android:inputType="number"
+                    style="@style/ShortEditText"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:labelFor="@+id/numberOfGearsFromHumanInput"
+                    android:text="@string/number_of_gears_collected_from_human"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/numberOfGearsFromHumanInput"
+                    android:inputType="number"
+                    style="@style/ShortEditText"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorGrayLight2">
+
+            <TextView android:text="@string/fuel"
+                style="@style/HeaderText" />
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:text="@string/scores_high"
+                    style="@style/RadioTextView"/>
+
+                <RadioGroup android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton android:id="@+id/scoresHighNeverAuto"
+                        android:text="@string/never"
+                        style="@style/RadioButton"/>
+
+                    <RadioButton android:id="@+id/scoresHighSometimesAuto"
+                        android:text="@string/sometimes"
+                        style="@style/RadioButton"/>
+
+                    <RadioButton android:id="@+id/scoresHighOftenAuto"
+                        android:text="@string/often"
+                        style="@style/RadioButton"/>
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:text="@string/scores_low"
+                    style="@style/RadioTextView"/>
+
+                <RadioGroup android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton android:id="@+id/scoresLowNeverAuto"
+                        android:text="@string/never"
+                        style="@style/RadioButton"/>
+
+                    <RadioButton android:id="@+id/scoresLowSometimesAuto"
+                        android:text="@string/sometimes"
+                        style="@style/RadioButton"/>
+
+                    <RadioButton android:id="@+id/scoresLowOftenAuto"
+                        android:text="@string/often"
+                        style="@style/RadioButton"/>
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:labelFor="@+id/numberOfBallsScoredHighGoalInput"
+                    android:text="@string/number_of_balls_scored_in_a_high_goal_cycle"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/numberOfBallsScoredHighGoalInput"
+                    android:inputType="number"
+                    style="@style/ShortEditText"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:labelFor="@+id/timesCollectedFromHumanInput"
+                    android:text="@string/number_of_times_collected_balls_from_human"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/timesCollectedFromHumanInput"
+                    android:inputType="number"
+                    style="@style/ShortEditText"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:labelFor="@+id/timesCollectedFromHopperInput"
+                    android:text="@string/number_of_times_collected_balls_from_hopper"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/timesCollectedFromHopperInput"
+                    android:inputType="number"
+                    style="@style/ShortEditText"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:labelFor="@+id/timesCollectedFromFloorInput"
+                    android:text="@string/number_of_times_collected_balls_from_floor"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/timesCollectedFromFloorInput"
+                    android:inputType="number"
+                    style="@style/ShortEditText"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:labelFor="@+id/fuelScoredLowGoalCycleInput"
+                    android:text="@string/approximate_fuel_scored_in_a_low_goal_cycle"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/fuelScoredLowGoalCycleInput"
+                    android:inputType="number"
+                    style="@style/ShortEditText"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:labelFor="@+id/numberOfLowGoalCyclesInput"
+                    android:text="@string/number_of_low_goal_cycles"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/numberOfLowGoalCyclesInput"
+                    android:inputType="number"
+                    style="@style/ShortEditText"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView android:text="@string/high_goal_accuracy"
+                    style="@style/RadioTextView"/>
+
+                <RadioGroup android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton android:id="@+id/highGoalAccuracyScoutPoor"
+                        android:text="@string/poor"
+                        style="@style/RadioButton"/>
+
+                    <RadioButton android:id="@+id/highGoalAccuracyScoutOk"
+                        android:text="@string/ok"
+                        style="@style/RadioButton"/>
+
+                    <RadioButton android:id="@+id/highGoalAccuracyScoutGreat"
+                        android:text="@string/great"
+                        style="@style/RadioButton"/>
+
+                </RadioGroup>
+
+            </LinearLayout>
+
+        </LinearLayout>
+        <TextView android:text="@string/end_game"
+            style="@style/SectionText"/>
+
+        <LinearLayout android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorGrayLight1">
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView android:labelFor="@+id/didTheyScale"
+                    android:text="@string/did_they_scale"
+                    style="@style/NormalTextView"/>
+
+                <ToggleButton android:id="@+id/didTheyScale"
+                    style="@style/YesNoToggle"/>
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number Of Times Collected Balls From Human" />
+                android:id="@+id/scaledFromWhereLinear">
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/timesCollectedFromHumanInput"
-                android:layout_weight="0.51"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
+                <TextView android:labelFor="@+id/scaledFromWhereInput"
+                    android:text="@string/where_they_scaled_from"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/scaledFromWhereInput"
+                    android:inputType="text"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;0123456789 "
+                    style="@style/ShortEditText" />
+
+            </LinearLayout>
         </LinearLayout>
 
-        <LinearLayout
-            android:orientation="horizontal"
+        <LinearLayout android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/timesCollectedFromHopperText"
-                android:layout_weight="0.73"
-                android:layout_marginEnd="20dp"
-                android:layout_height="87dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number Of Times Collected Balls From Hopper" />
+            <TextView android:labelFor="@+id/matchScouted"
+                android:text="@string/match_scouted"
+                style="@style/NormalTextView"/>
 
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/timesCollectedFromHopperInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-        </LinearLayout>
+            <ToggleButton android:id="@+id/matchScouted"
+                style="@style/YesNoToggle"/>
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/timesCollectedFromFloorText"
-                android:layout_weight="0.73"
-                android:layout_marginEnd="20dp"
-                android:layout_height="87dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number Of Times Collected Balls From Floor" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/timesCollectedFromFloorInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/fuelScoredLowGoalCycleText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="87dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Approximate Fuel Scored In A Low Goal Cycle" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/fuelScoredLowGoalCycleInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/numberOfLowGoalCyclesText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Number Of Low Goal Cycles" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/numberOfLowGoalCyclesInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="30sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="260dp"
-                android:id="@+id/highGoalAccuracyText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="87dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="High Goal Accuracy" />
-
-            <RadioGroup
-                android:id="@+id/highGoalAccuracyScoutGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-
-                <RadioButton
-                    android:id="@+id/highGoalAccuracyScoutPoor"
-                    android:layout_width="95dp"
-                    android:layout_height="wrap_content"
-                    android:text="Poor"
-                    android:buttonTint="@color/colorSparxRed"
-                    android:textSize="20dp"/>
-
-
-
-                <RadioButton
-                    android:id="@+id/highGoalAccuracyScoutOk"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Ok"
-                    android:textSize="20dp"
-                    android:buttonTint="@color/colorSparxRed"
-                    android:layout_marginRight="10dp" />
-
-                <RadioButton
-                    android:id="@+id/highGoalAccuracyScoutGreat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Great"
-                    android:buttonTint="@color/colorSparxRed"
-                    android:textSize="20dp"/>
-
-            </RadioGroup>
-        </LinearLayout>
-        <TextView
-            android:text="End Game"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/endGameHeadline"
-            android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textSize="50sp"
-            android:layout_marginBottom="10dp"/>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/didTheyScaleText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="87dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Did They Scale?" />
-
-            <RadioGroup
-                android:id="@+id/scalesScoutingGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:text="Yes"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/didScaleRadioButton"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorSparxRed"
-                    android:textSize="20dp"/>
-
-                <RadioButton
-                    android:text="No"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/didNotScaleRadioButton"
-                    android:layout_weight="1"
-                    android:buttonTint="@color/colorSparxRed"
-                    android:textSize="20dp"
-                    android:layout_marginLeft="10dp"/>
-
-            </RadioGroup>
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="323dp"
-                android:id="@+id/scaledFromWhereText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="87dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="If They Scaled, Where?" />
-
-            <EditText
-                android:layout_width="130dp"
-                android:layout_height="72dp"
-                android:inputType="text"
-                android:ems="10"
-                android:id="@+id/scaledFromWhereInput"
-                android:layout_weight="0.92"
-                android:textColor="@color/colorBlack"
-                android:textAlignment="center"
-                android:textSize="20sp"
-                android:hint="Where They Scaled From" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="72dp">
-
-            <TextView
-                android:layout_width="96dp"
-                android:id="@+id/matchScoutedText"
-                android:layout_marginEnd="20dp"
-                android:layout_height="122dp"
-                android:textSize="25sp"
-                android:layout_marginStart="10dp"
-                android:textColor="@color/colorBlack"
-                android:text="Match Scouted"
-                android:layout_weight="0.13" />
-
-            <CheckBox
-                android:layout_width="85dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="0.14"
-                android:id="@+id/matchScouted"
-                android:buttonTint="@color/colorSparxRed"
-                style="@android:style/Widget.Material.CompoundButton.CheckBox"
-                android:textSize="25dp"
-                android:layout_margin="10dp"/>
         </LinearLayout>
     </LinearLayout>
 

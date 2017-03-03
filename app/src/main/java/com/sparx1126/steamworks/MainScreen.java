@@ -58,16 +58,7 @@ public class MainScreen extends AppCompatActivity {
     private boolean teamSelected = false;
     private boolean eventFilter = true;
     private SharedPreferences settings;
-    private static final String COMPETITION_YEAR = "2017";
     private static final int COMPETITION_Threshold = 1000;
-    private static final String PREFS_NAME = "Sparx-prefs";
-    private static final String PREFS_SCOUTER = "scouterText";
-    private static final String PREFS_TEAM = "teamNumber";
-    private static final String PREFS_EVENT = "eventText";
-    private static final String OUR_COMPETITION_BUCKEYE = "2017-03-29 Buckeye Regional";
-    private static final String OUR_COMPETITION_FINGERLAKES = "2017-03-15 Finger Lakes Regional ";
-    private static final String FILTER_ON = "Turn the event filter on?";
-    private static final String FILTER_OFF = "Turn the event filter off?";
     private Map<String, String> eventNamesToKey;
     private Vector<String> teamsList;
 
@@ -110,7 +101,7 @@ public class MainScreen extends AppCompatActivity {
         eventsWeAreInArray = new ArrayList<>();
         eventNamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray); //selected item will look like a spinner set from XML
 
-        settings = getSharedPreferences(PREFS_NAME, 0);
+        settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
 
         teamsList = new Vector<>();
 
@@ -153,7 +144,7 @@ public class MainScreen extends AppCompatActivity {
             if(teamsList.contains(teamTextValue)){
                 teamSelected = true;
                 int teamNumber = getTeamNumber();
-                editor.putInt(PREFS_TEAM, teamNumber);
+                editor.putInt(getResources().getString(R.string.pref_team), teamNumber);
                 editor.apply();
             }
             else{
@@ -168,7 +159,7 @@ public class MainScreen extends AppCompatActivity {
 
     private void restorePreferences(){
         //the order matters
-        String eventName = settings.getString(PREFS_EVENT, "");
+        String eventName = settings.getString(getResources().getString(R.string.pref_event), "");
         if(!eventName.isEmpty()) {
             setupEventSpinner();
             if(eventNamesAdapter.getPosition(eventName) != -1) {
@@ -182,10 +173,10 @@ public class MainScreen extends AppCompatActivity {
                 }
             }
         }
-        String scouterName = settings.getString(PREFS_SCOUTER, "");
+        String scouterName = settings.getString(getResources().getString(R.string.pref_scouter), "");
         scouterText.setText(scouterName);
         scouterText.dismissDropDown();
-        int teamNumber = settings.getInt(PREFS_TEAM, 0);
+        int teamNumber = settings.getInt(getResources().getString(R.string.pref_team), 0);
         if(teamNumber != 0) {
             teamText.setText(String.valueOf(teamNumber));
         }
@@ -234,19 +225,19 @@ public class MainScreen extends AppCompatActivity {
     private final AdapterView.OnItemSelectedListener spinnerOnItemClick = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            if(getEventName().contentEquals(FILTER_OFF)){
+            if(getEventName().contentEquals(getResources().getString(R.string.filter_off))){
                 eventSelected = false;
                 eventFilter = false;
                 setupEventSpinner();
             }
-            else if(getEventName().contentEquals(FILTER_ON)){
+            else if(getEventName().contentEquals(getResources().getString(R.string.filter_on))){
                 eventSelected = false;
                 eventFilter = true;
                 setupEventSpinner();
             }
             else if (!getEventName().isEmpty()) {
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString(PREFS_EVENT, getEventName());
+                editor.putString(getResources().getString(R.string.pref_event), getEventName());
                 editor.apply();
                 eventSelected = true;
                 downloadTeamDataIfNecessary();
@@ -269,7 +260,7 @@ public class MainScreen extends AppCompatActivity {
             if(Arrays.asList(students).contains(scouterName)){
                 nameSelected = true;
                 SharedPreferences.Editor editor = settings.edit();
-                editor.putString(PREFS_SCOUTER, scouterName);
+                editor.putString(getResources().getString(R.string.pref_scouter), scouterName);
                 editor.apply();
                 showButtons();
             }
@@ -315,8 +306,8 @@ public class MainScreen extends AppCompatActivity {
 
     private AlertDialog alertUser() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Failure");
-        builder.setMessage("Did not successfully download event list!");
+        builder.setTitle(R.string.failure);
+        builder.setMessage(R.string.download_failed);
         builder.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -329,7 +320,7 @@ public class MainScreen extends AppCompatActivity {
     private AlertDialog createPleaseWaitDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle(R.string.downloading_data);
-        builder.setMessage("Please wait while Event data is downloaded...");
+        builder.setMessage(R.string.please_wait_event);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -345,7 +336,7 @@ public class MainScreen extends AppCompatActivity {
         if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
             final Dialog alert = createPleaseWaitDialog();
             alert.show();
-            blueAlliance.loadEventList(COMPETITION_YEAR, new NetworkCallback() {
+            blueAlliance.loadEventList(getResources().getString(R.string.competition_year), new NetworkCallback() {
                 @Override
                 public void handleFinishDownload(final boolean success) {
                     MainScreen.this.runOnUiThread(new Runnable() {
@@ -373,15 +364,15 @@ public class MainScreen extends AppCompatActivity {
             eventsWeAreInArray = fillInEventsNearToday(eventDataCur);
             if (eventFilter) {
                 for (int i = (eventsWeAreInArray.size() - 1); 0 <= i; i--) {
-                    if (!eventsWeAreInArray.get(i).contentEquals(OUR_COMPETITION_BUCKEYE)) {
-                        if (!eventsWeAreInArray.get(i).contentEquals(OUR_COMPETITION_FINGERLAKES)) {
+                    if (!eventsWeAreInArray.get(i).contentEquals(getResources().getString(R.string.our_competition_buckeye))) {
+                        if (!eventsWeAreInArray.get(i).contentEquals(getResources().getString(R.string.our_competition_flr))) {
                             eventsWeAreInArray.remove(i);
                         }
                     }
                 }
-                eventsWeAreInArray.add(FILTER_OFF);
+                eventsWeAreInArray.add(getResources().getString(R.string.filter_off));
             } else {
-                eventsWeAreInArray.add(FILTER_ON);
+                eventsWeAreInArray.add(getResources().getString(R.string.filter_on));
             }
         }
         eventNamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray);
@@ -396,7 +387,7 @@ public class MainScreen extends AppCompatActivity {
 
     private ArrayList<String> fillInEventsNearToday(Cursor eventDataCur){
         ArrayList<String> eventsWeAreInArray = new ArrayList<>();
-        SimpleDateFormat cursorFormater = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.US);
+        SimpleDateFormat cursorFormater = new SimpleDateFormat(getString(R.string.day_format), Locale.US);
         long epochToday = getTodayInEpoch();
         try {
             while (eventDataCur.moveToNext()) {
