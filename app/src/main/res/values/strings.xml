@@ -19,10 +19,10 @@
     <string name="shooterType">Type Of Shooter</string>
     <string name="ballsPerSec">Balls Per Second</string>
     <string name="ballsNumber">How many balls in a cycle</string>
-    <string name="cycleTime">Cycle Time</string>
+    <string name="cycleTime">Cycle Time (seconds)</string>
     <string name="shootRange">Maximum Shooting Range In Feet</string>
     <string name="shootPreferred">Preferred Place To Shoot From</string>
-    <string name="highGoalAccuracy">Accuracy From High Goal</string>
+    <string name="highGoalAccuracy">Accuracy From High Goal (%)</string>
     <string name="ballsHopper">Can Pickup Balls From Hopper</string>
     <string name="ballsFloor">Can Pickup Balls From Floor</string>
     <string name="ballsHuman">Can Pickup Balls From Human</string>
@@ -85,7 +85,7 @@
     <string name="sometimes">Sometimes</string>
     <string name="often">Often</string>
     <string name="scores_low">Scores Low?</string>
-    <string name="number_of_balls_scored_in_a_high_goal_cycle">Number Of Balls Scored In A High Goal Cycle</string>
+    <string name="number_of_balls_scored_in_a_high_goal_cycle">Approximate Fuel Scored In A High Goal Cycle</string>
     <string name="number_of_times_collected_balls_from_human">Number Of Times Collected Balls From Human</string>
     <string name="number_of_times_collected_balls_from_hopper">Number Of Times Collected Balls From Hopper</string>
     <string name="number_of_times_collected_balls_from_floor">Number Of Times Collected Balls From Floor</string>
@@ -97,11 +97,12 @@
     <string name="great">Great</string>
     <string name="end_game">End Game</string>
     <string name="did_they_scale">Did They Scale?</string>
-    <string name="where_they_scaled_from">Where They Scaled From?</string>
+    <string name="where_they_scaled_from">Where Where Did They Scale From?</string>
     <string name="match_scouted">Match Scouted</string>
     <string name="minus">-</string>
     <string name="zero">0</string>
     <string name="plus">+</string>
+    <string name="benchmarking_was_done">Benchmarking Was Done</string>
     <string-array name="students">
         <item>Michael Anderson</item>
         <item>Tyler Armstrong</item>

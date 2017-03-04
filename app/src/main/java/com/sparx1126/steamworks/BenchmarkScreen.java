@@ -32,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.sparx1126.steamworks.R.id.benchmarkingWasDoneButton;
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class BenchmarkScreen extends AppCompatActivity {
@@ -57,6 +58,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     private ToggleButton canScoreGearsBenchButton;
     private ToggleButton pickupGearFloorBenchButton;
     private ToggleButton pickupGearRetrievalBenchButton;
+    private ToggleButton benchmarkWasDoneButton;
     private RadioButton radioFloor;
     private RadioButton radioZone;
     private CheckBox canGearLeftBench;
@@ -140,6 +142,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         canScoreGearsBenchButton.setOnClickListener(canGearButtonClicked);
         pickupGearFloorBenchButton = (ToggleButton) findViewById(R.id.pickupGearFloorBenchButton);
         pickupGearRetrievalBenchButton = (ToggleButton) findViewById(R.id.pickupGearRetrievalBenchButton);
+        benchmarkWasDoneButton = (ToggleButton) findViewById(benchmarkingWasDoneButton);
         radioFloor = (RadioButton) findViewById(R.id.radioFloor);
         radioZone = (RadioButton) findViewById(R.id.radioZone);
         canGearLeftBench = (CheckBox) findViewById(R.id.canGearLeftBench);
@@ -227,6 +230,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         currentData.setCanScoreGearsBenchButton(canScoreGearsBenchButton.isChecked());
         currentData.setPickupGearFloorBenchButton(pickupGearFloorBenchButton.isChecked());
         currentData.setPickupGearRetrievalBenchButton(pickupGearRetrievalBenchButton.isChecked());
+        currentData.setBenchmarkWasDoneButton(benchmarkWasDoneButton.isChecked());
         if(radioFloor.isChecked()) {
             currentData.setPickupGearPreferred("radioFloor");
         }
@@ -307,6 +311,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         canScoreGearsBenchButton.setChecked(currentData.isCanScoreGearsBenchButton());
         pickupGearFloorBenchButton.setChecked(currentData.isPickupGearFloorBenchButton());
         pickupGearRetrievalBenchButton.setChecked(currentData.isPickupGearRetrievalBenchButton());
+        benchmarkWasDoneButton.setChecked(currentData.isBenchmarkingWasDoneButton());
         if(currentData.getPickupGearPreferred() != null) {
             switch(currentData.getPickupGearPreferred()) {
                 case "radioFloor":
@@ -444,6 +449,13 @@ public class BenchmarkScreen extends AppCompatActivity {
     }
 
     private final View.OnClickListener canScaleButtonClicked =  new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            scaleHide();
+        }
+    };
+
+    private final View.OnClickListener benchmarkingWasDoneButtonClicked =  new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             scaleHide();
