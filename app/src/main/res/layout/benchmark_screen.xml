@@ -514,6 +514,21 @@
                 style="@style/MultiLongEditText"/>
         </LinearLayout>
 
+        <LinearLayout android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp">
+
+            <TextView android:labelFor="@+id/benchmarkingWasDoneButtonButton"
+                android:text="@string/benchmarking_was_done"
+                style="@style/NormalTextView"/>
+
+            <ToggleButton android:id="@+id/benchmarkingWasDoneButton"
+                style="@style/YesNoToggle"/>
+
+        </LinearLayout>
+
         <Button android:id="@+id/submitTeleopBenchmark"
             android:text="@string/submit"
             style="@style/BigButton"/>

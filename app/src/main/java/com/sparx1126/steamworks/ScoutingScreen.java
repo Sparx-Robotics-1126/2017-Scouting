@@ -50,7 +50,7 @@ public class ScoutingScreen extends AppCompatActivity {
     //   Zzzzz  |\      _,,,--,,_
     //          /,`.-'`'   ._  \-;;,_
     //         |,4-  ) )_   .;.(  `'-'
-    //        '---''(_/._)-'(_\_)
+    //  doggo '---''(_/._)-'(_\_)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

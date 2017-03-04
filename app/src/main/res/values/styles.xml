@@ -107,7 +107,7 @@
         <item name="android:layout_weight">0.92</item>
         <item name="android:textColor">@color/colorBlack</item>
         <item name="android:ems">10</item>
-        <item name="android:digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;0123456789 </item>
+        <item name="android:digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;012345678 9 </item>
     </style>
 
     <style name="MultiLongEditText" parent="android:Widget.EditText">

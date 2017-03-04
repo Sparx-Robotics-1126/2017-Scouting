@@ -37,6 +37,7 @@ public class BenchmarkingData{
     private int cycleTimeLowBenchInput = Integer.MAX_VALUE;
     private int cycleNumberLowBenchInput = Integer.MAX_VALUE;
     private boolean abilityScaleBenchButton;
+    private boolean benchmarkWasDoneButton;
     private String placesCanScaleBenchInput;
     private String preferredPlacesScaleInput;
     private String autoAbilitiesBench;
@@ -301,6 +302,16 @@ public class BenchmarkingData{
 
     public void setAbilityScaleBenchButton(boolean abilityScaleBenchButton) {
         this.abilityScaleBenchButton = abilityScaleBenchButton;
+    }
+
+    public boolean is() {
+        return abilityScaleBenchButton;
+    }
+
+    public boolean isBenchmarkingWasDoneButton() {return benchmarkWasDoneButton;}
+
+    public void setBenchmarkWasDoneButton(boolean benchmarkWasDoneButton) {
+        this.benchmarkWasDoneButton = benchmarkWasDoneButton;
     }
 
     public String getPlacesCanScaleBenchInput() {
