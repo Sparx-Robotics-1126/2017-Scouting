@@ -37,8 +37,11 @@ public class HorizontalNumberPicker extends LinearLayout implements View.OnClick
             editText.setText(Integer.toString(value + 1));
         }else if(minus == view){
             int value = Integer.parseInt(editText.getText().toString());
-            editText.setText(Integer.toString(value - 1));
+            if(value > 0) {
+                editText.setText(Integer.toString(value - 1));
+            }
         }
+
     }
 
     public void setValue(int value){editText.setText(Integer.toString(value));}
