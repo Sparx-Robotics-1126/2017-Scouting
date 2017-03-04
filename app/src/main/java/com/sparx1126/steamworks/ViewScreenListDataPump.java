@@ -232,7 +232,6 @@ public class ViewScreenListDataPump {
         else {
             scaling.add("<font color=\"black\"><b>Can scale: </b></font>" + benchmarkingData.isAbilityScaleBenchButton());
         }
-        scaling.add("<font color=\"black\"><b>Places they can scale from: " + benchmarkingData.getPlacesCanScaleBenchInput());
         if(benchmarkingData.getPreferredPlacesScaleInput() == null) {
             scaling.add("<font color=\"black\"><b>Prefers to scale from: </b></font>");
         }

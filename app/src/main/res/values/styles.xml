@@ -138,7 +138,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">0.14</item>
         <item name="android:buttonTint">@color/colorSparxRed</item>
-        <item name="android:textSize">20dp</item>
+        <item name="android:textSize">17dp</item>
         <item name="android:layout_margin">10dp</item>
     </style>
 

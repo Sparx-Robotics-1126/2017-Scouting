@@ -75,8 +75,12 @@ public class BenchmarkScreen extends AppCompatActivity {
     private EditText cycleTimeLowBenchInput;
     private EditText cycleNumberLowBenchInput;
     private ToggleButton abilityScaleBenchButton;
-    private EditText placesCanScaleBenchInput;
-    private EditText preferredPlacesScaleInput;
+    private CheckBox canScaleLeftBench;
+    private CheckBox canScaleRightBench;
+    private CheckBox canScaleCenterBench;
+    private RadioButton radioPreferredPlacesScaleRight;
+    private RadioButton radioPreferredPlacesScaleCenter;
+    private RadioButton radioPreferredPlacesScaleLeft;
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
     private Button submitTeleopBenchmark;
@@ -161,8 +165,12 @@ public class BenchmarkScreen extends AppCompatActivity {
         cycleNumberLowBenchInput = (EditText) findViewById(R.id.cycleNumberLowBenchInput);
         abilityScaleBenchButton = (ToggleButton) findViewById(R.id.abilityScaleBenchButton);
         abilityScaleBenchButton.setOnClickListener(canScaleButtonClicked);
-        placesCanScaleBenchInput = (EditText) findViewById(R.id.placesCanScaleBenchInput);
-        preferredPlacesScaleInput = (EditText) findViewById(R.id.preferredPlacesScaleInput);
+        canScaleRightBench = (CheckBox) findViewById(R.id.canScaleRightBench);
+        canScaleCenterBench = (CheckBox) findViewById(R.id.canScaleCenterBench);
+        canScaleLeftBench = (CheckBox) findViewById(R.id.canScaleLeftBench);
+        radioPreferredPlacesScaleRight = (RadioButton) findViewById(R.id.radioPreferredScaleRight);
+        radioPreferredPlacesScaleCenter = (RadioButton) findViewById(R.id.radioPreferredScaleCenter);
+        radioPreferredPlacesScaleLeft = (RadioButton) findViewById(R.id.radioPreferredScaleLeft);
         autoAbilitiesBench = (EditText) findViewById(R.id.autoAbilitiesBench);
         commentsBench = (EditText) findViewById(R.id.commentsBench);
         submitTeleopBenchmark = (Button) findViewById(R.id.submitTeleopBenchmark);
@@ -272,8 +280,18 @@ public class BenchmarkScreen extends AppCompatActivity {
             currentData.setCycleNumberLowBenchInput(Integer.parseInt(valueAsSring));
         }
         currentData.setAbilityScaleBenchButton(abilityScaleBenchButton.isChecked());
-        currentData.setPlacesCanScaleBenchInput(placesCanScaleBenchInput.getText().toString());
-        currentData.setPreferredPlacesScaleInput(preferredPlacesScaleInput.getText().toString());
+        currentData.setPlacesCanScaleCenter(canScaleCenterBench.isChecked());
+        currentData.setPlacesCanScaleLeft(canScaleLeftBench.isChecked());
+        currentData.setPlacesCanScaleRight(canScaleRightBench.isChecked());
+        if(radioPreferredPlacesScaleRight.isChecked()) {
+            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleRight");
+        }
+        else if(radioPreferredPlacesScaleCenter.isChecked()) {
+            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleRight");
+        }
+        else if(radioPreferredPlacesScaleLeft.isChecked()) {
+            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleRight");
+        }
         currentData.setAutoAbilitiesBench(autoAbilitiesBench.getText().toString());
         currentData.setCommentsBench(commentsBench.getText().toString());
     }
@@ -368,8 +386,24 @@ public class BenchmarkScreen extends AppCompatActivity {
             SetStringIntoTextView(cycleNumberLowBenchInput, String.valueOf(currentData.getCycleNumberLowBenchInput()));
         }
         abilityScaleBenchButton.setChecked(currentData.isAbilityScaleBenchButton());
-        SetStringIntoTextView(placesCanScaleBenchInput, currentData.getPlacesCanScaleBenchInput());
-        SetStringIntoTextView(preferredPlacesScaleInput, currentData.getPreferredPlacesScaleInput());
+        canScaleCenterBench.setChecked(currentData.isPlacesCanScaleCenter());
+        canScaleLeftBench.setChecked(currentData.isPlacesCanScaleLeft());
+        canScaleRightBench.setChecked(currentData.isPlacesCanScaleRight());
+        if(currentData.getPreferredPlacesScaleInput() != null) {
+            switch(currentData.getPreferredPlacesScaleInput()) {
+                case "radioPreferredPlacesScaleRight":
+                    radioPreferredPlacesScaleRight.setChecked(true);
+                    break;
+                case "radioPreferredPlacesScaleCenter":
+                    radioPreferredPlacesScaleCenter.setChecked(true);
+                    break;
+                case "radioPreferredPlacesScaleLeft":
+                    radioPreferredPlacesScaleLeft.setChecked(true);
+                    break;
+                default:
+                    break;
+            }
+        }
         SetStringIntoTextView(autoAbilitiesBench, currentData.getAutoAbilitiesBench());
         SetStringIntoTextView(commentsBench, currentData.getCommentsBench());
         hideHighGoal();
@@ -544,7 +578,7 @@ public class BenchmarkScreen extends AppCompatActivity {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-                currentData.addPicturePath(photoFile.getAbsolutePath());
+            //    currentData.addPicturePath(photoFile.getAbsolutePath());
             } catch (IOException ex) {
                 // Error occurred while creating the File
             }

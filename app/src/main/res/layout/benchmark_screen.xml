@@ -475,11 +475,22 @@
 
                 <TextView android:labelFor="@+id/placesCanScaleBenchInput"
                     android:text="@string/scalePlaces"
-                    style="@style/NormalTextView"/>
+                    style="@style/NormalTextView"
+                    android:layout_width="270dp"
+                    android:layout_height="84dp" />
 
-                <EditText android:id="@+id/placesCanScaleBenchInput"
-                    style="@style/MultiShortEditText"/>
+                <CheckBox android:id="@+id/canScaleLeftBench"
+                    android:text="Left"
+                    style="@style/Checkbox"/>
 
+                <CheckBox android:id="@+id/canScaleCenterBench"
+                    android:text="Center"
+                    style="@style/Checkbox"
+                    android:textSize="15dp"/>
+
+                <CheckBox android:id="@+id/canScaleRightBench"
+                    android:text="Right"
+                    style="@style/Checkbox"/>
             </LinearLayout>
 
             <LinearLayout android:orientation="horizontal"
@@ -491,8 +502,22 @@
                     android:text="@string/scalePreferredPlace"
                     style="@style/NormalTextView"/>
 
-                <EditText android:id="@+id/preferredPlacesScaleInput"
-                    style="@style/MultiShortEditText"/>
+                <RadioGroup android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton android:id="@+id/radioPreferredScaleRight"
+                        android:text="Right"
+                        style="@style/RadioButton"/>
+
+                    <RadioButton android:id="@+id/radioPreferredScaleCenter"
+                        android:text="Center"
+                        style="@style/RadioButton"/>
+
+                    <RadioButton android:id="@+id/radioPreferredScaleLeft"
+                        android:text="Left"
+                        style="@style/RadioButton"/>
+
+                </RadioGroup>
 
             </LinearLayout>
         </LinearLayout>

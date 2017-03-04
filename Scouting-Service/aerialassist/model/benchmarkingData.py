@@ -1,8 +1,8 @@
 from google.appengine.ext import ndb
 
 class BenchmarkingData(ndb.Model):
-    eventName = ndb.StringProperty()
     teamNumber = ndb.IntegerProperty()
+    eventName = ndb.StringProperty()
     student = ndb.StringProperty()
     driveSystem = ndb.StringProperty()
     drivesSpeed = ndb.FloatProperty()
@@ -28,12 +28,15 @@ class BenchmarkingData(ndb.Model):
     canGearCenterBench = ndb.BooleanProperty()
     canGearRightBench = ndb.BooleanProperty()
     radioPreferredGear = ndb.StringProperty()
+    radioPreferredBall = ndb.StringProperty()
     cycleTimeGearsBenchInput = ndb.IntegerProperty()
     abilityToShootLowGoalBenchButton = ndb.BooleanProperty()
     cycleTimeLowBenchInput = ndb.IntegerProperty()
     cycleNumberLowBenchInput = ndb.IntegerProperty()
     abilityScaleBenchButton = ndb.BooleanProperty()
-    placesCanScaleBenchInput = ndb.StringProperty()
+    placesCanScaleRight = ndb.BooleanProperty()
+    placesCanScaleCenter = ndb.BooleanProperty()
+    placesCanScaleLeft = ndb.BooleanProperty()
     preferredPlacesScaleInput = ndb.StringProperty()
     autoAbilitiesBench = ndb.StringProperty()
-    commentsBench = ndb.StringProperty()
+    commentsBench = ndb.StringProperty()   
