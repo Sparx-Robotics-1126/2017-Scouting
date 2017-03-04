@@ -17,7 +17,7 @@
         android:src="@drawable/ic_add_a_photo_black_24dp"
         android:tint="@color/colorWhite"
         android:backgroundTint="@color/colorSparxRed"
-        android:contentDescription="@string/home"/>
+        android:contentDescription="@string/camera"/>
 
         <!-- Begin Drives Section -->
         <LinearLayout android:orientation="vertical"
@@ -516,6 +516,7 @@
         <Button android:id="@+id/submitTeleopBenchmark"
             android:text="@string/submit"
             style="@style/BigButton"/>
+
 
     </LinearLayout>
 

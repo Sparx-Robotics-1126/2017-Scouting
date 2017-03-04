@@ -1,12 +1,17 @@
 package com.sparx1126.steamworks;
 
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
-import android.widget.Toast;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+
+import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
+import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,17 +24,22 @@ import static com.sparx1126.steamworks.R.layout.view_screen;
  */
 
 public class ViewScreen extends AppCompatActivity {
-    ImageButton home;
-    ExpandableListView expandableListView;
-    ExpandableListAdapter expandableListAdapter;
-    List<String> expandableListTitle;
-    HashMap<String, List<String>> expandableListDetail;
+    private ScoutingInfo currentInfo;
+    private BenchmarkingData currentData;
+    private ImageButton home;
+    private ExpandableListView expandableListView;
+    private ExpandableListAdapter expandableListAdapter;
+    private List<String> expandableListTitle;
+    private HashMap<String, List<String>> expandableListDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(view_screen);
-        home = (ImageButton)findViewById(R.id.home);
+
+        currentInfo = ScoutingInfo.getCurrentInfo();
+        currentData = currentInfo.getBenchmarkingData();
+        home = (ImageButton) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,41 +51,22 @@ public class ViewScreen extends AppCompatActivity {
         expandableListTitle = new ArrayList<String>(expandableListDetail.keySet());
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
-        expandableListView.setOnGroupExpandListener(new ExpandableListView.OnGroupExpandListener() {
+        LinearLayout layout = (LinearLayout) findViewById(R.id.linear);
 
-            @Override
-            public void onGroupExpand(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Expanded.",
-                        Toast.LENGTH_SHORT).show();
+        if (!currentData.getPicturePaths().isEmpty()) {
+            for (int i = 0; i < currentData.getPicturePaths().size(); i++) {
+                ImageView imageView = new ImageView(this);
+                imageView.setId(i);
+                imageView.setPadding(2, 2, 2, 2);
+                imageView.setImageBitmap(BitmapFactory.decodeFile(currentData.getPicturePaths().get(i)));
+                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                layout.addView(imageView);
             }
-        });
-
-        expandableListView.setOnGroupCollapseListener(new ExpandableListView.OnGroupCollapseListener() {
-
-            @Override
-            public void onGroupCollapse(int groupPosition) {
-                Toast.makeText(getApplicationContext(),
-                        expandableListTitle.get(groupPosition) + " List Collapsed.",
-                        Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-        expandableListView.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                Toast.makeText(
-                        getApplicationContext(),
-                        expandableListTitle.get(groupPosition)
-                                + " -> "
-                                + expandableListDetail.get(
-                                expandableListTitle.get(groupPosition)).get(
-                                childPosition), Toast.LENGTH_SHORT
-                ).show();
-                return false;
-            }
-        });
+        }
+        else {
+            ImageView imageView = new ImageView(this);
+            imageView.setImageResource(R.drawable.ic_add_a_photo_black_24dp);
+            layout.addView(imageView);
+        }
     }
 }

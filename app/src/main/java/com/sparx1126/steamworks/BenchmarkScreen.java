@@ -532,6 +532,7 @@ public class BenchmarkScreen extends AppCompatActivity {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
+                currentData.addPicturePath(photoFile.getAbsolutePath());
             } catch (IOException ex) {
                 // Error occurred while creating the File
             }
@@ -547,9 +548,8 @@ public class BenchmarkScreen extends AppCompatActivity {
     }
 
     private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
-        String imageFileName = "Steamworks " + timeStamp;
+        // Create an rotate_indefinetly file name
+        String imageFileName = String.valueOf(currentData.getTeamNumber());
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         return File.createTempFile(
