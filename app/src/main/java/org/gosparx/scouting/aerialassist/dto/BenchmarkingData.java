@@ -1,7 +1,7 @@
 package org.gosparx.scouting.aerialassist.dto;
 
-import android.os.Parcel;
-import android.os.Parcelable;
+import java.util.HashMap;
+import java.util.Map;
 
 public class BenchmarkingData{
     private final int teamNumber;
@@ -41,11 +41,26 @@ public class BenchmarkingData{
     private String preferredPlacesScaleInput;
     private String autoAbilitiesBench;
     private String commentsBench;
+    private int picturePathsIndex;
+    private Map<Integer, String> picturePaths;
 
     public BenchmarkingData(int teamNumber, String eventName, String student) {
         this.teamNumber = teamNumber;
         this.eventName = eventName;
         this.student = student;
+        picturePaths = new HashMap<>();
+    }
+
+    public int getTeamNumber() {
+        return teamNumber;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public String getStudent() {
+        return student;
     }
 
     public String getDriveSystem() {
@@ -318,5 +333,14 @@ public class BenchmarkingData{
 
     public void setCommentsBench(String commentsBench) {
         this.commentsBench = commentsBench;
+    }
+
+    public void addPicturePath(String path) {
+        picturePaths.put(picturePathsIndex, path);
+        ++picturePathsIndex;
+    }
+
+    public Map<Integer, String> getPicturePaths() {
+        return picturePaths;
     }
 }

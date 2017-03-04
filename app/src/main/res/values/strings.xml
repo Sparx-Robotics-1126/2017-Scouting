@@ -99,6 +99,9 @@
     <string name="did_they_scale">Did They Scale?</string>
     <string name="where_they_scaled_from">Where They Scaled From?</string>
     <string name="match_scouted">Match Scouted</string>
+    <string name="minus">-</string>
+    <string name="zero">0</string>
+    <string name="plus">+</string>
     <string-array name="students">
         <item>Michael Anderson</item>
         <item>Tyler Armstrong</item>

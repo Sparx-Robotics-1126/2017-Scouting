@@ -2,7 +2,6 @@ package org.gosparx.scouting.aerialassist.dto;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
 public class ScoutingInfo {
     private static Map<Integer, ScoutingInfo> scoutingInfoMap;
@@ -33,7 +32,8 @@ public class ScoutingInfo {
     private String student;
     private BenchmarkingData benchmarkingData;
     private ScoutingData scoutingBeingEnteredData;
-    private Vector<ScoutingData> scoutingDatas;
+    private int scoutingDataIndex = 1;
+    private Map<Integer, ScoutingData> scoutingDatas;
 
     private ScoutingInfo(int teamNumber, String eventName, String student) {
         this.teamNumber = teamNumber;
@@ -41,7 +41,7 @@ public class ScoutingInfo {
         this.student = student;
         benchmarkingData = new BenchmarkingData(teamNumber, eventName, student);
         scoutingBeingEnteredData = new ScoutingData();
-        scoutingDatas = new Vector<>(250);
+        scoutingDatas = new HashMap<>();
     }
 
     public int getTeamNumber() { return teamNumber; }
@@ -71,7 +71,8 @@ public class ScoutingInfo {
     }
 
     public void addScoutingData() {
-        scoutingDatas.add(scoutingBeingEnteredData);
+        scoutingDatas.put(scoutingDataIndex, scoutingBeingEnteredData);
+        ++scoutingDataIndex;
         scoutingBeingEnteredData = new ScoutingData();
     }
 }

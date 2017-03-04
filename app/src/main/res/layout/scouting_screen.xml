@@ -7,6 +7,7 @@
         android:layout_height="wrap_content">
 
         <ImageButton android:id="@+id/home"
+            android:contentDescription="@string/home"
             style="@style/HomeButton"/>
 
         <!-- Begin Auto Section -->
@@ -89,9 +90,15 @@
                     android:text="@string/number_of_gears_scored"
                     style="@style/NormalTextView"/>
 
-                <EditText android:id="@+id/gearsScoredTeleInput"
-                    android:inputType="number"
-                    style="@style/ShortEditText"/>
+                <com.sparx1126.steamworks.HorizontalNumberPicker
+                    android:id="@+id/gearsScoredTeleInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_row="6" />
 
             </LinearLayout>
 
@@ -101,11 +108,17 @@
 
                 <TextView android:labelFor="@+id/gearsDeliveredInput"
                     android:text="@string/number_of_gears_delivered"
-                    style="@style/NormalTextView"/>
+                    style="@style/NormalTextView" />
 
-                <EditText android:id="@+id/gearsDeliveredInput"
-                    android:inputType="number"
-                    style="@style/ShortEditText"/>
+                <com.sparx1126.steamworks.HorizontalNumberPicker
+                    android:id="@+id/gearsDeliveredInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_row="6" />
 
             </LinearLayout>
 
@@ -115,11 +128,18 @@
 
                 <TextView android:labelFor="@+id/numberOfGearsFromFloorInput"
                     android:text="@string/number_of_gears_collected_from_floor"
-                    style="@style/NormalTextView"/>
+                    style="@style/NormalTextView"
+                    android:layout_height="72dp" />
 
-                <EditText android:id="@+id/numberOfGearsFromFloorInput"
-                    android:inputType="number"
-                    style="@style/ShortEditText"/>
+                <com.sparx1126.steamworks.HorizontalNumberPicker
+                    android:id="@+id/numberOfGearsFromFloorInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_row="6" />
 
             </LinearLayout>
 
@@ -129,12 +149,18 @@
 
                 <TextView android:labelFor="@+id/numberOfGearsFromHumanInput"
                     android:text="@string/number_of_gears_collected_from_human"
-                    style="@style/NormalTextView"/>
+                    style="@style/NormalTextView"
+                    android:layout_height="72dp" />
 
-                <EditText android:id="@+id/numberOfGearsFromHumanInput"
-                    android:inputType="number"
-                    style="@style/ShortEditText"/>
-
+                <com.sparx1126.steamworks.HorizontalNumberPicker
+                    android:id="@+id/numberOfGearsFromHumanInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_row="6" />
             </LinearLayout>
 
         </LinearLayout>
@@ -205,11 +231,18 @@
 
                 <TextView android:labelFor="@+id/numberOfBallsScoredHighGoalInput"
                     android:text="@string/number_of_balls_scored_in_a_high_goal_cycle"
-                    style="@style/NormalTextView"/>
+                    style="@style/NormalTextView"
+                    android:layout_height="72dp" />
 
-                <EditText android:id="@+id/numberOfBallsScoredHighGoalInput"
-                    android:inputType="number"
-                    style="@style/ShortEditText"/>
+                <com.sparx1126.steamworks.HorizontalNumberPicker
+                    android:id="@+id/numberOfBallsScoredHighGoalInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_row="6" />
 
             </LinearLayout>
 
@@ -219,11 +252,18 @@
 
                 <TextView android:labelFor="@+id/timesCollectedFromHumanInput"
                     android:text="@string/number_of_times_collected_balls_from_human"
-                    style="@style/NormalTextView"/>
+                    style="@style/NormalTextView"
+                    android:layout_height="72dp" />
 
-                <EditText android:id="@+id/timesCollectedFromHumanInput"
-                    android:inputType="number"
-                    style="@style/ShortEditText"/>
+                <com.sparx1126.steamworks.HorizontalNumberPicker
+                    android:id="@+id/timesCollectedFromHumanInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_row="6" />
 
             </LinearLayout>
 
@@ -233,11 +273,18 @@
 
                 <TextView android:labelFor="@+id/timesCollectedFromHopperInput"
                     android:text="@string/number_of_times_collected_balls_from_hopper"
-                    style="@style/NormalTextView"/>
+                    style="@style/NormalTextView"
+                    android:layout_height="72dp" />
 
-                <EditText android:id="@+id/timesCollectedFromHopperInput"
-                    android:inputType="number"
-                    style="@style/ShortEditText"/>
+                <com.sparx1126.steamworks.HorizontalNumberPicker
+                    android:id="@+id/timesCollectedFromHopperInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_row="6" />
 
             </LinearLayout>
 
@@ -247,11 +294,18 @@
 
                 <TextView android:labelFor="@+id/timesCollectedFromFloorInput"
                     android:text="@string/number_of_times_collected_balls_from_floor"
-                    style="@style/NormalTextView"/>
+                    style="@style/NormalTextView"
+                    android:layout_height="72dp" />
 
-                <EditText android:id="@+id/timesCollectedFromFloorInput"
-                    android:inputType="number"
-                    style="@style/ShortEditText"/>
+                <com.sparx1126.steamworks.HorizontalNumberPicker
+                    android:id="@+id/timesCollectedFromFloorInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_row="6" />
 
             </LinearLayout>
 
@@ -277,9 +331,15 @@
                     android:text="@string/number_of_low_goal_cycles"
                     style="@style/NormalTextView"/>
 
-                <EditText android:id="@+id/numberOfLowGoalCyclesInput"
-                    android:inputType="number"
-                    style="@style/ShortEditText"/>
+                <com.sparx1126.steamworks.HorizontalNumberPicker
+                    android:id="@+id/numberOfLowGoalCyclesInput"
+                    android:layout_width="wrap_content"
+                    android:layout_height="50dp"
+                    android:layout_column="1"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_row="6" />
 
             </LinearLayout>
 
