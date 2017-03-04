@@ -59,7 +59,7 @@ public class ViewScreen extends AppCompatActivity {
                 imageView.setId(i);
                 imageView.setPadding(2, 2, 2, 2);
                 imageView.setImageBitmap(BitmapFactory.decodeFile(currentData.getPicturePaths().get(i)));
-                imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+                imageView.setScaleType(ImageView.ScaleType.MATRIX);
                 layout.addView(imageView);
             }
         }

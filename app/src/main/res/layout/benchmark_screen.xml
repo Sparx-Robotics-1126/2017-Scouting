@@ -9,6 +9,7 @@
         android:layout_height="match_parent">
 
         <ImageButton android:id="@+id/home"
+            android:contentDescription="@string/home"
             style="@style/HomeButton"/>
 
         <ImageButton android:id="@+id/cameraButton"

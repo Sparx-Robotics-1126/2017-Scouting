@@ -8,6 +8,7 @@
         android:layout_height="wrap_content">
 
         <ImageButton android:id="@+id/home"
+            android:contentDescription="@string/home"
             style="@style/HomeButton"/>
 
         <ExpandableListView
@@ -17,21 +18,19 @@
             android:indicatorLeft="?android:attr/expandableListPreferredItemIndicatorLeft"
             android:divider="@color/colorBlack"
             android:dividerHeight="0.5dp" />
-
+        <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            style="@style/Screen">
         <HorizontalScrollView
             android:id="@+id/horizontal_scroll"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="900dp"/>
 
             <LinearLayout
                 android:id="@+id/linear"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal" >
-            </LinearLayout>
-
-        </HorizontalScrollView>
-
+                    </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
     </LinearLayout>
-
-</LinearLayout>
