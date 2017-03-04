@@ -59,7 +59,7 @@ public class ViewScreen extends AppCompatActivity {
         expandableListAdapter = new CustomExpandableListAdapter(this, expandableListTitle, expandableListDetail);
         expandableListView.setAdapter(expandableListAdapter);
         LinearLayout layout = (LinearLayout) findViewById(R.id.linear);
-            if (!currentData.getPicturePaths().isEmpty()) {
+        /*    if (!currentData.getPicturePaths().isEmpty()) {
                 for (int i = 0; i < currentData.getPicturePaths().size(); i++) {
                     ImageView imageView = new ImageView(this);
                     imageView.setId(i);
@@ -71,11 +71,11 @@ public class ViewScreen extends AppCompatActivity {
                     imageView.setMaxHeight(450);
                     layout.addView(imageView);
                 }
-            } else {
+            } else {*/
                 ImageView imageView = new ImageView(this);
                 imageView.setImageResource(R.drawable.ic_add_a_photo_black_24dp);
                 layout.addView(imageView);
-            }
+            //}
         boolean benchmarked = currentData.isBenchmarkingWasDoneButton();
         if (benchmarked == false) {
             alertUser("This Team Has Yet To Be Benchmarked", "Some data may not be shown").show();

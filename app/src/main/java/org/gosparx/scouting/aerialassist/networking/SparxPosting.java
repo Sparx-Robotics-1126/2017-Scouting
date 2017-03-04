@@ -14,6 +14,7 @@ import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Scouting;
+import org.gosparx.scouting.aerialassist.dto.ScoutingData;
 import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
@@ -23,7 +24,7 @@ import java.util.Map;
 
 public class SparxPosting {
     private static final String TAG = "SparxPosting";
-    private static final String BASE_URL = "http://172.20.10.6:8080";
+    private static final String BASE_URL = "http://172.20.10.2:8080";
     private static final String POST_SCOUTING = "/api/2017/v1/ScoutingData";
     private static final String POST_BENCHMARKING = "/api/2017/v1/BenchmarkingData";
     private static final String GET_SCOUTING_BY_TEAM = "/api/2017/v1/ScoutingData/{TEAM_KEY}";
@@ -51,12 +52,12 @@ public class SparxPosting {
     }
 
     public void postAllScouting(final NetworkCallback callback) {
-        final List<Scouting> scoutingList = dbHelper.getAllScoutingNeedingSyncing();
+        final Map<Integer, ScoutingInfo> scoutingInfoMap = ScoutingInfo.getInfoMap();
         String request = (BASE_URL + POST_SCOUTING);
-        if(scoutingList.isEmpty())
+        if(scoutingInfoMap.isEmpty())
             callback.handleFinishDownload(true);
         final NetworkCallback subCallback = new NetworkCallback() {
-            int size = scoutingList.size();
+            int size = scoutingInfoMap.size();
             boolean hasFailed = false;
             @Override
             public void handleFinishDownload(boolean success) {
@@ -75,25 +76,31 @@ public class SparxPosting {
             }
         };
 
-        for (final Scouting scouting : scoutingList) {
-            Ion.with(context)
-                    .load(request)
-                    .setJsonPojoBody(scouting)
-                    .asString()
-                    .setCallback(new FutureCallback<String>() {
-                        @Override
-                        public void onCompleted(Exception e, String result) {
-                            if ((e != null) || ((result != null) && (!result.isEmpty()))) {
-                                Log.e(TAG, "Issue saving to Server!", e);
-                                System.out.println("Server Error");
-                                subCallback.handleFinishDownload(false);
-                            } else {
-                                dbHelper.setDoneSyncing(scouting);
-                                System.out.println("Uploading");
-                                subCallback.handleFinishDownload(true);
+        Iterator it = scoutingInfoMap.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry)it.next();
+            ScoutingInfo scoutingInfo = (ScoutingInfo)pair.getValue();
+            Iterator itSC = scoutingInfo.getScoutingDatas().entrySet().iterator();
+            while (itSC.hasNext()) {
+                Map.Entry pairSC = (Map.Entry)itSC.next();
+                ScoutingData scoutingData = (ScoutingData)pairSC.getValue();
+                Ion.with(context)
+                        .load(request)
+                        .setJsonPojoBody(scoutingData)
+                        .asString()
+                        .setCallback(new FutureCallback<String>() {
+                            @Override
+                            public void onCompleted(Exception e, String result) {
+                                if ((e != null) || ((result != null) && (!result.isEmpty()))) {
+                                    Log.e(TAG, "Issue saving Scouting to Server!", e);
+                                    System.out.println("Server Error");
+                                    subCallback.handleFinishDownload(false);
+                                }
                             }
-                        }
-                    });
+                        });
+
+
+            }
         }
     }
 

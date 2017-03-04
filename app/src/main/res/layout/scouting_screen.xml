@@ -426,7 +426,12 @@
             <ToggleButton android:id="@+id/matchScouted"
                 style="@style/YesNoToggle"/>
 
+
         </LinearLayout>
+        <Button android:id="@+id/submitScouting"
+            android:text="@string/submit"
+            style="@style/BigButton"/>
+
     </LinearLayout>
 
 </ScrollView>

@@ -75,5 +75,9 @@ public class ScoutingInfo {
         ++scoutingDataIndex;
         scoutingBeingEnteredData = new ScoutingData();
     }
+
+    public Map<Integer, ScoutingData> getScoutingDatas() {
+        return scoutingDatas;
+    }
 }
 

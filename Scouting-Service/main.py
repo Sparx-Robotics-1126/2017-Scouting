@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 import webapp2
-from aerialassist.scouting_data import GetScoutingData, PostScoutingData, PostBenchmarkingData
+from aerialassist.scouting_data import PostScoutingData, PostBenchmarkingData
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -23,30 +23,6 @@ class MainHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
-    webapp2.Route(r'/api/2017/v1/ScoutingData/all',
-        GetScoutingData,
-        methods=['GET'],
-        handler_method='getAll'),
-    webapp2.Route(r'/api/2017/v1/BenchmarkingData/all',
-        GetScoutingData,
-        methods=['GET'],
-        handler_method='getBenchmarkingAll'),
     webapp2.Route(r'/api/2017/v1/ScoutingData', PostScoutingData, methods=['POST']),
-    webapp2.Route(r'/api/2017/v1/BenchmarkingData', PostBenchmarkingData, methods=['POST']),
-    webapp2.Route(r'/api/2017/v1/ScoutingData/<team_key>',
-        GetScoutingData, 
-        methods=['GET'], 
-        handler_method='getTeamLevel'),
-    webapp2.Route(r'/api/2017/v1/ScoutingData/<team_key>/<event_key>',
-        GetScoutingData, 
-        methods=['GET'],
-        handler_method='getEventLevel'),
-    webapp2.Route(r'/api/2017/v1/ScoutingData/<team_key>/<event_key>/<match_key>',
-        GetScoutingData, 
-        methods=['GET'],
-        handler_method='getMatchLevel'),
-    webapp2.Route(r'/api/2017/v1/BenchmarkingData/<team_key>/<event_key>',
-        GetScoutingData,
-        methods=['GET'],
-        handler_method='getBenchmarkingEventLevel')
+    webapp2.Route(r'/api/2017/v1/BenchmarkingData', PostBenchmarkingData, methods=['POST'])
 ], debug=True)

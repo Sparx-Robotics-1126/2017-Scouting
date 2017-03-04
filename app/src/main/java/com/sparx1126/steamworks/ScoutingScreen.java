@@ -1,8 +1,12 @@
 package com.sparx1126.steamworks;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -12,8 +16,12 @@ import android.widget.ToggleButton;
 
 import org.gosparx.scouting.aerialassist.dto.ScoutingData;
 import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
+import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
+import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
+import org.gosparx.scouting.aerialassist.networking.SparxPosting;
 
 import static com.sparx1126.steamworks.R.layout.scouting_screen;
+import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class ScoutingScreen extends AppCompatActivity {
     private ScoutingInfo currentInfo;
@@ -46,6 +54,7 @@ public class ScoutingScreen extends AppCompatActivity {
     private ToggleButton didScaleInput;
     private EditText scaledFromWhereInput;
     private ToggleButton matchScoutedInput;
+    private Button submitScouting;
 
     //   Zzzzz  |\      _,,,--,,_
     //          /,`.-'`'   ._  \-;;,_
@@ -94,6 +103,9 @@ public class ScoutingScreen extends AppCompatActivity {
         didScaleInput = (ToggleButton) findViewById(R.id.didTheyScale);
         scaledFromWhereInput = (EditText) findViewById(R.id.scaledFromWhereInput);
         matchScoutedInput = (ToggleButton) findViewById(R.id.matchScouted);
+        matchScoutedInput.setOnClickListener(matchScoutedClicked);
+        submitScouting = (Button) findViewById(R.id.submitScouting);
+        submitScouting.setOnClickListener(submitScoutingClicked);
 
         updateScreen();
     }
@@ -269,4 +281,74 @@ public class ScoutingScreen extends AppCompatActivity {
             item.setText(_value);
         }
     }
+
+    private final View.OnClickListener submitScoutingClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            uploadBenchmarkingData();
+        }
+    };
+
+    private void uploadBenchmarkingData() {
+        if (!isNetworkAvailable(this)) {
+            alertUser("No Network", "The upload function is not available. Connect to a network and try again.").show();
+        } else {
+            final Dialog alert = createUploadDialog("Please wait while scouting data is uploaded...");
+            alert.show();
+            SparxPosting ss = SparxPosting.getInstance(this);
+            ss.postAllScouting(new NetworkCallback() {
+                @Override
+                public void handleFinishDownload(final boolean success) {
+                    ScoutingScreen.this.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            alert.dismiss();
+                            if (!success)
+                                alertUser("Failure", "Did not successfully upload scouting data!").show();
+                        }
+                    });
+                }
+            });
+        }
+    }
+
+    public AlertDialog alertUser(String title, String message) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(message);
+        builder.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        return builder.create();
+    }
+
+    private AlertDialog createUploadDialog(String message) {
+        return createPleaseWaitDialog(message, R.string.uploading_data);
+    }
+
+    private AlertDialog createPleaseWaitDialog(String message, int titleID) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(titleID);
+        builder.setMessage(message);
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                BlueAlliance.getInstance(ScoutingScreen.this).cancelAll();
+                dialogInterface.dismiss();
+            }
+        });
+        return builder.create();
+    }
+
+    private final View.OnClickListener matchScoutedClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(matchScoutedInput.isChecked()) {
+                currentInfo.addScoutingData();
+            }
+        }
+    };
 }

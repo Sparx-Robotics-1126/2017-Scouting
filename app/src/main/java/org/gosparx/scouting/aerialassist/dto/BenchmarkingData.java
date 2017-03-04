@@ -37,19 +37,21 @@ public class BenchmarkingData{
     private int cycleTimeLowBenchInput = Integer.MAX_VALUE;
     private int cycleNumberLowBenchInput = Integer.MAX_VALUE;
     private boolean abilityScaleBenchButton;
+    private boolean placesCanScaleRight;
+    private boolean placesCanScaleCenter;
+    private boolean placesCanScaleLeft;
     private boolean benchmarkWasDoneButton;
-    private String placesCanScaleBenchInput;
     private String preferredPlacesScaleInput;
     private String autoAbilitiesBench;
     private String commentsBench;
-    private int picturePathsIndex;
-    private Map<Integer, String> picturePaths;
+    //private int picturePathsIndex;
+    //private Map<Integer, String> picturePaths;
 
     public BenchmarkingData(int teamNumber, String eventName, String student) {
         this.teamNumber = teamNumber;
         this.eventName = eventName;
         this.student = student;
-        picturePaths = new HashMap<>();
+       // picturePaths = new HashMap<>();
     }
 
     public int getTeamNumber() {
@@ -314,14 +316,6 @@ public class BenchmarkingData{
         this.benchmarkWasDoneButton = benchmarkWasDoneButton;
     }
 
-    public String getPlacesCanScaleBenchInput() {
-        return placesCanScaleBenchInput;
-    }
-
-    public void setPlacesCanScaleBenchInput(String placesCanScaleBenchInput) {
-        this.placesCanScaleBenchInput = placesCanScaleBenchInput;
-    }
-
     public String getPreferredPlacesScaleInput() {
         return preferredPlacesScaleInput;
     }
@@ -346,12 +340,37 @@ public class BenchmarkingData{
         this.commentsBench = commentsBench;
     }
 
-    public void addPicturePath(String path) {
-        picturePaths.put(picturePathsIndex, path);
-        ++picturePathsIndex;
+   // public void addPicturePath(String path) {
+   //     picturePaths.put(picturePathsIndex, path);
+    //    ++picturePathsIndex;
+   // }
+
+   // public Map<Integer, String> getPicturePaths() {
+     //   return picturePaths;
+//    }
+
+
+    public boolean isPlacesCanScaleRight() {
+        return placesCanScaleRight;
     }
 
-    public Map<Integer, String> getPicturePaths() {
-        return picturePaths;
+    public void setPlacesCanScaleRight(boolean placesCanScaleRight) {
+        this.placesCanScaleRight = placesCanScaleRight;
+    }
+
+    public boolean isPlacesCanScaleCenter() {
+        return placesCanScaleCenter;
+    }
+
+    public void setPlacesCanScaleCenter(boolean placesCanScaleCenter) {
+        this.placesCanScaleCenter = placesCanScaleCenter;
+    }
+
+    public boolean isPlacesCanScaleLeft() {
+        return placesCanScaleLeft;
+    }
+
+    public void setPlacesCanScaleLeft(boolean placesCanScaleLeft) {
+        this.placesCanScaleLeft = placesCanScaleLeft;
     }
 }
