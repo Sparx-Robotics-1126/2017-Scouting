@@ -15,16 +15,17 @@ import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Scouting;
 import org.gosparx.scouting.aerialassist.dto.ScoutingData;
-import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
+import org.gosparx.scouting.aerialassist.dto.TeamData;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 public class SparxPosting {
     private static final String TAG = "SparxPosting";
-    private static final String BASE_URL = "http://172.20.10.2:8080";
+    private static final String BASE_URL = "http://192.168.0.17:8080";
     private static final String POST_SCOUTING = "/api/2017/v1/ScoutingData";
     private static final String POST_BENCHMARKING = "/api/2017/v1/BenchmarkingData";
     private static final String GET_SCOUTING_BY_TEAM = "/api/2017/v1/ScoutingData/{TEAM_KEY}";
@@ -52,7 +53,7 @@ public class SparxPosting {
     }
 
     public void postAllScouting(final NetworkCallback callback) {
-        final Map<Integer, ScoutingInfo> scoutingInfoMap = ScoutingInfo.getInfoMap();
+        final Map<Integer, TeamData> scoutingInfoMap = TeamData.getTeamsMap();
         String request = (BASE_URL + POST_SCOUTING);
         if(scoutingInfoMap.isEmpty())
             callback.handleFinishDownload(true);
@@ -79,11 +80,10 @@ public class SparxPosting {
         Iterator it = scoutingInfoMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            ScoutingInfo scoutingInfo = (ScoutingInfo)pair.getValue();
-            Iterator itSC = scoutingInfo.getScoutingDatas().entrySet().iterator();
+            TeamData teamData = (TeamData)pair.getValue();
+            Iterator itSC = teamData.getScoutingDatas().iterator();
             while (itSC.hasNext()) {
-                Map.Entry pairSC = (Map.Entry)itSC.next();
-                ScoutingData scoutingData = (ScoutingData)pairSC.getValue();
+                ScoutingData scoutingData = (ScoutingData)itSC.next();
                 Ion.with(context)
                         .load(request)
                         .setJsonPojoBody(scoutingData)
@@ -174,7 +174,7 @@ public class SparxPosting {
     }
 
     public void postAllBenchmarking(final NetworkCallback callback) {
-        final Map<Integer, ScoutingInfo> scoutingInfoMap = ScoutingInfo.getInfoMap();
+        final Map<Integer, TeamData> scoutingInfoMap = TeamData.getTeamsMap();
         String request = (BASE_URL + POST_BENCHMARKING);
         if(scoutingInfoMap.isEmpty())
             callback.handleFinishDownload(true);
@@ -201,8 +201,8 @@ public class SparxPosting {
         Iterator it = scoutingInfoMap.entrySet().iterator();
         while (it.hasNext()) {
             Map.Entry pair = (Map.Entry)it.next();
-            ScoutingInfo scoutingInfo = (ScoutingInfo)pair.getValue();
-            BenchmarkingData benchmarkingData = (BenchmarkingData)scoutingInfo.getBenchmarkingData();
+            TeamData teamData = (TeamData)pair.getValue();
+            BenchmarkingData benchmarkingData = (BenchmarkingData) teamData.getBenchmarkingData();
             Ion.with(context)
                     .load(request)
                     .setJsonPojoBody(benchmarkingData)

@@ -1,8 +1,5 @@
 package org.gosparx.scouting.aerialassist.dto;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class BenchmarkingData{
     private final int teamNumber;
     private final String eventName;
@@ -44,14 +41,11 @@ public class BenchmarkingData{
     private String preferredPlacesScaleInput;
     private String autoAbilitiesBench;
     private String commentsBench;
-    //private int picturePathsIndex;
-    //private Map<Integer, String> picturePaths;
 
     public BenchmarkingData(int teamNumber, String eventName, String student) {
         this.teamNumber = teamNumber;
         this.eventName = eventName;
         this.student = student;
-       // picturePaths = new HashMap<>();
     }
 
     public int getTeamNumber() {
@@ -306,10 +300,6 @@ public class BenchmarkingData{
         this.abilityScaleBenchButton = abilityScaleBenchButton;
     }
 
-    public boolean is() {
-        return abilityScaleBenchButton;
-    }
-
     public boolean isBenchmarkingWasDoneButton() {return benchmarkWasDoneButton;}
 
     public void setBenchmarkWasDoneButton(boolean benchmarkWasDoneButton) {
@@ -339,16 +329,6 @@ public class BenchmarkingData{
     public void setCommentsBench(String commentsBench) {
         this.commentsBench = commentsBench;
     }
-
-   // public void addPicturePath(String path) {
-   //     picturePaths.put(picturePathsIndex, path);
-    //    ++picturePathsIndex;
-   // }
-
-   // public Map<Integer, String> getPicturePaths() {
-     //   return picturePaths;
-//    }
-
 
     public boolean isPlacesCanScaleRight() {
         return placesCanScaleRight;

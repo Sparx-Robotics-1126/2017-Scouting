@@ -14,7 +14,7 @@ import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Scouting;
 import org.gosparx.scouting.aerialassist.dto.ScoutingAuto;
 import org.gosparx.scouting.aerialassist.dto.ScoutingGeneral;
-import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
+import org.gosparx.scouting.aerialassist.dto.TeamData;
 import org.gosparx.scouting.aerialassist.dto.ScoutingTele;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
@@ -434,9 +434,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return !(c.isNull(columnIndex) || c.getShort(columnIndex) == 0);
     }
 
-    // initializes and returns a ScoutingInfo object from a row in the Benchmarking table
-    /*private static ScoutingInfo mapBenchmarking(Cursor c) {
-        ScoutingInfo data = new ScoutingInfo();
+    // initializes and returns a TeamData object from a row in the Benchmarking table
+    /*private static TeamData mapBenchmarking(Cursor c) {
+        TeamData data = new TeamData();
 
         data.setTeamNumber(Integer.parseInt(c.getString(c.getColumnIndex(TABLE_BENCHMARKING_TEAM_KEY))));
         data.setEventName(c.getString(c.getColumnIndex(TABLE_BENCHMARKING_EVENT_KEY)));
@@ -957,7 +957,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return scouting;
     }
 
-    /*public List<ScoutingInfo> getBenchmarking(String eventKey, String teamKey) {
+    /*public List<TeamData> getBenchmarking(String eventKey, String teamKey) {
         SQLiteDatabase db = getReadableDatabase();
         String selectStatement = "SELECT * FROM " + TABLE_BENCHMARKING
                 + " WHERE " + TABLE_BENCHMARKING_EVENT_KEY + " = ?"
@@ -965,7 +965,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cursor c = db.rawQuery(selectStatement, new String[]{eventKey, teamKey});
 
-        List<ScoutingInfo> scoutingInfos = new ArrayList<>();
+        List<TeamData> scoutingInfos = new ArrayList<>();
 
         while (c != null && c.moveToNext()) {
             scoutingInfos.add(mapBenchmarking(c));
@@ -993,13 +993,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return retVal;
     }
 
-    /*public List<ScoutingInfo> getAllBenchmarkingNeedingSyncing(){
+    /*public List<TeamData> getAllBenchmarkingNeedingSyncing(){
         SQLiteDatabase db = getReadableDatabase();
         Cursor c = db.query(TABLE_BENCHMARKING, new String[]{"*"},
                 TABLE_BENCHMARKING_LAST_UPDATE + " > " + TABLE_BENCHMARKING_LAST_SYNC,
                 null, null, null, null);
 
-        List<ScoutingInfo> retVal = new ArrayList<>();
+        List<TeamData> retVal = new ArrayList<>();
         while (c != null && c.moveToNext())
             retVal.add(mapBenchmarking(c));
 
@@ -1018,8 +1018,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[]{scouting.getTeamKey(), scouting.getEventKey(), scouting.getMatchKey(), scouting.getNameOfScouter()});
     }
 
-    // returns a ContentValues (for saving to the database) containing the values from the given ScoutingInfo object.
-    private ContentValues mapBenchmarking(ScoutingInfo scouting){
+    // returns a ContentValues (for saving to the database) containing the values from the given TeamData object.
+    private ContentValues mapBenchmarking(TeamData scouting){
         ContentValues values = new ContentValues();
         values.put(TABLE_BENCHMARKING_LAST_UPDATE, getDateTime());
         values.put(TABLE_BENCHMARKING_TEAM_KEY, scouting.getTeamNumber());
@@ -1028,9 +1028,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return values;
     }
 
-    public void createBenchmarking(ScoutingInfo scoutingInfo){
+    public void createBenchmarking(TeamData teamData){
         SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = mapBenchmarking(scoutingInfo);
+        ContentValues values = mapBenchmarking(teamData);
         values.put(TABLE_BENCHMARKING_LAST_SYNC, "2000-01-01 00:00:00");
         db.insert(TABLE_BENCHMARKING, null, values);
     }
@@ -1060,7 +1060,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 
-    /*public List<ScoutingInfo> getBenchmarking(String eventKey, String teamKey, String scouterName){
+    /*public List<TeamData> getBenchmarking(String eventKey, String teamKey, String scouterName){
         SQLiteDatabase db = getReadableDatabase();
         String selectStatement = "SELECT * FROM " + TABLE_BENCHMARKING
                 + " WHERE " + TABLE_BENCHMARKING_EVENT_KEY + " = ?"
@@ -1069,7 +1069,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         Cursor c = db.rawQuery(selectStatement, new String[]{eventKey, teamKey, scouterName});
 
-        List<ScoutingInfo> scoutingInfos = new ArrayList<>();
+        List<TeamData> scoutingInfos = new ArrayList<>();
 
         while (c != null && c.moveToNext()){
             scoutingInfos.add(mapBenchmarking(c));

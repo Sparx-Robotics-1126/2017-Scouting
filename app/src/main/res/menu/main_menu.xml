@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <item android:id="@+id/menu_download_events"
+        android:icon="@drawable/ic_more_vert_black_24dp"
+        android:title="@string/download_events"/>
+    <item android:id="@+id/menu_updload_data"
+        android:icon="@drawable/ic_more_vert_black_24dp"
+        android:title="@string/upload_data" />
+</menu>

@@ -14,8 +14,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import org.gosparx.scouting.aerialassist.dto.TeamData;
 import org.gosparx.scouting.aerialassist.dto.ScoutingData;
-import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.SparxPosting;
@@ -24,7 +24,7 @@ import static com.sparx1126.steamworks.R.layout.scouting_screen;
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class ScoutingScreen extends AppCompatActivity {
-    private ScoutingInfo currentInfo;
+    private TeamData currentInfo;
     private ScoutingData scoutingBeingEntered;
 
     private ToggleButton crossedBaseLineAutoInput;
@@ -73,8 +73,8 @@ public class ScoutingScreen extends AppCompatActivity {
                 finish();
             }
         });
-        currentInfo = ScoutingInfo.getCurrentInfo();
-        scoutingBeingEntered = currentInfo.getScoutingBeingEnteredData();
+        currentInfo = TeamData.getCurrentTeam();
+        scoutingBeingEntered = currentInfo.getCurrentScoutingData();
 
         crossedBaseLineAutoInput = (ToggleButton) findViewById(R.id.crossedBaseLineAutoInput);
         hoppersDumpedAutoInput = (EditText) findViewById(R.id.hoppersDumpedAutoInput);
