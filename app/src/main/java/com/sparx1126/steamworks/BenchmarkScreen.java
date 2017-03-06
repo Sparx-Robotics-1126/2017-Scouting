@@ -1,8 +1,5 @@
 package com.sparx1126.steamworks;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,24 +13,18 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.LinearLayout;
 
 import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.dto.TeamData;
-import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
-import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
-import org.gosparx.scouting.aerialassist.networking.SparxPosting;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
-
 public class BenchmarkScreen extends AppCompatActivity {
     private static final int REQUEST_TAKE_PHOTO = 1;
-    private TeamData currentInfo;
+    private TeamData teamData;
     private BenchmarkingData currentData;
     private Utility utility;
 
@@ -80,7 +71,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     private RadioButton radioPreferredPlacesScaleLeft;
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
-    private Button submitTeleopBenchmark;
+    private Button submitBenchmark;
     // new
     //High Goal related Linears
     private LinearLayout typeOfShooterLinear;
@@ -113,8 +104,8 @@ public class BenchmarkScreen extends AppCompatActivity {
                 finish();
             }
         });
-        currentInfo = TeamData.getCurrentTeam();
-        currentData = currentInfo.getBenchmarkingData();
+        teamData = TeamData.getCurrentTeam();
+        currentData = teamData.getBenchmarkingData();
         utility = Utility.getInstance();
         ImageButton cameraButton = (ImageButton) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
@@ -170,8 +161,8 @@ public class BenchmarkScreen extends AppCompatActivity {
         radioPreferredPlacesScaleLeft = (RadioButton) findViewById(R.id.radioPreferredScaleLeft);
         autoAbilitiesBench = (EditText) findViewById(R.id.autoAbilitiesBench);
         commentsBench = (EditText) findViewById(R.id.commentsBench);
-        submitTeleopBenchmark = (Button) findViewById(R.id.submitTeleopBenchmark);
-        submitTeleopBenchmark.setOnClickListener(submitButtonClicked);
+        submitBenchmark = (Button) findViewById(R.id.submitBenchmark);
+        submitBenchmark.setOnClickListener(submitButtonClicked);
         typeOfShooterLinear = (LinearLayout) findViewById(R.id.typeOfShooterLinear);
         ballsPerSecondLinear = (LinearLayout) findViewById(R.id.ballsPerSecondLinear);
         ballsPerCycleLinear = (LinearLayout) findViewById(R.id.ballsPerCycleLinear);
@@ -197,6 +188,10 @@ public class BenchmarkScreen extends AppCompatActivity {
 
     protected void onDestroy() {
         super.onDestroy();
+        saveData();
+    }
+
+    private void saveData() {
         currentData.setDriveSystem(driveSystem.getText().toString());
         String valueAsSring = drivesSpeed.getText().toString();
         if(!valueAsSring.isEmpty()) {
@@ -452,13 +447,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
     };
 
-    private final View.OnClickListener benchmarkingWasDoneButtonClicked =  new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            scaleHide();
-        }
-    };
-
     public void scaleHide(){
         int visibility = View.GONE;
         if(abilityScaleBenchButton.isChecked()){
@@ -471,64 +459,10 @@ public class BenchmarkScreen extends AppCompatActivity {
     private final View.OnClickListener submitButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            uploadBenchmarkingData();
+            saveData();
+            utility.uploadBenchmarkingData(BenchmarkScreen.this);
         }
     };
-
-    private void uploadBenchmarkingData() {
-        if (!isNetworkAvailable(this)) {
-            alertUser("No Network", "The upload function is not available. Connect to a network and try again.").show();
-        } else {
-            final Dialog alert = createUploadDialog("Please wait while benchmarking data is uploaded...");
-            alert.show();
-            SparxPosting ss = SparxPosting.getInstance(this);
-            ss.postAllBenchmarking(new NetworkCallback() {
-                @Override
-                public void handleFinishDownload(final boolean success) {
-                    BenchmarkScreen.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            alert.dismiss();
-                            if (!success)
-                                alertUser("Failure", "Did not successfully upload benchmarking data!").show();
-                        }
-                    });
-                }
-            });
-        }
-    }
-
-
-    private AlertDialog createUploadDialog(String message) {
-        return createPleaseWaitDialog(message, R.string.uploading_data);
-    }
-
-    private AlertDialog createPleaseWaitDialog(String message, int titleID) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(titleID);
-        builder.setMessage(message);
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                BlueAlliance.getInstance(BenchmarkScreen.this).cancelAll();
-                dialogInterface.dismiss();
-            }
-        });
-        return builder.create();
-    }
-
-    public AlertDialog alertUser(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        return builder.create();
-    }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

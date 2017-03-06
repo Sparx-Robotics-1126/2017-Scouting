@@ -69,10 +69,14 @@
     <string name="failure">Failure</string>
     <string name="event_download_failed">Did not successfully download Event list!</string>
     <string name="team_download_failed">Did not successfully download Team list!</string>
+    <string name="benchmark_download_failed">Did not successfully download Benchmark!</string>
+    <string name="scouting_download_failed">Did not successfully download Scouting!</string>
     <string name="benchmark_upload_failed">"Did not successfully upload Benchmark data!"</string>
     <string name="scouting_upload_failed">"Did not successfully upload Scouting data!"</string>
     <string name="please_wait_event_download">Please wait while Event data is downloaded...</string>
     <string name="please_wait_team_download">Please wait while Team data is downloaded...</string>
+    <string name="please_wait_benchmarking_download">Please wait while Benchmarking data is downloaded...</string>
+    <string name="please_wait_scouting_download">Please wait while Scouting data is downloaded...</string>
     <string name="please_wait_benchmarking_upload">Please wait while Benchmarking data is uploaded...</string>
     <string name="please_wait_scouting_upload">Please wait while Benchmarking data is uploaded...</string>
     <string name="day_format">yyyy-MM-dd hh:mm:ss</string>

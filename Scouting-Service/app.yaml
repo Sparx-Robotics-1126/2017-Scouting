@@ -1,4 +1,4 @@
-application: s~sparx-scouting-service
+application: scouting-2017-156319
 version: 1
 runtime: python27
 api_version: 1

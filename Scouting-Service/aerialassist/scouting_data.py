@@ -28,3 +28,15 @@ class PostScoutingData(webapp2.RequestHandler):
         scoutingdata.put()
 
         self.response.status = 200
+
+class GetBenchmarking(webapp2.RequestHandler):
+    def getBenchmarking(self, eventName):
+        benchmarkingQueryList = BenchmarkingData.query(BenchmarkingData.eventName == eventName)
+
+        benchmarkingList = benchmarkingQueryList.map(self.callback)
+
+        self.response.content_type = 'application/json'
+        self.response.write(json.dumps(benchmarkingList))
+
+    def callback(self, benchmarking):
+        return benchmarking.to_dict()

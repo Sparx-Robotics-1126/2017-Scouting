@@ -554,7 +554,7 @@
 
         </LinearLayout>
 
-        <Button android:id="@+id/submitTeleopBenchmark"
+        <Button android:id="@+id/submitBenchmark"
             android:text="@string/submit"
             style="@style/BigButton"/>
 

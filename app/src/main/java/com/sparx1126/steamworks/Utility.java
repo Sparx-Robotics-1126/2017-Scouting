@@ -59,24 +59,6 @@ public class Utility {
         return builder.create();
     }
 
-    public void uploadAllData(Activity activity) {
-        currentActivity = activity;
-        if(TeamData.getCurrentTeam() == null) {
-            utility.alertUser(currentActivity, currentActivity.getString(R.string.no_data), currentActivity.getString(R.string.nothing)).show();
-        }
-        else if (!isNetworkAvailable(currentActivity)) {
-            utility.alertUser(currentActivity, currentActivity.getString(R.string.no_network), currentActivity.getString(R.string.try_again)).show();
-        }
-        else {
-            if(TeamData.getCurrentTeam().getBenchmarkingData().isBenchmarkingWasDoneButton()) {
-                uploadBenchmarkingData(currentActivity);
-            }
-            if(!TeamData.getCurrentTeam().getScoutingDatas().isEmpty()) {
-                uploadScoutingData(currentActivity);
-            }
-        }
-    }
-
     public void uploadBenchmarkingData(Activity activity) {
         currentActivity = activity;
         if (!isNetworkAvailable(currentActivity)) {
