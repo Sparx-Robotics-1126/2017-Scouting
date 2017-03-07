@@ -13,7 +13,7 @@ class PostBenchmarkingData(webapp2.RequestHandler):
         jsonRoot = json.loads(self.request.body)
         benchmarkingData = BenchmarkingData()
         benchmarkingData.populate(**jsonRoot)
-        benchmarkingData.key = ndb.Key(BenchmarkingData, benchmarkingData.eventName)
+        benchmarkingData.key = ndb.Key(BenchmarkingData, benchmarkingData.teamNumber)
         benchmarkingData.put()
 
         self.response.status = 200
