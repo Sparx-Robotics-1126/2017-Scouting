@@ -1,10 +1,7 @@
 //push was successful YAYAYAYAYAYAYAYAYAYAY
 package com.sparx1126.steamworks;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -12,6 +9,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,17 +22,18 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
+import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.dto.Event;
-import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
+import org.gosparx.scouting.aerialassist.dto.TeamData;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
+import org.gosparx.scouting.aerialassist.networking.SparxPosting;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -50,6 +51,7 @@ public class MainScreen extends AppCompatActivity {
     private ArrayAdapter<String> eventNamesAdapter;
     private DatabaseHelper dbHelper;
     private BlueAlliance blueAlliance;
+    private Utility utility;
     private Spinner eventSpinner;
     private AutoCompleteTextView scouterText;
     private EditText teamText;
@@ -69,6 +71,7 @@ public class MainScreen extends AppCompatActivity {
 
         blueAlliance = BlueAlliance.getInstance(this);
         dbHelper = DatabaseHelper.getInstance(this);
+        utility = Utility.getInstance();
 
         eventNamesToKey = new HashMap<>();
 
@@ -105,8 +108,26 @@ public class MainScreen extends AppCompatActivity {
 
         teamsList = new Vector<>();
 
-        // restore the event, name, and team
         restorePreferences();
+    }
+
+    private void downloadBenchmarkData(boolean forceDownload) {
+        // If the internet is available and we haven't gotten the data the download it
+        if (!isNetworkAvailable(this)) {
+            utility.alertUser(this, getString(R.string.no_network), getString(R.string.try_again)).show();
+        } else if (NetworkHelper.needToLoadBenchmarkData(this) || forceDownload) {
+            final Dialog alert = utility.createDialog(this, getString(R.string.downloading_data), getString(R.string.please_wait_benchmarking_download));
+            alert.show();
+            SparxPosting ss = SparxPosting.getInstance(this);
+            ss.getBenchmarking(getEventName(), new NetworkCallback() {
+                @Override
+                public void handleFinishDownload(boolean success) {
+                    if (!success) {
+                        utility.alertUser(MainScreen.this, getString(R.string.failure), getString(R.string.benchmark_download_failed)).show();
+                    }
+                }
+            });
+        }
     }
 
     private String getScouterName(){
@@ -143,8 +164,7 @@ public class MainScreen extends AppCompatActivity {
             SharedPreferences.Editor editor = settings.edit();
             if(teamsList.contains(teamTextValue)){
                 teamSelected = true;
-                int teamNumber = getTeamNumber();
-                editor.putInt(getResources().getString(R.string.pref_team), teamNumber);
+                editor.putString(getResources().getString(R.string.pref_team), teamTextValue);
                 editor.apply();
             }
             else{
@@ -158,11 +178,10 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void restorePreferences(){
-        //the order matters
         String eventName = settings.getString(getResources().getString(R.string.pref_event), "");
         if(!eventName.isEmpty()) {
-            setupEventSpinner();
             if(eventNamesAdapter.getPosition(eventName) != -1) {
+                setupEventSpinner();
                 eventSpinner.setSelection(eventNamesAdapter.getPosition(eventName));
             }
             else {
@@ -174,11 +193,13 @@ public class MainScreen extends AppCompatActivity {
             }
         }
         String scouterName = settings.getString(getResources().getString(R.string.pref_scouter), "");
-        scouterText.setText(scouterName);
-        scouterText.dismissDropDown();
-        int teamNumber = settings.getInt(getResources().getString(R.string.pref_team), 0);
-        if(teamNumber != 0) {
-            teamText.setText(String.valueOf(teamNumber));
+        if(!scouterName.isEmpty()) {
+            scouterText.setText(scouterName);
+            scouterText.dismissDropDown();
+        }
+        String teamNumber = settings.getString(getResources().getString(R.string.pref_team), "");
+        if(!teamNumber.isEmpty()) {
+            teamText.setText(teamNumber);
         }
     }
 
@@ -186,8 +207,6 @@ public class MainScreen extends AppCompatActivity {
     private final View.OnClickListener buttonClicked =  new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            // we grab the main screen as a type context for switching
-            Context context = MainScreen.this;
             // we create a destination variable. This is the screen we are going to switch to.
             Class destination = null;
             // We set the screen we are going to swtich to.
@@ -202,13 +221,10 @@ public class MainScreen extends AppCompatActivity {
                     destination = ViewScreen.class;
                     break;
             }
-            // look for i.e. 1126 in my map of already scouted teams
-            int teamNumberValue = getTeamNumber();
-            // set the currentScouting object I intend to pass to. Set it to NULL which means not
-            // created yet. This is a good practice because if useed and set to NULL it creashes better
-            ScoutingInfo.addInfo(teamNumberValue, getEventName(), getScouterName());
+            BenchmarkingData benchmarkingData = new BenchmarkingData(getTeamNumber(), getEventName(), getScouterName());
+            TeamData.setTeamData(benchmarkingData);
 
-            Intent intent = new Intent(context, destination);
+            Intent intent = new Intent(MainScreen.this, destination);
             startActivity(intent);
         }
     };
@@ -216,7 +232,7 @@ public class MainScreen extends AppCompatActivity {
     private final View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             if (getEventName().isEmpty() && (event.getAction() == MotionEvent.ACTION_UP)) {
-                downloadEventSpinnerData();
+                downloadEventSpinnerData(false);
             }
             return false;
         }
@@ -240,6 +256,7 @@ public class MainScreen extends AppCompatActivity {
                 editor.putString(getResources().getString(R.string.pref_event), getEventName());
                 editor.apply();
                 eventSelected = true;
+                //downloadBenchmarkData(false);
                 downloadTeamDataIfNecessary();
             }
         }
@@ -304,37 +321,12 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-    private AlertDialog alertUser() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.failure);
-        builder.setMessage(R.string.download_failed);
-        builder.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        return builder.create();
-    }
-
-    private AlertDialog createPleaseWaitDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.downloading_data);
-        builder.setMessage(R.string.please_wait_event);
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                BlueAlliance.getInstance(MainScreen.this).cancelAll();
-                dialogInterface.dismiss();
-            }
-        });
-        return builder.create();
-    }
-
-    private void downloadEventSpinnerData() {
+    private void downloadEventSpinnerData(boolean forceDownload) {
         // If the internet is available and we haven't gotten the data the download it
-        if (isNetworkAvailable(this) && NetworkHelper.needToLoadEventList(this)) {
-            final Dialog alert = createPleaseWaitDialog();
+        if (!isNetworkAvailable(this)) {
+            utility.alertUser(this, getString(R.string.no_network), getString(R.string.try_again)).show();
+        } else if (NetworkHelper.needToLoadEventList(this) || forceDownload) {
+            final Dialog alert = utility.createDialog(this, getString(R.string.downloading_data), getString(R.string.please_wait_event_download));
             alert.show();
             blueAlliance.loadEventList(getResources().getString(R.string.competition_year), new NetworkCallback() {
                 @Override
@@ -347,7 +339,7 @@ public class MainScreen extends AppCompatActivity {
                                 setupEventSpinner();
                             }
                             else {
-                                alertUser().show();
+                                utility.alertUser(MainScreen.this, getString(R.string.failure), getString(R.string.event_download_failed)).show();
                             }
                         }
                     });
@@ -380,15 +372,10 @@ public class MainScreen extends AppCompatActivity {
         eventSpinner.setAdapter(eventNamesAdapter);
     }
 
-    private long getTodayInEpoch() {
-        Calendar c = Calendar.getInstance();
-        return c.getTime().getTime();
-    }
-
     private ArrayList<String> fillInEventsNearToday(Cursor eventDataCur){
         ArrayList<String> eventsWeAreInArray = new ArrayList<>();
         SimpleDateFormat cursorFormater = new SimpleDateFormat(getString(R.string.day_format), Locale.US);
-        long epochToday = getTodayInEpoch();
+        long epochToday = utility.getTodayInEpoch();
         try {
             while (eventDataCur.moveToNext()) {
                 Date dateObj;
@@ -417,8 +404,11 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void downloadTeamDataIfNecessary() {
-        if (isNetworkAvailable(this)) {
-            final Dialog alert = createPleaseWaitDialog();
+        if (NetworkHelper.needToLoadTeams(this) && !isNetworkAvailable(this)) {
+            utility.alertUser(this, getString(R.string.no_network), getString(R.string.try_again)).show();
+        }
+        else {
+            final Dialog alert = utility.createDialog(this, getString(R.string.downloading_data), getString(R.string.please_wait_team_download));
             alert.show();
             //get the event
             BlueAlliance ba = BlueAlliance.getInstance(this);
@@ -434,7 +424,7 @@ public class MainScreen extends AppCompatActivity {
                                 setupTeamSpinner();
                             }
                             else {
-                                alertUser().show();
+                                utility.alertUser(MainScreen.this, getString(R.string.failure), getString(R.string.team_download_failed)).show();
                             }
                         }
 
@@ -446,9 +436,7 @@ public class MainScreen extends AppCompatActivity {
 
     private void setupTeamSpinner() {
         Cursor teamCursor = dbHelper.createTeamCursor(getSelectedEvent());
-        // this clears the list
         teamsList.clear();
-        int index = 0;
         try {
             while (teamCursor.moveToNext()) {
                 String teamnumber = teamCursor.getString(teamCursor.getColumnIndex(DatabaseHelper.TABLE_TEAMS_TEAM_NUMBER));
@@ -458,5 +446,28 @@ public class MainScreen extends AppCompatActivity {
             teamCursor.close();
         }
         teamNumberChecker();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_download_events:
+                downloadEventSpinnerData(true);
+                return true;
+            case R.id.menu_updload_data:
+                utility.uploadBenchmarkingData(this);
+                utility.uploadScoutingData(this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

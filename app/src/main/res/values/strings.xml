@@ -1,8 +1,8 @@
 <resources>
-    <string name="uploading_data">Uploading data</string>
     <string name="app_name">SteamWorks</string>
     <string name="cancel">Cancel</string>
     <string name="downloading_data">Downloading data</string>
+    <string name="uploading_data">Uploading data</string>
     <string name="okay">Okay</string>
     <string name="benchmarkerTele">BenchmarkTeleopSwitcher</string>
     <string name="home">Home Button Image</string>
@@ -67,8 +67,18 @@
     <string name="filter_on">Turn the event filter on?</string>
     <string name="filter_off">Turn the event filter off?</string>
     <string name="failure">Failure</string>
-    <string name="download_failed">Did not successfully download event list!</string>
-    <string name="please_wait_event">Please wait while Event data is downloaded...</string>
+    <string name="event_download_failed">Did not successfully download Event list!</string>
+    <string name="team_download_failed">Did not successfully download Team list!</string>
+    <string name="benchmark_download_failed">Did not successfully download Benchmark!</string>
+    <string name="scouting_download_failed">Did not successfully download Scouting!</string>
+    <string name="benchmark_upload_failed">"Did not successfully upload Benchmark data!"</string>
+    <string name="scouting_upload_failed">"Did not successfully upload Scouting data!"</string>
+    <string name="please_wait_event_download">Please wait while Event data is downloaded...</string>
+    <string name="please_wait_team_download">Please wait while Team data is downloaded...</string>
+    <string name="please_wait_benchmarking_download">Please wait while Benchmarking data is downloaded...</string>
+    <string name="please_wait_scouting_download">Please wait while Scouting data is downloaded...</string>
+    <string name="please_wait_benchmarking_upload">Please wait while Benchmarking data is uploaded...</string>
+    <string name="please_wait_scouting_upload">Please wait while Benchmarking data is uploaded...</string>
     <string name="day_format">yyyy-MM-dd hh:mm:ss</string>
     <string name="number_of_hoppers_dumped">Number of Hoppers Dumped</string>
     <string name="gears_scored_in">Gears scored in</string>
@@ -103,6 +113,12 @@
     <string name="zero">0</string>
     <string name="plus">+</string>
     <string name="benchmarking_was_done">Benchmarking Was Done</string>
+    <string name="download_events">Download Events</string>
+    <string name="upload_data">Upload Data</string>
+    <string name="no_network">No Network</string>
+    <string name="try_again">Connect to a network and try again.</string>
+    <string name="no_data">No data</string>
+    <string name="nothing">Nothing to upload</string>
     <string-array name="students">
         <item>Michael Anderson</item>
         <item>Tyler Armstrong</item>

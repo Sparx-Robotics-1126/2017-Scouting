@@ -1,21 +1,17 @@
 package com.sparx1126.steamworks;
 
 
-import android.util.Pair;
-
 import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
-import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
+import org.gosparx.scouting.aerialassist.dto.TeamData;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.sparx1126.steamworks.R.string.autoAbilities;
-
 public class ViewScreenListDataPump {
     public static HashMap<String, List<String>> getData() {
         HashMap<String, List<String> > expandableListDetail = new HashMap<String, List<String>>();
-        ScoutingInfo displayedInfo = ScoutingInfo.getCurrentInfo();
+        TeamData displayedInfo = TeamData.getCurrentTeam();
         BenchmarkingData benchmarkingData = displayedInfo.getBenchmarkingData();
         boolean benchmarked = benchmarkingData.isBenchmarkingWasDoneButton();
         List<String> drives = new ArrayList<String>();

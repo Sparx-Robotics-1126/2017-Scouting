@@ -3,6 +3,9 @@ package org.gosparx.scouting.aerialassist.dto;
 //ßuild the app amandΩ
 
 public class ScoutingData {
+    private final int teamNumber;
+    private final String eventName;
+    private final String student;
     private boolean crossedBaseline;
     private int hoppersDumped = Integer.MAX_VALUE;
     private boolean gearScoredRightAuto;
@@ -25,7 +28,22 @@ public class ScoutingData {
     private String whereScaled;
     private boolean matchScouted;
 
-    public ScoutingData() {
+    public ScoutingData(int teamNumber, String eventName, String student) {
+        this.teamNumber = teamNumber;
+        this.eventName = eventName;
+        this.student = student;
+    }
+
+    public int getTeamNumber() {
+        return teamNumber;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public String getStudent() {
+        return student;
     }
 
     public int getHoppersDumped() {

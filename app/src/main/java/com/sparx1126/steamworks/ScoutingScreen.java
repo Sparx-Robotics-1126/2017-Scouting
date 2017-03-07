@@ -14,8 +14,8 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import org.gosparx.scouting.aerialassist.dto.TeamData;
 import org.gosparx.scouting.aerialassist.dto.ScoutingData;
-import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.SparxPosting;
@@ -24,8 +24,9 @@ import static com.sparx1126.steamworks.R.layout.scouting_screen;
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class ScoutingScreen extends AppCompatActivity {
-    private ScoutingInfo currentInfo;
+    private TeamData currentInfo;
     private ScoutingData scoutingBeingEntered;
+    private Utility utility;
 
     private ToggleButton crossedBaseLineAutoInput;
     private EditText hoppersDumpedAutoInput;
@@ -73,8 +74,9 @@ public class ScoutingScreen extends AppCompatActivity {
                 finish();
             }
         });
-        currentInfo = ScoutingInfo.getCurrentInfo();
-        scoutingBeingEntered = currentInfo.getScoutingBeingEnteredData();
+        currentInfo = TeamData.getCurrentTeam();
+        scoutingBeingEntered = currentInfo.getCurrentScoutingData();
+        utility = Utility.getInstance();
 
         crossedBaseLineAutoInput = (ToggleButton) findViewById(R.id.crossedBaseLineAutoInput);
         hoppersDumpedAutoInput = (EditText) findViewById(R.id.hoppersDumpedAutoInput);
@@ -103,7 +105,6 @@ public class ScoutingScreen extends AppCompatActivity {
         didScaleInput = (ToggleButton) findViewById(R.id.didTheyScale);
         scaledFromWhereInput = (EditText) findViewById(R.id.scaledFromWhereInput);
         matchScoutedInput = (ToggleButton) findViewById(R.id.matchScouted);
-        matchScoutedInput.setOnClickListener(matchScoutedClicked);
         submitScouting = (Button) findViewById(R.id.submitScouting);
         submitScouting.setOnClickListener(submitScoutingClicked);
 
@@ -112,6 +113,10 @@ public class ScoutingScreen extends AppCompatActivity {
 
     protected void onDestroy() {
         super.onDestroy();
+        saveData();
+    }
+
+    private void saveData() {
         scoutingBeingEntered.setMatchScouted(matchScoutedInput.isChecked());
         scoutingBeingEntered.setCrossedBaseline(crossedBaseLineAutoInput.isChecked());
         String valueAsSring = hoppersDumpedAutoInput.getText().toString();
@@ -184,31 +189,18 @@ public class ScoutingScreen extends AppCompatActivity {
         }
         scoutingBeingEntered.setDidScale(didScaleInput.isChecked());
         scoutingBeingEntered.setWhereScaled(scaledFromWhereInput.getText().toString());
-        if(matchScoutedInput.isChecked()) {
-            currentInfo.addScoutingData();
-        }
     }
 
     private void updateScreen() {
         crossedBaseLineAutoInput.setChecked(scoutingBeingEntered.isCrossedBaseline());
-        if (scoutingBeingEntered.getHoppersDumped() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(hoppersDumpedAutoInput, String.valueOf(scoutingBeingEntered.getHoppersDumped()));
-        }
+        utility.setIntegerIntoTextView(hoppersDumpedAutoInput, scoutingBeingEntered.getHoppersDumped());
         putGearLeftAuto.setChecked(scoutingBeingEntered.isGearScoredLeftAuto());
         putGearCenterAuto.setChecked(scoutingBeingEntered.isGearScoredCenterAuto());
         putGearRightAuto.setChecked(scoutingBeingEntered.isGearScoredRightAuto());
-        if (scoutingBeingEntered.getGearsScored() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(gearsScoredTeleInput, String.valueOf(scoutingBeingEntered.getGearsScored()));
-        }
-        if (scoutingBeingEntered.getGearsDelivered() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(gearsDeliveredInput, String.valueOf(scoutingBeingEntered.getGearsDelivered()));
-        }
-        if (scoutingBeingEntered.getGearsCollectedFromFloor() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(numberOfGearsFromFloorInput, String.valueOf(scoutingBeingEntered.getGearsCollectedFromFloor()));
-        }
-        if (scoutingBeingEntered.getGearsFromHuman() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(numberOfGearsFromHumanInput, String.valueOf(scoutingBeingEntered.getGearsFromHuman()));
-        }
+        utility.setIntegerIntoTextView(gearsScoredTeleInput, scoutingBeingEntered.getGearsScored());
+        utility.setIntegerIntoTextView(gearsDeliveredInput, scoutingBeingEntered.getGearsDelivered());
+        utility.setIntegerIntoTextView(numberOfGearsFromFloorInput, scoutingBeingEntered.getGearsCollectedFromFloor());
+        utility.setIntegerIntoTextView(numberOfGearsFromHumanInput, scoutingBeingEntered.getGearsFromHuman());
         if (scoutingBeingEntered.getScoresHighAuto() != null) {
             switch (scoutingBeingEntered.getScoresHighAuto()) {
                 case "scoresHighNeverAuto":
@@ -239,24 +231,12 @@ public class ScoutingScreen extends AppCompatActivity {
                     break;
             }
         }
-        if (scoutingBeingEntered.getBallsInHighCycle() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(numberOfBallsScoredHighGoalInput, String.valueOf(scoutingBeingEntered.getBallsInHighCycle()));
-        }
-        if (scoutingBeingEntered.getBallsFromHuman() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(timesCollectedFromHumanInput, String.valueOf(scoutingBeingEntered.getBallsFromHuman()));
-        }
-        if (scoutingBeingEntered.getBallsFromHopper() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(timesCollectedFromHopperInput, String.valueOf(scoutingBeingEntered.getBallsFromHopper()));
-        }
-        if (scoutingBeingEntered.getBallsFromFloor() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(timesCollectedFromFloorInput, String.valueOf(scoutingBeingEntered.getBallsFromFloor()));
-        }
-        if (scoutingBeingEntered.getFuelInLowCycle() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(fuelScoredLowGoalCycleInput, String.valueOf(scoutingBeingEntered.getFuelInLowCycle()));
-        }
-        if (scoutingBeingEntered.getNumberOfLowCycles() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(numberOfLowGoalCyclesInput, String.valueOf(scoutingBeingEntered.getNumberOfLowCycles()));
-        }
+        utility.setIntegerIntoTextView(numberOfBallsScoredHighGoalInput, scoutingBeingEntered.getBallsInHighCycle());
+        utility.setIntegerIntoTextView(timesCollectedFromHumanInput, scoutingBeingEntered.getBallsFromHuman());
+        utility.setIntegerIntoTextView(timesCollectedFromHopperInput, scoutingBeingEntered.getBallsFromHopper());
+        utility.setIntegerIntoTextView(timesCollectedFromFloorInput, scoutingBeingEntered.getBallsFromFloor());
+        utility.setIntegerIntoTextView(fuelScoredLowGoalCycleInput, scoutingBeingEntered.getFuelInLowCycle());
+        utility.setIntegerIntoTextView(numberOfLowGoalCyclesInput, scoutingBeingEntered.getNumberOfLowCycles());
         if (scoutingBeingEntered.getHighGoalAccuracy() != null) {
             switch (scoutingBeingEntered.getHighGoalAccuracy()) {
                 case "highGoalAccuracyScoutPoor":
@@ -273,82 +253,18 @@ public class ScoutingScreen extends AppCompatActivity {
             }
         }
         didScaleInput.setChecked(scoutingBeingEntered.isDidScale());
-        SetStringIntoTextView(scaledFromWhereInput, scoutingBeingEntered.getWhereScaled());
-    }
-
-    void SetStringIntoTextView(TextView item, String _value){
-        if((_value != null) && !_value.isEmpty()) {
-            item.setText(_value);
-        }
+        utility.setStringIntoTextView(scaledFromWhereInput, scoutingBeingEntered.getWhereScaled());
     }
 
     private final View.OnClickListener submitScoutingClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            uploadBenchmarkingData();
-        }
-    };
-
-    private void uploadBenchmarkingData() {
-        if (!isNetworkAvailable(this)) {
-            alertUser("No Network", "The upload function is not available. Connect to a network and try again.").show();
-        } else {
-            final Dialog alert = createUploadDialog("Please wait while scouting data is uploaded...");
-            alert.show();
-            SparxPosting ss = SparxPosting.getInstance(this);
-            ss.postAllScouting(new NetworkCallback() {
-                @Override
-                public void handleFinishDownload(final boolean success) {
-                    ScoutingScreen.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            alert.dismiss();
-                            if (!success)
-                                alertUser("Failure", "Did not successfully upload scouting data!").show();
-                        }
-                    });
-                }
-            });
-        }
-    }
-
-    public AlertDialog alertUser(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        return builder.create();
-    }
-
-    private AlertDialog createUploadDialog(String message) {
-        return createPleaseWaitDialog(message, R.string.uploading_data);
-    }
-
-    private AlertDialog createPleaseWaitDialog(String message, int titleID) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(titleID);
-        builder.setMessage(message);
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                BlueAlliance.getInstance(ScoutingScreen.this).cancelAll();
-                dialogInterface.dismiss();
-            }
-        });
-        return builder.create();
-    }
-
-    private final View.OnClickListener matchScoutedClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
             if(matchScoutedInput.isChecked()) {
                 currentInfo.addScoutingData();
             }
+            utility.uploadScoutingData(ScoutingScreen.this);
+            scoutingBeingEntered = currentInfo.getCurrentScoutingData();
+            updateScreen();
         }
     };
 }

@@ -1,8 +1,5 @@
 package com.sparx1126.steamworks;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,29 +13,20 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 import android.widget.LinearLayout;
 
 import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
-import org.gosparx.scouting.aerialassist.dto.ScoutingInfo;
-import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
-import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
-import org.gosparx.scouting.aerialassist.networking.SparxPosting;
+import org.gosparx.scouting.aerialassist.dto.TeamData;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-import static com.sparx1126.steamworks.R.id.benchmarkingWasDoneButton;
-import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class BenchmarkScreen extends AppCompatActivity {
     private static final int REQUEST_TAKE_PHOTO = 1;
-    private ScoutingInfo currentInfo;
+    private TeamData teamData;
     private BenchmarkingData currentData;
+    private Utility utility;
 
     private EditText driveSystem;
     private EditText drivesSpeed;
@@ -83,7 +71,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     private RadioButton radioPreferredPlacesScaleLeft;
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
-    private Button submitTeleopBenchmark;
+    private Button submitBenchmark;
     // new
     //High Goal related Linears
     private LinearLayout typeOfShooterLinear;
@@ -116,8 +104,9 @@ public class BenchmarkScreen extends AppCompatActivity {
                 finish();
             }
         });
-        currentInfo = ScoutingInfo.getCurrentInfo();
-        currentData = currentInfo.getBenchmarkingData();
+        teamData = TeamData.getCurrentTeam();
+        currentData = teamData.getBenchmarkingData();
+        utility = Utility.getInstance();
         ImageButton cameraButton = (ImageButton) findViewById(R.id.cameraButton);
         cameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,7 +135,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         canScoreGearsBenchButton.setOnClickListener(canGearButtonClicked);
         pickupGearFloorBenchButton = (ToggleButton) findViewById(R.id.pickupGearFloorBenchButton);
         pickupGearRetrievalBenchButton = (ToggleButton) findViewById(R.id.pickupGearRetrievalBenchButton);
-        benchmarkWasDoneButton = (ToggleButton) findViewById(benchmarkingWasDoneButton);
         radioFloor = (RadioButton) findViewById(R.id.radioFloor);
         radioZone = (RadioButton) findViewById(R.id.radioZone);
         canGearLeftBench = (CheckBox) findViewById(R.id.canGearLeftBench);
@@ -173,8 +161,8 @@ public class BenchmarkScreen extends AppCompatActivity {
         radioPreferredPlacesScaleLeft = (RadioButton) findViewById(R.id.radioPreferredScaleLeft);
         autoAbilitiesBench = (EditText) findViewById(R.id.autoAbilitiesBench);
         commentsBench = (EditText) findViewById(R.id.commentsBench);
-        submitTeleopBenchmark = (Button) findViewById(R.id.submitTeleopBenchmark);
-        submitTeleopBenchmark.setOnClickListener(submitButtonClicked);
+        submitBenchmark = (Button) findViewById(R.id.submitBenchmark);
+        submitBenchmark.setOnClickListener(submitButtonClicked);
         typeOfShooterLinear = (LinearLayout) findViewById(R.id.typeOfShooterLinear);
         ballsPerSecondLinear = (LinearLayout) findViewById(R.id.ballsPerSecondLinear);
         ballsPerCycleLinear = (LinearLayout) findViewById(R.id.ballsPerCycleLinear);
@@ -189,6 +177,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         lowGoalNumberOfCyclesLinear = (LinearLayout) findViewById(R.id.lowGoalNumberOfCyclesLinear);
         placesCanScaleFromLinear = (LinearLayout) findViewById(R.id.placesCanScaleFromLinear);
         prefPlaceToScaleLinear = (LinearLayout) findViewById(R.id.prefPlaceToScaleLinear);
+        benchmarkWasDoneButton = (ToggleButton) findViewById(R.id.benchmarkingWasDoneButton);
 
         // <o/  D
         //  |   A
@@ -199,6 +188,10 @@ public class BenchmarkScreen extends AppCompatActivity {
 
     protected void onDestroy() {
         super.onDestroy();
+        saveData();
+    }
+
+    private void saveData() {
         currentData.setDriveSystem(driveSystem.getText().toString());
         String valueAsSring = drivesSpeed.getText().toString();
         if(!valueAsSring.isEmpty()) {
@@ -297,35 +290,21 @@ public class BenchmarkScreen extends AppCompatActivity {
     }
 
     private void updateScreen() {
-        SetStringIntoTextView(driveSystem, currentData.getDriveSystem());
-        if(currentData.getDrivesSpeed() != Double.MAX_VALUE) {
-            SetStringIntoTextView(drivesSpeed, String.valueOf(currentData.getDrivesSpeed()));
-        }
+        utility.setStringIntoTextView(driveSystem, currentData.getDriveSystem());
+        utility.setDoubleIntoTextView(drivesSpeed, currentData.getDrivesSpeed());
         canPlayDefenseBenchButton.setChecked(currentData.isCanPlayDefenseBenchButton());
         abilityToShootHighGoalBenchButton.setChecked(currentData.isAbilityToShootHighGoalBenchButton());
-        SetStringIntoTextView(typeOfShooterBenchInput, currentData.getTypeOfShooterBenchInput());
-        if(currentData.getBallsPerSecondBenchInput() != Double.MAX_VALUE) {
-            SetStringIntoTextView(ballsPerSecondBenchInput, String.valueOf(currentData.getBallsPerSecondBenchInput()));
-        }
-        if(currentData.getBallsInCycleBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(ballsInCycleBenchInput, String.valueOf(currentData.getBallsInCycleBenchInput()));
-        }
-        if(currentData.getCycleTimeHighBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(cycleTimeHighBenchInput, String.valueOf(currentData.getCycleTimeHighBenchInput()));
-        }
-        if(currentData.getShootingRangeBenchInput() != Double.MAX_VALUE) {
-            SetStringIntoTextView(shootingRangeBenchInput, String.valueOf(currentData.getShootingRangeBenchInput()));
-        }
-        SetStringIntoTextView(preferredShootingLocationBenchInput, currentData.getPreferredShootingLocationBenchInput());
-        if(currentData.getAccuracyHighBenchInput() != Double.MAX_VALUE) {
-            SetStringIntoTextView(accuracyHighBenchInput, String.valueOf(currentData.getAccuracyHighBenchInput()));
-        }
+        utility.setStringIntoTextView(typeOfShooterBenchInput, currentData.getTypeOfShooterBenchInput());
+        utility.setDoubleIntoTextView(ballsPerSecondBenchInput, currentData.getBallsPerSecondBenchInput());
+        utility.setIntegerIntoTextView(ballsInCycleBenchInput, currentData.getBallsInCycleBenchInput());
+        utility.setIntegerIntoTextView(cycleTimeHighBenchInput, currentData.getCycleTimeHighBenchInput());
+        utility.setDoubleIntoTextView(shootingRangeBenchInput, currentData.getShootingRangeBenchInput());
+        utility.setStringIntoTextView(preferredShootingLocationBenchInput, currentData.getPreferredShootingLocationBenchInput());
+        utility.setDoubleIntoTextView(accuracyHighBenchInput, currentData.getAccuracyHighBenchInput());
         pickupBallHopperBenchButton.setChecked(currentData.isPickupBallHopperBenchButton());
         pickupBallFloorBenchButton.setChecked(currentData.isPickupBallFloorBenchButton());
         pickupBallHumanBenchButton.setChecked(currentData.isPickupBallHumanBenchButton());
-        if(currentData.getMaximumBallCapacityBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(maximumBallCapacityBenchInput, String.valueOf(currentData.getMaximumBallCapacityBenchInput()));
-        }
+        utility.setIntegerIntoTextView(maximumBallCapacityBenchInput, currentData.getMaximumBallCapacityBenchInput());
         canScoreGearsBenchButton.setChecked(currentData.isCanScoreGearsBenchButton());
         pickupGearFloorBenchButton.setChecked(currentData.isPickupGearFloorBenchButton());
         pickupGearRetrievalBenchButton.setChecked(currentData.isPickupGearRetrievalBenchButton());
@@ -375,16 +354,10 @@ public class BenchmarkScreen extends AppCompatActivity {
                     break;
             }
         }
-        if(currentData.getCycleTimeGearsBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(cycleTimeGearsBenchInput, String.valueOf(currentData.getCycleTimeGearsBenchInput()));
-        }
+        utility.setIntegerIntoTextView(cycleTimeGearsBenchInput, currentData.getCycleTimeGearsBenchInput());
         abilityToShootLowGoalBenchButton.setChecked(currentData.isAbilityToShootLowGoalBenchButton());
-        if (currentData.getCycleTimeLowBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(cycleTimeLowBenchInput, String.valueOf(currentData.getCycleTimeLowBenchInput()));
-        }
-        if(currentData.getCycleNumberLowBenchInput() != Integer.MAX_VALUE) {
-            SetStringIntoTextView(cycleNumberLowBenchInput, String.valueOf(currentData.getCycleNumberLowBenchInput()));
-        }
+        utility.setIntegerIntoTextView(cycleTimeLowBenchInput, currentData.getCycleTimeLowBenchInput());
+        utility.setIntegerIntoTextView(cycleNumberLowBenchInput, currentData.getCycleNumberLowBenchInput());
         abilityScaleBenchButton.setChecked(currentData.isAbilityScaleBenchButton());
         canScaleCenterBench.setChecked(currentData.isPlacesCanScaleCenter());
         canScaleLeftBench.setChecked(currentData.isPlacesCanScaleLeft());
@@ -404,18 +377,12 @@ public class BenchmarkScreen extends AppCompatActivity {
                     break;
             }
         }
-        SetStringIntoTextView(autoAbilitiesBench, currentData.getAutoAbilitiesBench());
-        SetStringIntoTextView(commentsBench, currentData.getCommentsBench());
+        utility.setStringIntoTextView(autoAbilitiesBench, currentData.getAutoAbilitiesBench());
+        utility.setStringIntoTextView(commentsBench, currentData.getCommentsBench());
         hideHighGoal();
         hideGear();
         lowGoalHide();
         scaleHide();
-    }
-
-    void SetStringIntoTextView(TextView item, String _value){
-        if((_value != null) && !_value.isEmpty()) {
-            item.setText(_value);
-        }
     }
 
     private final View.OnClickListener highGoalButtonClicked =  new View.OnClickListener() {
@@ -427,25 +394,19 @@ public class BenchmarkScreen extends AppCompatActivity {
 
 
     public void hideHighGoal(){
-        if(abilityToShootHighGoalBenchButton.isChecked()==(false)){
-            typeOfShooterLinear.setVisibility(View.GONE);
-            ballsPerSecondLinear.setVisibility(View.GONE);
-            ballsPerCycleLinear.setVisibility(View.GONE);
-            cycleTimeLinear.setVisibility(View.GONE);
-            maxShootingRangeLinear.setVisibility(View.GONE);
-            prefPlaceToShootLinear.setVisibility(View.GONE);
-            accuracyHighGoalLinear.setVisibility(View.GONE);
+        int visibility = View.GONE;
+        if(abilityToShootHighGoalBenchButton.isChecked()){
+            visibility = View.VISIBLE;
         }
-        else{
-            typeOfShooterLinear.setVisibility(View.VISIBLE);
-            ballsPerSecondLinear.setVisibility(View.VISIBLE);
-            cycleTimeLinear.setVisibility(View.VISIBLE);
-            ballsPerCycleLinear.setVisibility(View.VISIBLE);
-            maxShootingRangeLinear.setVisibility(View.VISIBLE);
-            prefPlaceToShootLinear.setVisibility(View.VISIBLE);
-            accuracyHighGoalLinear.setVisibility(View.VISIBLE);
-        }
+        typeOfShooterLinear.setVisibility(visibility);
+        ballsPerSecondLinear.setVisibility(visibility);
+        ballsPerCycleLinear.setVisibility(visibility);
+        cycleTimeLinear.setVisibility(visibility);
+        maxShootingRangeLinear.setVisibility(visibility);
+        prefPlaceToShootLinear.setVisibility(visibility);
+        accuracyHighGoalLinear.setVisibility(visibility);
     }
+
     private final View.OnClickListener canGearButtonClicked =  new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -454,32 +415,29 @@ public class BenchmarkScreen extends AppCompatActivity {
     };
 
     public void hideGear(){
-        if(canScoreGearsBenchButton.isChecked()==(false)){
-            whereCanScoreGearsLinear.setVisibility(View.GONE);
-            prefScoringPlaceLinear.setVisibility(View.GONE);
-            gearCycleTimeLinear.setVisibility(View.GONE);
+        int visibility = View.GONE;
+        if(canScoreGearsBenchButton.isChecked()){
+            visibility = View.VISIBLE;
         }
-        else{
-            whereCanScoreGearsLinear.setVisibility(View.VISIBLE);
-            prefScoringPlaceLinear.setVisibility(View.VISIBLE);
-            gearCycleTimeLinear.setVisibility(View.VISIBLE);
-        }
+        whereCanScoreGearsLinear.setVisibility(visibility);
+        prefScoringPlaceLinear.setVisibility(visibility);
+        gearCycleTimeLinear.setVisibility(visibility);
     }
+
     private final View.OnClickListener lowGoalButtonClicked =  new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             lowGoalHide();
         }
     };
+
     public void lowGoalHide(){
-        if(abilityToShootLowGoalBenchButton.isChecked()==(false)){
-            lowGoalCycleTimeLinear.setVisibility(View.GONE);
-            lowGoalNumberOfCyclesLinear.setVisibility(View.GONE);
+        int visibility = View.GONE;
+        if(abilityToShootLowGoalBenchButton.isChecked()){
+            visibility = View.VISIBLE;
         }
-        else{
-            lowGoalCycleTimeLinear.setVisibility(View.VISIBLE);
-            lowGoalNumberOfCyclesLinear.setVisibility(View.VISIBLE);
-        }
+        lowGoalCycleTimeLinear.setVisibility(visibility);
+        lowGoalNumberOfCyclesLinear.setVisibility(visibility);
     }
 
     private final View.OnClickListener canScaleButtonClicked =  new View.OnClickListener() {
@@ -489,86 +447,22 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
     };
 
-    private final View.OnClickListener benchmarkingWasDoneButtonClicked =  new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            scaleHide();
-        }
-    };
-
     public void scaleHide(){
-        if(abilityScaleBenchButton.isChecked()==(false)){
-            placesCanScaleFromLinear.setVisibility(View.GONE);
-            prefPlaceToScaleLinear.setVisibility(View.GONE);
+        int visibility = View.GONE;
+        if(abilityScaleBenchButton.isChecked()){
+            visibility = View.VISIBLE;
         }
-        else{
-            placesCanScaleFromLinear.setVisibility(View.VISIBLE);
-            prefPlaceToScaleLinear.setVisibility(View.VISIBLE);
-        }
+        placesCanScaleFromLinear.setVisibility(visibility);
+        prefPlaceToScaleLinear.setVisibility(visibility);
     }
 
     private final View.OnClickListener submitButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            uploadBenchmarkingData();
+            saveData();
+            utility.uploadBenchmarkingData(BenchmarkScreen.this);
         }
     };
-
-
-    private void uploadBenchmarkingData() {
-        if (!isNetworkAvailable(this)) {
-            alertUser("No Network", "The upload function is not available. Connect to a network and try again.").show();
-        } else {
-            final Dialog alert = createUploadDialog("Please wait while benchmarking data is uploaded...");
-            alert.show();
-            SparxPosting ss = SparxPosting.getInstance(this);
-            ss.postAllBenchmarking(new NetworkCallback() {
-                @Override
-                public void handleFinishDownload(final boolean success) {
-                    BenchmarkScreen.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            alert.dismiss();
-                            if (!success)
-                                alertUser("Failure", "Did not successfully upload benchmarking data!").show();
-                        }
-                    });
-                }
-            });
-        }
-    }
-
-
-    private AlertDialog createUploadDialog(String message) {
-        return createPleaseWaitDialog(message, R.string.uploading_data);
-    }
-
-    private AlertDialog createPleaseWaitDialog(String message, int titleID) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(titleID);
-        builder.setMessage(message);
-        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                BlueAlliance.getInstance(BenchmarkScreen.this).cancelAll();
-                dialogInterface.dismiss();
-            }
-        });
-        return builder.create();
-    }
-
-    public AlertDialog alertUser(String title, String message) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(title);
-        builder.setMessage(message);
-        builder.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.dismiss();
-            }
-        });
-        return builder.create();
-    }
 
     private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -595,7 +489,7 @@ public class BenchmarkScreen extends AppCompatActivity {
 
     private File createImageFile() throws IOException {
         // Create an rotate_indefinetly file name
-        String imageFileName = String.valueOf(currentData.getTeamNumber());
+        String imageFileName = String.valueOf(currentData.getTeamNumber() + "Robot");
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
         return File.createTempFile(
