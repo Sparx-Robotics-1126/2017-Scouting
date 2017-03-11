@@ -163,7 +163,7 @@
                     style="@style/NormalTextView"/>
 
                 <EditText android:id="@+id/preferredShootingLocationBenchInput"
-                    style="@style/MultiShortEditText"/>
+                    style="@style/ShortEditText"/>
 
             </LinearLayout>
 

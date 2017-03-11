@@ -70,14 +70,18 @@
     <string name="event_download_failed">Did not successfully download Event list!</string>
     <string name="team_download_failed">Did not successfully download Team list!</string>
     <string name="benchmark_download_failed">Did not successfully download Benchmark!</string>
+    <string name="picture_download_failed">Did not successfully download Pictures!</string>
     <string name="scouting_download_failed">Did not successfully download Scouting!</string>
     <string name="benchmark_upload_failed">"Did not successfully upload Benchmark data!"</string>
+    <string name="picture_upload_failed">"Did not successfully upload Picture data!"</string>
     <string name="scouting_upload_failed">"Did not successfully upload Scouting data!"</string>
     <string name="please_wait_event_download">Please wait while Event data is downloaded...</string>
     <string name="please_wait_team_download">Please wait while Team data is downloaded...</string>
     <string name="please_wait_benchmarking_download">Please wait while Benchmarking data is downloaded...</string>
+    <string name="please_wait_pictures_download">Please wait while Pictures are downloaded...</string>
     <string name="please_wait_scouting_download">Please wait while Scouting data is downloaded...</string>
     <string name="please_wait_benchmarking_upload">Please wait while Benchmarking data is uploaded...</string>
+    <string name="please_wait_picture_upload">Please wait while Picture data is uploaded...</string>
     <string name="please_wait_scouting_upload">Please wait while Benchmarking data is uploaded...</string>
     <string name="day_format">yyyy-MM-dd hh:mm:ss</string>
     <string name="number_of_hoppers_dumped">Number of Hoppers Dumped</string>
@@ -119,6 +123,9 @@
     <string name="try_again">Connect to a network and try again.</string>
     <string name="no_data">No data</string>
     <string name="nothing">Nothing to upload</string>
+    <string name="refresh_benchmark_data">Refresh Benchmark Data</string>
+    <string name="refresh_scouting_data">Refresh Scouting Data</string>
+    <string name="refresh_pictures">Refresh Pictures</string>
     <string-array name="students">
         <item>Michael Anderson</item>
         <item>Tyler Armstrong</item>

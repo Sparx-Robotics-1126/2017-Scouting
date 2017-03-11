@@ -111,25 +111,6 @@ public class MainScreen extends AppCompatActivity {
         restorePreferences();
     }
 
-    private void downloadBenchmarkData(boolean forceDownload) {
-        // If the internet is available and we haven't gotten the data the download it
-        if (!isNetworkAvailable(this)) {
-            utility.alertUser(this, getString(R.string.no_network), getString(R.string.try_again)).show();
-        } else if (NetworkHelper.needToLoadBenchmarkData(this) || forceDownload) {
-            final Dialog alert = utility.createDialog(this, getString(R.string.downloading_data), getString(R.string.please_wait_benchmarking_download));
-            alert.show();
-            SparxPosting ss = SparxPosting.getInstance(this);
-            ss.getBenchmarking(getEventName(), new NetworkCallback() {
-                @Override
-                public void handleFinishDownload(boolean success) {
-                    if (!success) {
-                        utility.alertUser(MainScreen.this, getString(R.string.failure), getString(R.string.benchmark_download_failed)).show();
-                    }
-                }
-            });
-        }
-    }
-
     private String getScouterName(){
         return scouterText.getText().toString();
     }
@@ -256,7 +237,7 @@ public class MainScreen extends AppCompatActivity {
                 editor.putString(getResources().getString(R.string.pref_event), getEventName());
                 editor.apply();
                 eventSelected = true;
-                //downloadBenchmarkData(false);
+                utility.downloadBenchmarkData(MainScreen.this, false);
                 downloadTeamDataIfNecessary();
             }
         }
@@ -464,7 +445,17 @@ public class MainScreen extends AppCompatActivity {
                 return true;
             case R.id.menu_updload_data:
                 utility.uploadBenchmarkingData(this);
+                utility.uploadPictures(this);
                 utility.uploadScoutingData(this);
+                return true;
+            case R.id.refresh_benchmark_data:
+                utility.downloadBenchmarkData(this, true);
+                return true;
+            case R.id.refresh_pictures:
+                utility.downloadPictures(this, true);
+                return true;
+            case R.id.refresh_scouting_data:
+                utility.downloadScoutingData(this, true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
