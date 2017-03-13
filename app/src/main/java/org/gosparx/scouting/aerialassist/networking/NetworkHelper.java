@@ -14,6 +14,7 @@ public class NetworkHelper {
     private static final String PREF_LOAD_MATCH = "LOAD_MATCH";
     private static final String PREF_LOAD_TEAMS = "LOAD_TEAMS";
     private static final String PREF_LOAD_BENCH_DATA = "LOAD_BENCH_DATA";
+    private static final String PREF_LOAD_PICTURES = "LOAD_PICTURES";
     private static final String PREF_LOAD_SCOUT_DATA = "LOAD_SCOUT_DATA";
 
     public static boolean isNetworkAvailable(Context context) {
@@ -46,6 +47,12 @@ public class NetworkHelper {
         return new Date().after(new Date(timeOfLastSync + NetworkHelper.MS_IN_DAY));
     }
 
+    public static boolean needToLoadPictures(Context context){
+        long timeOfLastSync = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
+                .getLong(PREF_LOAD_PICTURES, 0);
+        return new Date().after(new Date(timeOfLastSync + NetworkHelper.MS_IN_DAY));
+    }
+
     public static boolean needToLoadScoutingData(Context context){
         long timeOfLastSync = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
                 .getLong(PREF_LOAD_SCOUT_DATA, 0);
@@ -63,6 +70,9 @@ public class NetworkHelper {
     }
     static void setLoadedBenchmarkData(Context c){
         setPrefCurrentTime(c, PREF_LOAD_BENCH_DATA);
+    }
+    static void setLoadedPictures(Context c){
+        setPrefCurrentTime(c, PREF_LOAD_PICTURES);
     }
     static void setLoadedScoutData(Context c){
         setPrefCurrentTime(c, PREF_LOAD_SCOUT_DATA);

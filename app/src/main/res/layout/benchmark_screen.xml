@@ -6,7 +6,7 @@
 
     <LinearLayout android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <ImageButton android:id="@+id/home"
             android:contentDescription="@string/home"
@@ -163,7 +163,7 @@
                     style="@style/NormalTextView"/>
 
                 <EditText android:id="@+id/preferredShootingLocationBenchInput"
-                    style="@style/MultiShortEditText"/>
+                    style="@style/ShortEditText"/>
 
             </LinearLayout>
 
@@ -288,15 +288,15 @@
                     style="@style/CheckBoxTextView"/>
 
                 <CheckBox android:id="@+id/canGearLeftBench"
-                    android:text="Left"
+                    android:text="@string/left"
                     style="@style/Checkbox"/>
 
                 <CheckBox android:id="@+id/canGearCenterBench"
-                    android:text="Center"
+                    android:text="@string/center"
                     style="@style/Checkbox"/>
 
                 <CheckBox android:id="@+id/canGearRightBench"
-                    android:text="Right"
+                    android:text="@string/right"
                     style="@style/Checkbox"/>
 
             </LinearLayout>
@@ -313,15 +313,15 @@
                     android:layout_height="wrap_content">
 
                     <RadioButton android:id="@+id/radioGearRight"
-                        android:text="Right"
+                        android:text="@string/right"
                         style="@style/RadioButton"/>
 
                     <RadioButton android:id="@+id/radioGearCenter"
-                        android:text="Center"
+                        android:text="@string/center"
                         style="@style/RadioButton"/>
 
                     <RadioButton android:id="@+id/radioGearLeft"
-                        android:text="Left"
+                        android:text="@string/left"
                         style="@style/RadioButton"/>
 
                 </RadioGroup>
@@ -480,16 +480,16 @@
                     android:layout_height="84dp" />
 
                 <CheckBox android:id="@+id/canScaleLeftBench"
-                    android:text="Left"
+                    android:text="@string/left"
                     style="@style/Checkbox"/>
 
                 <CheckBox android:id="@+id/canScaleCenterBench"
-                    android:text="Center"
+                    android:text="@string/center"
                     style="@style/Checkbox"
-                    android:textSize="15dp"/>
+                    android:textSize="15sp"/>
 
                 <CheckBox android:id="@+id/canScaleRightBench"
-                    android:text="Right"
+                    android:text="@string/right"
                     style="@style/Checkbox"/>
             </LinearLayout>
 
@@ -506,15 +506,15 @@
                     android:layout_height="wrap_content">
 
                     <RadioButton android:id="@+id/radioPreferredScaleRight"
-                        android:text="Right"
+                        android:text="@string/right"
                         style="@style/RadioButton"/>
 
                     <RadioButton android:id="@+id/radioPreferredScaleCenter"
-                        android:text="Center"
+                        android:text="@string/center"
                         style="@style/RadioButton"/>
 
                     <RadioButton android:id="@+id/radioPreferredScaleLeft"
-                        android:text="Left"
+                        android:text="@string/left"
                         style="@style/RadioButton"/>
 
                 </RadioGroup>

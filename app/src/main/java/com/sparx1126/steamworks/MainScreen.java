@@ -21,14 +21,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.sparx1126.steamworks.components.Utility;
+
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
-import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
+import org.gosparx.scouting.aerialassist.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.dto.Event;
-import org.gosparx.scouting.aerialassist.dto.TeamData;
+import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
-import org.gosparx.scouting.aerialassist.networking.SparxPosting;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -109,25 +110,6 @@ public class MainScreen extends AppCompatActivity {
         teamsList = new Vector<>();
 
         restorePreferences();
-    }
-
-    private void downloadBenchmarkData(boolean forceDownload) {
-        // If the internet is available and we haven't gotten the data the download it
-        if (!isNetworkAvailable(this)) {
-            utility.alertUser(this, getString(R.string.no_network), getString(R.string.try_again)).show();
-        } else if (NetworkHelper.needToLoadBenchmarkData(this) || forceDownload) {
-            final Dialog alert = utility.createDialog(this, getString(R.string.downloading_data), getString(R.string.please_wait_benchmarking_download));
-            alert.show();
-            SparxPosting ss = SparxPosting.getInstance(this);
-            ss.getBenchmarking(getEventName(), new NetworkCallback() {
-                @Override
-                public void handleFinishDownload(boolean success) {
-                    if (!success) {
-                        utility.alertUser(MainScreen.this, getString(R.string.failure), getString(R.string.benchmark_download_failed)).show();
-                    }
-                }
-            });
-        }
     }
 
     private String getScouterName(){
@@ -221,8 +203,7 @@ public class MainScreen extends AppCompatActivity {
                     destination = ViewScreen.class;
                     break;
             }
-            BenchmarkingData benchmarkingData = new BenchmarkingData(getTeamNumber(), getEventName(), getScouterName());
-            TeamData.setTeamData(benchmarkingData);
+            TeamData.setTeamData(getTeamNumber(), getEventName(), getScouterName());
 
             Intent intent = new Intent(MainScreen.this, destination);
             startActivity(intent);
@@ -256,7 +237,7 @@ public class MainScreen extends AppCompatActivity {
                 editor.putString(getResources().getString(R.string.pref_event), getEventName());
                 editor.apply();
                 eventSelected = true;
-                //downloadBenchmarkData(false);
+                utility.downloadBenchmarkData(MainScreen.this, false);
                 downloadTeamDataIfNecessary();
             }
         }
@@ -459,12 +440,22 @@ public class MainScreen extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.menu_download_events:
-                downloadEventSpinnerData(true);
-                return true;
             case R.id.menu_updload_data:
                 utility.uploadBenchmarkingData(this);
+                utility.uploadPictures(this);
                 utility.uploadScoutingData(this);
+                return true;
+            case R.id.refresh_events:
+                downloadEventSpinnerData(true);
+                return true;
+            case R.id.refresh_benchmark_data:
+                utility.downloadBenchmarkData(this, true);
+                return true;
+            case R.id.refresh_pictures:
+                utility.downloadPictures(this, true);
+                return true;
+            case R.id.refresh_scouting_data:
+                utility.downloadScoutingData(this, true);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

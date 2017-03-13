@@ -2,10 +2,11 @@
 <resources>
     <color name="colorText">#000000</color>
     <color name="colorBlack">#000000</color>
-    <color name="colorSparxRed">#C40000</color>
+    <color name="colorSparxRed">#CF0000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorNavy">#172D9A</color>
     <color name="colorGray">#828282</color>
     <color name="colorGrayLight1">#e7e7e7</color>
     <color name="colorGrayLight2">#dadada</color>
 </resources>
+    <!-- C40000 -->

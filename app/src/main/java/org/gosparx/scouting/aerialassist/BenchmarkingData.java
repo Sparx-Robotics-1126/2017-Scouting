@@ -1,4 +1,4 @@
-package org.gosparx.scouting.aerialassist.dto;
+package org.gosparx.scouting.aerialassist;
 
 public class BenchmarkingData{
     private final int teamNumber;

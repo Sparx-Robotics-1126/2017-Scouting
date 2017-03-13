@@ -16,8 +16,10 @@ import android.widget.RadioButton;
 import android.widget.ToggleButton;
 import android.widget.LinearLayout;
 
-import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
-import org.gosparx.scouting.aerialassist.dto.TeamData;
+import com.sparx1126.steamworks.components.Utility;
+
+import org.gosparx.scouting.aerialassist.BenchmarkingData;
+import org.gosparx.scouting.aerialassist.TeamData;
 
 import java.io.File;
 import java.io.IOException;
@@ -461,6 +463,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         public void onClick(View v) {
             saveData();
             utility.uploadBenchmarkingData(BenchmarkScreen.this);
+            utility.uploadPictures(BenchmarkScreen.this);
         }
     };
 

@@ -12,8 +12,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
-import org.gosparx.scouting.aerialassist.dto.TeamData;
+import com.sparx1126.steamworks.components.CustomExpandableListAdapter;
+import com.sparx1126.steamworks.components.ViewScreenListDataPump;
+
+import org.gosparx.scouting.aerialassist.BenchmarkingData;
+import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 
 import java.io.File;
@@ -33,8 +36,6 @@ public class ViewScreen extends AppCompatActivity {
     private ExpandableListAdapter expandableListAdapter;
     private List<String> expandableListTitle;
     private HashMap<String, List<String>> expandableListDetail;
-
-
 
     @Override
     protected  void onCreate(Bundle savedInstanceState) {
