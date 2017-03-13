@@ -2,6 +2,7 @@
 package com.sparx1126.steamworks;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -30,6 +31,10 @@ import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -304,34 +309,45 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void downloadEventSpinnerData(boolean forceDownload) {
-        // If the internet is available and we haven't gotten the data the download it
-        if (!isNetworkAvailable(this)) {
-            utility.alertUser(this, getString(R.string.no_network), getString(R.string.try_again)).show();
-        } else if (NetworkHelper.needToLoadEventList(this) || forceDownload) {
-            final Dialog alert = utility.createDialog(this, getString(R.string.downloading_data), getString(R.string.please_wait_event_download));
-            alert.show();
-            blueAlliance.loadEventList(getResources().getString(R.string.competition_year), new NetworkCallback() {
-                @Override
-                public void handleFinishDownload(final boolean success) {
-                    MainScreen.this.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            alert.dismiss();
-                            if (success) {
-                                setupEventSpinner();
+        // If the internet is available and we haven't gotten the data then download it
+        if (NetworkHelper.needToLoadEventList(this) || forceDownload) {
+            if (!isNetworkAvailable(this)) {
+                utility.alertUser(this, getString(R.string.no_network), getString(R.string.try_again)).show();
+            } else {
+                final Dialog alert = utility.createDialog(this, getString(R.string.downloading_data), getString(R.string.please_wait_event_download));
+                alert.show();
+                blueAlliance.loadEventList(getResources().getString(R.string.competition_year), new NetworkCallback() {
+                    @Override
+                    public void handleFinishDownload(final boolean success) {
+                        MainScreen.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                alert.dismiss();
+                                if (success) {
+                                    setupEventSpinner();
+                                } else {
+                                    utility.alertUser(MainScreen.this, getString(R.string.failure), getString(R.string.event_download_failed)).show();
+                                }
                             }
-                            else {
-                                utility.alertUser(MainScreen.this, getString(R.string.failure), getString(R.string.event_download_failed)).show();
-                            }
-                        }
-                    });
-                }
-            });
+                        });
+                    }
+                });
+            }
         }
     }
 
     private void setupEventSpinner() {
         Cursor eventDataCur = dbHelper.createEventNameCursor();
+        FileOutputStream fos = null;
+        try {
+            fos = this.openFileOutput("eventNameCursor", Context.MODE_PRIVATE);
+            ObjectOutputStream os = new ObjectOutputStream(fos);
+            os.writeObject(eventDataCur);
+            os.close();
+            fos.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //Left that here because it's a way to dump all of the data into the console
         //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
         if(eventDataCur.getCount() > 0) {
