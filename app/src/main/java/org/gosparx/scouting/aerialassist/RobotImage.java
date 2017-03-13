@@ -1,4 +1,4 @@
-package org.gosparx.scouting.aerialassist.dto;
+package org.gosparx.scouting.aerialassist;
 
 import java.io.File;
 import java.sql.Blob;

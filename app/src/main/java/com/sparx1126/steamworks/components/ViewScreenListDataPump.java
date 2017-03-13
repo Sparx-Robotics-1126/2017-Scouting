@@ -1,8 +1,8 @@
-package com.sparx1126.steamworks;
+package com.sparx1126.steamworks.components;
 
 
-import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
-import org.gosparx.scouting.aerialassist.dto.TeamData;
+import org.gosparx.scouting.aerialassist.BenchmarkingData;
+import org.gosparx.scouting.aerialassist.TeamData;
 
 import java.util.ArrayList;
 import java.util.HashMap;

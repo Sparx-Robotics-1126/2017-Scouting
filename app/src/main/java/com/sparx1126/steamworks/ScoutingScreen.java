@@ -1,8 +1,5 @@
 package com.sparx1126.steamworks;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -11,20 +8,17 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.RadioButton;
-import android.widget.TextView;
 import android.widget.ToggleButton;
 
-import org.gosparx.scouting.aerialassist.dto.TeamData;
-import org.gosparx.scouting.aerialassist.dto.ScoutingData;
-import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
-import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
-import org.gosparx.scouting.aerialassist.networking.SparxPosting;
+import com.sparx1126.steamworks.components.Utility;
+
+import org.gosparx.scouting.aerialassist.TeamData;
+import org.gosparx.scouting.aerialassist.ScoutingData;
 
 import static com.sparx1126.steamworks.R.layout.scouting_screen;
-import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class ScoutingScreen extends AppCompatActivity {
-    private TeamData currentInfo;
+    private TeamData currentTeam;
     private ScoutingData scoutingBeingEntered;
     private Utility utility;
 
@@ -74,8 +68,8 @@ public class ScoutingScreen extends AppCompatActivity {
                 finish();
             }
         });
-        currentInfo = TeamData.getCurrentTeam();
-        scoutingBeingEntered = currentInfo.getCurrentScoutingData();
+        currentTeam = TeamData.getCurrentTeam();
+        scoutingBeingEntered = new ScoutingData(currentTeam.getTeamNumber(), currentTeam.getEventName(), currentTeam.getStudent());
         utility = Utility.getInstance();
 
         crossedBaseLineAutoInput = (ToggleButton) findViewById(R.id.crossedBaseLineAutoInput);
@@ -107,13 +101,14 @@ public class ScoutingScreen extends AppCompatActivity {
         matchScoutedInput = (ToggleButton) findViewById(R.id.matchScouted);
         submitScouting = (Button) findViewById(R.id.submitScouting);
         submitScouting.setOnClickListener(submitScoutingClicked);
-
-        updateScreen();
     }
 
     protected void onDestroy() {
         super.onDestroy();
         saveData();
+        if(matchScoutedInput.isChecked()) {
+            currentTeam.addScoutingData(scoutingBeingEntered);
+        }
     }
 
     private void saveData() {
@@ -191,80 +186,13 @@ public class ScoutingScreen extends AppCompatActivity {
         scoutingBeingEntered.setWhereScaled(scaledFromWhereInput.getText().toString());
     }
 
-    private void updateScreen() {
-        crossedBaseLineAutoInput.setChecked(scoutingBeingEntered.isCrossedBaseline());
-        utility.setIntegerIntoTextView(hoppersDumpedAutoInput, scoutingBeingEntered.getHoppersDumped());
-        putGearLeftAuto.setChecked(scoutingBeingEntered.isGearScoredLeftAuto());
-        putGearCenterAuto.setChecked(scoutingBeingEntered.isGearScoredCenterAuto());
-        putGearRightAuto.setChecked(scoutingBeingEntered.isGearScoredRightAuto());
-        utility.setIntegerIntoTextView(gearsScoredTeleInput, scoutingBeingEntered.getGearsScored());
-        utility.setIntegerIntoTextView(gearsDeliveredInput, scoutingBeingEntered.getGearsDelivered());
-        utility.setIntegerIntoTextView(numberOfGearsFromFloorInput, scoutingBeingEntered.getGearsCollectedFromFloor());
-        utility.setIntegerIntoTextView(numberOfGearsFromHumanInput, scoutingBeingEntered.getGearsFromHuman());
-        if (scoutingBeingEntered.getScoresHighAuto() != null) {
-            switch (scoutingBeingEntered.getScoresHighAuto()) {
-                case "scoresHighNeverAuto":
-                    scoresHighNeverAuto.setChecked(true);
-                    break;
-                case "scoresHighSometimesAuto":
-                    scoresHighSometimesAuto.setChecked(true);
-                    break;
-                case "scoresHighOftenAuto":
-                    scoresHighOftenAuto.setChecked(true);
-                    break;
-                default:
-                    break;
-            }
-        }
-        if (scoutingBeingEntered.getScoresLowAuto() != null) {
-            switch (scoutingBeingEntered.getScoresLowAuto()) {
-                case "scoresLowNeverAuto":
-                    scoresLowNeverAuto.setChecked(true);
-                    break;
-                case "scoresLowSometimesAuto":
-                    scoresLowSometimesAuto.setChecked(true);
-                    break;
-                case "scoresLowOftenAuto":
-                    scoresLowOftenAuto.setChecked(true);
-                    break;
-                default:
-                    break;
-            }
-        }
-        utility.setIntegerIntoTextView(numberOfBallsScoredHighGoalInput, scoutingBeingEntered.getBallsInHighCycle());
-        utility.setIntegerIntoTextView(timesCollectedFromHumanInput, scoutingBeingEntered.getBallsFromHuman());
-        utility.setIntegerIntoTextView(timesCollectedFromHopperInput, scoutingBeingEntered.getBallsFromHopper());
-        utility.setIntegerIntoTextView(timesCollectedFromFloorInput, scoutingBeingEntered.getBallsFromFloor());
-        utility.setIntegerIntoTextView(fuelScoredLowGoalCycleInput, scoutingBeingEntered.getFuelInLowCycle());
-        utility.setIntegerIntoTextView(numberOfLowGoalCyclesInput, scoutingBeingEntered.getNumberOfLowCycles());
-        if (scoutingBeingEntered.getHighGoalAccuracy() != null) {
-            switch (scoutingBeingEntered.getHighGoalAccuracy()) {
-                case "highGoalAccuracyScoutPoor":
-                    highGoalAccuracyScoutPoor.setChecked(true);
-                    break;
-                case "highGoalAccuracyScoutOk":
-                    highGoalAccuracyScoutOk.setChecked(true);
-                    break;
-                case "highGoalAccuracyScoutGreat":
-                    highGoalAccuracyScoutGreat.setChecked(true);
-                    break;
-                default:
-                    break;
-            }
-        }
-        didScaleInput.setChecked(scoutingBeingEntered.isDidScale());
-        utility.setStringIntoTextView(scaledFromWhereInput, scoutingBeingEntered.getWhereScaled());
-    }
-
     private final View.OnClickListener submitScoutingClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if(matchScoutedInput.isChecked()) {
-                currentInfo.addScoutingData();
+                currentTeam.addScoutingData(scoutingBeingEntered);
             }
             utility.uploadScoutingData(ScoutingScreen.this);
-            scoutingBeingEntered = currentInfo.getCurrentScoutingData();
-            updateScreen();
         }
     };
 }

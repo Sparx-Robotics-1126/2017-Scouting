@@ -1,6 +1,5 @@
 package com.sparx1126.steamworks;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -17,15 +16,13 @@ import android.widget.RadioButton;
 import android.widget.ToggleButton;
 import android.widget.LinearLayout;
 
-import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
-import org.gosparx.scouting.aerialassist.dto.TeamData;
-import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
-import org.gosparx.scouting.aerialassist.networking.SparxPosting;
+import com.sparx1126.steamworks.components.Utility;
+
+import org.gosparx.scouting.aerialassist.BenchmarkingData;
+import org.gosparx.scouting.aerialassist.TeamData;
 
 import java.io.File;
 import java.io.IOException;
-
-import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class BenchmarkScreen extends AppCompatActivity {
     private static final int REQUEST_TAKE_PHOTO = 1;

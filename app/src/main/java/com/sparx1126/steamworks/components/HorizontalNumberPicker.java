@@ -1,4 +1,4 @@
-package com.sparx1126.steamworks;
+package com.sparx1126.steamworks.components;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
+import com.sparx1126.steamworks.R;
 
 public class HorizontalNumberPicker extends LinearLayout implements View.OnClickListener {
 

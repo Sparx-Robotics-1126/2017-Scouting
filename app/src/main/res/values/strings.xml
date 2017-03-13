@@ -107,17 +107,17 @@
     <string name="number_of_low_goal_cycles">Number Of Low Goal Cycles</string>
     <string name="high_goal_accuracy">High Goal Accuracy</string>
     <string name="poor">Poor</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="great">Great</string>
     <string name="end_game">End Game</string>
     <string name="did_they_scale">Did They Scale?</string>
-    <string name="where_they_scaled_from">Where Where Did They Scale From?</string>
+    <string name="where_they_scaled_from">Where Did They Scale From?</string>
     <string name="match_scouted">Match Scouted</string>
     <string name="minus">-</string>
     <string name="zero">0</string>
     <string name="plus">+</string>
     <string name="benchmarking_was_done">Benchmarking Was Done</string>
-    <string name="download_events">Download Events</string>
+    <string name="refresh_events">Refresh Events</string>
     <string name="upload_data">Upload Data</string>
     <string name="no_network">No Network</string>
     <string name="try_again">Connect to a network and try again.</string>
@@ -126,6 +126,9 @@
     <string name="refresh_benchmark_data">Refresh Benchmark Data</string>
     <string name="refresh_scouting_data">Refresh Scouting Data</string>
     <string name="refresh_pictures">Refresh Pictures</string>
+    <string name="left">Left</string>
+    <string name="center">Center</string>
+    <string name="right">Right</string>
     <string-array name="students">
         <item>Michael Anderson</item>
         <item>Tyler Armstrong</item>

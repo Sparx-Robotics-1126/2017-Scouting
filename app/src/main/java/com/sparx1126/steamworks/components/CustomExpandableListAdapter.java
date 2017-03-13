@@ -1,4 +1,4 @@
-package com.sparx1126.steamworks;
+package com.sparx1126.steamworks.components;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.TextView;
+
+import com.sparx1126.steamworks.R;
 
 public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
 

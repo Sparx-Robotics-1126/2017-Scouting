@@ -1,4 +1,4 @@
-package org.gosparx.scouting.aerialassist.dto;
+package org.gosparx.scouting.aerialassist;
 
 //ßuild the app amandΩ
 

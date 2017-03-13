@@ -12,10 +12,10 @@ import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
-import org.gosparx.scouting.aerialassist.dto.BenchmarkingData;
-import org.gosparx.scouting.aerialassist.dto.RobotImage;
-import org.gosparx.scouting.aerialassist.dto.ScoutingData;
-import org.gosparx.scouting.aerialassist.dto.TeamData;
+import org.gosparx.scouting.aerialassist.BenchmarkingData;
+import org.gosparx.scouting.aerialassist.RobotImage;
+import org.gosparx.scouting.aerialassist.ScoutingData;
+import org.gosparx.scouting.aerialassist.TeamData;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -222,7 +222,7 @@ public class SparxPosting {
                         }
 
                         for (ScoutingData sd : result) {
-                            //TeamData.getTeamsMap().
+                            TeamData.setTeamData(sd);
                         }
                         callback.handleFinishDownload(true);
                     }

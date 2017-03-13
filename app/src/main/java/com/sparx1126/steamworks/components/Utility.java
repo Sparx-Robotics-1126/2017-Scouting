@@ -1,4 +1,4 @@
-package com.sparx1126.steamworks;
+package com.sparx1126.steamworks.components;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -6,7 +6,8 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.widget.TextView;
 
-import org.gosparx.scouting.aerialassist.dto.TeamData;
+import com.sparx1126.steamworks.R;
+
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;

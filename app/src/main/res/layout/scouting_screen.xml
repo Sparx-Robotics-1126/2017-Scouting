@@ -53,15 +53,15 @@
                 <TextView android:text="@string/gears_scored_in"
                     style="@style/CheckBoxTextView"/>
 
-                <CheckBox android:text="Left"
+                <CheckBox android:text="@string/left"
                     android:id="@+id/putGearLeftAuto"
                     style="@style/Checkbox"/>
 
-                <CheckBox android:text="Center"
+                <CheckBox android:text="@string/center"
                     android:id="@+id/putGearCenterAuto"
                     style="@style/Checkbox"/>
 
-                <CheckBox android:text="Right"
+                <CheckBox android:text="@string/right"
                     android:id="@+id/putGearRightAuto"
                     style="@style/Checkbox"/>
 
@@ -90,7 +90,7 @@
                     android:text="@string/number_of_gears_scored"
                     style="@style/NormalTextView"/>
 
-                <com.sparx1126.steamworks.HorizontalNumberPicker
+                <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/gearsScoredTeleInput"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
@@ -110,7 +110,7 @@
                     android:text="@string/number_of_gears_delivered"
                     style="@style/NormalTextView" />
 
-                <com.sparx1126.steamworks.HorizontalNumberPicker
+                <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/gearsDeliveredInput"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
@@ -131,7 +131,7 @@
                     style="@style/NormalTextView"
                     android:layout_height="72dp" />
 
-                <com.sparx1126.steamworks.HorizontalNumberPicker
+                <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/numberOfGearsFromFloorInput"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
@@ -152,7 +152,7 @@
                     style="@style/NormalTextView"
                     android:layout_height="72dp" />
 
-                <com.sparx1126.steamworks.HorizontalNumberPicker
+                <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/numberOfGearsFromHumanInput"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
@@ -234,7 +234,7 @@
                     style="@style/NormalTextView"
                     android:layout_height="72dp" />
 
-                <com.sparx1126.steamworks.HorizontalNumberPicker
+                <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/numberOfBallsScoredHighGoalInput"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
@@ -255,7 +255,7 @@
                     style="@style/NormalTextView"
                     android:layout_height="72dp" />
 
-                <com.sparx1126.steamworks.HorizontalNumberPicker
+                <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/timesCollectedFromHumanInput"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
@@ -276,7 +276,7 @@
                     style="@style/NormalTextView"
                     android:layout_height="72dp" />
 
-                <com.sparx1126.steamworks.HorizontalNumberPicker
+                <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/timesCollectedFromHopperInput"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
@@ -297,7 +297,7 @@
                     style="@style/NormalTextView"
                     android:layout_height="72dp" />
 
-                <com.sparx1126.steamworks.HorizontalNumberPicker
+                <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/timesCollectedFromFloorInput"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
@@ -318,7 +318,7 @@
                     style="@style/NormalTextView"
                     android:layout_height="72dp" />
 
-                <com.sparx1126.steamworks.HorizontalNumberPicker
+                <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/fuelScoredLowGoalCycleInput"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
@@ -338,7 +338,7 @@
                     android:text="@string/number_of_low_goal_cycles"
                     style="@style/NormalTextView"/>
 
-                <com.sparx1126.steamworks.HorizontalNumberPicker
+                <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/numberOfLowGoalCyclesInput"
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
