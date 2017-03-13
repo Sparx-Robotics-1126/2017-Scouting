@@ -460,8 +460,13 @@ public class BenchmarkScreen extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             saveData();
-            utility.uploadBenchmarkingData(BenchmarkScreen.this);
-            utility.uploadPictures(BenchmarkScreen.this);
+            if(benchmarkWasDoneButton.isChecked()) {
+                utility.uploadBenchmarkingData(BenchmarkScreen.this);
+                utility.uploadPictures(BenchmarkScreen.this);
+            }
+            else {
+                utility.alertUser(BenchmarkScreen.this, "Benchmarking Was Not Done", "The button was probably not checked.").show();
+            }
         }
     };
 

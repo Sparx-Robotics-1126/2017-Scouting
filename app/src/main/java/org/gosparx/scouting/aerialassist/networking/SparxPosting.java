@@ -20,6 +20,7 @@ import org.gosparx.scouting.aerialassist.TeamData;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -78,9 +79,10 @@ public class SparxPosting {
                 }
             };
 
-            for (Object o : teamsMap.entrySet()) {
-                Map.Entry pair = (Map.Entry) o;
-                TeamData teamData = (TeamData) pair.getValue();
+            Iterator it = teamsMap.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry)it.next();
+                TeamData teamData = (TeamData)pair.getValue();
                 BenchmarkingData benchmarkingData = teamData.getBenchmarkingData();
                 if (benchmarkingData.isBenchmarkingWasDoneButton()) {
                     Ion.with(context)
@@ -160,12 +162,14 @@ public class SparxPosting {
                 }
             };
 
-            for (Object o : teamsMap.entrySet()) {
-                Map.Entry pair = (Map.Entry) o;
+            Iterator it = teamsMap.entrySet().iterator();
+            while (it.hasNext()) {
+                Map.Entry pair = (Map.Entry) it.next();
                 TeamData teamData = (TeamData) pair.getValue();
-                if (!teamData.getScoutingDatas().isEmpty()) {
-                    for (Object sd : teamData.getScoutingDatas()) {
-                        ScoutingData scoutingData = (ScoutingData) sd;
+                if(!teamData.getScoutingDatas().isEmpty()) {
+                    Iterator itSC = teamData.getScoutingDatas().iterator();
+                    while (itSC.hasNext()) {
+                        ScoutingData scoutingData = (ScoutingData) itSC.next();
                         if (scoutingData.isMatchScouted()) {
                             Ion.with(context)
                                     .load(request)
@@ -231,11 +235,11 @@ public class SparxPosting {
         final Vector<File> pictures = new Vector();
         boolean noneFound = true;
         int photoIndex = 0;
-        for (File file : files) {
-            String fileName = file.getName();
-            if (fileName.contains("Robot")) {
+        for (int i = 0; i < files.length; i++) {
+            String fileName = files[i].getName();
+            if(fileName.contains("Robot")) {
                 noneFound = false;
-                pictures.add(file);
+                pictures.add(files[i]);
                 photoIndex++;
             }
         }
