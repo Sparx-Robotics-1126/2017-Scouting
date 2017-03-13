@@ -7,11 +7,11 @@ import java.util.Vector;
 public class TeamData {
     private static Map<Integer, TeamData> teamsDataMap;
     private static TeamData currentTeam;
-    private int teamNumber;
-    private String eventName;
-    private String student;
-    private BenchmarkingData currentBenchmarkingData;
-    private Vector<ScoutingData> scoutingDatas;
+    private final int teamNumber;
+    private final String eventName;
+    private final String student;
+    private final BenchmarkingData currentBenchmarkingData;
+    private final Vector<ScoutingData> scoutingDatas;
 
     private TeamData(BenchmarkingData benchmarkingData) {
         this.teamNumber = benchmarkingData.getTeamNumber();

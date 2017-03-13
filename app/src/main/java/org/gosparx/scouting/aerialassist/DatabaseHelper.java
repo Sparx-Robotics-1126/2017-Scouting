@@ -7,16 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import org.gosparx.scouting.aerialassist.dto.Alliance;
-import org.gosparx.scouting.aerialassist.dto.Alliances;
 import org.gosparx.scouting.aerialassist.dto.Event;
-import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.Locale;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -34,12 +29,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_TEAMS = "teams";
     private static final String TABLE_E2T = "events_to_teams";
     private static final String TABLE_MATCHES = "matches";
-    private static final String TABLE_SCOUTING = "scouting_screen";
-    private static final String TABLE_BENCHMARKING = "benchmarking";
 
     // Events Column Names
     public static final String TABLE_EVENTS_KEY = "key";
-    public static final String TABLE_EVENTS_NAME = "name";
+    private static final String TABLE_EVENTS_NAME = "name";
     private static final String TABLE_EVENTS_SHORT_NAME = "short_name";
     private static final String TABLE_EVENTS_EVENT_CODE = "event_code";
     private static final String TABLE_EVENTS_EVENT_TYPE_STRING = "event_type_string";
@@ -81,24 +74,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_MATCHES_RED_ONE = "red_one";
     private static final String TABLE_MATCHES_RED_TWO = "red_two";
     private static final String TABLE_MATCHES_RED_THREE = "red_three";
-
-    // Scouting Column Names
-    private static final String TABLE_SCOUTING_KEY = "key";
-    private static final String TABLE_SCOUTING_LAST_UPDATE = "last_updated";
-    private static final String TABLE_SCOUTING_LAST_SYNC = "last_sync";
-    private static final String TABLE_SCOUTING_TEAM_KEY = "team_key";
-    private static final String TABLE_SCOUTING_EVENT_KEY = "event_key";
-    private static final String TABLE_SCOUTING_MATCH_KEY = "match_key";
-    private static final String TABLE_SCOUTING_NAME = "scouter_name";
-    private static final String TABLE_SCOUTING_MATCHSCOUTED = "match_scouted";
-
-    // Benchmarking Column Names
-    private static final String TABLE_BENCHMARKING_KEY = "key";
-    private static final String TABLE_BENCHMARKING_LAST_UPDATE = "last_updated";
-    private static final String TABLE_BENCHMARKING_LAST_SYNC = "last_sync";
-    private static final String TABLE_BENCHMARKING_TEAM_KEY = "team_key";
-    private static final String TABLE_BENCHMARKING_EVENT_KEY = "event_key";
-    private static final String TABLE_BENCHMARKING_NAME = "scouter_name";
 
     // Create Tables
     private static final String CREATE_TABLE_EVENTS = "CREATE TABLE " + TABLE_EVENTS + "("
@@ -152,18 +127,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    private static String getDateTime() {
-        return ISO6701_FORMAT.format(new Date());
-    }
-
     public static synchronized DatabaseHelper getInstance(Context context){
         if(dbHelper == null)
             dbHelper = new DatabaseHelper(context);
         return dbHelper;
-    }
-
-    private static Boolean getBoolean(Cursor c, int columnIndex) {
-        return !(c.isNull(columnIndex) || c.getShort(columnIndex) == 0);
     }
 
     @Override
@@ -301,47 +268,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         getWritableDatabase().update(TABLE_TEAMS, mapTeam(team), TABLE_TEAMS_KEY + " = ?", new String[]{team.getKey()});
     }
 
-    public Team getTeam(String teamKey){
-        SQLiteDatabase db = getReadableDatabase();
-        String selectQuery = "SELECT * FROM " + TABLE_TEAMS + " WHERE " + TABLE_TEAMS_KEY + " = ?";
-
-        Cursor c = db.rawQuery(selectQuery, new String[]{teamKey});
-
-        Team team = new Team();
-        if(c != null && c.moveToNext()){
-            team.setKey(c.getString(c.getColumnIndex(TABLE_TEAMS_KEY)));
-            team.setName(c.getString(c.getColumnIndex(TABLE_TEAMS_NAME)));
-            team.setNickname(c.getString(c.getColumnIndex(TABLE_TEAMS_NICKNAME)));
-            team.setTeamNumber(c.getInt(c.getColumnIndex(TABLE_TEAMS_TEAM_NUMBER)));
-            team.setWebsite(c.getString(c.getColumnIndex(TABLE_TEAMS_WEBSITE)));
-            team.setCity(c.getString(c.getColumnIndex(TABLE_TEAMS_CITY)));
-            team.setCountry(c.getString(c.getColumnIndex(TABLE_TEAMS_COUNTRY)));
-            team.setLocation(c.getString(c.getColumnIndex(TABLE_TEAMS_LOCATION)));
-            team.setEvents(new ArrayList<Event>());
-        }
-
-        selectQuery = "SELECT * FROM " +TABLE_E2T + " WHERE " + TABLE_E2T_TEAM + " = ?";
-        c = db.rawQuery(selectQuery, new String[]{team.getKey()});
-
-        while(c != null && c.moveToNext()){
-            team.getEvents().add(getEvent(c.getString(c.getColumnIndex(TABLE_E2T_EVENT))));
-        }
-        if (c != null) {
-            c.close();
-        }
-        return team;
-    }
-
     public Cursor createTeamCursor(Event event){
         SQLiteDatabase db = getReadableDatabase();
-        Cursor c = db.query(TABLE_TEAMS+","+TABLE_E2T,
+
+        return db.query(TABLE_TEAMS+","+TABLE_E2T,
                 new String[]{"*", TABLE_TEAMS+".rowid AS _id", TABLE_TEAMS+".key AS team_key"},
                 TABLE_TEAMS+"."+TABLE_TEAMS_KEY+" = "+TABLE_E2T+"."+TABLE_E2T_TEAM
                         +" AND "+TABLE_E2T+"."+TABLE_E2T_EVENT+" = ?",
                 new String[]{event.getKey()},
                 null, null, TABLE_TEAMS+"."+TABLE_TEAMS_TEAM_NUMBER+" ASC");
-
-        return c;
     }
 
     public void createE2TAssociation(String eventKey, String teamKey){
@@ -360,185 +295,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.query(TABLE_E2T, new String[]{"COUNT(*)"},
                 TABLE_E2T_EVENT+" = ? AND "+TABLE_E2T_TEAM+" = ?",
                 new String[]{eventKey, teamKey}, null, null, null);
-
-        if(c != null && c.moveToNext())
-            retVal = c.getInt(0) > 0;
-
-        if (c != null) {
-            c.close();
-        }
-        return retVal;
-    }
-
-    private ContentValues mapMatch(Match match){
-        ContentValues values = new ContentValues();
-        values.put(TABLE_MATCHES_KEY, match.getKey());
-        values.put(TABLE_MATCHES_EVENT_KEY, match.getEventKey());
-        values.put(TABLE_MATCHES_MATCH_NUMBER, match.getMatchNumber());
-        values.put(TABLE_MATCHES_SET_NUMBER, match.getSetNumber());
-        values.put(TABLE_MATCHES_COMP_LEVEL, match.getCompetitionLevel());
-        values.put(TABLE_MATCHES_BLUE_SCORE, match.getAlliances().getBlue().getScore());
-        values.put(TABLE_MATCHES_BLUE_ONE, match.getAlliances().getBlue().getTeams().get(0));
-        values.put(TABLE_MATCHES_BLUE_TWO, match.getAlliances().getBlue().getTeams().get(1));
-        values.put(TABLE_MATCHES_BLUE_THREE, match.getAlliances().getBlue().getTeams().get(2));
-        values.put(TABLE_MATCHES_RED_SCORE, match.getAlliances().getRed().getScore());
-        values.put(TABLE_MATCHES_RED_ONE, match.getAlliances().getRed().getTeams().get(0));
-        values.put(TABLE_MATCHES_RED_TWO, match.getAlliances().getRed().getTeams().get(1));
-        values.put(TABLE_MATCHES_RED_THREE, match.getAlliances().getRed().getTeams().get(2));
-
-        return values;
-    }
-
-    public void createMatch(Match match){
-        SQLiteDatabase db = getWritableDatabase();
-
-        ContentValues values = mapMatch(match);
-
-        db.insert(TABLE_MATCHES, null, values);
-    }
-
-    public boolean doesMatchExist(Match match){
-        boolean retVal = false;
-        SQLiteDatabase db = getReadableDatabase();
-
-        Cursor c = db.query(TABLE_MATCHES, new String[]{"COUNT(*)"},
-                TABLE_MATCHES_KEY+" = ?", new String[]{match.getKey()}, null, null, null);
-
-        if(c != null && c.moveToNext())
-            retVal = c.getInt(0) > 0;
-
-        if (c != null) {
-            c.close();
-        }
-        return retVal;
-    }
-
-    public void updateMatch(Match match){
-        SQLiteDatabase db = getWritableDatabase();
-        db.update(TABLE_MATCHES, mapMatch(match), TABLE_MATCHES_KEY+" = ?", new String[]{match.getKey()});
-    }
-
-    public Match getMatch(String matchKey){
-        SQLiteDatabase db = getReadableDatabase();
-        String selectStatement = "SELECT * FROM " + TABLE_MATCHES
-                + " WHERE " + TABLE_MATCHES_KEY + " = ?";
-
-        Cursor c = db.rawQuery(selectStatement, new String[]{matchKey});
-
-        Match match = new Match();
-
-        if(c!=null && c.moveToNext()){
-            match.setKey(c.getString(c.getColumnIndex(TABLE_MATCHES_KEY)));
-            match.setEventKey(c.getString(c.getColumnIndex(TABLE_MATCHES_EVENT_KEY)));
-            match.setMatchNumber(c.getInt(c.getColumnIndex(TABLE_MATCHES_MATCH_NUMBER)));
-            match.setSetNumber(c.getInt(c.getColumnIndex(TABLE_MATCHES_SET_NUMBER)));
-            match.setCompetitionLevel(c.getString(c.getColumnIndex(TABLE_MATCHES_COMP_LEVEL)));
-
-            Alliances alliances = new Alliances();
-            Alliance red = new Alliance();
-            red.setTeams(new ArrayList<String>(3));
-            Alliance blue = new Alliance();
-            blue.setTeams(new ArrayList<String>(3));
-            alliances.setBlue(blue);
-            alliances.setRed(red);
-
-            blue.setScore(c.getInt(c.getColumnIndex(TABLE_MATCHES_BLUE_SCORE)));
-            blue.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_BLUE_ONE)));
-            blue.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_BLUE_TWO)));
-            blue.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_BLUE_THREE)));
-
-            red.setScore(c.getInt(c.getColumnIndex(TABLE_MATCHES_RED_SCORE)));
-            red.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_RED_ONE)));
-            red.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_RED_TWO)));
-            red.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_RED_THREE)));
-            match.setAlliances(alliances);
-        }
-
-        if (c != null) {
-            c.close();
-        }
-        return match;
-    }
-
-    public Cursor createMatchCursor(Event event){
-        SQLiteDatabase db = getReadableDatabase();
-        return db.query(TABLE_MATCHES,
-                new String[]{"*", "rowid As _id"},
-                TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{event.getKey()},
-                null, null,
-                "(CASE " + TABLE_MATCHES_COMP_LEVEL + " "
-                        + "WHEN 'qm' THEN 1 "
-                        + "WHEN 'qf' THEN 2 "
-                        + "WHEN 'sf' THEN 3 "
-                        + "WHEN 'f'  THEN 4 "
-                        + "ELSE 5 END), "
-                        + TABLE_MATCHES_SET_NUMBER +", "
-                        + TABLE_MATCHES_MATCH_NUMBER + " ASC",
-                null);
-    }
-
-    public int getMatchCount(Event event){
-        int retVal = 0;
-        SQLiteDatabase db = getReadableDatabase();
-
-        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_MATCHES + " WHERE " + TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{event.getKey()});
-
-        if(c != null && c.moveToNext())
-            retVal = c.getInt(0);
-
-        if (c != null) {
-            c.close();
-        }
-
-        return retVal;
-    }
-
-    public int getEventTeamCount(Event event)
-    {
-        int retVal = 0;
-        SQLiteDatabase db = getReadableDatabase();
-
-        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_E2T + " WHERE " + TABLE_E2T_EVENT + " = ?", new String[]{event.getKey()});
-
-        if(c != null && c.moveToNext())
-            retVal = c.getInt(0);
-
-        if (c != null) {
-            c.close();
-        }
-
-        return retVal;
-    }
-
-    // returns a ContentValues (for saving to the database) containing the values from the given TeamData object.
-    private ContentValues mapBenchmarking(TeamData scouting){
-        ContentValues values = new ContentValues();
-        values.put(TABLE_BENCHMARKING_LAST_UPDATE, getDateTime());
-        values.put(TABLE_BENCHMARKING_TEAM_KEY, scouting.getTeamNumber());
-        values.put(TABLE_BENCHMARKING_EVENT_KEY, scouting.getEventName());
-
-        return values;
-    }
-
-    public void createBenchmarking(TeamData teamData){
-        SQLiteDatabase db = getWritableDatabase();
-        ContentValues values = mapBenchmarking(teamData);
-        values.put(TABLE_BENCHMARKING_LAST_SYNC, "2000-01-01 00:00:00");
-        db.insert(TABLE_BENCHMARKING, null, values);
-    }
-
-
-
-    public boolean doesBenchmarkingExist(String eventKey, String teamKey){
-        boolean retVal = false;
-        SQLiteDatabase db = getReadableDatabase();
-
-        Cursor c = db.query(TABLE_BENCHMARKING,
-                new String[]{"COUNT(*)"},
-                TABLE_BENCHMARKING_TEAM_KEY + " = ? AND "
-                        + TABLE_BENCHMARKING_EVENT_KEY + " = ?",
-                new String[]{teamKey, eventKey},
-                null, null, null);
 
         if(c != null && c.moveToNext())
             retVal = c.getInt(0) > 0;

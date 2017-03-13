@@ -92,13 +92,7 @@
 
                 <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/gearsScoredTeleInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_column="1"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_row="6" />
+                    style="@style/HorizontalNumberPicker"/>
 
             </LinearLayout>
 
@@ -112,13 +106,7 @@
 
                 <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/gearsDeliveredInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_column="1"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_row="6" />
+                    style="@style/HorizontalNumberPicker"/>
 
             </LinearLayout>
 
@@ -133,13 +121,7 @@
 
                 <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/numberOfGearsFromFloorInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_column="1"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_row="6" />
+                    style="@style/HorizontalNumberPicker"/>
 
             </LinearLayout>
 
@@ -154,13 +136,8 @@
 
                 <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/numberOfGearsFromHumanInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_column="1"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_row="6" />
+                    style="@style/HorizontalNumberPicker"/>
+
             </LinearLayout>
 
         </LinearLayout>
@@ -236,13 +213,7 @@
 
                 <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/numberOfBallsScoredHighGoalInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_column="1"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_row="6" />
+                    style="@style/HorizontalNumberPicker"/>
 
             </LinearLayout>
 
@@ -257,13 +228,7 @@
 
                 <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/timesCollectedFromHumanInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_column="1"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_row="6" />
+                    style="@style/HorizontalNumberPicker"/>
 
             </LinearLayout>
 
@@ -278,13 +243,7 @@
 
                 <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/timesCollectedFromHopperInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_column="1"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_row="6" />
+                    style="@style/HorizontalNumberPicker"/>
 
             </LinearLayout>
 
@@ -299,13 +258,7 @@
 
                 <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/timesCollectedFromFloorInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_column="1"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_row="6" />
+                    style="@style/HorizontalNumberPicker"/>
 
             </LinearLayout>
 
@@ -320,13 +273,7 @@
 
                 <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/fuelScoredLowGoalCycleInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_column="1"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_row="6" />
+                    style="@style/HorizontalNumberPicker"/>
 
             </LinearLayout>
 
@@ -340,13 +287,7 @@
 
                 <com.sparx1126.steamworks.components.HorizontalNumberPicker
                     android:id="@+id/numberOfLowGoalCyclesInput"
-                    android:layout_width="wrap_content"
-                    android:layout_height="50dp"
-                    android:layout_column="1"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
-                    android:layout_row="6" />
+                    style="@style/HorizontalNumberPicker"/>
 
             </LinearLayout>
 

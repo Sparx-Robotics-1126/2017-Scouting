@@ -4,31 +4,30 @@ public class BenchmarkingData{
     private final int teamNumber;
     private final String eventName;
     private final String student;
-    private String driveSystem;
+    private String driveSystem = "";
     private double drivesSpeed = Double.MAX_VALUE;
     private boolean canPlayDefenseBenchButton;
     private boolean abilityToShootHighGoalBenchButton;
-    private String typeOfShooterBenchInput;
+    private String typeOfShooterBenchInput = "";
     private double ballsPerSecondBenchInput = Double.MAX_VALUE;
     private int ballsInCycleBenchInput = Integer.MAX_VALUE;
     private int cycleTimeHighBenchInput = Integer.MAX_VALUE;
     private double shootingRangeBenchInput = Double.MAX_VALUE;
-    private String preferredShootingLocationBenchInput;
+    private String preferredShootingLocationBenchInput = "";
     private double accuracyHighBenchInput = Double.MAX_VALUE;
     private boolean pickupBallHopperBenchButton;
     private boolean pickupBallFloorBenchButton;
     private boolean pickupBallHumanBenchButton;
-    private String pickupBallPreferredBenchInput;
+    private String pickupBallPreferredBenchInput = "";
     private int maximumBallCapacityBenchInput = Integer.MAX_VALUE;
     private boolean canScoreGearsBenchButton;
     private boolean pickupGearFloorBenchButton;
     private boolean pickupGearRetrievalBenchButton;
-    private String radioPickupGearPreferred;
+    private String radioPickupGearPreferred = "";
     private boolean canGearLeftBench;
     private boolean canGearCenterBench;
     private boolean canGearRightBench;
-    private String radioPreferredGear;
-    private String radioPreferredBall;
+    private String radioPreferredGear = "";
     private int cycleTimeGearsBenchInput = Integer.MAX_VALUE;
     private boolean abilityToShootLowGoalBenchButton;
     private int cycleTimeLowBenchInput = Integer.MAX_VALUE;
@@ -38,9 +37,9 @@ public class BenchmarkingData{
     private boolean placesCanScaleCenter;
     private boolean placesCanScaleLeft;
     private boolean benchmarkWasDoneButton;
-    private String preferredPlacesScaleInput;
-    private String autoAbilitiesBench;
-    private String commentsBench;
+    private String preferredPlacesScaleInput = "";
+    private String autoAbilitiesBench = "";
+    private String commentsBench = "";
 
     public BenchmarkingData(int teamNumber, String eventName, String student) {
         this.teamNumber = teamNumber;
@@ -250,14 +249,6 @@ public class BenchmarkingData{
 
     public void setRadioPreferredGear(String radioPreferredGear) {
         this.radioPreferredGear = radioPreferredGear;
-    }
-
-    public String getRadioPreferredBall() {
-        return radioPreferredBall;
-    }
-
-    public void setRadioPreferredBall(String radioPreferredBall) {
-        this.radioPreferredBall = radioPreferredBall;
     }
 
     public int getCycleTimeGearsBenchInput() {

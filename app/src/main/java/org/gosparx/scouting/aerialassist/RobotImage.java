@@ -1,15 +1,8 @@
 package org.gosparx.scouting.aerialassist;
 
-import java.io.File;
-import java.sql.Blob;
-
-/**
- * Created by Papa on 3/10/17.
- */
-
 public class RobotImage {
-    private String file_name;
-    private String blob;
+    private String file_name = "";
+    private String blob = "";
 
     public RobotImage(String file_name, String blob) {
         this.file_name = file_name;

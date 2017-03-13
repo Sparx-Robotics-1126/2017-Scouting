@@ -28,7 +28,6 @@ class BenchmarkingData(ndb.Model):
     canGearCenterBench = ndb.BooleanProperty()
     canGearRightBench = ndb.BooleanProperty()
     radioPreferredGear = ndb.StringProperty()
-    radioPreferredBall = ndb.StringProperty()
     cycleTimeGearsBenchInput = ndb.IntegerProperty()
     abilityToShootLowGoalBenchButton = ndb.BooleanProperty()
     cycleTimeLowBenchInput = ndb.IntegerProperty()

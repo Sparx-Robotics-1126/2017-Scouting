@@ -18,17 +18,15 @@ import org.gosparx.scouting.aerialassist.ScoutingData;
 import org.gosparx.scouting.aerialassist.TeamData;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 public class SparxPosting {
     private static final String TAG = "SparxPosting";
-    private static final String BASE_URL = "http://192.168.0.12:8080";
+    private static final String BASE_URL = "http://172.20.10.6:8080";
     //private static final String BASE_URL = "http://scouting-2017-156319.appspot.com";
     private static final String SCOUTING = "/api/2017/v1/ScoutingData";
     private static final String BENCHMARKING = "/api/2017/v1/BenchmarkingData";
@@ -80,12 +78,11 @@ public class SparxPosting {
                 }
             };
 
-            Iterator it = teamsMap.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry)it.next();
-                TeamData teamData = (TeamData)pair.getValue();
-                BenchmarkingData benchmarkingData = (BenchmarkingData) teamData.getBenchmarkingData();
-                if(benchmarkingData.isBenchmarkingWasDoneButton()) {
+            for (Object o : teamsMap.entrySet()) {
+                Map.Entry pair = (Map.Entry) o;
+                TeamData teamData = (TeamData) pair.getValue();
+                BenchmarkingData benchmarkingData = teamData.getBenchmarkingData();
+                if (benchmarkingData.isBenchmarkingWasDoneButton()) {
                     Ion.with(context)
                             .load(request)
                             .setJsonPojoBody(benchmarkingData)
@@ -97,14 +94,12 @@ public class SparxPosting {
                                         Log.e(TAG, "Issue saving Benchmarking to Server!", e);
                                         System.out.println("Issue saving Benchmarking to Server!");
                                         subCallback.handleFinishDownload(false);
-                                    }
-                                    else {
+                                    } else {
                                         subCallback.handleFinishDownload(true);
                                     }
                                 }
                             });
-                }
-                else {
+                } else {
                     Log.e(TAG, "Benchmarking was not DONE!");
                     System.out.println("Benchmarking was not DONE!");
                     subCallback.handleFinishDownload(false);
@@ -165,14 +160,12 @@ public class SparxPosting {
                 }
             };
 
-            Iterator it = teamsMap.entrySet().iterator();
-            while (it.hasNext()) {
-                Map.Entry pair = (Map.Entry) it.next();
+            for (Object o : teamsMap.entrySet()) {
+                Map.Entry pair = (Map.Entry) o;
                 TeamData teamData = (TeamData) pair.getValue();
-                if(!teamData.getScoutingDatas().isEmpty()) {
-                    Iterator itSC = teamData.getScoutingDatas().iterator();
-                    while (itSC.hasNext()) {
-                        ScoutingData scoutingData = (ScoutingData) itSC.next();
+                if (!teamData.getScoutingDatas().isEmpty()) {
+                    for (Object sd : teamData.getScoutingDatas()) {
+                        ScoutingData scoutingData = (ScoutingData) sd;
                         if (scoutingData.isMatchScouted()) {
                             Ion.with(context)
                                     .load(request)
@@ -185,8 +178,7 @@ public class SparxPosting {
                                                 Log.e(TAG, "Issue saving Scouting to Server!", e);
                                                 System.out.println("Server Error");
                                                 subCallback.handleFinishDownload(false);
-                                            }
-                                            else {
+                                            } else {
                                                 subCallback.handleFinishDownload(true);
                                             }
                                         }
@@ -197,8 +189,7 @@ public class SparxPosting {
                             subCallback.handleFinishDownload(false);
                         }
                     }
-                }
-                else {
+                } else {
                     Log.e(TAG, "No scouting to Upload!");
                     System.out.println("No scouting to Upload!");
                     callback.handleFinishDownload(false);
@@ -231,6 +222,7 @@ public class SparxPosting {
 
     public void postAllPictures(final NetworkCallback callback) {
         File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if(storageDir == null) throw new AssertionError("Cannot read " + Environment.DIRECTORY_PICTURES);
         String path = storageDir.getAbsolutePath();
         String request = (BASE_URL + PICTURES);
 
@@ -239,11 +231,11 @@ public class SparxPosting {
         final Vector<File> pictures = new Vector();
         boolean noneFound = true;
         int photoIndex = 0;
-        for (int i = 0; i < files.length; i++) {
-            String fileName = files[i].getName();
-            if(fileName.contains("Robot")) {
+        for (File file : files) {
+            String fileName = file.getName();
+            if (fileName.contains("Robot")) {
                 noneFound = false;
-                pictures.add(files[i]);
+                pictures.add(file);
                 photoIndex++;
             }
         }
@@ -313,18 +305,16 @@ public class SparxPosting {
                             return;
                         }
                         File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+                        if(storageDir == null) throw new AssertionError("Cannot read " + Environment.DIRECTORY_PICTURES);
                         String path = storageDir.getAbsolutePath();
 
                         for (RobotImage sd : result) {
                             byte[] imageDataBytes = Base64.decode(sd.getBlob(), 0);
-                            FileOutputStream imageOutFile = null;
                             try {
-                                imageOutFile = new FileOutputStream(
+                                FileOutputStream imageOutFile = new FileOutputStream(
                                         path + "/" + sd.getFileName());
                                 imageOutFile.write(imageDataBytes);
                                 imageOutFile.close();
-                            } catch (FileNotFoundException e1) {
-                                e1.printStackTrace();
                             } catch (IOException e1) {
                                 e1.printStackTrace();
                             }

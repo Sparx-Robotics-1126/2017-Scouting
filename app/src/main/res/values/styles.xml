@@ -30,60 +30,60 @@
         <item name="android:layout_height">150dp</item>
         <item name="android:backgroundTint">@color/colorSparxRed</item>
         <item name="android:textColor">@color/colorWhite</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:layout_marginBottom">20dp</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
+        <item name="android:layout_marginBottom">@dimen/layout_margin_normal</item>
     </style>
 
     <style name="SectionText" parent="android:Widget.TextView">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
-        <item name="android:textSize">70sp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textSize">@dimen/text_size_big</item>
+        <item name="android:layout_marginBottom">@dimen/layout_margin_normal</item>
         <item name="android:gravity">center</item>
     </style>
 
     <style name="HeaderText" parent="android:Widget.TextView">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">80dp</item>
+        <item name="android:layout_height">wrap_content</item>
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
-        <item name="android:textSize">50sp</item>
-        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:textSize">@dimen/text_size_header</item>
+        <item name="android:layout_marginBottom">@dimen/layout_margin_normal</item>
     </style>
 
     <style name="NormalTextView" parent="android:Widget.TextView">
         <item name="android:layout_width">323dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:layout_marginEnd">20dp</item>
         <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_weight">0.92</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">@color/colorText</item>
     </style>
 
     <style name="CheckBoxTextView" parent="android:Widget.TextView">
         <item name="android:layout_width">170dp</item>
         <item name="android:layout_height">72dp</item>
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:layout_marginEnd">20dp</item>
         <item name="android:layout_marginStart">10dp</item>
         <item name="android:layout_weight">0.22</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">@color/colorText</item>
     </style>
 
     <style name="RadioTextView" parent="android:Widget.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">40dp</item>
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:layout_marginEnd">20dp</item>
         <item name="android:layout_marginStart">10dp</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">@color/colorText</item>
     </style>
 
     <style name="LongEditText" parent="android:Widget.EditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:layout_marginBottom">0dp</item>
         <item name="android:ems">10</item>
@@ -92,20 +92,20 @@
     <style name="ShortEditText" parent="android:Widget.EditText">
         <item name="android:layout_width">130dp</item>
         <item name="android:layout_height">72dp</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:textAlignment">center</item>
         <item name="android:layout_weight">0.92</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">@color/colorText</item>
         <item name="android:ems">10</item>
     </style>
 
     <style name="MultiShortEditText" parent="android:Widget.EditText">
         <item name="android:layout_width">130dp</item>
         <item name="android:layout_height">72dp</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:inputType">textMultiLine</item>
         <item name="android:layout_weight">0.92</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">@color/colorText</item>
         <item name="android:ems">10</item>
         <item name="android:digits">abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;012345678 9 </item>
     </style>
@@ -113,10 +113,10 @@
     <style name="MultiLongEditText" parent="android:Widget.EditText">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">80dp</item>
-        <item name="android:textSize">25sp</item>
+        <item name="android:textSize">@dimen/text_size_normal</item>
         <item name="android:inputType">textMultiLine</item>
         <item name="android:layout_weight">0.14</item>
-        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textColor">@color/colorText</item>
         <item name="android:ems">10</item>
         <item name="android:layout_margin">5dp</item>
         <item name="android:layout_marginBottom">0dp</item>
@@ -138,7 +138,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_weight">0.14</item>
         <item name="android:buttonTint">@color/colorSparxRed</item>
-        <item name="android:textSize">17sp</item>
+        <item name="android:textSize">@dimen/text_size_small</item>
         <item name="android:layout_margin">10dp</item>
     </style>
 
@@ -146,6 +146,14 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:buttonTint">@color/colorSparxRed</item>
+    </style>
+
+    <style name="HorizontalNumberPicker">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:layout_gravity">center</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
     </style>
 
 </resources>

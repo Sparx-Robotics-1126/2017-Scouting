@@ -17,10 +17,6 @@ import java.util.Calendar;
 
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
-/**
- * Created by Papa on 3/5/17.
- */
-
 public class Utility {
     private static Utility utility;
     public static synchronized Utility getInstance(){
@@ -30,7 +26,7 @@ public class Utility {
         return utility;
     }
     private Activity currentActivity;
-    private Utility() {};
+    private Utility() {}
 
     public AlertDialog alertUser(Activity activity, String title, String reason) {
         currentActivity = activity;
@@ -101,6 +97,9 @@ public class Utility {
                     if (!success) {
                         utility.alertUser(currentActivity, currentActivity.getString(R.string.failure), currentActivity.getString(R.string.benchmark_download_failed)).show();
                     }
+                    else {
+                        NetworkHelper.setLoadedBenchmarkData(currentActivity);
+                    }
                 }
             });
         }
@@ -146,6 +145,9 @@ public class Utility {
                     if (!success) {
                         utility.alertUser(currentActivity, currentActivity.getString(R.string.failure), currentActivity.getString(R.string.scouting_download_failed)).show();
                     }
+                    else {
+                        NetworkHelper.setLoadedScoutData(currentActivity);
+                    }
                 }
             });
         }
@@ -168,7 +170,7 @@ public class Utility {
                         public void run() {
                             alert.dismiss();
                             if (!success)
-                                utility.alertUser(currentActivity, currentActivity.getString(R.string.failure), currentActivity.getString(R.string.benchmark_upload_failed)).show();
+                                utility.alertUser(currentActivity, currentActivity.getString(R.string.failure), currentActivity.getString(R.string.picture_upload_failed)).show();
                         }
                     });
                 }
@@ -191,6 +193,9 @@ public class Utility {
                     alert.dismiss();
                     if (!success) {
                         utility.alertUser(currentActivity, currentActivity.getString(R.string.failure), currentActivity.getString(R.string.picture_download_failed)).show();
+                    }
+                    else {
+                        NetworkHelper.setLoadedPictures(currentActivity);
                     }
                 }
             });

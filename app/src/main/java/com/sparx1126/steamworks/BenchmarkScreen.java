@@ -26,7 +26,6 @@ import java.io.IOException;
 
 public class BenchmarkScreen extends AppCompatActivity {
     private static final int REQUEST_TAKE_PHOTO = 1;
-    private TeamData teamData;
     private BenchmarkingData currentData;
     private Utility utility;
 
@@ -73,7 +72,6 @@ public class BenchmarkScreen extends AppCompatActivity {
     private RadioButton radioPreferredPlacesScaleLeft;
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
-    private Button submitBenchmark;
     // new
     //High Goal related Linears
     private LinearLayout typeOfShooterLinear;
@@ -106,7 +104,7 @@ public class BenchmarkScreen extends AppCompatActivity {
                 finish();
             }
         });
-        teamData = TeamData.getCurrentTeam();
+        TeamData teamData = TeamData.getCurrentTeam();
         currentData = teamData.getBenchmarkingData();
         utility = Utility.getInstance();
         ImageButton cameraButton = (ImageButton) findViewById(R.id.cameraButton);
@@ -163,7 +161,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         radioPreferredPlacesScaleLeft = (RadioButton) findViewById(R.id.radioPreferredScaleLeft);
         autoAbilitiesBench = (EditText) findViewById(R.id.autoAbilitiesBench);
         commentsBench = (EditText) findViewById(R.id.commentsBench);
-        submitBenchmark = (Button) findViewById(R.id.submitBenchmark);
+        Button submitBenchmark = (Button) findViewById(R.id.submitBenchmark);
         submitBenchmark.setOnClickListener(submitButtonClicked);
         typeOfShooterLinear = (LinearLayout) findViewById(R.id.typeOfShooterLinear);
         ballsPerSecondLinear = (LinearLayout) findViewById(R.id.ballsPerSecondLinear);
@@ -282,10 +280,10 @@ public class BenchmarkScreen extends AppCompatActivity {
             currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleRight");
         }
         else if(radioPreferredPlacesScaleCenter.isChecked()) {
-            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleRight");
+            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleCenter");
         }
         else if(radioPreferredPlacesScaleLeft.isChecked()) {
-            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleRight");
+            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleLeft");
         }
         currentData.setAutoAbilitiesBench(autoAbilitiesBench.getText().toString());
         currentData.setCommentsBench(commentsBench.getText().toString());
@@ -395,7 +393,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     };
 
 
-    public void hideHighGoal(){
+    private void hideHighGoal(){
         int visibility = View.GONE;
         if(abilityToShootHighGoalBenchButton.isChecked()){
             visibility = View.VISIBLE;
@@ -416,7 +414,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
     };
 
-    public void hideGear(){
+    private void hideGear(){
         int visibility = View.GONE;
         if(canScoreGearsBenchButton.isChecked()){
             visibility = View.VISIBLE;
@@ -433,7 +431,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
     };
 
-    public void lowGoalHide(){
+    private void lowGoalHide(){
         int visibility = View.GONE;
         if(abilityToShootLowGoalBenchButton.isChecked()){
             visibility = View.VISIBLE;
@@ -449,7 +447,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
     };
 
-    public void scaleHide(){
+    private void scaleHide(){
         int visibility = View.GONE;
         if(abilityScaleBenchButton.isChecked()){
             visibility = View.VISIBLE;

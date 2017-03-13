@@ -9,11 +9,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
-import com.sparx1126.steamworks.R;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.dto.Event;
-import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.util.List;
@@ -22,8 +20,6 @@ public class BlueAlliance {
     private static final String TAG = "BlueAlliance";
     private static final String BASE_URL = "https://www.thebluealliance.com";
     private static final String GET_EVENT_LIST = "/api/v2/events/{YEAR}";
-    private static final String GET_EVENT = "/api/v2/event/{EVENT_KEY}/";
-    private static final String GET_MATCH_LIST = "/api/v2/event/{EVENT_KEY}/matches";
     private static final String GET_TEAM_LIST = "/api/v2/event/{EVENT_KEY}/teams";
     private static BlueAlliance blueAlliance;
     private Context context;
@@ -86,67 +82,6 @@ public class BlueAlliance {
                             callback.handleFinishDownload(true);
 
                         NetworkHelper.setLoadedEventList(context);
-                    }
-                });
-    }
-
-    public void loadEvent(final String eventCode, final NetworkCallback callback){
-        String request = (BASE_URL+GET_EVENT).replace("{EVENT_KEY}", eventCode);
-        Ion.with(context)
-                .load(request)
-                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2016:" + versionName)
-                .as(new TypeToken<Event>() {
-                })
-                .setCallback(new FutureCallback<Event>() {
-                    @Override
-                    public void onCompleted(Exception e, Event event) {
-                        if(e != null){
-                            Log.e(TAG, "Issue getting event("+eventCode+")", e);
-                            System.out.println("THE EVENTS WERE NOT LOADED");
-
-                            if(callback != null)
-                                callback.handleFinishDownload(false);
-                            return;
-                        }
-                        if(dbHelper.doesEventExist(event))
-                            dbHelper.updateEvent(event);
-                        else
-                            dbHelper.createEvent(event);
-
-                        Log.d(TAG, "Done getting basic event("+eventCode+")");
-                        if(callback != null)
-                            callback.handleFinishDownload(true);
-                    }
-                });
-    }
-
-    public void loadMatches(final Event event, final NetworkCallback callback){
-        String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", event.getKey());
-        Ion.with(context)
-                .load(request)
-                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2016:" + versionName)
-                .noCache()
-                .as(new TypeToken<List<Match>>(){})
-                .setCallback(new FutureCallback<List<Match>>() {
-                    @Override
-                    public void onCompleted(Exception e, List<Match> result) {
-                        if( e != null){
-                            Log.e(TAG, "Issue getting matches from event("+event.getKey()+")", e);
-
-                            if(callback != null)
-                                callback.handleFinishDownload(false);
-                            return;
-                        }
-                        for (Match match : result) {
-                            if (dbHelper.doesMatchExist(match))
-                                dbHelper.updateMatch(match);
-                            else
-                                dbHelper.createMatch(match);
-                        }
-
-                        if(callback != null)
-                            callback.handleFinishDownload(true);
-                        NetworkHelper.setLoadedMatchList(context);
                     }
                 });
     }

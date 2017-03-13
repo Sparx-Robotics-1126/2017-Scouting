@@ -24,7 +24,6 @@ import android.widget.Spinner;
 import com.sparx1126.steamworks.components.Utility;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
-import org.gosparx.scouting.aerialassist.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
@@ -135,7 +134,7 @@ public class MainScreen extends AppCompatActivity {
         return eventName;
     }
 
-    public Event getSelectedEvent() {
+    private Event getSelectedEvent() {
         return dbHelper.getEvent(eventNamesToKey.get(getEventName()));
     }
 
@@ -238,6 +237,8 @@ public class MainScreen extends AppCompatActivity {
                 editor.apply();
                 eventSelected = true;
                 utility.downloadBenchmarkData(MainScreen.this, false);
+                utility.downloadPictures(MainScreen.this, false);
+                utility.downloadScoutingData(MainScreen.this, false);
                 downloadTeamDataIfNecessary();
             }
         }
@@ -416,15 +417,12 @@ public class MainScreen extends AppCompatActivity {
     }
 
     private void setupTeamSpinner() {
-        Cursor teamCursor = dbHelper.createTeamCursor(getSelectedEvent());
         teamsList.clear();
-        try {
+        try (Cursor teamCursor = dbHelper.createTeamCursor(getSelectedEvent())) {
             while (teamCursor.moveToNext()) {
                 String teamnumber = teamCursor.getString(teamCursor.getColumnIndex(DatabaseHelper.TABLE_TEAMS_TEAM_NUMBER));
                 teamsList.add(teamnumber);
             }
-        } finally {
-            teamCursor.close();
         }
         teamNumberChecker();
     }

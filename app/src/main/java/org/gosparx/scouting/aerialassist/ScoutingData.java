@@ -15,17 +15,17 @@ public class ScoutingData {
     private int gearsDelivered = Integer.MAX_VALUE;
     private int gearsCollectedFromFloor = Integer.MAX_VALUE;
     private int gearsFromHuman = Integer.MAX_VALUE;
-    private String scoresHighAuto;
-    private String scoresLowAuto;
+    private String scoresHighAuto = "";
+    private String scoresLowAuto = "";
     private int ballsInHighCycle = Integer.MAX_VALUE;
     private int ballsFromHuman = Integer.MAX_VALUE;
     private int ballsFromHopper = Integer.MAX_VALUE;
     private int ballsFromFloor = Integer.MAX_VALUE;
     private int fuelInLowCycle = Integer.MAX_VALUE;
     private int numberOfLowCycles = Integer.MAX_VALUE;
-    private String highGoalAccuracy;
+    private String highGoalAccuracy = "";
     private boolean didScale;
-    private String whereScaled;
+    private String whereScaled = "";
     private boolean matchScouted;
 
     public ScoutingData(int teamNumber, String eventName, String student) {

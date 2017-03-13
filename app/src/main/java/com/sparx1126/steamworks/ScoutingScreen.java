@@ -49,7 +49,6 @@ public class ScoutingScreen extends AppCompatActivity {
     private ToggleButton didScaleInput;
     private EditText scaledFromWhereInput;
     private ToggleButton matchScoutedInput;
-    private Button submitScouting;
 
     //   Zzzzz  |\      _,,,--,,_
     //          /,`.-'`'   ._  \-;;,_
@@ -99,7 +98,7 @@ public class ScoutingScreen extends AppCompatActivity {
         didScaleInput = (ToggleButton) findViewById(R.id.didTheyScale);
         scaledFromWhereInput = (EditText) findViewById(R.id.scaledFromWhereInput);
         matchScoutedInput = (ToggleButton) findViewById(R.id.matchScouted);
-        submitScouting = (Button) findViewById(R.id.submitScouting);
+        Button submitScouting = (Button) findViewById(R.id.submitScouting);
         submitScouting.setOnClickListener(submitScoutingClicked);
     }
 

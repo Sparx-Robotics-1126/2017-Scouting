@@ -59,3 +59,13 @@ class GetPictures(webapp2.RequestHandler):
 
     def callback(self, cb):
         return cb.to_dict()
+
+class GetScouting(webapp2.RequestHandler):
+    def getScouting(self):
+        scoutingQueryList = ScoutingData.query()
+        scoutingList = scoutingQueryList.map(self.callback)
+        self.response.content_type = 'application/json'
+        self.response.write(json.dumps(scoutingList))
+
+    def callback(self, cb):
+        return cb.to_dict()

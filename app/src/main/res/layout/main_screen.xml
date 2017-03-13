@@ -5,8 +5,8 @@
     <Spinner android:id="@+id/eventSpinner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/horiz_margin"
-        android:layout_marginRight="@dimen/horiz_margin"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
         android:background="@android:drawable/btn_dropdown" />
 
     <AutoCompleteTextView android:layout_width="match_parent"

@@ -163,6 +163,8 @@
                     style="@style/NormalTextView"/>
 
                 <EditText android:id="@+id/preferredShootingLocationBenchInput"
+                    android:inputType="text"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
                     style="@style/ShortEditText"/>
 
             </LinearLayout>

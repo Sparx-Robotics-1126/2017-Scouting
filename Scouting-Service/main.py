@@ -15,7 +15,7 @@
 # limitations under the License.
 #
 import webapp2
-from aerialassist.request_handler import PostBenchmarkingData, PostPictures, PostScoutingData, GetBenchmarking, GetPictures
+from aerialassist.request_handler import PostBenchmarkingData, PostPictures, PostScoutingData, GetBenchmarking, GetPictures, GetScouting
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -33,5 +33,9 @@ app = webapp2.WSGIApplication([
     webapp2.Route(r'/api/2017/v1/Pictures',
                   GetPictures,
                   methods=['GET'],
-                  handler_method='getPictures')
+                  handler_method='getPictures'),
+    webapp2.Route(r'/api/2017/v1/ScoutingData',
+                  GetScouting,
+                  methods=['GET'],
+                  handler_method='getScouting')
 ], debug=True)
