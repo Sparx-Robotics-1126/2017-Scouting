@@ -56,9 +56,11 @@ public class BenchmarkScreen extends AppCompatActivity {
     private RadioButton radioGearRight;
     private RadioButton radioGearCenter;
     private RadioButton radioGearLeft;
+    private RadioButton radioGearNone;
     private RadioButton radioBallHopper;
     private RadioButton radioBallFloor;
     private RadioButton radioBallHuman;
+    private RadioButton radioBallNone;
     private EditText cycleTimeGearsBenchInput;
     private ToggleButton abilityToShootLowGoalBenchButton;
     private EditText cycleTimeLowBenchInput;
@@ -143,9 +145,11 @@ public class BenchmarkScreen extends AppCompatActivity {
         radioGearRight = (RadioButton) findViewById(R.id.radioGearRight);
         radioGearCenter = (RadioButton) findViewById(R.id.radioGearCenter);
         radioGearLeft = (RadioButton) findViewById(R.id.radioGearLeft);
+        radioGearNone = (RadioButton) findViewById(R.id.radioGearNone);
         radioBallHopper = (RadioButton) findViewById(R.id.radioBallHopper);
         radioBallFloor = (RadioButton) findViewById(R.id.radioBallFloor);
         radioBallHuman = (RadioButton) findViewById(R.id.radioBallHuman);
+        radioBallNone = (RadioButton) findViewById(R.id.radioBallNone);
         cycleTimeGearsBenchInput = (EditText) findViewById(R.id.cycleTimeGearsBenchInput);
         abilityToShootLowGoalBenchButton = (ToggleButton) findViewById(R.id.abilityToShootLowGoalBenchButton);
         abilityToShootLowGoalBenchButton.setOnClickListener(lowGoalButtonClicked);
@@ -250,6 +254,9 @@ public class BenchmarkScreen extends AppCompatActivity {
         else if(radioGearLeft.isChecked()) {
             currentData.setRadioPreferredGear("radioGearLeft");
         }
+        else if(radioGearNone.isChecked()) {
+            currentData.setRadioPreferredGear("radioGearNone");
+        }
         if(radioBallHopper.isChecked()) {
             currentData.setPickupBallPreferredBenchInput("radioBallHopper");
         }
@@ -258,6 +265,9 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
         else if(radioBallHuman.isChecked()) {
             currentData.setPickupBallPreferredBenchInput("radioBallHuman");
+        }
+        else if(radioBallNone.isChecked()) {
+            currentData.setPickupBallPreferredBenchInput("radioBallNone");
         }
         valueAsSring = cycleTimeGearsBenchInput.getText().toString();
         if(!valueAsSring.isEmpty()) {
@@ -335,6 +345,9 @@ public class BenchmarkScreen extends AppCompatActivity {
                 case "radioGearLeft":
                     radioGearLeft.setChecked(true);
                     break;
+                case "radioGearNone":
+                    radioGearNone.setChecked(true);
+                    break;
                 default:
                     break;
             }
@@ -349,6 +362,9 @@ public class BenchmarkScreen extends AppCompatActivity {
                     break;
                 case "radioBallHuman":
                     radioBallHuman.setChecked(true);
+                    break;
+                case "radioBallNone":
+                    radioBallNone.setChecked(true);
                     break;
                 default:
                     break;
