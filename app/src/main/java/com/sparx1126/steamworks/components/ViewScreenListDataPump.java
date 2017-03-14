@@ -130,6 +130,9 @@ public class ViewScreenListDataPump {
         if (benchmarkingData.getPickupBallPreferredBenchInput().equals("radioBallFloor")) {
             preferredBall = "Floor";
         }
+        if (benchmarkingData.getPickupBallPreferredBenchInput().equals("radioBallNone")) {
+            preferredBall = "No preference";
+        }
         shooting.add("<font color=\"black\"><b>Prefers to get balls from: </b></font>" + preferredBall);
         String maximumBallCapacity = "";
         if (benchmarkingData.getMaximumBallCapacityBenchInput() != Integer.MAX_VALUE) {
@@ -170,6 +173,9 @@ public class ViewScreenListDataPump {
         }
         if (benchmarkingData.getRadioPreferredGear().equals("radioGearLeft")) {
             preferredGearScoring = "Left";
+        }
+        if (benchmarkingData.getRadioPreferredGear().equals("radioGearNone")) {
+            preferredGearScoring = "None";
         }
         gears.add("<font color=\"black\"><b>Prefers to score gears: </b></font>" + preferredGearScoring);
         if (!benchmarked) {
