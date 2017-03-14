@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,9 +32,11 @@ import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -338,6 +341,7 @@ public class MainScreen extends AppCompatActivity {
 
     private void setupEventSpinner() {
         Cursor eventDataCur = dbHelper.createEventNameCursor();
+
         FileOutputStream fos = null;
         try {
             fos = this.openFileOutput("eventNameCursor", Context.MODE_PRIVATE);
@@ -348,6 +352,18 @@ public class MainScreen extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        FileInputStream fis = null;
+        try {
+            fis = this.openFileInput("eventNameCursor");
+            ObjectInputStream is = new ObjectInputStream(fis);
+            eventDataCur = (Cursor) is.readObject();
+            System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
+            is.close();
+            fis.close();
+        } catch (ClassNotFoundException | IOException e) {
+            e.printStackTrace();
+        }
+
         //Left that here because it's a way to dump all of the data into the console
         //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
         if(eventDataCur.getCount() > 0) {
