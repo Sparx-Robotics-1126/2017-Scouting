@@ -2,10 +2,10 @@
 package com.sparx1126.steamworks;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -31,10 +31,6 @@ import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,8 +48,9 @@ public class MainScreen extends AppCompatActivity {
     private Button benchmarkAuto;
     private Button view;
     private Button scout;
+    private ArrayList<String> eventsNearToday;
     private ArrayList<String> eventsWeAreInArray;
-    private ArrayAdapter<String> eventNamesAdapter;
+    ArrayAdapter<String> eventNamesAdapter;
     private DatabaseHelper dbHelper;
     private BlueAlliance blueAlliance;
     private Utility utility;
@@ -65,7 +62,7 @@ public class MainScreen extends AppCompatActivity {
     private boolean teamSelected = false;
     private boolean eventFilter = true;
     private SharedPreferences settings;
-    private static final int COMPETITION_Threshold = 1000;
+    private static final int COMPETITION_Threshold = 7;
     private Map<String, String> eventNamesToKey;
     private Vector<String> teamsList;
 
@@ -106,14 +103,20 @@ public class MainScreen extends AppCompatActivity {
         eventSpinner.setOnTouchListener(spinnerOnTouch);
         eventSpinner.setOnItemSelectedListener(spinnerOnItemClick);
 
+        eventsNearToday = new ArrayList<>();
         eventsWeAreInArray = new ArrayList<>();
-        eventNamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray); //selected item will look like a spinner set from XML
 
         settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
 
         teamsList = new Vector<>();
 
         restorePreferences();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        downloadEventSpinnerData(false);
     }
 
     private String getScouterName(){
@@ -166,17 +169,10 @@ public class MainScreen extends AppCompatActivity {
     private void restorePreferences(){
         String eventName = settings.getString(getResources().getString(R.string.pref_event), "");
         if(!eventName.isEmpty()) {
-            if(eventNamesAdapter.getPosition(eventName) != -1) {
-                setupEventSpinner();
-                eventSpinner.setSelection(eventNamesAdapter.getPosition(eventName));
-            }
-            else {
-                eventFilter = false;
-                setupEventSpinner();
-                if(eventNamesAdapter.getPosition(eventName) != -1) {
-                    eventSpinner.setSelection(eventNamesAdapter.getPosition(eventName));
-                }
-            }
+            eventFilter = settings.getBoolean(getResources().getString(R.string.pref_event_filter), false);
+            fillInEventsNearToday(dbHelper.createEventNameCursor());
+            setupEventSpinner();
+            eventSpinner.setSelection(eventNamesAdapter.getPosition(eventName));
         }
         String scouterName = settings.getString(getResources().getString(R.string.pref_scouter), "");
         if(!scouterName.isEmpty()) {
@@ -217,7 +213,7 @@ public class MainScreen extends AppCompatActivity {
     private final View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             if (getEventName().isEmpty() && (event.getAction() == MotionEvent.ACTION_UP)) {
-                downloadEventSpinnerData(false);
+                setupEventSpinner();
             }
             return false;
         }
@@ -239,12 +235,13 @@ public class MainScreen extends AppCompatActivity {
             else if (!getEventName().isEmpty()) {
                 SharedPreferences.Editor editor = settings.edit();
                 editor.putString(getResources().getString(R.string.pref_event), getEventName());
+                editor.putBoolean(getResources().getString(R.string.pref_event_filter), eventFilter);
                 editor.apply();
                 eventSelected = true;
                 utility.downloadBenchmarkData(MainScreen.this, false);
                 utility.downloadPictures(MainScreen.this, false);
                 utility.downloadScoutingData(MainScreen.this, false);
-                downloadTeamDataIfNecessary();
+                setupTeamSpinner();
             }
         }
         @Override
@@ -324,8 +321,12 @@ public class MainScreen extends AppCompatActivity {
                             public void run() {
                                 alert.dismiss();
                                 if (success) {
-                                    setupEventSpinner();
-                                } else {
+                                    Dialog alert = utility.createDialog(MainScreen.this, getString(R.string.downloading_data), getString(R.string.please_wait_team_download));
+                                    alert.show();
+                                    fillInEventsNearToday(dbHelper.createEventNameCursor());
+                                    downloadTeamData(dbHelper.createEventNameCursor(), alert);
+                                }
+                                else {
                                     utility.alertUser(MainScreen.this, getString(R.string.failure), getString(R.string.event_download_failed)).show();
                                 }
                             }
@@ -338,20 +339,11 @@ public class MainScreen extends AppCompatActivity {
 
     private void setupEventSpinner() {
         Cursor eventDataCur = dbHelper.createEventNameCursor();
-        FileOutputStream fos = null;
-        try {
-            fos = this.openFileOutput("eventNameCursor", Context.MODE_PRIVATE);
-            ObjectOutputStream os = new ObjectOutputStream(fos);
-            os.writeObject(eventDataCur);
-            os.close();
-            fos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
         //Left that here because it's a way to dump all of the data into the console
         //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
         if(eventDataCur.getCount() > 0) {
-            eventsWeAreInArray = fillInEventsNearToday(eventDataCur);
+            eventsWeAreInArray = (ArrayList<String>)eventsNearToday.clone();
             if (eventFilter) {
                 for (int i = (eventsWeAreInArray.size() - 1); 0 <= i; i--) {
                     if (!eventsWeAreInArray.get(i).contentEquals(getResources().getString(R.string.our_competition_buckeye))) {
@@ -370,8 +362,7 @@ public class MainScreen extends AppCompatActivity {
         eventSpinner.setAdapter(eventNamesAdapter);
     }
 
-    private ArrayList<String> fillInEventsNearToday(Cursor eventDataCur){
-        ArrayList<String> eventsWeAreInArray = new ArrayList<>();
+    private void fillInEventsNearToday(Cursor eventDataCur){
         SimpleDateFormat cursorFormater = new SimpleDateFormat(getString(R.string.day_format), Locale.US);
         long epochToday = utility.getTodayInEpoch();
         try {
@@ -388,7 +379,7 @@ public class MainScreen extends AppCompatActivity {
                     {
                         String eventName = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_TITLE));
                         String eventKey = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_KEY));
-                        eventsWeAreInArray.add(eventName);
+                        eventsNearToday.add(eventName);
                         eventNamesToKey.put(eventName, eventKey);
                     }
                 } catch (ParseException e) {
@@ -398,37 +389,43 @@ public class MainScreen extends AppCompatActivity {
         } finally {
             eventDataCur.close();
         }
-        return eventsWeAreInArray;
     }
 
-    private void downloadTeamDataIfNecessary() {
-        if (NetworkHelper.needToLoadTeams(this) && !isNetworkAvailable(this)) {
-            utility.alertUser(this, getString(R.string.no_network), getString(R.string.try_again)).show();
-        }
-        else {
-            final Dialog alert = utility.createDialog(this, getString(R.string.downloading_data), getString(R.string.please_wait_team_download));
-            alert.show();
-            //get the event
-            BlueAlliance ba = BlueAlliance.getInstance(this);
-            //load teams for the event
-            ba.loadTeams(getSelectedEvent(), new NetworkCallback() {
-                @Override
-                public void handleFinishDownload(final boolean success) {
-                    MainScreen.this.runOnUiThread(new Runnable() {
+    private void downloadTeamData(Cursor eventDataCur, final Dialog alert) {
+        if (eventDataCur.moveToNext()) {
+            if (!isNetworkAvailable(this)) {
+                utility.alertUser(this, getString(R.string.no_network), getString(R.string.try_again)).show();
+            } else {
+                String eventName = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_TITLE));
+                final Cursor remainder = eventDataCur;
+                if(eventNamesToKey.containsKey(eventName)) {
+                    System.out.println(eventName);
+                    String eventKey = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_KEY));
+                    blueAlliance.loadTeams(dbHelper.getEvent(eventKey), new NetworkCallback() {
                         @Override
-                        public void run() {
-                            alert.dismiss();
-                            if (success) {
-                                setupTeamSpinner();
-                            }
-                            else {
-                                utility.alertUser(MainScreen.this, getString(R.string.failure), getString(R.string.team_download_failed)).show();
-                            }
-                        }
+                        public void handleFinishDownload(final boolean success) {
+                            MainScreen.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (success) {
+                                        downloadTeamData(remainder, alert);
+                                    } else {
+                                        utility.alertUser(MainScreen.this, getString(R.string.failure), getString(R.string.team_download_failed)).show();
+                                    }
+                                }
 
+                            });
+                        }
                     });
                 }
-            });
+                else {
+                    downloadTeamData(remainder, alert);
+                }
+            }
+        }
+        else {
+            eventDataCur.close();
+            alert.dismiss();
         }
     }
 

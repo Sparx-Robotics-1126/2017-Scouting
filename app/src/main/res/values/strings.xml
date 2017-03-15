@@ -59,6 +59,8 @@
     <string name="pref_scouter">scouterText</string>
     <string name="pref_team">teamNumber</string>
     <string name="pref_event">eventText</string>
+    <string name="pref_event_filter">eventFilter</string>
+    <string name="pref_events_cursor">eventsCursor</string>
     <string name="our_competition_buckeye">2017-03-29 Buckeye Regional</string>
     <string name="our_competition_flr">"2017-03-15 Finger Lakes Regional "</string>
     <string name="filter_on">Turn the event filter on?</string>
@@ -118,6 +120,7 @@
     <string name="upload_data">Upload Data</string>
     <string name="no_network">No Network</string>
     <string name="try_again">Connect to a network and try again.</string>
+    <string name="using_backup">Using backup!</string>
     <string name="refresh_benchmark_data">Refresh Benchmark Data</string>
     <string name="refresh_scouting_data">Refresh Scouting Data</string>
     <string name="refresh_pictures">Refresh Pictures</string>

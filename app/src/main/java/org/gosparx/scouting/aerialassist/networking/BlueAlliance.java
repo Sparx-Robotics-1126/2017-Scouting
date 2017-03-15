@@ -58,7 +58,7 @@ public class BlueAlliance {
         String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", year);
         Ion.with(context)
                 .load(request)
-                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2016:" + versionName)
+                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2017:" + versionName)
                 .as(new TypeToken<List<Event>>(){})
                 .setCallback(new FutureCallback<List<Event>>() {
                     @Override
@@ -78,19 +78,19 @@ public class BlueAlliance {
 
                             Log.d(TAG, "Done getting basic event("+event.getEventCode()+")");
                         }
+                        NetworkHelper.setLoadedEventList(context);
                         if(callback != null)
                             callback.handleFinishDownload(true);
-
-                        NetworkHelper.setLoadedEventList(context);
                     }
                 });
     }
+
 
     public void loadTeams(final Event event, final NetworkCallback callback){
         String request = (BASE_URL+GET_TEAM_LIST).replace("{EVENT_KEY}", event.getKey());
         Ion.with(context)
                 .load(request)
-                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2016:" + versionName)
+                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2017:" + versionName)
                 .as(new TypeToken<List<Team>>() {})
                 .setCallback(new FutureCallback<List<Team>>() {
                     @Override
@@ -113,7 +113,6 @@ public class BlueAlliance {
                         }
                         if(callback != null)
                             callback.handleFinishDownload(true);
-                        NetworkHelper.setLoadedTeams(context);
                     }
                 });
     }

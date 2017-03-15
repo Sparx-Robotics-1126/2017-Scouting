@@ -27,7 +27,7 @@ import java.util.Vector;
 
 public class SparxPosting {
     private static final String TAG = "SparxPosting";
-    private static final String BASE_URL = "http://172.20.10.6:8080";
+    private static final String BASE_URL = "http://192.168.0.12:8080";
     //private static final String BASE_URL = "http://scouting-2017-156319.appspot.com";
     private static final String SCOUTING = "/api/2017/v1/ScoutingData";
     private static final String BENCHMARKING = "/api/2017/v1/BenchmarkingData";
