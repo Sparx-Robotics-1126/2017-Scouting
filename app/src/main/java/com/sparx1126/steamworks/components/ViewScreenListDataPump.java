@@ -2,6 +2,7 @@ package com.sparx1126.steamworks.components;
 
 
 import org.gosparx.scouting.aerialassist.BenchmarkingData;
+import org.gosparx.scouting.aerialassist.ScoutingData;
 import org.gosparx.scouting.aerialassist.TeamData;
 
 import java.util.ArrayList;
@@ -202,7 +203,56 @@ public class ViewScreenListDataPump {
 */
 
        List<String> scouting = new ArrayList<>();
+        scouting.add("<font color=\"black\"><b>Matches scouted: </b></font>" + displayedInfo.getScoutingDatas().size());
+        float hoppersDumped = 0;
+        float gearsScoredRight = 0;
+        float gearsScoredCenter = 0;
+        float gearsScoredLeft = 0;
+        float didScale = 0;
+        float gearsScored = 0;
+        float gearsDelivered = 0;
+        float gearsCollectedFromFloor = 0;
+        float gearsCollectedFromHuman = 0;
+        String scoresHighAuto = "";
+        for(ScoutingData sd: displayedInfo.getScoutingDatas()){
+            hoppersDumped += sd.getHoppersDumped();
+            gearsScored += sd.getGearsScored();
+            gearsDelivered += sd.getGearsDelivered();
+            gearsCollectedFromFloor += sd.getGearsCollectedFromFloor();
+            gearsCollectedFromHuman += sd.getGearsFromHuman();
 
+            if(sd.isGearScoredRightAuto()){
+                gearsScoredRight++;
+            }
+            if(sd.isGearScoredCenterAuto()){
+                gearsScoredCenter++;
+            }
+            if(sd.isGearScoredLeftAuto()){
+                gearsScoredLeft++;
+            }
+            if(sd.isDidScale()){
+                didScale++;
+            }
+
+        }
+        hoppersDumped = hoppersDumped/displayedInfo.getScoutingDatas().size();
+        gearsScored = gearsScored/displayedInfo.getScoutingDatas().size();
+        gearsDelivered = gearsDelivered/displayedInfo.getScoutingDatas().size();
+        gearsCollectedFromFloor = gearsCollectedFromFloor/displayedInfo.getScoutingDatas().size();
+        gearsCollectedFromHuman = gearsCollectedFromHuman/displayedInfo.getScoutingDatas().size();
+        gearsScoredRight = (gearsScoredRight/displayedInfo.getScoutingDatas().size())*100;
+        gearsScoredCenter = (gearsScoredCenter/displayedInfo.getScoutingDatas().size())*100;
+        gearsScoredLeft = (gearsScoredLeft/displayedInfo.getScoutingDatas().size())*100;
+        didScale = (didScale/displayedInfo.getScoutingDatas().size())*100;
+        scouting.add("<font color=\"black\"><b>Average hoppers dumped:  </b></font>" + hoppersDumped);
+        scouting.add("<font color=\"black\"><b>Percent of matches scaled:  </b></font>" + didScale + "%");
+        scouting.add("<font color=\"black\"><b>Percent of gears scored right in auto:  </b></font>" + gearsScoredRight + "%");
+        scouting.add("<font color=\"black\"><b>Percent of gears scored center in auto:  </b></font>" + gearsScoredCenter + "%");
+        scouting.add("<font color=\"black\"><b>Percent of gears scored left in auto:  </b></font>" + gearsScoredLeft + "%");
+        scouting.add("<font color=\"black\"><b>Average gears scored:  </b></font>" + gearsScored);
+        scouting.add("<font color=\"black\"><b>Average gears delivered:  </b></font>" + gearsDelivered);
+        scouting.add("<font color=\"black\"><b>Average gears collected from floor:  </b></font>" + gearsCollectedFromFloor);
+        scouting.add("<font color=\"black\"><b>Average gears collected from human:  </b></font>" + gearsCollectedFromHuman);
 
 
         List<String> scaling = new ArrayList<>();
