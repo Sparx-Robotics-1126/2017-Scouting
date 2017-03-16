@@ -81,7 +81,7 @@
     <string name="please_wait_scouting_download">Please wait while Scouting data is downloaded.</string>
     <string name="please_wait_benchmarking_upload">Please wait while Benchmarking data is uploaded.</string>
     <string name="please_wait_picture_upload">Please wait while Picture data is uploaded.</string>
-    <string name="please_wait_scouting_upload">Please wait while Benchmarking data is uploaded.</string>
+    <string name="please_wait_scouting_upload">Please wait while Scouting data is uploaded.</string>
     <string name="day_format">yyyy-MM-dd hh:mm:ss</string>
     <string name="number_of_hoppers_dumped">Number of Hoppers Dumped</string>
     <string name="gears_scored_in">Gears scored in</string>

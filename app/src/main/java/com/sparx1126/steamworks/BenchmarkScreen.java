@@ -74,6 +74,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     private RadioButton radioPreferredPlacesScaleRight;
     private RadioButton radioPreferredPlacesScaleCenter;
     private RadioButton radioPreferredPlacesScaleLeft;
+    private RadioButton radioPreferredPlacesScaleNone;
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
     // new
@@ -169,6 +170,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         radioPreferredPlacesScaleRight = (RadioButton) findViewById(R.id.radioPreferredScaleRight);
         radioPreferredPlacesScaleCenter = (RadioButton) findViewById(R.id.radioPreferredScaleCenter);
         radioPreferredPlacesScaleLeft = (RadioButton) findViewById(R.id.radioPreferredScaleLeft);
+        radioPreferredPlacesScaleNone = (RadioButton) findViewById(R.id.radioPreferredScaleNone);
         autoAbilitiesBench = (EditText) findViewById(R.id.autoAbilitiesBench);
         commentsBench = (EditText) findViewById(R.id.commentsBench);
         Button submitBenchmark = (Button) findViewById(R.id.submitBenchmark);
@@ -297,6 +299,9 @@ public class BenchmarkScreen extends AppCompatActivity {
                 case "radioPreferredPlacesScaleLeft":
                     radioPreferredPlacesScaleLeft.setChecked(true);
                     break;
+                case "radioPreferredPlacesScaleNone":
+                    radioPreferredPlacesScaleNone.setChecked(true);
+                    break;
                 default:
                     break;
             }
@@ -408,6 +413,10 @@ public class BenchmarkScreen extends AppCompatActivity {
         else if(radioPreferredPlacesScaleLeft.isChecked()) {
             currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleLeft");
         }
+        else if(radioPreferredPlacesScaleNone.isChecked()) {
+            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleNone");
+        }
+
         currentData.setAutoAbilitiesBench(autoAbilitiesBench.getText().toString());
         currentData.setCommentsBench(commentsBench.getText().toString());
         currentData.setBenchmarkWasDoneButton(benchmarkWasDoneButton.isChecked());

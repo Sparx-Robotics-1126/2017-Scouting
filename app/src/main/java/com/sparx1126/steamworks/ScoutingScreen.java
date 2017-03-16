@@ -83,7 +83,7 @@ public class ScoutingScreen extends AppCompatActivity {
         putGearCenterAuto = (CheckBox) findViewById(R.id.putGearCenterAuto);
         putGearRightAuto = (CheckBox) findViewById(R.id.putGearRightAuto);
         gearsScoredTeleInput = (EditText) findViewById(R.id.gearsScoredTeleInput).findViewById(R.id.edit_text);
-        gearsDeliveredInput = (EditText) findViewById(R.id.gearsDeliveredInput).findViewById(R.id.edit_text);
+        //gearsDeliveredInput = (EditText) findViewById(R.id.gearsDeliveredInput).findViewById(R.id.edit_text);
         numberOfGearsFromFloorInput = (EditText) findViewById(R.id.numberOfGearsFromFloorInput).findViewById(R.id.edit_text);
         numberOfGearsFromHumanInput = (EditText) findViewById(R.id.numberOfGearsFromHumanInput).findViewById(R.id.edit_text);
         scoresHighNeverAuto = (RadioButton) findViewById(R.id.scoresHighNeverAuto);
@@ -135,10 +135,11 @@ public class ScoutingScreen extends AppCompatActivity {
         if (!valueAsSring.isEmpty()) {
             scoutingBeingEntered.setGearsScored(Integer.parseInt(valueAsSring));
         }
+        /*
         valueAsSring = gearsDeliveredInput.getText().toString();
         if (!valueAsSring.isEmpty()) {
             scoutingBeingEntered.setGearsDelivered(Integer.parseInt(valueAsSring));
-        }
+        }*/
         valueAsSring = numberOfGearsFromFloorInput.getText().toString();
         if (!valueAsSring.isEmpty()) {
             scoutingBeingEntered.setGearsCollectedFromFloor(Integer.parseInt(valueAsSring));
@@ -204,7 +205,7 @@ public class ScoutingScreen extends AppCompatActivity {
         putGearCenterAuto.setChecked(false);
         putGearRightAuto.setChecked(false);
         gearsScoredTeleInput.setText("0");
-        gearsDeliveredInput.setText("0");
+        //gearsDeliveredInput.setText("0");
         numberOfGearsFromFloorInput.setText("0");
         numberOfGearsFromHumanInput.setText("0");
         scoresHighNeverAuto.setChecked(false);

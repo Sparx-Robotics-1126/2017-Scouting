@@ -22,20 +22,23 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class SparxPosting {
     private static final String TAG = "SparxPosting";
-    private static final String BASE_URL = "http://192.168.0.12:8080";
-    //private static final String BASE_URL = "http://scouting-2017-156319.appspot.com";
+    //private static final String BASE_URL = "http://192.168.0.12:8080";
+    private static final String BASE_URL = "http://scouting-2017-156319.appspot.com";
     private static final String SCOUTING = "/api/2017/v1/ScoutingData";
     private static final String BENCHMARKING = "/api/2017/v1/BenchmarkingData";
     private static final String PICTURES = "/api/2017/v1/Pictures";
     private static SparxPosting SparxPosting;
     private Context context;
     private final DatabaseHelper dbHelper;
+    private Set<String> uploadedPictures;
 
     private SparxPosting(Context context) {
         this.context = context;
@@ -44,6 +47,7 @@ public class SparxPosting {
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
         ion.configure().setGson(gson);
         dbHelper = DatabaseHelper.getInstance(context);
+        uploadedPictures = new HashSet<>();
     }
 
     public static synchronized SparxPosting getInstance(Context context){
@@ -104,10 +108,6 @@ public class SparxPosting {
                                     }
                                 }
                             });
-                } else {
-                    Log.e(TAG, "Benchmarking was not DONE!");
-                    System.out.println("Benchmarking was not DONE!");
-                    subCallback.handleFinishDownload(false);
                 }
             }
         }
@@ -247,10 +247,11 @@ public class SparxPosting {
         int photoIndex = 0;
         for (int i = 0; i < files.length; i++) {
             String fileName = files[i].getName();
-            if(fileName.contains("Robot")) {
+            if(fileName.contains("Robot") && !uploadedPictures.contains(fileName)) {
                 noneFound = false;
                 pictures.add(files[i]);
                 photoIndex++;
+                uploadedPictures.add(fileName);
             }
         }
 
@@ -329,6 +330,7 @@ public class SparxPosting {
                                         path + "/" + sd.getFileName());
                                 imageOutFile.write(imageDataBytes);
                                 imageOutFile.close();
+                                uploadedPictures.add(sd.getFileName());
                             } catch (IOException e1) {
                                 e1.printStackTrace();
                             }

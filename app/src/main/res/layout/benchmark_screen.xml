@@ -540,6 +540,10 @@
                         android:text="@string/left"
                         style="@style/RadioButton"/>
 
+                    <RadioButton android:id="@+id/radioPreferredScaleNone"
+                        android:text="No Preference"
+                        style="@style/RadioButton" />
+                    
                 </RadioGroup>
 
             </LinearLayout>
