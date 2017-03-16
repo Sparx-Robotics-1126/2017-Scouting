@@ -11,7 +11,9 @@ public class NetworkHelper {
 
     private static final String PREF_FILE_NAME = "NETWORK_PREFERENCES";
     private static final String PREF_LOAD_EVENT_LIST = "LOAD_EVENT_LIST";
+    private static final String PREF_LOAD_TEAM_LIST = "LOAD_TEAM_LIST";
     private static final String PREF_LOAD_BENCH_DATA = "LOAD_BENCH_DATA";
+    private static final String PREF_LOAD_SCOUTING_DATA = "LOAD_SCOUTING_DATA";
     private static final String PREF_LOAD_PICTURES = "LOAD_PICTURES";
     private static final String PREF_LOAD_SCOUT_DATA = "LOAD_SCOUT_DATA";
 
@@ -19,10 +21,15 @@ public class NetworkHelper {
         return ((ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo() != null;
     }
 
-
     public static boolean needToLoadEventList(Context context){
         long timeOfLastSync = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
                 .getLong(PREF_LOAD_EVENT_LIST, 0);
+        return new Date().after(new Date(timeOfLastSync + NetworkHelper.MS_IN_DAY));
+    }
+
+    public static boolean needToLoadTeamList(Context context){
+        long timeOfLastSync = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
+                .getLong(PREF_LOAD_TEAM_LIST, 0);
         return new Date().after(new Date(timeOfLastSync + NetworkHelper.MS_IN_DAY));
     }
 
@@ -38,16 +45,28 @@ public class NetworkHelper {
         return new Date().after(new Date(timeOfLastSync + NetworkHelper.MS_IN_DAY));
     }
 
+    public static boolean needToLoadScoutData(Context context){
+        long timeOfLastSync = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
+                .getLong(PREF_LOAD_SCOUTING_DATA, 0);
+        return new Date().after(new Date(timeOfLastSync + NetworkHelper.MS_IN_DAY));
+    }
+
     public static void setLoadedEventList(Context c){
         setPrefCurrentTime(c, PREF_LOAD_EVENT_LIST);
+    }
+
+    public static void setLoadedTeamList(Context c){
+        setPrefCurrentTime(c, PREF_LOAD_TEAM_LIST);
     }
 
     public static void setLoadedBenchmarkData(Context c){
         setPrefCurrentTime(c, PREF_LOAD_BENCH_DATA);
     }
+
     public static void setLoadedPictures(Context c){
         setPrefCurrentTime(c, PREF_LOAD_PICTURES);
     }
+
     public static void setLoadedScoutData(Context c){
         setPrefCurrentTime(c, PREF_LOAD_SCOUT_DATA);
     }

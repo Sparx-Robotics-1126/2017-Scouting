@@ -117,18 +117,28 @@
     <string name="plus">+</string>
     <string name="benchmarking_was_done">Benchmarking Was Done</string>
     <string name="refresh_events">Refresh Events</string>
-    <string name="upload_data">Upload Data</string>
+    <string name="upload__benchmarking_data">Upload Benchmarking Data</string>
+    <string name="upload_pictures">Upload Picures</string>
+    <string name="upload_scouting_data">Upload Scouting Data</string>
     <string name="no_network">No Network</string>
+    <string name="saved">Saved</string>
     <string name="try_again">Connect to a network and try again.</string>
+    <string name="locally">Stored in local memory. Upload later.</string>
     <string name="using_backup">Using backup!</string>
     <string name="refresh_benchmark_data">Refresh Benchmark Data</string>
-    <string name="refresh_scouting_data">Refresh Scouting Data</string>
     <string name="refresh_pictures">Refresh Pictures</string>
+    <string name="refresh_scouting_data">Refresh Scouting Data</string>
     <string name="left">Left</string>
     <string name="center">Center</string>
     <string name="right">Right</string>
     <string name="team_not_benchmark">This Team Has Yet To Be Benchmarked</string>
     <string name="data_missing">No Data to show</string>
+    <string name="benchmark_title">Benchmarking -</string>
+    <string name="scouting_title">Scouting -</string>
+    <string name="view_title">View -</string>
+    <string name="benchmark_not_done">Benchmarking Was Not Done</string>
+    <string name="check_submit_buttom">The button was probably not checked.</string>
+    <string name="scouting_not_done">Scouting Was Not Done</string>
     <string-array name="students">
         <item>Michael Anderson</item>
         <item>Tyler Armstrong</item>

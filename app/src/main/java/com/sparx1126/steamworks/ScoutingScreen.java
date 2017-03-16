@@ -1,6 +1,7 @@
 package com.sparx1126.steamworks;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
@@ -12,15 +13,17 @@ import android.widget.ToggleButton;
 
 import com.sparx1126.steamworks.components.Utility;
 
+import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.ScoutingData;
 
 import static com.sparx1126.steamworks.R.layout.scouting_screen;
 
 public class ScoutingScreen extends AppCompatActivity {
+    private DatabaseHelper dbHelper;
+    private Utility utility;
     private TeamData currentTeam;
     private ScoutingData scoutingBeingEntered;
-    private Utility utility;
 
     private ToggleButton crossedBaseLineAutoInput;
     private EditText hoppersDumpedAutoInput;
@@ -60,6 +63,12 @@ public class ScoutingScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(scouting_screen);
 
+        dbHelper = DatabaseHelper.getInstance(this);
+        utility = Utility.getInstance();
+        currentTeam = TeamData.getCurrentTeam();
+        String key = String.valueOf(currentTeam.getTeamNumber()) + "_" + utility.getEpoch();
+        scoutingBeingEntered = new ScoutingData(key, currentTeam.getTeamNumber(), currentTeam.getEventName(), currentTeam.getStudent());
+
         ImageButton home = (ImageButton) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,9 +76,6 @@ public class ScoutingScreen extends AppCompatActivity {
                 finish();
             }
         });
-        currentTeam = TeamData.getCurrentTeam();
-        scoutingBeingEntered = new ScoutingData(currentTeam.getTeamNumber(), currentTeam.getEventName(), currentTeam.getStudent());
-        utility = Utility.getInstance();
 
         crossedBaseLineAutoInput = (ToggleButton) findViewById(R.id.crossedBaseLineAutoInput);
         hoppersDumpedAutoInput = (EditText) findViewById(R.id.hoppersDumpedAutoInput);
@@ -99,19 +105,24 @@ public class ScoutingScreen extends AppCompatActivity {
         scaledFromWhereInput = (EditText) findViewById(R.id.scaledFromWhereInput);
         matchScoutedInput = (ToggleButton) findViewById(R.id.matchScouted);
         Button submitScouting = (Button) findViewById(R.id.submitScouting);
-        submitScouting.setOnClickListener(submitScoutingClicked);
+        submitScouting.setOnClickListener(submitButtonClicked);
+
+        ActionBar bar = getSupportActionBar();
+        if(bar != null) {
+            bar.setTitle(getString(R.string.scouting_title) + String.valueOf(currentTeam.getTeamNumber()));
+        }
     }
 
     protected void onDestroy() {
         super.onDestroy();
         saveData();
-        if(matchScoutedInput.isChecked()) {
+        if(scoutingBeingEntered.isMatchScouted()) {
             currentTeam.addScoutingData(scoutingBeingEntered);
+            dbHelper.createScoutingData(scoutingBeingEntered);
         }
     }
 
     private void saveData() {
-        scoutingBeingEntered.setMatchScouted(matchScoutedInput.isChecked());
         scoutingBeingEntered.setCrossedBaseline(crossedBaseLineAutoInput.isChecked());
         String valueAsSring = hoppersDumpedAutoInput.getText().toString();
         if (!valueAsSring.isEmpty()) {
@@ -183,15 +194,55 @@ public class ScoutingScreen extends AppCompatActivity {
         }
         scoutingBeingEntered.setDidScale(didScaleInput.isChecked());
         scoutingBeingEntered.setWhereScaled(scaledFromWhereInput.getText().toString());
+        scoutingBeingEntered.setMatchScouted(matchScoutedInput.isChecked());
     }
 
-    private final View.OnClickListener submitScoutingClicked = new View.OnClickListener() {
+    private void clearData() {
+        crossedBaseLineAutoInput.setChecked(false);
+        hoppersDumpedAutoInput.setText("");
+        putGearLeftAuto.setChecked(false);
+        putGearCenterAuto.setChecked(false);
+        putGearRightAuto.setChecked(false);
+        gearsScoredTeleInput.setText("0");
+        gearsDeliveredInput.setText("0");
+        numberOfGearsFromFloorInput.setText("0");
+        numberOfGearsFromHumanInput.setText("0");
+        scoresHighNeverAuto.setChecked(false);
+        scoresHighSometimesAuto.setChecked(false);
+        scoresHighOftenAuto.setChecked(false);
+        scoresLowNeverAuto.setChecked(false);
+        scoresLowSometimesAuto.setChecked(false);
+        scoresLowOftenAuto.setChecked(false);
+        numberOfBallsScoredHighGoalInput.setText("0");
+        timesCollectedFromHumanInput.setText("0");
+        timesCollectedFromHopperInput.setText("0");
+        timesCollectedFromFloorInput.setText("0");
+        fuelScoredLowGoalCycleInput.setText("0");
+        numberOfLowGoalCyclesInput.setText("0");
+        highGoalAccuracyScoutPoor.setChecked(false);
+        highGoalAccuracyScoutOk.setChecked(false);
+        highGoalAccuracyScoutGreat.setChecked(false);
+        didScaleInput.setChecked(false);
+        scaledFromWhereInput.setText("");
+        matchScoutedInput.setChecked(false);
+    }
+
+    private final View.OnClickListener submitButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            if(matchScoutedInput.isChecked()) {
+            saveData();
+            if(scoutingBeingEntered.isMatchScouted()) {
                 currentTeam.addScoutingData(scoutingBeingEntered);
+                dbHelper.createScoutingData(scoutingBeingEntered);
+                utility.uploadScoutingData(ScoutingScreen.this, false);
+                // reset data
+                String key = String.valueOf(currentTeam.getTeamNumber()) + "_" + utility.getEpoch();
+                scoutingBeingEntered = new ScoutingData(key, currentTeam.getTeamNumber(), currentTeam.getEventName(), currentTeam.getStudent());
+                clearData();
             }
-            utility.uploadScoutingData(ScoutingScreen.this);
+            else {
+                utility.alertUser(ScoutingScreen.this, getString(R.string.scouting_not_done), getString(R.string.check_submit_buttom)).show();
+            }
         }
     };
 }

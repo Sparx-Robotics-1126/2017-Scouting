@@ -76,7 +76,7 @@ public class BlueAlliance {
                             else
                                 dbHelper.createEvent(event);
 
-                            Log.d(TAG, "Done getting basic event("+event.getEventCode()+")");
+                            Log.d(TAG, "Done getting event("+event.getEventCode()+")");
                         }
                         NetworkHelper.setLoadedEventList(context);
                         if(callback != null)
@@ -108,9 +108,12 @@ public class BlueAlliance {
                             else
                                 dbHelper.createTeam(team);
 
+                            Log.d(TAG, "Done getting team ("+team.getTeamNumber()+")");
+
                             if(!dbHelper.doesE2TAssociationExist(event.getKey(), team.getKey()))
                                 dbHelper.createE2TAssociation(event.getKey(), team.getKey());
                         }
+                        NetworkHelper.setLoadedTeamList(context);
                         if(callback != null)
                             callback.handleFinishDownload(true);
                     }

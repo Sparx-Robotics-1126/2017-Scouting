@@ -13,6 +13,7 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import org.gosparx.scouting.aerialassist.BenchmarkingData;
+import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.RobotImage;
 import org.gosparx.scouting.aerialassist.ScoutingData;
 import org.gosparx.scouting.aerialassist.TeamData;
@@ -20,10 +21,10 @@ import org.gosparx.scouting.aerialassist.TeamData;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 public class SparxPosting {
     private static final String TAG = "SparxPosting";
@@ -34,6 +35,7 @@ public class SparxPosting {
     private static final String PICTURES = "/api/2017/v1/Pictures";
     private static SparxPosting SparxPosting;
     private Context context;
+    private final DatabaseHelper dbHelper;
 
     private SparxPosting(Context context) {
         this.context = context;
@@ -41,6 +43,7 @@ public class SparxPosting {
         ion.configure().setLogging(TAG, Log.DEBUG);
         Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss").create();
         ion.configure().setGson(gson);
+        dbHelper = DatabaseHelper.getInstance(context);
     }
 
     public static synchronized SparxPosting getInstance(Context context){
@@ -124,10 +127,21 @@ public class SparxPosting {
                             return;
                         }
 
-                        for (BenchmarkingData sd : result) {
-                            TeamData.setTeamData(sd);
+                        for (BenchmarkingData bd : result) {
+                            TeamData.setTeamData(bd.getTeamNumber(), bd.getEventName(), bd.getStudent());
+                            TeamData.getCurrentTeam().setBenchmarkingData(bd);
+                            if(dbHelper.doesBenchmarkingDataExist(bd))
+                                dbHelper.updateBenchmarkingData(bd);
+                            else
+                                dbHelper.createBenchmarkingData(bd);
+
+                            Log.d(TAG, "Done getting benchmark data("+bd.getTeamNumber()+")");
                         }
-                        callback.handleFinishDownload(true);
+
+                        NetworkHelper.setLoadedBenchmarkData(context);
+                        if(callback != null) {
+                            callback.handleFinishDownload(true);
+                        }
                     }
                 });
     }
@@ -187,16 +201,8 @@ public class SparxPosting {
                                             }
                                         }
                                     });
-                        } else {
-                            Log.e(TAG, "Scouting was not DONE!");
-                            System.out.println("Scouting was not DONE!");
-                            subCallback.handleFinishDownload(false);
                         }
                     }
-                } else {
-                    Log.e(TAG, "No scouting to Upload!");
-                    System.out.println("No scouting to Upload!");
-                    callback.handleFinishDownload(false);
                 }
             }
         }
@@ -217,9 +223,13 @@ public class SparxPosting {
                         }
 
                         for (ScoutingData sd : result) {
-                            TeamData.setTeamData(sd);
+                            TeamData.setTeamData(sd.getTeamNumber(), sd.getEventName(), sd.getStudent());
+                            TeamData.getCurrentTeam().addScoutingData(sd);
                         }
-                        callback.handleFinishDownload(true);
+                        NetworkHelper.setLoadedScoutData(context);
+                        if(callback != null) {
+                            callback.handleFinishDownload(true);
+                        }
                     }
                 });
     }
@@ -232,7 +242,7 @@ public class SparxPosting {
 
         File directory = new File(path);
         File[] files = directory.listFiles();
-        final Vector<File> pictures = new Vector();
+        final List<File> pictures = new ArrayList<>();
         boolean noneFound = true;
         int photoIndex = 0;
         for (int i = 0; i < files.length; i++) {
@@ -323,7 +333,10 @@ public class SparxPosting {
                                 e1.printStackTrace();
                             }
                         }
-                        callback.handleFinishDownload(true);
+                        NetworkHelper.setLoadedPictures(context);
+                        if(callback != null) {
+                            callback.handleFinishDownload(true);
+                        }
                     }
                 });
     }

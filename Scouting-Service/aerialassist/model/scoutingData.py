@@ -1,10 +1,11 @@
 from google.appengine.ext import ndb
 
 class ScoutingData(ndb.Model):
+    scoutingKey = ndb.StringProperty()
     teamNumber = ndb.IntegerProperty()
     eventName = ndb.StringProperty()
     student = ndb.StringProperty()
-    crossedBaseline = ndb.BooleanProperty() 
+    crossedBaseline = ndb.BooleanProperty()
     hoppersDumped = ndb.IntegerProperty()
     gearScoredRightAuto = ndb.BooleanProperty() 
     gearScoredCenterAuto = ndb.BooleanProperty() 
