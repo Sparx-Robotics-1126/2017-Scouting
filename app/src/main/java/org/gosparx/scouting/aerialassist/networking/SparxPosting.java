@@ -108,6 +108,8 @@ public class SparxPosting {
                                     }
                                 }
                             });
+                } else {
+                    subCallback.handleFinishDownload(true);
                 }
             }
         }
@@ -201,8 +203,12 @@ public class SparxPosting {
                                             }
                                         }
                                     });
+                        }else {
+                            subCallback.handleFinishDownload(true);
                         }
                     }
+                } else {
+                    subCallback.handleFinishDownload(true);
                 }
             }
         }
