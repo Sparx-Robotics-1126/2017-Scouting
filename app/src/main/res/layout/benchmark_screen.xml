@@ -32,12 +32,14 @@
             <EditText android:id="@+id/drivesSystem"
                 android:hint="@string/drivesTypeHint"
                 android:inputType="text"
+                android:maxLength="100"
                 android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;0123456789 "
                 style="@style/LongEditText"/>
 
             <EditText android:id="@+id/drivesSpeed"
                 android:hint="@string/drivesSpeedHint"
                 android:inputType="numberDecimal"
+                android:maxLength="5"
                 style="@style/LongEditText"/>
 
             <LinearLayout android:orientation="horizontal"
@@ -89,6 +91,7 @@
                 <EditText android:id="@+id/typeOfShooterBenchInput"
                     android:inputType="text"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;0123456789 "
+                    android:maxLength="100"
                     style="@style/ShortEditText" />
 
             </LinearLayout>
@@ -104,6 +107,7 @@
 
                 <EditText android:id="@+id/ballsPerSecondBenchInput"
                     android:inputType="numberDecimal"
+                    android:maxLength="5"
                     style="@style/ShortEditText"/>
 
             </LinearLayout>
@@ -119,6 +123,7 @@
 
                 <EditText android:id="@+id/ballsInCycleBenchInput"
                     android:inputType="number"
+                    android:maxLength="3"
                     style="@style/ShortEditText"/>
 
             </LinearLayout>
@@ -134,7 +139,8 @@
 
                 <EditText android:id="@+id/cycleTimeHighBenchInput"
                     android:inputType="number"
-                    style="@style/ShortEditText"/>
+                    style="@style/ShortEditText"
+                    android:maxLength="3"/>
 
             </LinearLayout>
 
@@ -149,7 +155,8 @@
 
                 <EditText android:id="@+id/shootingRangeBenchInput"
                     android:inputType="numberDecimal"
-                    style="@style/ShortEditText"/>
+                    style="@style/ShortEditText"
+                    android:maxLength="3"/>
 
             </LinearLayout>
 
@@ -165,7 +172,8 @@
                 <EditText android:id="@+id/preferredShootingLocationBenchInput"
                     android:inputType="text"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ "
-                    style="@style/ShortEditText"/>
+                    style="@style/ShortEditText"
+                    android:maxLength="100"/>
 
             </LinearLayout>
 
@@ -181,7 +189,8 @@
 
                 <EditText android:id="@+id/accuracyHighBenchInput"
                     android:inputType="numberDecimal"
-                    style="@style/ShortEditText"/>
+                    style="@style/ShortEditText"
+                    android:maxLength="5"/>
             </LinearLayout>
 
             <LinearLayout android:orientation="horizontal"
@@ -240,6 +249,10 @@
 
                     <RadioButton android:id="@+id/radioBallHuman"
                         android:text="@string/human"
+                        style="@style/RadioButton" />
+
+                    <RadioButton android:id="@+id/radioBallNone"
+                        android:text="No Preference"
                         style="@style/RadioButton"/>
                 </RadioGroup>
 
@@ -255,7 +268,8 @@
 
                 <EditText android:id="@+id/maximumBallCapacityBenchInput"
                     android:inputType="number"
-                    style="@style/ShortEditText"/>
+                    style="@style/ShortEditText"
+                    android:maxLength="3"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -326,6 +340,10 @@
                         android:text="@string/left"
                         style="@style/RadioButton"/>
 
+                    <RadioButton android:id="@+id/radioGearNone"
+                        android:text="No Preference"
+                        style="@style/RadioButton"/>
+
                 </RadioGroup>
 
             </LinearLayout>
@@ -342,7 +360,8 @@
 
                 <EditText android:id="@+id/cycleTimeGearsBenchInput"
                     android:inputType="number"
-                    style="@style/ShortEditText"/>
+                    style="@style/ShortEditText"
+                    android:maxLength="3"/>
 
             </LinearLayout>
 
@@ -429,7 +448,8 @@
                 <EditText
                     android:id="@+id/cycleTimeLowBenchInput"
                     android:inputType="number"
-                    style="@style/ShortEditText"/>
+                    style="@style/ShortEditText"
+                    android:maxLength="3"/>
 
             </LinearLayout>
 
@@ -444,7 +464,8 @@
 
                 <EditText android:id="@+id/cycleNumberLowBenchInput"
                     android:inputType="number"
-                    style="@style/ShortEditText"/>
+                    style="@style/ShortEditText"
+                    android:maxLength="3"/>
 
             </LinearLayout>
         </LinearLayout>
@@ -519,6 +540,10 @@
                         android:text="@string/left"
                         style="@style/RadioButton"/>
 
+                    <RadioButton android:id="@+id/radioPreferredScaleNone"
+                        android:text="No Preference"
+                        style="@style/RadioButton" />
+                    
                 </RadioGroup>
 
             </LinearLayout>
@@ -534,11 +559,15 @@
 
             <EditText android:id="@+id/autoAbilitiesBench"
                 android:hint="@string/autoAbilities"
-                style="@style/MultiLongEditText"/>
+                style="@style/MultiLongEditText"
+                android:maxLength="150"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;0123456789 "/>
 
             <EditText android:id="@+id/commentsBench"
                 android:hint="@string/otherComments"
-                style="@style/MultiLongEditText"/>
+                style="@style/MultiLongEditText"
+                android:maxLength="100"
+                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;0123456789 " />
         </LinearLayout>
 
         <LinearLayout android:orientation="horizontal"

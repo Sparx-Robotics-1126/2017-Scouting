@@ -3,6 +3,7 @@ package org.gosparx.scouting.aerialassist;
 //ßuild the app amandΩ
 
 public class ScoutingData {
+    private final String scoutingKey;
     private final int teamNumber;
     private final String eventName;
     private final String student;
@@ -28,10 +29,15 @@ public class ScoutingData {
     private String whereScaled = "";
     private boolean matchScouted;
 
-    public ScoutingData(int teamNumber, String eventName, String student) {
+    public ScoutingData(String scoutingKey, int teamNumber, String eventName, String student) {
+        this.scoutingKey = scoutingKey;
         this.teamNumber = teamNumber;
         this.eventName = eventName;
         this.student = student;
+    }
+
+    public String getScoutingKey() {
+        return scoutingKey;
     }
 
     public int getTeamNumber() {
@@ -46,17 +52,17 @@ public class ScoutingData {
         return student;
     }
 
-    public int getHoppersDumped() {
-        return hoppersDumped;
-    }
-
-    public void setHoppersDumped(int hoppersDumped) { this.hoppersDumped = hoppersDumped; }
-
     public Boolean isCrossedBaseline() {
         return crossedBaseline;
     }
 
     public void setCrossedBaseline(Boolean crossedBaseline) { this.crossedBaseline = crossedBaseline; }
+
+    public int getHoppersDumped() {
+        return hoppersDumped;
+    }
+
+    public void setHoppersDumped(int hoppersDumped) { this.hoppersDumped = hoppersDumped; }
 
     public Boolean isGearScoredRightAuto() {
         return gearScoredRightAuto;

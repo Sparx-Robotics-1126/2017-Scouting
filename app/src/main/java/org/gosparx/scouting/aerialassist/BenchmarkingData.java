@@ -171,6 +171,14 @@ public class BenchmarkingData{
         this.pickupBallHumanBenchButton = pickupBallHumanBenchButton;
     }
 
+    public String getPickupBallNoneBenchInput() {
+        return pickupBallPreferredBenchInput;
+    }
+
+    public void setPickupBallNoneBenchInput(String pickupBallPreferredBenchInput) {
+        this.pickupBallPreferredBenchInput = pickupBallPreferredBenchInput;
+    }
+
     public String getPickupBallPreferredBenchInput() {
         return pickupBallPreferredBenchInput;
     }

@@ -25,7 +25,7 @@ class PostScoutingData(webapp2.RequestHandler):
         jsonRoot = json.loads(self.request.body)
         scoutingData = ScoutingData()
         scoutingData.populate(**jsonRoot)
-        scoutingData.key = ndb.Key(ScoutingData, scoutingData.teamNumber)
+        scoutingData.key = ndb.Key(ScoutingData, scoutingData.scoutingKey)
         scoutingData.put()
         self.response.status = 200
 

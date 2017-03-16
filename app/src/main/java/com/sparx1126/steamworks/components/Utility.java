@@ -3,12 +3,12 @@ package com.sparx1126.steamworks.components;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.widget.TextView;
 
 import com.sparx1126.steamworks.R;
 
-import org.gosparx.scouting.aerialassist.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
@@ -20,18 +20,16 @@ import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetwo
 
 public class Utility {
     private static Utility utility;
+
     public static synchronized Utility getInstance(){
         if (utility == null) {
             utility =  new Utility();
         }
         return utility;
     }
-    private Activity currentActivity;
-    private Utility() {}
 
-    public AlertDialog alertUser(Activity activity, String title, String reason) {
-        currentActivity = activity;
-        AlertDialog.Builder builder = new AlertDialog.Builder(currentActivity);
+    public AlertDialog alertUser(Context context, String title, String reason) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
         builder.setMessage(reason);
         builder.setPositiveButton(R.string.okay, new DialogInterface.OnClickListener() {
@@ -43,167 +41,194 @@ public class Utility {
         return builder.create();
     }
 
-    public AlertDialog createDialog(Activity activity, String title, String reason) {
-        currentActivity = activity;
-        AlertDialog.Builder builder = new AlertDialog.Builder(currentActivity);
+    public AlertDialog createDialog(final Context context, String title, String reason) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(title);
         builder.setMessage(reason);
         builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                BlueAlliance.getInstance(currentActivity).cancelAll();
+                BlueAlliance.getInstance(context).cancelAll();
                 dialogInterface.dismiss();
             }
         });
         return builder.create();
     }
 
-    public void uploadBenchmarkingData(Activity activity) {
-        currentActivity = activity;
-        if (!isNetworkAvailable(currentActivity)) {
-            utility.alertUser(currentActivity, currentActivity.getString(R.string.no_network), currentActivity.getString(R.string.try_again)).show();
-        } else {
-            final Dialog alert = utility.createDialog(currentActivity, currentActivity.getString(R.string.uploading_data), currentActivity.getString(R.string.please_wait_benchmarking_upload));
+    public void downloadEventSpinnerData(final Activity activity, boolean forceDownload, final NetworkCallback callback) {
+        if (NetworkHelper.needToLoadEventList(activity) || forceDownload) {
+            if (!isNetworkAvailable(activity)) {
+                utility.alertUser(activity, activity.getString(R.string.no_network), activity.getString(R.string.try_again)).show();
+            } else {
+                final Dialog alert = utility.createDialog(activity, activity.getString(R.string.downloading_data), activity.getString(R.string.please_wait_event_download));
+                alert.show();
+                BlueAlliance blueAlliance = BlueAlliance.getInstance(activity);
+                blueAlliance.loadEventList(activity.getResources().getString(R.string.competition_year), new NetworkCallback() {
+                    @Override
+                    public void handleFinishDownload(final boolean success) {
+                        activity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                alert.dismiss();
+                                if (!success) {
+                                    utility.alertUser(activity, activity.getString(R.string.failure), activity.getString(R.string.event_download_failed)).show();
+                                }
+                                callback.handleFinishDownload(success);
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    }
+
+    public void uploadBenchmarkingData(final Activity activity, boolean errorOnNoNetwork) {
+        if (isNetworkAvailable(activity)) {
+            final Dialog alert = utility.createDialog(activity, activity.getString(R.string.uploading_data), activity.getString(R.string.please_wait_benchmarking_upload));
             alert.show();
-            SparxPosting ss = SparxPosting.getInstance(currentActivity);
+            SparxPosting ss = SparxPosting.getInstance(activity);
             ss.postAllBenchmarking(new NetworkCallback() {
                 @Override
                 public void handleFinishDownload(final boolean success) {
-                    currentActivity.runOnUiThread(new Runnable() {
+                    activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             alert.dismiss();
                             if (!success)
-                                utility.alertUser(currentActivity, currentActivity.getString(R.string.failure), currentActivity.getString(R.string.benchmark_upload_failed)).show();
+                                utility.alertUser(activity, activity.getString(R.string.failure), activity.getString(R.string.benchmark_upload_failed)).show();
                         }
                     });
                 }
             });
-        }
-    }
-
-    public void downloadBenchmarkData(Activity activity, boolean forceDownload) {
-        currentActivity = activity;
-        // If the internet is available and we haven't gotten the data the download it
-        if (!isNetworkAvailable(currentActivity)) {
-            utility.alertUser(currentActivity, currentActivity.getString(R.string.no_network), currentActivity.getString(R.string.try_again)).show();
-        } else if (NetworkHelper.needToLoadBenchmarkData(currentActivity) || forceDownload) {
-            final Dialog alert = utility.createDialog(currentActivity, currentActivity.getString(R.string.downloading_data), currentActivity.getString(R.string.please_wait_benchmarking_download));
-            alert.show();
-            SparxPosting ss = SparxPosting.getInstance(currentActivity);
-            ss.getBenchmarking(new NetworkCallback() {
-                @Override
-                public void handleFinishDownload(boolean success) {
-                    alert.dismiss();
-                    if (!success) {
-                        utility.alertUser(currentActivity, currentActivity.getString(R.string.failure), currentActivity.getString(R.string.benchmark_download_failed)).show();
-                    }
-                    else {
-                        NetworkHelper.setLoadedBenchmarkData(currentActivity);
-                    }
-                }
-            });
-        }
-    }
-
-    public void uploadScoutingData(Activity activity) {
-        currentActivity = activity;
-        if (!isNetworkAvailable(currentActivity)) {
-            utility.alertUser(currentActivity, currentActivity.getString(R.string.no_network), currentActivity.getString(R.string.try_again)).show();
+        } else if(errorOnNoNetwork) {
+            utility.alertUser(activity, activity.getString(R.string.no_network), activity.getString(R.string.try_again)).show();
         } else {
-            final Dialog alert = utility.createDialog(currentActivity, currentActivity.getString(R.string.uploading_data), currentActivity.getString(R.string.please_wait_scouting_upload));
+            utility.alertUser(activity, activity.getString(R.string.saved), activity.getString(R.string.locally)).show();
+        }
+    }
+
+    public void downloadBenchmarkData(final Context context, boolean forceDownload, final NetworkCallback callback) {
+        if (NetworkHelper.needToLoadBenchmarkData(context) || forceDownload) {
+            if (!isNetworkAvailable(context)) {
+                utility.alertUser(context, context.getString(R.string.no_network), context.getString(R.string.try_again)).show();
+            } else {
+                final Dialog alert = utility.createDialog(context, context.getString(R.string.downloading_data), context.getString(R.string.please_wait_benchmarking_download));
+                alert.show();
+                SparxPosting ss = SparxPosting.getInstance(context);
+                ss.getBenchmarking(new NetworkCallback() {
+                    @Override
+                    public void handleFinishDownload(boolean success) {
+                        alert.dismiss();
+                        if (!success) {
+                            utility.alertUser(context, context.getString(R.string.failure), context.getString(R.string.benchmark_download_failed)).show();
+                        }
+                        if (callback != null) {
+                            callback.handleFinishDownload(success);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    public void uploadScoutingData(final Activity activity, boolean errorOnNoNetwork) {
+        if (isNetworkAvailable(activity)) {
+            final Dialog alert = utility.createDialog(activity, activity.getString(R.string.uploading_data), activity.getString(R.string.please_wait_scouting_upload));
             alert.show();
-            SparxPosting ss = SparxPosting.getInstance(currentActivity);
+            SparxPosting ss = SparxPosting.getInstance(activity);
             ss.postAllScouting(new NetworkCallback() {
                 @Override
                 public void handleFinishDownload(final boolean success) {
-                    currentActivity.runOnUiThread(new Runnable() {
+                    activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             alert.dismiss();
                             if (!success)
-                                utility.alertUser(currentActivity, currentActivity.getString(R.string.failure), currentActivity.getString(R.string.scouting_upload_failed)).show();
+                                utility.alertUser(activity, activity.getString(R.string.failure), activity.getString(R.string.scouting_upload_failed)).show();
                         }
                     });
                 }
             });
-        }
-    }
-
-    public void downloadScoutingData(Activity activity, boolean forceDownload) {
-        currentActivity = activity;
-        // If the internet is available and we haven't gotten the data the download it
-        if (!isNetworkAvailable(currentActivity)) {
-            utility.alertUser(currentActivity, currentActivity.getString(R.string.no_network), currentActivity.getString(R.string.try_again)).show();
-        } else if (NetworkHelper.needToLoadBenchmarkData(currentActivity) || forceDownload) {
-            final Dialog alert = utility.createDialog(currentActivity, currentActivity.getString(R.string.downloading_data), currentActivity.getString(R.string.please_wait_scouting_download));
-            alert.show();
-            SparxPosting ss = SparxPosting.getInstance(currentActivity);
-            ss.getScouting(new NetworkCallback() {
-                @Override
-                public void handleFinishDownload(boolean success) {
-                    alert.dismiss();
-                    if (!success) {
-                        utility.alertUser(currentActivity, currentActivity.getString(R.string.failure), currentActivity.getString(R.string.scouting_download_failed)).show();
-                    }
-                    else {
-                        NetworkHelper.setLoadedScoutData(currentActivity);
-                    }
-                }
-            });
-        }
-    }
-
-    public void uploadPictures(Activity activity) {
-        currentActivity = activity;
-        if (!isNetworkAvailable(currentActivity)) {
-            utility.alertUser(currentActivity, currentActivity.getString(R.string.no_network), currentActivity.getString(R.string.try_again)).show();
+        } else if (errorOnNoNetwork) {
+            utility.alertUser(activity, activity.getString(R.string.no_network), activity.getString(R.string.try_again)).show();
         } else {
-            final Dialog alert = utility.createDialog(currentActivity, currentActivity.getString(R.string.uploading_data), currentActivity.getString(R.string.please_wait_picture_upload));
+            utility.alertUser(activity, activity.getString(R.string.saved), activity.getString(R.string.locally)).show();
+        }
+    }
+
+    public void downloadScoutingData(final Context context, boolean forceDownload, final NetworkCallback callback) {
+        if (NetworkHelper.needToLoadScoutData(context) || forceDownload) {
+            if (!isNetworkAvailable(context)) {
+                utility.alertUser(context, context.getString(R.string.no_network), context.getString(R.string.try_again)).show();
+            } else {
+                final Dialog alert = utility.createDialog(context, context.getString(R.string.downloading_data), context.getString(R.string.please_wait_scouting_download));
+                alert.show();
+                SparxPosting ss = SparxPosting.getInstance(context);
+                ss.getScouting(new NetworkCallback() {
+                    @Override
+                    public void handleFinishDownload(boolean success) {
+                        alert.dismiss();
+                        if (!success) {
+                            utility.alertUser(context, context.getString(R.string.failure), context.getString(R.string.scouting_download_failed)).show();
+                        }
+                        if (callback != null) {
+                            callback.handleFinishDownload(success);
+                        }
+                    }
+                });
+            }
+        }
+    }
+
+    public void uploadPictures(final Activity activity, boolean errorOnNoNetwork) {
+        if (isNetworkAvailable(activity)) {
+            final Dialog alert = utility.createDialog(activity, activity.getString(R.string.uploading_data), activity.getString(R.string.please_wait_picture_upload));
             alert.show();
-            SparxPosting ss = SparxPosting.getInstance(currentActivity);
+            SparxPosting ss = SparxPosting.getInstance(activity);
             ss.postAllPictures(new NetworkCallback() {
-            //ss.postAllPictures2(new NetworkCallback() {
+                //ss.postAllPictures2(new NetworkCallback() {
                 @Override
                 public void handleFinishDownload(final boolean success) {
-                    currentActivity.runOnUiThread(new Runnable() {
+                    activity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             alert.dismiss();
                             if (!success)
-                                utility.alertUser(currentActivity, currentActivity.getString(R.string.failure), currentActivity.getString(R.string.picture_upload_failed)).show();
+                                utility.alertUser(activity, activity.getString(R.string.failure), activity.getString(R.string.picture_upload_failed)).show();
                         }
                     });
                 }
             });
+        } else if (errorOnNoNetwork) {
+            utility.alertUser(activity, activity.getString(R.string.no_network), activity.getString(R.string.try_again)).show();
         }
     }
 
-    public void downloadPictures(Activity activity, boolean forceDownload) {
-        currentActivity = activity;
-        // If the internet is available and we haven't gotten the data the download it
-        if (!isNetworkAvailable(currentActivity)) {
-            utility.alertUser(currentActivity, currentActivity.getString(R.string.no_network), currentActivity.getString(R.string.try_again)).show();
-        } else if (NetworkHelper.needToLoadPictures(currentActivity) || forceDownload) {
-            final Dialog alert = utility.createDialog(currentActivity, currentActivity.getString(R.string.downloading_data), currentActivity.getString(R.string.please_wait_pictures_download));
-            alert.show();
-            SparxPosting ss = SparxPosting.getInstance(currentActivity);
-            ss.getPictures(new NetworkCallback() {
-                @Override
-                public void handleFinishDownload(boolean success) {
-                    alert.dismiss();
-                    if (!success) {
-                        utility.alertUser(currentActivity, currentActivity.getString(R.string.failure), currentActivity.getString(R.string.picture_download_failed)).show();
+    public void downloadPictures(final Context context, boolean forceDownload, final NetworkCallback callback) {
+        if (NetworkHelper.needToLoadPictures(context) || forceDownload) {
+            if (!isNetworkAvailable(context)) {
+                utility.alertUser(context, context.getString(R.string.no_network), context.getString(R.string.try_again)).show();
+            } else {
+                final Dialog alert = utility.createDialog(context, context.getString(R.string.downloading_data), context.getString(R.string.please_wait_pictures_download));
+                alert.show();
+                SparxPosting ss = SparxPosting.getInstance(context);
+                ss.getPictures(new NetworkCallback() {
+                    @Override
+                    public void handleFinishDownload(boolean success) {
+                        alert.dismiss();
+                        if (!success) {
+                            utility.alertUser(context, context.getString(R.string.failure), context.getString(R.string.picture_download_failed)).show();
+                        }
+                        if(callback != null) {
+                            callback.handleFinishDownload(success);
+                        }
                     }
-                    else {
-                        NetworkHelper.setLoadedPictures(currentActivity);
-                    }
-                }
-            });
+                });
+            }
         }
     }
 
-    public long getTodayInEpoch() {
+    public long getEpoch() {
         Calendar c = Calendar.getInstance();
         return c.getTime().getTime();
     }
