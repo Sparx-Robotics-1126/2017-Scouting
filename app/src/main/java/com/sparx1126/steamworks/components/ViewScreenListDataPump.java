@@ -202,21 +202,27 @@ public class ViewScreenListDataPump {
         }
         gears.add("<font color=\"black\"><b>Cycle time: </b></font>" + cycleTimeGearsBenchInput);
 
-       /* List<String> lowGoal = new ArrayList<String>();
-
-
-*/
         List<String> scaling = new ArrayList<>();
         if (!benchmarked) {
             scaling.add("<font color=\"black\"><b>Can scale: </b></font>");
         } else {
             scaling.add("<font color=\"black\"><b>Can scale: </b></font>" + benchmarkingData.isAbilityScaleBenchButton());
         }
-        if (benchmarkingData.getPreferredPlacesScaleInput().isEmpty()) {
-            scaling.add("<font color=\"black\"><b>Prefers to scale from: </b></font>");
-        } else {
-            scaling.add("<font color=\"black\"><b>Prefers to scale from: </b></font>" + benchmarkingData.getPreferredPlacesScaleInput());
+        String preferredScaleLocation = "";
+        if(benchmarkingData.getPreferredPlacesScaleInput() == "radioPreferredPlacesScaleRight") {
+            preferredScaleLocation = "Right";
         }
+        if(benchmarkingData.getPreferredPlacesScaleInput() == "radioPreferredPlacesScaleCenter") {
+            preferredScaleLocation = "Cen ter";
+        }
+        if(benchmarkingData.getPreferredPlacesScaleInput() == "radioPreferredPlacesScaleLeft") {
+            preferredScaleLocation = "Left";
+        }
+        if(benchmarkingData.getPreferredPlacesScaleInput() == "radioPreferredPlacesScaleNone") {
+            preferredScaleLocation = "No preference";
+        }
+            scaling.add("<font color=\"black\"><b>Prefers to scale from: </b></font>" + preferredScaleLocation);
+
 
         List<String> auto = new ArrayList<>();
         String autoAbilities = "";

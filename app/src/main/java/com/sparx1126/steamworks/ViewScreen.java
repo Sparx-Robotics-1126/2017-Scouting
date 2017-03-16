@@ -3,6 +3,7 @@ package com.sparx1126.steamworks;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
@@ -31,6 +32,8 @@ public class ViewScreen extends AppCompatActivity {
 
         TeamData currentInfo = TeamData.getCurrentTeam();
         BenchmarkingData currentData = currentInfo.getBenchmarkingData();
+        Utility utility = Utility.getInstance();
+
         ImageButton home = (ImageButton) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,12 +41,13 @@ public class ViewScreen extends AppCompatActivity {
                 finish();
             }
         });
-        Utility utility = Utility.getInstance();
-        boolean benchmarked = currentData.isBenchmarkingWasDoneButton();
-        if (!benchmarked) {
-            utility.alertUser(this, getString(R.string.team_not_benchmark), getString(R.string.data_missing)).show();
+
+        ActionBar bar = getSupportActionBar();
+        if(bar != null) {
+            bar.setTitle(getString(R.string.view_title) + String.valueOf(currentInfo.getTeamNumber()));
         }
-        else {
+
+        if (currentData.isBenchmarkingWasDoneButton()) {
 
             ExpandableListView expandableListView = (ExpandableListView) findViewById(R.id.expandableListView);
             HashMap<String, List<String>> expandableListDetail = ViewScreenListDataPump.getData();
@@ -52,7 +56,6 @@ public class ViewScreen extends AppCompatActivity {
             expandableListView.setAdapter(expandableListAdapter);
             LinearLayout layout = (LinearLayout) findViewById(R.id.linear);
 
-            ///String imageFileName = String.valueOf(currentData.getTeamNumber());
             File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
             if (storageDir == null)
                 throw new AssertionError("Cannot read " + Environment.DIRECTORY_PICTURES);
@@ -82,6 +85,9 @@ public class ViewScreen extends AppCompatActivity {
                 imageView.setImageResource(R.drawable.ic_add_a_photo_black_24dp);
                 layout.addView(imageView);
             }
+        }
+        else {
+            utility.alertUser(this, getString(R.string.team_not_benchmark), getString(R.string.data_missing)).show();
         }
     }
 }

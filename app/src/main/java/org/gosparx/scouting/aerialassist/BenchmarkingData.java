@@ -18,7 +18,6 @@ public class BenchmarkingData{
     private boolean pickupBallHopperBenchButton;
     private boolean pickupBallFloorBenchButton;
     private boolean pickupBallHumanBenchButton;
-    private boolean pickupBallNoneBenchButton;
     private String pickupBallPreferredBenchInput = "";
     private int maximumBallCapacityBenchInput = Integer.MAX_VALUE;
     private boolean canScoreGearsBenchButton;
@@ -28,7 +27,6 @@ public class BenchmarkingData{
     private boolean canGearLeftBench;
     private boolean canGearCenterBench;
     private boolean canGearRightBench;
-    private boolean canGearNoneBench;
     private String radioPreferredGear = "";
     private int cycleTimeGearsBenchInput = Integer.MAX_VALUE;
     private boolean abilityToShootLowGoalBenchButton;
@@ -252,16 +250,6 @@ public class BenchmarkingData{
     public void setCanGearRightBench(boolean canGearRightBench) {
         this.canGearRightBench = canGearRightBench;
     }
-
-    public boolean isCanGearNoneBench() {
-        return canGearNoneBench;
-    }
-
-    public void setCanGearNoneBench(boolean canGearNoneBench) {
-        this.canGearNoneBench = canGearNoneBench;
-    }
-
-
 
     public String getRadioPreferredGear() {
         return radioPreferredGear;

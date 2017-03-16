@@ -100,13 +100,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView android:labelFor="@+id/gearsDeliveredInput"
-                    android:text="@string/number_of_gears_delivered"
-                    style="@style/NormalTextView" />
-
-                <com.sparx1126.steamworks.components.HorizontalNumberPicker
-                    android:id="@+id/gearsDeliveredInput"
-                    style="@style/HorizontalNumberPicker"/>
+                
 
             </LinearLayout>
 

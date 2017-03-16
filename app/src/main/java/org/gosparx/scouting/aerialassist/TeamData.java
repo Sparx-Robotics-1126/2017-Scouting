@@ -1,8 +1,9 @@
 package org.gosparx.scouting.aerialassist;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 public class TeamData {
     private static Map<Integer, TeamData> teamsDataMap;
@@ -10,36 +11,27 @@ public class TeamData {
     private final int teamNumber;
     private final String eventName;
     private final String student;
-    private final BenchmarkingData currentBenchmarkingData;
-    private final Vector<ScoutingData> scoutingDatas;
+    private BenchmarkingData currentBenchmarkingData;
+    private List<ScoutingData> scoutingDatas;
 
-    private TeamData(BenchmarkingData benchmarkingData) {
-        this.teamNumber = benchmarkingData.getTeamNumber();
-        this.eventName = benchmarkingData.getEventName();
-        this.student = benchmarkingData.getStudent();
-        currentBenchmarkingData = benchmarkingData;
-        scoutingDatas = new Vector<>();
+    private TeamData(int teamNumber, String eventName, String student) {
+        this.teamNumber = teamNumber;
+        this.eventName = eventName;
+        this.student = student;
+        currentBenchmarkingData = new BenchmarkingData(teamNumber, eventName, student);
+        scoutingDatas = new ArrayList<>();
     }
 
     public static synchronized void setTeamData(int teamNumber, String eventName, String student){
-        setTeamData(new BenchmarkingData(teamNumber, eventName, student));
-    }
-
-    public static synchronized void setTeamData(BenchmarkingData benchmarkingData){
         if(teamsDataMap == null) {
             teamsDataMap = new HashMap<>();
         }
 
-        if(!teamsDataMap.containsKey(benchmarkingData.getTeamNumber())) {
-            TeamData teamData = new TeamData(benchmarkingData);
-            teamsDataMap.put(benchmarkingData.getTeamNumber(), teamData);
+        if(!teamsDataMap.containsKey(teamNumber)) {
+            TeamData teamData = new TeamData(teamNumber, eventName, student);
+            teamsDataMap.put(teamNumber, teamData);
         }
-        currentTeam = teamsDataMap.get(benchmarkingData.getTeamNumber());
-    }
-
-    public static synchronized void setTeamData(ScoutingData scoutingData){
-        setTeamData(new BenchmarkingData(scoutingData.getTeamNumber(), scoutingData.getEventName(), scoutingData.getStudent()));
-        currentTeam.addScoutingData(scoutingData);
+        currentTeam = teamsDataMap.get(teamNumber);
     }
 
     public static synchronized TeamData getCurrentTeam(){
@@ -60,11 +52,22 @@ public class TeamData {
 
     public BenchmarkingData getBenchmarkingData() { return currentBenchmarkingData; }
 
+    public void setBenchmarkingData(BenchmarkingData benchmarkingData) { this.currentBenchmarkingData = benchmarkingData; }
+
     public void addScoutingData(ScoutingData scoutingData) {
-        scoutingDatas.add(scoutingData);
+        boolean found = false;
+        for(ScoutingData sd : scoutingDatas) {
+            if(sd.getScoutingKey().contentEquals(scoutingData.getScoutingKey())) {
+                found = true;
+                break;
+            }
+        }
+        if(!found) {
+            scoutingDatas.add(scoutingData);
+        }
     }
 
-    public Vector<ScoutingData> getScoutingDatas() {
+    public List<ScoutingData> getScoutingDatas() {
         return scoutingDatas;
     }
 }
