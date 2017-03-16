@@ -200,6 +200,11 @@ public class ViewScreenListDataPump {
 
 
 */
+
+       List<String> scouting = new ArrayList<>();
+
+
+
         List<String> scaling = new ArrayList<>();
         if (!benchmarked) {
             scaling.add("<font color=\"black\"><b>Can scale: </b></font>");
@@ -232,6 +237,7 @@ public class ViewScreenListDataPump {
         expandableListDetail.put("Scaling", scaling);
         expandableListDetail.put("Auto", auto);
         expandableListDetail.put("Other Comments", otherComments);
+        expandableListDetail.put("Scouting", scouting);
         return expandableListDetail;
     }
 
