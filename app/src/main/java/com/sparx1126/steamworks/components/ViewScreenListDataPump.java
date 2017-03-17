@@ -8,6 +8,7 @@ import org.gosparx.scouting.aerialassist.TeamData;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 public class ViewScreenListDataPump {
     public static HashMap<String, List<String>> getData() {
@@ -213,14 +214,81 @@ public class ViewScreenListDataPump {
         float gearsDelivered = 0;
         float gearsCollectedFromFloor = 0;
         float gearsCollectedFromHuman = 0;
-        String scoresHighAuto = "";
+        float crossedBaseline = 0;
+        int highAutoShooting = 0;
+        int lowAutoShooting = 0;
+        int noAutoShooting= 0;
+        int highTeleop = 0;
+        String highTeleopString = "";
+        int lowTeleop = 0;
+        String lowTeleopString = "";
+        float fuelInHighCycle = 0;
+        //float numberOfHighCycles = 0;        <<<<<< NEED TO ADD OR I NEED GLASSES
+        float fuelInLowCycle = 0;
+        float numberOfLowCycles = 0;
+        float fuelCollectedHuman = 0;
+        float fuelCollectedHopper = 0;
+        float fuelCollectedFloor = 0;
+        int highGoalAcc = 0;
+        String highGoalAccString = "";
+
         for(ScoutingData sd: displayedInfo.getScoutingDatas()){
             hoppersDumped += sd.getHoppersDumped();
             gearsScored += sd.getGearsScored();
             gearsDelivered += sd.getGearsDelivered();
             gearsCollectedFromFloor += sd.getGearsCollectedFromFloor();
             gearsCollectedFromHuman += sd.getGearsFromHuman();
+            fuelInHighCycle += sd.getBallsInHighCycle();
+            fuelInLowCycle += sd.getFuelInLowCycle();
+            numberOfLowCycles += sd.getNumberOfLowCycles();
+            fuelCollectedHuman += sd.getBallsFromHuman();
+            fuelCollectedHopper += sd.getBallsFromHopper();
+            fuelCollectedFloor += sd.getBallsFromFloor();
 
+            if(Objects.equals(sd.getHighGoalAccuracy(), "Great")){
+                highGoalAcc += 2;
+            }
+            else if(Objects.equals(sd.getHighGoalAccuracy(), "OK")){
+                highGoalAcc++;
+            }
+            else if(Objects.equals(sd.getHighGoalAccuracy(), "Poor")){
+                //USELESS BUT I ADDED FOR SOME REASON
+            }
+
+            if(Objects.equals(sd.getAutoShooting(), "Shoots High")){
+                highAutoShooting++;
+            }
+            else if(Objects.equals(sd.getAutoShooting(), "Shoots Low")){
+                lowAutoShooting++;
+            }
+            else if(Objects.equals(sd.getAutoShooting(), "Doesn't Shoot")){
+                noAutoShooting++;
+            }
+
+            if(Objects.equals(sd.getScoresHighAuto(), "Often")){
+               highTeleop += 2;
+            }
+            else if(Objects.equals(sd.getScoresHighAuto(), "Sometimes")){
+                highTeleop++;
+            }
+            else if(Objects.equals(sd.getScoresHighAuto(), "Never")){
+                //do nothing (this else if isn't really needed)
+            }
+
+
+            if(Objects.equals(sd.getScoresLowAuto(), "Often")){
+                lowTeleop += 2;
+            }
+            else if(Objects.equals(sd.getScoresLowAuto(), "Sometimes")){
+                lowTeleop++;
+            }
+            else if(Objects.equals(sd.getScoresLowAuto(), "Never")){
+                //do nothing (this else if isn't really needed)
+            }
+
+            if(sd.isCrossedBaseline()){
+                crossedBaseline++;
+            }
             if(sd.isGearScoredRightAuto()){
                 gearsScoredRight++;
             }
@@ -235,24 +303,116 @@ public class ViewScreenListDataPump {
             }
 
         }
+
         hoppersDumped = hoppersDumped/displayedInfo.getScoutingDatas().size();
         gearsScored = gearsScored/displayedInfo.getScoutingDatas().size();
         gearsDelivered = gearsDelivered/displayedInfo.getScoutingDatas().size();
         gearsCollectedFromFloor = gearsCollectedFromFloor/displayedInfo.getScoutingDatas().size();
         gearsCollectedFromHuman = gearsCollectedFromHuman/displayedInfo.getScoutingDatas().size();
+        highTeleop = (highTeleop/displayedInfo.getScoutingDatas().size());
+        numberOfLowCycles = (numberOfLowCycles/displayedInfo.getScoutingDatas().size());
+        fuelCollectedHuman = (fuelCollectedHuman/displayedInfo.getScoutingDatas().size());
+        fuelCollectedHopper = (fuelCollectedHopper/displayedInfo.getScoutingDatas().size());
+        fuelCollectedFloor = (fuelCollectedFloor/displayedInfo.getScoutingDatas().size());
+        if(highTeleop == 0){
+            highTeleopString = "Never";
+        }
+        else if((highTeleop > 0) && (highTeleop < 1)){
+            highTeleopString = "rarely";
+        }
+        else if(highTeleop == 1){
+            highTeleopString = "Sometimes";
+        }
+        else if((highTeleop > 1) && (highTeleop < 2)){
+            highTeleopString = "Often";
+        }
+        else if(highTeleop == 2){
+            highTeleopString = "Very often";
+        }
+        if(lowTeleop == 0){
+            lowTeleopString = "Never";
+        }
+        else if((lowTeleop > 0) && (highTeleop < 1)){
+            lowTeleopString = "rarely";
+        }
+        else if(lowTeleop == 1){
+            lowTeleopString = "Sometimes";
+        }
+        else if((lowTeleop > 1) && (highTeleop < 2)){
+            lowTeleopString = "Often";
+        }
+        else if(lowTeleop == 2){
+           lowTeleopString = "Very often";
+        }
+        if(highGoalAcc == 0){
+            highGoalAccString = "Really bad";
+        }
+        else if((highGoalAcc > 0) && (highGoalAcc < 1)){
+            highGoalAccString = "poor";
+        }
+        else if(highGoalAcc == 1){
+            highGoalAccString = "ok";
+        }
+        else if((highGoalAcc > 1) && (highGoalAcc < 2)){
+            highGoalAccString = "pretty decent";
+        }
+        else if(highGoalAcc == 2){
+            highGoalAccString = "very good";
+        }
+        highAutoShooting = (highAutoShooting/displayedInfo.getScoutingDatas().size())*100;
+        lowAutoShooting = (lowAutoShooting/displayedInfo.getScoutingDatas().size())*100;
+        noAutoShooting = (noAutoShooting/displayedInfo.getScoutingDatas().size())*100;
+        crossedBaseline = (crossedBaseline/displayedInfo.getScoutingDatas().size())*100;
         gearsScoredRight = (gearsScoredRight/displayedInfo.getScoutingDatas().size())*100;
         gearsScoredCenter = (gearsScoredCenter/displayedInfo.getScoutingDatas().size())*100;
         gearsScoredLeft = (gearsScoredLeft/displayedInfo.getScoutingDatas().size())*100;
         didScale = (didScale/displayedInfo.getScoutingDatas().size())*100;
+        fuelInHighCycle = (fuelInHighCycle/displayedInfo.getScoutingDatas().size())*100;
+        fuelInLowCycle = (fuelInLowCycle/displayedInfo.getScoutingDatas().size())*100;
+
+        scouting.add("<font color=\"black\"><b>AUTO</b></font>");
+        scouting.add("<font color=\"black\"><b></b></font>");
+
+        scouting.add("<font color=\"black\"><b>Percent of matches baseline crossed:  </b></font>" + crossedBaseline + "%");
         scouting.add("<font color=\"black\"><b>Average hoppers dumped:  </b></font>" + hoppersDumped);
-        scouting.add("<font color=\"black\"><b>Percent of matches scaled:  </b></font>" + didScale + "%");
-        scouting.add("<font color=\"black\"><b>Percent of gears scored right in auto:  </b></font>" + gearsScoredRight + "%");
-        scouting.add("<font color=\"black\"><b>Percent of gears scored center in auto:  </b></font>" + gearsScoredCenter + "%");
-        scouting.add("<font color=\"black\"><b>Percent of gears scored left in auto:  </b></font>" + gearsScoredLeft + "%");
+        scouting.add("<font color=\"black\"><b>Percent of gears scored right:  </b></font>" + gearsScoredRight + "%");
+        scouting.add("<font color=\"black\"><b>Percent of gears scored center:  </b></font>" + gearsScoredCenter + "%");
+        scouting.add("<font color=\"black\"><b>Percent of gears scored left:  </b></font>" + gearsScoredLeft + "%");
+        scouting.add("<font color=\"black\"><b>Percent of times shot high:  </b></font>" + highAutoShooting + "%");
+        scouting.add("<font color=\"black\"><b>Percent of times shot low:  </b></font>" + lowAutoShooting + "%");
+        scouting.add("<font color=\"black\"><b>Percent of times did not shoot:  </b></font>" + noAutoShooting + "%");
+
+        scouting.add("<font color=\"black\"><b>TELEOP</b></font>");
+        scouting.add("<font color=\"black\"><b></b></font>");
+
+        scouting.add("<font color=\"black\"><b>Gears</b></font>");
         scouting.add("<font color=\"black\"><b>Average gears scored:  </b></font>" + gearsScored);
-        scouting.add("<font color=\"black\"><b>Average gears delivered:  </b></font>" + gearsDelivered);
         scouting.add("<font color=\"black\"><b>Average gears collected from floor:  </b></font>" + gearsCollectedFromFloor);
         scouting.add("<font color=\"black\"><b>Average gears collected from human:  </b></font>" + gearsCollectedFromHuman);
+        scouting.add("<font color=\"black\"><b></b></font>");
+
+        scouting.add("<font color=\"black\"><b>FUEL</b></font>");
+        scouting.add("<font color=\"black\"><b></b></font>");
+
+        scouting.add("<font color=\"black\"><b>Scores in high goal </b></font>" + highTeleopString);
+        scouting.add("<font color=\"black\"><b>Scores in low goal </b></font>" + lowTeleopString);
+        scouting.add("<font color=\"black\"><b>Average fuel in high cycle: </b></font>" + fuelInHighCycle);
+        scouting.add("<font color=\"black\"><b>Average amount of high cycles: </b></font>" + "(not currently in code)");
+        scouting.add("<font color=\"black\"><b>Average fuel in low cycle: </b></font>" + fuelInLowCycle);
+        scouting.add("<font color=\"black\"><b>Average number of low cycles: </b></font>" + numberOfLowCycles);
+        scouting.add("<font color=\"black\"><b>Average fuel collected from human: </b></font>" + fuelCollectedHuman);
+        scouting.add("<font color=\"black\"><b>Average fuel collected from hopper: </b></font>" + fuelCollectedHopper);
+        scouting.add("<font color=\"black\"><b>Average fuel collected from floor: </b></font>" + fuelCollectedFloor);
+        scouting.add("<font color=\"black\"><b>High goal accuracy: </b></font>" + highGoalAccString);
+        scouting.add("<font color=\"black\"><b></b></font>");
+
+        scouting.add("<font color=\"black\"><b>END GAME</b></font>");
+        scouting.add("<font color=\"black\"><b></b></font>");
+
+        scouting.add("<font color=\"black\"><b>Percent of matches scaled:  </b></font>" + didScale + "%");
+        scouting.add("<font color=\"black\"><b>Usually scaled from: JK not adding this because it's a manually entered string</b></font>");
+
+
 
 
         List<String> scaling = new ArrayList<>();
