@@ -390,7 +390,7 @@ public class MainScreen extends AppCompatActivity {
             if (eventFilter) {
                 for (int i = (eventsWeAreInArray.size() - 1); 0 <= i; i--) {
                     if (!eventsWeAreInArray.get(i).contentEquals(getResources().getString(R.string.our_competition_buckeye)) && !eventsWeAreInArray.get(i).contentEquals(getResources().getString(R.string.our_competition_flr))) {
-                            eventsWeAreInArray.remove(i);
+                        eventsWeAreInArray.remove(i);
                     }
                 }
                 eventsWeAreInArray.add(getResources().getString(R.string.filter_off));
