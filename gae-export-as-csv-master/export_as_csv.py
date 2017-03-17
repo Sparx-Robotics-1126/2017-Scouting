@@ -3,7 +3,7 @@
 # 	import export_as_csv
 
 import csv
-from db_model import MyModel
+from benchmarkingData import BenchmarkingData
 
 def exportToCsv(query, csvFileName, delimiter):
 	with open(csvFileName, 'wb') as csvFile:
@@ -33,11 +33,11 @@ def exportToCsv(query, csvFileName, delimiter):
 		print 'Finished saving all rows.'
 
 def writeHeader(csvWriter):
-	csvWriter.writerow(['Property1', 'Property2', 'Property3']) #Output csv header
+	csvWriter.writerow(['teamNumber', 'eventName', 'student', 'driveSystem', 'drivesSpeed', 'canPlayDefenseBenchButton', 'abilityToShootHighGoalBenchButton', 'typeOfShooterBenchInput', 'ballsPerSecondBenchInput', 'ballsInCycleBenchInput', 'cycleTimeHighBenchInput', 'shootingRangeBenchInput', 'preferredShootingLocationBenchInput', 'accuracyHighBenchInput', 'pickupBallHopperBenchButton', 'pickupBallFloorBenchButton', 'pickupBallHumanBenchButton', 'pickupBallPreferredBenchInput', 'maximumBallCapacityBenchInput', 'canScoreGearsBenchButton', 'pickupGearFloorBenchButton', 'pickupGearRetrievalBenchButton', 'radioPickupGearPreferred', 'canGearLeftBench', 'canGearCenterBench', 'canGearRightBench', 'radioPreferredGear', 'cycleTimeGearsBenchInput', 'abilityToShootLowGoalBenchButton', 'cycleTimeLowBenchInput', 'cycleNumberLowBenchInput', 'abilityScaleBenchButton', 'placesCanScaleRight', 'placesCanScaleCenter', 'placesCanScaleLeft', 'benchmarkWasDoneButton', 'preferredPlacesScaleInput', 'autoAbilitiesBench', 'commentsBench']) #Output csv header
 
 def saveItem(csvWriter, item):
-	csvWriter.writerow([item.property1, item.property2, item.property3]) # Save items in preferred format
+	csvWriter.writerow([item.teamNumber, item.eventName, item.student, item.driveSystem, item.drivesSpeed, item.canPlayDefenseBenchButton, item.abilityToShootHighGoalBenchButton, item.typeOfShooterBenchInput, item.ballsPerSecondBenchInput, item.ballsInCycleBenchInput, item.cycleTimeHighBenchInput, item.shootingRangeBenchInput, item.preferredShootingLocationBenchInput, item.accuracyHighBenchInput, item.pickupBallHopperBenchButton, item.pickupBallFloorBenchButton, item.pickupBallHumanBenchButton, item.pickupBallPreferredBenchInput, item.maximumBallCapacityBenchInput, item.canScoreGearsBenchButton, item.pickupGearFloorBenchButton, item.pickupGearRetrievalBenchButton, item.radioPickupGearPreferred, item.canGearLeftBench, item.canGearCenterBench, item.canGearRightBench, item.radioPreferredGear, item.cycleTimeGearsBenchInput, item.abilityToShootLowGoalBenchButton, item.cycleTimeLowBenchInput, item.cycleNumberLowBenchInput, item.abilityScaleBenchButton, item.placesCanScaleRight, item.placesCanScaleCenter, item.placesCanScaleLeft, item.benchmarkWasDoneButton, item.preferredPlacesScaleInput, item.autoAbilitiesBench, item.commentsBench]) # Save items in preferred format
 
 
-query = MyModel.gql("ORDER BY property1") #Query for items
+query = BenchmarkingData.gql("ORDER BY teamNumber") #Query for items
 exportToCsv(query, 'myExport.csv', ',')
