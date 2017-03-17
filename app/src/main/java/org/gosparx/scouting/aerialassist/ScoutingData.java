@@ -28,6 +28,7 @@ public class ScoutingData {
     private boolean didScale;
     private String whereScaled = "";
     private boolean matchScouted;
+    private String autoShooting;
 
     public ScoutingData(String scoutingKey, int teamNumber, String eventName, String student) {
         this.scoutingKey = scoutingKey;
@@ -118,9 +119,13 @@ public class ScoutingData {
 
     public void setScoresLowAuto(String scoresLowAuto) { this.scoresLowAuto = scoresLowAuto; }
 
-    public int getBallsInHighCycle() {
-        return ballsInHighCycle;
-    }
+    public String getDoesntScoreAuto() { return scoresLowAuto; }
+
+    public void setAutoShooting(String autoShooting) { this.autoShooting = autoShooting; }
+
+    public String getAutoShooting() { return autoShooting; }
+
+    public int getBallsInHighCycle() { return ballsInHighCycle; }
 
     public void setBallsInHighCycle(int ballsInHighCycle) { this.ballsInHighCycle = ballsInHighCycle; }
 

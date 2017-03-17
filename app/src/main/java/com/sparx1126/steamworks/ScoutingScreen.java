@@ -31,7 +31,7 @@ public class ScoutingScreen extends AppCompatActivity {
     private CheckBox putGearCenterAuto;
     private CheckBox putGearRightAuto;
     private EditText gearsScoredTeleInput;
-    private EditText gearsDeliveredInput;
+    //private EditText gearsDeliveredInput;
     private EditText numberOfGearsFromFloorInput;
     private EditText numberOfGearsFromHumanInput;
     private RadioButton scoresHighNeverAuto;
@@ -52,7 +52,9 @@ public class ScoutingScreen extends AppCompatActivity {
     private ToggleButton didScaleInput;
     private EditText scaledFromWhereInput;
     private ToggleButton matchScoutedInput;
-
+    private RadioButton scoresHighDuringAuto;
+    private RadioButton scoresLowDuringAuto;
+    private RadioButton doesntScoreDuringAuto;
     //   Zzzzz  |\      _,,,--,,_
     //          /,`.-'`'   ._  \-;;,_
     //         |,4-  ) )_   .;.(  `'-'
@@ -106,6 +108,9 @@ public class ScoutingScreen extends AppCompatActivity {
         matchScoutedInput = (ToggleButton) findViewById(R.id.matchScouted);
         Button submitScouting = (Button) findViewById(R.id.submitScouting);
         submitScouting.setOnClickListener(submitButtonClicked);
+        scoresHighDuringAuto = (RadioButton) findViewById(R.id.scoresHighAuto);
+        scoresLowDuringAuto = (RadioButton) findViewById(R.id.scoresLowAuto);
+        doesntScoreDuringAuto = (RadioButton) findViewById(R.id.doesntScoreAuto);
 
         ActionBar bar = getSupportActionBar();
         if(bar != null) {
@@ -193,6 +198,13 @@ public class ScoutingScreen extends AppCompatActivity {
         } else if (highGoalAccuracyScoutGreat.isChecked()) {
             scoutingBeingEntered.setHighGoalAccuracy("highGoalAccuracyScoutGreat");
         }
+        if (scoresHighDuringAuto.isChecked()) {
+            scoutingBeingEntered.setAutoShooting("scoresHighAuto");
+        } else if (scoresLowDuringAuto.isChecked()) {
+            scoutingBeingEntered.setAutoShooting("scoresLowAuto");
+        } else if (doesntScoreDuringAuto.isChecked()) {
+            scoutingBeingEntered.setAutoShooting("doesntScoreAuto");
+        }
         scoutingBeingEntered.setDidScale(didScaleInput.isChecked());
         scoutingBeingEntered.setWhereScaled(scaledFromWhereInput.getText().toString());
         scoutingBeingEntered.setMatchScouted(matchScoutedInput.isChecked());
@@ -223,6 +235,10 @@ public class ScoutingScreen extends AppCompatActivity {
         highGoalAccuracyScoutPoor.setChecked(false);
         highGoalAccuracyScoutOk.setChecked(false);
         highGoalAccuracyScoutGreat.setChecked(false);
+        scoresHighDuringAuto.setChecked(false);
+        scoresLowDuringAuto.setChecked(false);
+        doesntScoreDuringAuto.setChecked(false);
+
         didScaleInput.setChecked(false);
         scaledFromWhereInput.setText("");
         matchScoutedInput.setChecked(false);
