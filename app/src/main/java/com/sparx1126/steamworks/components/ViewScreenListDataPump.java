@@ -2,6 +2,7 @@ package com.sparx1126.steamworks.components;
 
 
 import org.gosparx.scouting.aerialassist.BenchmarkingData;
+import org.gosparx.scouting.aerialassist.ScoutingData;
 import org.gosparx.scouting.aerialassist.TeamData;
 
 import java.util.ArrayList;
@@ -130,9 +131,6 @@ public class ViewScreenListDataPump {
         if (benchmarkingData.getPickupBallPreferredBenchInput().equals("radioBallFloor")) {
             preferredBall = "Floor";
         }
-        if (benchmarkingData.getPickupBallPreferredBenchInput().equals("radioBallNone")) {
-            preferredBall = "No preference";
-        }
         shooting.add("<font color=\"black\"><b>Prefers to get balls from: </b></font>" + preferredBall);
         String maximumBallCapacity = "";
         if (benchmarkingData.getMaximumBallCapacityBenchInput() != Integer.MAX_VALUE) {
@@ -174,9 +172,6 @@ public class ViewScreenListDataPump {
         if (benchmarkingData.getRadioPreferredGear().equals("radioGearLeft")) {
             preferredGearScoring = "Left";
         }
-        if (benchmarkingData.getRadioPreferredGear().equals("radioGearNone")) {
-            preferredGearScoring = "None";
-        }
         gears.add("<font color=\"black\"><b>Prefers to score gears: </b></font>" + preferredGearScoring);
         if (!benchmarked) {
             gears.add("<font color=\"black\"><b>Can get gears from floor: </b></font>");
@@ -202,27 +197,75 @@ public class ViewScreenListDataPump {
         }
         gears.add("<font color=\"black\"><b>Cycle time: </b></font>" + cycleTimeGearsBenchInput);
 
+       /* List<String> lowGoal = new ArrayList<String>();
+
+
+*/
+
+       List<String> scouting = new ArrayList<>();
+        scouting.add("<font color=\"black\"><b>Matches scouted: </b></font>" + displayedInfo.getScoutingDatas().size());
+        float hoppersDumped = 0;
+        float gearsScoredRight = 0;
+        float gearsScoredCenter = 0;
+        float gearsScoredLeft = 0;
+        float didScale = 0;
+        float gearsScored = 0;
+        float gearsDelivered = 0;
+        float gearsCollectedFromFloor = 0;
+        float gearsCollectedFromHuman = 0;
+        String scoresHighAuto = "";
+        for(ScoutingData sd: displayedInfo.getScoutingDatas()){
+            hoppersDumped += sd.getHoppersDumped();
+            gearsScored += sd.getGearsScored();
+            gearsDelivered += sd.getGearsDelivered();
+            gearsCollectedFromFloor += sd.getGearsCollectedFromFloor();
+            gearsCollectedFromHuman += sd.getGearsFromHuman();
+
+            if(sd.isGearScoredRightAuto()){
+                gearsScoredRight++;
+            }
+            if(sd.isGearScoredCenterAuto()){
+                gearsScoredCenter++;
+            }
+            if(sd.isGearScoredLeftAuto()){
+                gearsScoredLeft++;
+            }
+            if(sd.isDidScale()){
+                didScale++;
+            }
+
+        }
+        hoppersDumped = hoppersDumped/displayedInfo.getScoutingDatas().size();
+        gearsScored = gearsScored/displayedInfo.getScoutingDatas().size();
+        gearsDelivered = gearsDelivered/displayedInfo.getScoutingDatas().size();
+        gearsCollectedFromFloor = gearsCollectedFromFloor/displayedInfo.getScoutingDatas().size();
+        gearsCollectedFromHuman = gearsCollectedFromHuman/displayedInfo.getScoutingDatas().size();
+        gearsScoredRight = (gearsScoredRight/displayedInfo.getScoutingDatas().size())*100;
+        gearsScoredCenter = (gearsScoredCenter/displayedInfo.getScoutingDatas().size())*100;
+        gearsScoredLeft = (gearsScoredLeft/displayedInfo.getScoutingDatas().size())*100;
+        didScale = (didScale/displayedInfo.getScoutingDatas().size())*100;
+        scouting.add("<font color=\"black\"><b>Average hoppers dumped:  </b></font>" + hoppersDumped);
+        scouting.add("<font color=\"black\"><b>Percent of matches scaled:  </b></font>" + didScale + "%");
+        scouting.add("<font color=\"black\"><b>Percent of gears scored right in auto:  </b></font>" + gearsScoredRight + "%");
+        scouting.add("<font color=\"black\"><b>Percent of gears scored center in auto:  </b></font>" + gearsScoredCenter + "%");
+        scouting.add("<font color=\"black\"><b>Percent of gears scored left in auto:  </b></font>" + gearsScoredLeft + "%");
+        scouting.add("<font color=\"black\"><b>Average gears scored:  </b></font>" + gearsScored);
+        scouting.add("<font color=\"black\"><b>Average gears delivered:  </b></font>" + gearsDelivered);
+        scouting.add("<font color=\"black\"><b>Average gears collected from floor:  </b></font>" + gearsCollectedFromFloor);
+        scouting.add("<font color=\"black\"><b>Average gears collected from human:  </b></font>" + gearsCollectedFromHuman);
+
+
         List<String> scaling = new ArrayList<>();
         if (!benchmarked) {
             scaling.add("<font color=\"black\"><b>Can scale: </b></font>");
         } else {
             scaling.add("<font color=\"black\"><b>Can scale: </b></font>" + benchmarkingData.isAbilityScaleBenchButton());
         }
-        String preferredScaleLocation = "";
-        if(benchmarkingData.getPreferredPlacesScaleInput() == "radioPreferredPlacesScaleRight") {
-            preferredScaleLocation = "Right";
+        if (benchmarkingData.getPreferredPlacesScaleInput().isEmpty()) {
+            scaling.add("<font color=\"black\"><b>Prefers to scale from: </b></font>");
+        } else {
+            scaling.add("<font color=\"black\"><b>Prefers to scale from: </b></font>" + benchmarkingData.getPreferredPlacesScaleInput());
         }
-        if(benchmarkingData.getPreferredPlacesScaleInput() == "radioPreferredPlacesScaleCenter") {
-            preferredScaleLocation = "Cen ter";
-        }
-        if(benchmarkingData.getPreferredPlacesScaleInput() == "radioPreferredPlacesScaleLeft") {
-            preferredScaleLocation = "Left";
-        }
-        if(benchmarkingData.getPreferredPlacesScaleInput() == "radioPreferredPlacesScaleNone") {
-            preferredScaleLocation = "No preference";
-        }
-            scaling.add("<font color=\"black\"><b>Prefers to scale from: </b></font>" + preferredScaleLocation);
-
 
         List<String> auto = new ArrayList<>();
         String autoAbilities = "";
@@ -244,6 +287,7 @@ public class ViewScreenListDataPump {
         expandableListDetail.put("Scaling", scaling);
         expandableListDetail.put("Auto", auto);
         expandableListDetail.put("Other Comments", otherComments);
+        expandableListDetail.put("Scouting", scouting);
         return expandableListDetail;
     }
 
