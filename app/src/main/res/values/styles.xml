@@ -27,7 +27,7 @@
 
     <style name="BigButton">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">150dp</item>
+        <item name="android:layout_height">130dp</item>
         <item name="android:backgroundTint">@color/colorSparxRed</item>
         <item name="android:textColor">@color/colorWhite</item>
         <item name="android:textSize">@dimen/text_size_normal</item>

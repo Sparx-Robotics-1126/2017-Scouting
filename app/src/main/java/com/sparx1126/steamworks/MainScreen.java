@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,6 +55,7 @@ public class MainScreen extends AppCompatActivity {
     private Button benchmarkAuto;
     private Button scout;
     private Button view;
+    private Button teamChecklist;
     private SharedPreferences settings;
     private List<String> eventsNearToday;
     private List<String> eventsWeAreInArray;
@@ -98,6 +100,11 @@ public class MainScreen extends AppCompatActivity {
         view = (Button) findViewById(R.id.viewButton);
         view.setOnClickListener(buttonClicked);
         view.setVisibility(View.INVISIBLE);
+
+        teamChecklist = (Button) findViewById(R.id.teamChecklist);
+        teamChecklist.setOnClickListener(buttonClicked);
+        teamChecklist.setVisibility(View.INVISIBLE);
+
 
         settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
 
@@ -265,6 +272,9 @@ public class MainScreen extends AppCompatActivity {
                 case R.id.viewButton:
                     destination = ViewScreen.class;
                     break;
+                case R.id.teamChecklist:
+                    destination = TeamChecklistScreen.class;
+                    break;
             }
             TeamData.setTeamData(getTeamNumber(), getEventName(), getScouterName());
 
@@ -363,16 +373,19 @@ public class MainScreen extends AppCompatActivity {
             if (teamsList.contains(teamText.getText().toString())) {
                 benchmarkAuto.setVisibility(View.VISIBLE);
                 view.setVisibility(View.VISIBLE);
+                teamChecklist.setVisibility(View.VISIBLE);
                 scout.setVisibility(View.VISIBLE);
             } else {
                 benchmarkAuto.setVisibility(INVISIBLE);
                 view.setVisibility(INVISIBLE);
+                teamChecklist.setVisibility(INVISIBLE);
                 scout.setVisibility(INVISIBLE);
             }
         } else {
             teamText.setVisibility(INVISIBLE);
             benchmarkAuto.setVisibility(INVISIBLE);
             view.setVisibility(INVISIBLE);
+            teamChecklist.setVisibility(INVISIBLE);
             scout.setVisibility(INVISIBLE);
         }
     }
@@ -508,6 +521,9 @@ public class MainScreen extends AppCompatActivity {
                 teamsList.add(teamNumber);
             }
         }
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(getResources().getString(R.string.pref_number_teams), TextUtils.join(",", teamsList));
+        editor.apply();
         teamNumberChecker();
     }
 }

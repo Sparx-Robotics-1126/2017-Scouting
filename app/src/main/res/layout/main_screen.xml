@@ -36,13 +36,18 @@
     <Button android:text="@string/scout"
         android:id="@+id/scoutButton"
         android:layout_above="@+id/viewButton"
-
         style="@style/BigButton"/>
 
     <Button android:text="@string/view"
         android:id="@+id/viewButton"
-        android:layout_alignEnd="@+id/scoutButton"
+        style="@style/BigButton"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/teamChecklist" />
+
+    <Button android:text="teamChecklist"
+        android:id="@+id/teamChecklist"
+        style="@style/BigButton"
         android:layout_alignParentBottom="true"
-        style="@style/BigButton"/>
+        android:layout_alignParentStart="true" />
 
 </RelativeLayout>
