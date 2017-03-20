@@ -64,7 +64,7 @@ public class MainScreen extends AppCompatActivity {
     private List<String> teamsList;
     private boolean eventSelected = false;
     private boolean eventFilter = true;
-    private static final int COMPETITION_Threshold = 3;
+    private static final int COMPETITION_Threshold = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -489,7 +489,7 @@ public class MainScreen extends AppCompatActivity {
                                         MainScreen.this.runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                if (success) {
+                                                /*if (success) {
                                                     utility.downloadPictures(MainScreen.this, false, new NetworkCallback() {
                                                         @Override
                                                         public void handleFinishDownload(final boolean success) {
@@ -500,7 +500,7 @@ public class MainScreen extends AppCompatActivity {
                                                             });
                                                         }
                                                     });
-                                                }
+                                                }*/
                                             }
                                         });
                                     }

@@ -374,6 +374,23 @@
                     style="@style/ShortEditText" />
 
             </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView android:labelFor="@+id/commentsScouting"
+                    android:text="Comments"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/commentsScouting"
+                    android:hint="Required"
+                    style="@style/MultiLongEditText"
+                    android:layout_width="360dp"
+                    android:maxLength="400"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;0123456789 " />
+
+            </LinearLayout>
         </LinearLayout>
 
         <LinearLayout android:orientation="horizontal"
