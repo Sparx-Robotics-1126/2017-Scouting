@@ -303,72 +303,61 @@ public class ViewScreenListDataPump {
             }
 
         }
-
-        hoppersDumped = hoppersDumped/displayedInfo.getScoutingDatas().size();
-        gearsScored = gearsScored/displayedInfo.getScoutingDatas().size();
-        gearsDelivered = gearsDelivered/displayedInfo.getScoutingDatas().size();
-        gearsCollectedFromFloor = gearsCollectedFromFloor/displayedInfo.getScoutingDatas().size();
-        gearsCollectedFromHuman = gearsCollectedFromHuman/displayedInfo.getScoutingDatas().size();
-        highTeleop = (highTeleop/displayedInfo.getScoutingDatas().size());
-        numberOfLowCycles = (numberOfLowCycles/displayedInfo.getScoutingDatas().size());
-        fuelCollectedHuman = (fuelCollectedHuman/displayedInfo.getScoutingDatas().size());
-        fuelCollectedHopper = (fuelCollectedHopper/displayedInfo.getScoutingDatas().size());
-        fuelCollectedFloor = (fuelCollectedFloor/displayedInfo.getScoutingDatas().size());
-        if(highTeleop == 0){
-            highTeleopString = "Never";
-        }
-        else if((highTeleop > 0) && (highTeleop < 1)){
-            highTeleopString = "rarely";
-        }
-        else if(highTeleop == 1){
-            highTeleopString = "Sometimes";
-        }
-        else if((highTeleop > 1) && (highTeleop < 2)){
-            highTeleopString = "Often";
-        }
-        else if(highTeleop == 2){
-            highTeleopString = "Very often";
-        }
-        if(lowTeleop == 0){
-            lowTeleopString = "Never";
-        }
-        else if((lowTeleop > 0) && (highTeleop < 1)){
-            lowTeleopString = "rarely";
-        }
-        else if(lowTeleop == 1){
-            lowTeleopString = "Sometimes";
-        }
-        else if((lowTeleop > 1) && (highTeleop < 2)){
-            lowTeleopString = "Often";
-        }
-        else if(lowTeleop == 2){
-           lowTeleopString = "Very often";
-        }
-        if(highGoalAcc == 0){
-            highGoalAccString = "Really bad";
-        }
-        else if((highGoalAcc > 0) && (highGoalAcc < 1)){
-            highGoalAccString = "poor";
-        }
-        else if(highGoalAcc == 1){
-            highGoalAccString = "ok";
-        }
-        else if((highGoalAcc > 1) && (highGoalAcc < 2)){
-            highGoalAccString = "pretty decent";
-        }
-        else if(highGoalAcc == 2){
-            highGoalAccString = "very good";
-        }
-        highAutoShooting = (highAutoShooting/displayedInfo.getScoutingDatas().size())*100;
-        lowAutoShooting = (lowAutoShooting/displayedInfo.getScoutingDatas().size())*100;
-        noAutoShooting = (noAutoShooting/displayedInfo.getScoutingDatas().size())*100;
-        crossedBaseline = (crossedBaseline/displayedInfo.getScoutingDatas().size())*100;
-        gearsScoredRight = (gearsScoredRight/displayedInfo.getScoutingDatas().size())*100;
-        gearsScoredCenter = (gearsScoredCenter/displayedInfo.getScoutingDatas().size())*100;
-        gearsScoredLeft = (gearsScoredLeft/displayedInfo.getScoutingDatas().size())*100;
-        didScale = (didScale/displayedInfo.getScoutingDatas().size())*100;
-        fuelInHighCycle = (fuelInHighCycle/displayedInfo.getScoutingDatas().size())*100;
-        fuelInLowCycle = (fuelInLowCycle/displayedInfo.getScoutingDatas().size())*100;
+if(displayedInfo.getScoutingDatas().size() != 0) {
+    hoppersDumped = hoppersDumped / displayedInfo.getScoutingDatas().size();
+    gearsScored = gearsScored / displayedInfo.getScoutingDatas().size();
+    gearsDelivered = gearsDelivered / displayedInfo.getScoutingDatas().size();
+    gearsCollectedFromFloor = gearsCollectedFromFloor / displayedInfo.getScoutingDatas().size();
+    gearsCollectedFromHuman = gearsCollectedFromHuman / displayedInfo.getScoutingDatas().size();
+    highTeleop = (highTeleop / displayedInfo.getScoutingDatas().size());
+    numberOfLowCycles = (numberOfLowCycles / displayedInfo.getScoutingDatas().size());
+    fuelCollectedHuman = (fuelCollectedHuman / displayedInfo.getScoutingDatas().size());
+    fuelCollectedHopper = (fuelCollectedHopper / displayedInfo.getScoutingDatas().size());
+    fuelCollectedFloor = (fuelCollectedFloor / displayedInfo.getScoutingDatas().size());
+    if (highTeleop == 0) {
+        highTeleopString = "Never";
+    } else if ((highTeleop > 0) && (highTeleop < 1)) {
+        highTeleopString = "rarely";
+    } else if (highTeleop == 1) {
+        highTeleopString = "Sometimes";
+    } else if ((highTeleop > 1) && (highTeleop < 2)) {
+        highTeleopString = "Often";
+    } else if (highTeleop == 2) {
+        highTeleopString = "Very often";
+    }
+    if (lowTeleop == 0) {
+        lowTeleopString = "Never";
+    } else if ((lowTeleop > 0) && (highTeleop < 1)) {
+        lowTeleopString = "rarely";
+    } else if (lowTeleop == 1) {
+        lowTeleopString = "Sometimes";
+    } else if ((lowTeleop > 1) && (highTeleop < 2)) {
+        lowTeleopString = "Often";
+    } else if (lowTeleop == 2) {
+        lowTeleopString = "Very often";
+    }
+    if (highGoalAcc == 0) {
+        highGoalAccString = "Really bad";
+    } else if ((highGoalAcc > 0) && (highGoalAcc < 1)) {
+        highGoalAccString = "poor";
+    } else if (highGoalAcc == 1) {
+        highGoalAccString = "ok";
+    } else if ((highGoalAcc > 1) && (highGoalAcc < 2)) {
+        highGoalAccString = "pretty decent";
+    } else if (highGoalAcc == 2) {
+        highGoalAccString = "very good";
+    }
+    highAutoShooting = (highAutoShooting / displayedInfo.getScoutingDatas().size()) * 100;
+    lowAutoShooting = (lowAutoShooting / displayedInfo.getScoutingDatas().size()) * 100;
+    noAutoShooting = (noAutoShooting / displayedInfo.getScoutingDatas().size()) * 100;
+    crossedBaseline = (crossedBaseline / displayedInfo.getScoutingDatas().size()) * 100;
+    gearsScoredRight = (gearsScoredRight / displayedInfo.getScoutingDatas().size()) * 100;
+    gearsScoredCenter = (gearsScoredCenter / displayedInfo.getScoutingDatas().size()) * 100;
+    gearsScoredLeft = (gearsScoredLeft / displayedInfo.getScoutingDatas().size()) * 100;
+    didScale = (didScale / displayedInfo.getScoutingDatas().size()) * 100;
+    fuelInHighCycle = (fuelInHighCycle / displayedInfo.getScoutingDatas().size()) * 100;
+    fuelInLowCycle = (fuelInLowCycle / displayedInfo.getScoutingDatas().size()) * 100;
+}
 
         scouting.add("<font color=\"black\"><b>AUTO</b></font>");
         scouting.add("<font color=\"black\"><b></b></font>");

@@ -51,6 +51,7 @@ public class ScoutingScreen extends AppCompatActivity {
     private RadioButton highGoalAccuracyScoutGreat;
     private ToggleButton didScaleInput;
     private EditText scaledFromWhereInput;
+    private EditText scoutingComments;
     private ToggleButton matchScoutedInput;
     private RadioButton scoresHighDuringAuto;
     private RadioButton scoresLowDuringAuto;
@@ -105,6 +106,7 @@ public class ScoutingScreen extends AppCompatActivity {
         highGoalAccuracyScoutGreat = (RadioButton) findViewById(R.id.highGoalAccuracyScoutGreat);
         didScaleInput = (ToggleButton) findViewById(R.id.didTheyScale);
         scaledFromWhereInput = (EditText) findViewById(R.id.scaledFromWhereInput);
+        scoutingComments = (EditText) findViewById(R.id.commentsScouting);
         matchScoutedInput = (ToggleButton) findViewById(R.id.matchScouted);
         Button submitScouting = (Button) findViewById(R.id.submitScouting);
         submitScouting.setOnClickListener(submitButtonClicked);
@@ -207,6 +209,7 @@ public class ScoutingScreen extends AppCompatActivity {
         }
         scoutingBeingEntered.setDidScale(didScaleInput.isChecked());
         scoutingBeingEntered.setWhereScaled(scaledFromWhereInput.getText().toString());
+        scoutingBeingEntered.setScoutingComments(scoutingComments.getText().toString());
         scoutingBeingEntered.setMatchScouted(matchScoutedInput.isChecked());
     }
 
@@ -241,6 +244,7 @@ public class ScoutingScreen extends AppCompatActivity {
 
         didScaleInput.setChecked(false);
         scaledFromWhereInput.setText("");
+        scoutingComments.setText("");
         matchScoutedInput.setChecked(false);
     }
 
