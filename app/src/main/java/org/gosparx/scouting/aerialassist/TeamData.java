@@ -10,25 +10,24 @@ public class TeamData {
     private static TeamData currentTeam;
     private final int teamNumber;
     private final String eventName;
-    private final String student;
+    private String student;
     private BenchmarkingData currentBenchmarkingData;
     private List<ScoutingData> scoutingDatas;
 
-    private TeamData(int teamNumber, String eventName, String student) {
+    private TeamData(int teamNumber, String eventName) {
         this.teamNumber = teamNumber;
         this.eventName = eventName;
-        this.student = student;
-        currentBenchmarkingData = new BenchmarkingData(teamNumber, eventName, student);
+        currentBenchmarkingData = new BenchmarkingData(teamNumber, eventName);
         scoutingDatas = new ArrayList<>();
     }
 
-    public static synchronized void setTeamData(int teamNumber, String eventName, String student){
+    public static synchronized void setTeamData(int teamNumber, String eventName){
         if(teamsDataMap == null) {
             teamsDataMap = new HashMap<>();
         }
 
         if(!teamsDataMap.containsKey(teamNumber)) {
-            TeamData teamData = new TeamData(teamNumber, eventName, student);
+            TeamData teamData = new TeamData(teamNumber, eventName);
             teamsDataMap.put(teamNumber, teamData);
         }
         currentTeam = teamsDataMap.get(teamNumber);
@@ -49,6 +48,8 @@ public class TeamData {
     }
 
     public String getStudent() { return student; }
+
+    public void setStudent(String student) {this.student = student; }
 
     public BenchmarkingData getBenchmarkingData() { return currentBenchmarkingData; }
 

@@ -138,7 +138,7 @@
     <string name="scouting_title">Scouting -</string>
     <string name="view_title">View -</string>
     <string name="benchmark_not_done">Benchmarking Was Not Done</string>
-    <string name="check_submit_buttom">The button was probably not checked.</string>
+    <string name="check_submit_buttom">The button was probably not checked or there was no picture taken of this team.</string>
     <string name="scouting_not_done">Scouting Was Not Done</string>
     <string-array name="students">
         <item>Michael Anderson</item>
@@ -157,7 +157,7 @@
         <item>Jeffary Graf</item>
         <item>Jack Griebel</item>
         <item>James Hart</item>
-        <item>Natan Hunt</item>
+        <item>Nathan Hunt</item>
         <item>Brian Jimenez</item>
         <item>Annabelle Kedley</item>
         <item>Amanda Longhenry</item>
