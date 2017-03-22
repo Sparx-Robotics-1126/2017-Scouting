@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -65,12 +66,15 @@ public class MainScreen extends AppCompatActivity {
     private boolean eventSelected = false;
     private boolean eventFilter = true;
     private static final int COMPETITION_Threshold = 4;
+    private MediaPlayer mediaPlayer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
-
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.main_menu_music);
+        mediaPlayer.start();
         blueAlliance = BlueAlliance.getInstance(this);
         dbHelper = DatabaseHelper.getInstance(this);
         utility = Utility.getInstance();
@@ -116,6 +120,7 @@ public class MainScreen extends AppCompatActivity {
         restorePreferences();
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -135,6 +140,13 @@ public class MainScreen extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mediaPlayer.stop();
+
     }
 
     @Override
