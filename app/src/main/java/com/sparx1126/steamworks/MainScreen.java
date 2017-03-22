@@ -66,6 +66,7 @@ public class MainScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
 
@@ -87,9 +88,7 @@ public class MainScreen extends AppCompatActivity {
         teamText.addTextChangedListener(teamTextEntered);
         teamText.setVisibility(View.INVISIBLE);
 
-        benchmarkAuto = (Button) findViewById(R.id.benchmarkButton);
-        benchmarkAuto.setOnClickListener(buttonClicked);
-        benchmarkAuto.setVisibility(View.INVISIBLE);
+
 
         scout = (Button) findViewById(R.id.scoutButton);
         scout.setOnClickListener(buttonClicked);
