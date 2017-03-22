@@ -49,7 +49,11 @@ public class TeamData {
 
     public String getStudent() { return student; }
 
-    public void setStudent(String student) {this.student = student; }
+    public void setStudent(String student) {
+        this.student = student;
+        if(currentBenchmarkingData != null)
+            currentBenchmarkingData.setStudent(student);
+    }
 
     public BenchmarkingData getBenchmarkingData() { return currentBenchmarkingData; }
 

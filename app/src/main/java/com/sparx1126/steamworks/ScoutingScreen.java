@@ -34,23 +34,18 @@ public class ScoutingScreen extends AppCompatActivity {
     //private EditText gearsDeliveredInput;
     private EditText numberOfGearsFromFloorInput;
     private EditText numberOfGearsFromHumanInput;
-    private RadioButton scoresHighNeverAuto;
-    private RadioButton scoresHighSometimesAuto;
-    private RadioButton scoresHighOftenAuto;
-    private RadioButton scoresLowNeverAuto;
-    private RadioButton scoresLowSometimesAuto;
-    private RadioButton scoresLowOftenAuto;
     private EditText numberOfBallsScoredHighGoalInput;
     private EditText timesCollectedFromHumanInput;
     private EditText timesCollectedFromHopperInput;
     private EditText timesCollectedFromFloorInput;
     private EditText fuelScoredLowGoalCycleInput;
-    private EditText numberOfLowGoalCyclesInput;
     private RadioButton highGoalAccuracyScoutPoor;
     private RadioButton highGoalAccuracyScoutOk;
     private RadioButton highGoalAccuracyScoutGreat;
     private ToggleButton didScaleInput;
-    private EditText scaledFromWhereInput;
+    private RadioButton scaledLeft;
+    private RadioButton scaledCenter;
+    private RadioButton scaledRight;
     private EditText scoutingComments;
     private ToggleButton matchScoutedInput;
     private RadioButton scoresHighDuringAuto;
@@ -89,23 +84,18 @@ public class ScoutingScreen extends AppCompatActivity {
         //gearsDeliveredInput = (EditText) findViewById(R.id.gearsDeliveredInput).findViewById(R.id.edit_text);
         numberOfGearsFromFloorInput = (EditText) findViewById(R.id.numberOfGearsFromFloorInput).findViewById(R.id.edit_text);
         numberOfGearsFromHumanInput = (EditText) findViewById(R.id.numberOfGearsFromHumanInput).findViewById(R.id.edit_text);
-        scoresHighNeverAuto = (RadioButton) findViewById(R.id.scoresHighNeverAuto);
-        scoresHighSometimesAuto = (RadioButton) findViewById(R.id.scoresHighSometimesAuto);
-        scoresHighOftenAuto = (RadioButton) findViewById(R.id.scoresHighOftenAuto);
-        scoresLowNeverAuto = (RadioButton) findViewById(R.id.scoresLowNeverAuto);
-        scoresLowSometimesAuto = (RadioButton) findViewById(R.id.scoresLowSometimesAuto);
-        scoresLowOftenAuto = (RadioButton) findViewById(R.id.scoresLowOftenAuto);
         numberOfBallsScoredHighGoalInput = (EditText) findViewById(R.id.numberOfBallsScoredHighGoalInput).findViewById(R.id.edit_text);
         timesCollectedFromHumanInput = (EditText) findViewById(R.id.timesCollectedFromHumanInput).findViewById(R.id.edit_text);
         timesCollectedFromHopperInput = (EditText) findViewById(R.id.timesCollectedFromHopperInput).findViewById(R.id.edit_text);
         timesCollectedFromFloorInput = (EditText) findViewById(R.id.timesCollectedFromFloorInput).findViewById(R.id.edit_text);
         fuelScoredLowGoalCycleInput = (EditText) findViewById(R.id.fuelScoredLowGoalCycleInput).findViewById(R.id.edit_text);
-        numberOfLowGoalCyclesInput = (EditText) findViewById(R.id.numberOfLowGoalCyclesInput).findViewById(R.id.edit_text);
         highGoalAccuracyScoutPoor = (RadioButton) findViewById(R.id.highGoalAccuracyScoutPoor);
         highGoalAccuracyScoutOk = (RadioButton) findViewById(R.id.highGoalAccuracyScoutOk);
         highGoalAccuracyScoutGreat = (RadioButton) findViewById(R.id.highGoalAccuracyScoutGreat);
         didScaleInput = (ToggleButton) findViewById(R.id.didTheyScale);
-        scaledFromWhereInput = (EditText) findViewById(R.id.scaledFromWhereInput);
+        scaledLeft = (RadioButton) findViewById(R.id.scaledFromLeft);
+        scaledCenter = (RadioButton) findViewById(R.id.scaledFromCenter);
+        scaledRight = (RadioButton) findViewById(R.id.scaledFromRight);
         scoutingComments = (EditText) findViewById(R.id.commentsScouting);
         matchScoutedInput = (ToggleButton) findViewById(R.id.matchScouted);
         Button submitScouting = (Button) findViewById(R.id.submitScouting);
@@ -155,20 +145,6 @@ public class ScoutingScreen extends AppCompatActivity {
         if (!valueAsSring.isEmpty()) {
             scoutingBeingEntered.setGearsFromHuman(Integer.parseInt(valueAsSring));
         }
-        if (scoresHighNeverAuto.isChecked()) {
-            scoutingBeingEntered.setScoresHighAuto("scoresHighNeverAuto");
-        } else if (scoresHighSometimesAuto.isChecked()) {
-            scoutingBeingEntered.setScoresHighAuto("scoresHighSometimesAuto");
-        } else if (scoresHighOftenAuto.isChecked()) {
-            scoutingBeingEntered.setScoresHighAuto("scoresHighOftenAuto");
-        }
-        if (scoresLowNeverAuto.isChecked()) {
-            scoutingBeingEntered.setScoresLowAuto("scoresLowNeverAuto");
-        } else if (scoresLowSometimesAuto.isChecked()) {
-            scoutingBeingEntered.setScoresLowAuto("scoresLowSometimesAuto");
-        } else if (scoresLowOftenAuto.isChecked()) {
-            scoutingBeingEntered.setScoresLowAuto("scoresLowOftenAuto");
-        }
         valueAsSring = numberOfBallsScoredHighGoalInput.getText().toString();
         if (!valueAsSring.isEmpty()) {
             scoutingBeingEntered.setBallsInHighCycle(Integer.parseInt(valueAsSring));
@@ -189,10 +165,6 @@ public class ScoutingScreen extends AppCompatActivity {
         if (!valueAsSring.isEmpty()) {
             scoutingBeingEntered.setFuelInLowCycle(Integer.parseInt(valueAsSring));
         }
-        valueAsSring = numberOfLowGoalCyclesInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
-            scoutingBeingEntered.setNumberOfLowCycles(Integer.parseInt(valueAsSring));
-        }
         if (highGoalAccuracyScoutPoor.isChecked()) {
             scoutingBeingEntered.setHighGoalAccuracy("highGoalAccuracyScoutPoor");
         } else if (highGoalAccuracyScoutOk.isChecked()) {
@@ -208,7 +180,13 @@ public class ScoutingScreen extends AppCompatActivity {
             scoutingBeingEntered.setAutoShooting("doesntScoreAuto");
         }
         scoutingBeingEntered.setDidScale(didScaleInput.isChecked());
-        scoutingBeingEntered.setWhereScaled(scaledFromWhereInput.getText().toString());
+        if (scaledLeft.isChecked()) {
+            scoutingBeingEntered.setWhereScaled("scaledLeft");
+        } else if (scaledCenter.isChecked()) {
+            scoutingBeingEntered.setWhereScaled("scaledCenter");
+        } else if (scaledRight.isChecked()) {
+            scoutingBeingEntered.setWhereScaled("scaledRight");
+        }
         scoutingBeingEntered.setScoutingComments(scoutingComments.getText().toString());
         scoutingBeingEntered.setMatchScouted(matchScoutedInput.isChecked());
     }
@@ -223,18 +201,11 @@ public class ScoutingScreen extends AppCompatActivity {
         //gearsDeliveredInput.setText("0");
         numberOfGearsFromFloorInput.setText("0");
         numberOfGearsFromHumanInput.setText("0");
-        scoresHighNeverAuto.setChecked(false);
-        scoresHighSometimesAuto.setChecked(false);
-        scoresHighOftenAuto.setChecked(false);
-        scoresLowNeverAuto.setChecked(false);
-        scoresLowSometimesAuto.setChecked(false);
-        scoresLowOftenAuto.setChecked(false);
         numberOfBallsScoredHighGoalInput.setText("0");
         timesCollectedFromHumanInput.setText("0");
         timesCollectedFromHopperInput.setText("0");
         timesCollectedFromFloorInput.setText("0");
         fuelScoredLowGoalCycleInput.setText("0");
-        numberOfLowGoalCyclesInput.setText("0");
         highGoalAccuracyScoutPoor.setChecked(false);
         highGoalAccuracyScoutOk.setChecked(false);
         highGoalAccuracyScoutGreat.setChecked(false);
@@ -243,7 +214,9 @@ public class ScoutingScreen extends AppCompatActivity {
         doesntScoreDuringAuto.setChecked(false);
 
         didScaleInput.setChecked(false);
-        scaledFromWhereInput.setText("");
+        scaledLeft.setChecked(false);
+        scaledCenter.setChecked(false);
+        scaledRight.setChecked(false);
         scoutingComments.setText("");
         matchScoutedInput.setChecked(false);
     }
