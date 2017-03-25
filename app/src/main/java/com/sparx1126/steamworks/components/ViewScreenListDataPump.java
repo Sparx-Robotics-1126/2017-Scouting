@@ -240,7 +240,6 @@ public class ViewScreenListDataPump {
             gearsCollectedFromHuman += sd.getGearsFromHuman();
             fuelInHighCycle += sd.getBallsInHighCycle();
             fuelInLowCycle += sd.getFuelInLowCycle();
-            numberOfLowCycles += sd.getNumberOfLowCycles();
             fuelCollectedHuman += sd.getBallsFromHuman();
             fuelCollectedHopper += sd.getBallsFromHopper();
             fuelCollectedFloor += sd.getBallsFromFloor();

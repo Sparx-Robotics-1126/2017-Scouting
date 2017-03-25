@@ -18,8 +18,6 @@ import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.ScoutingData;
 
 import static com.sparx1126.steamworks.R.layout.scouting_screen;
-// fuel scored in cycle ---> fuel scored total
-//remove number of low goal cycles
 //where did they scael from, add buttons
 public class ScoutingScreen extends AppCompatActivity {
     private DatabaseHelper dbHelper;
@@ -102,8 +100,7 @@ public class ScoutingScreen extends AppCompatActivity {
         timesCollectedFromHopperInput = (EditText) findViewById(R.id.timesCollectedFromHopperInput).findViewById(R.id.edit_text);
         timesCollectedFromFloorInput = (EditText) findViewById(R.id.timesCollectedFromFloorInput).findViewById(R.id.edit_text);
         fuelScoredLowGoalCycleInput = (EditText) findViewById(R.id.fuelScoredLowGoalCycleInput).findViewById(R.id.edit_text);
-        numberOfLowGoalCyclesInput = (EditText) findViewById(R.id.numberOfLowGoalCyclesInput).findViewById(R.id.edit_text);
-        highGoalAccuracyScoutPoor = (RadioButton) findViewById(R.id.highGoalAccuracyScoutPoor);
+//        highGoalAccuracyScoutPoor = (RadioButton) findViewById(R.id.highGoalAccuracyScoutPoor);
         highGoalAccuracyScoutOk = (RadioButton) findViewById(R.id.highGoalAccuracyScoutOk);
         highGoalAccuracyScoutGreat = (RadioButton) findViewById(R.id.highGoalAccuracyScoutGreat);
         didScaleInput = (ToggleButton) findViewById(R.id.didTheyScale);
@@ -191,10 +188,10 @@ public class ScoutingScreen extends AppCompatActivity {
         if (!valueAsSring.isEmpty()) {
             scoutingBeingEntered.setFuelInLowCycle(Integer.parseInt(valueAsSring));
         }
-        valueAsSring = numberOfLowGoalCyclesInput.getText().toString();
+/*       valueAsSring = numberOfLowGoalCyclesInput.getText().toString();
         if (!valueAsSring.isEmpty()) {
             scoutingBeingEntered.setNumberOfLowCycles(Integer.parseInt(valueAsSring));
-        }
+        } */
         if (highGoalAccuracyScoutPoor.isChecked()) {
             scoutingBeingEntered.setHighGoalAccuracy("highGoalAccuracyScoutPoor");
         } else if (highGoalAccuracyScoutOk.isChecked()) {

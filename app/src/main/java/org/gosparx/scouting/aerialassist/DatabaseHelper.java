@@ -528,7 +528,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_SCOUT_BALLS_FROM_HOPPER, data.getBallsFromHopper());
         values.put(TABLE_SCOUT_BALLS_FROM_FLOOR, data.getBallsFromFloor());
         values.put(TABLE_SCOUT_FUEL_IN_LOW_CYCLE, data.getFuelInLowCycle());
-        values.put(TABLE_SCOUT_NUMBER_OF_LOW_CYCLES, data.getNumberOfLowCycles());
         values.put(TABLE_SCOUT_HIGH_GOAL_ACCURACY, data.getHighGoalAccuracy());
         values.put(TABLE_SCOUT_DID_SCALE, data.isDidScale());
         values.put(TABLE_SCOUT_WHERE_SCALED, data.getWhereScaled());
@@ -556,7 +555,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         data.setBallsFromHopper(c.getInt(c.getColumnIndex(TABLE_SCOUT_BALLS_FROM_HOPPER)));
         data.setBallsFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUT_BALLS_FROM_FLOOR)));
         data.setFuelInLowCycle(c.getInt(c.getColumnIndex(TABLE_SCOUT_FUEL_IN_LOW_CYCLE)));
-        data.setNumberOfLowCycles(c.getInt(c.getColumnIndex(TABLE_SCOUT_NUMBER_OF_LOW_CYCLES)));
         data.setHighGoalAccuracy(c.getString(c.getColumnIndex(TABLE_SCOUT_HIGH_GOAL_ACCURACY)));
         data.setDidScale(c.getInt(c.getColumnIndex(TABLE_SCOUT_DID_SCALE)) == 1);
         data.setWhereScaled(c.getString(c.getColumnIndex(TABLE_SCOUT_WHERE_SCALED)));

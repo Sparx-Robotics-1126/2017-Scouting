@@ -227,7 +227,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView android:labelFor="@+id/numberOfBallsScoredHighGoalInput"
-                    android:text="@string/number_of_balls_scored_in_a_high_goal_cycle"
+                    android:text="@string/number_of_balls_scored_in_high_goal"
                     style="@style/NormalTextView"
                     android:layout_height="72dp" />
 
@@ -287,7 +287,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView android:labelFor="@+id/fuelScoredLowGoalCycleInput"
-                    android:text="@string/approximate_fuel_scored_in_a_low_goal_cycle"
+                    android:text="@string/approximate_fuel_scored_in_low_goal"
                     style="@style/NormalTextView"
                     android:layout_height="72dp" />
 
@@ -301,25 +301,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <TextView android:labelFor="@+id/numberOfLowGoalCyclesInput"
-                    android:text="@string/number_of_low_goal_cycles"
-                    style="@style/NormalTextView"/>
-
-                <com.sparx1126.steamworks.components.HorizontalNumberPicker
-                    android:id="@+id/numberOfLowGoalCyclesInput"
-                    style="@style/HorizontalNumberPicker" />
-
-            </LinearLayout>
-
-            <LinearLayout android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
                 <TextView android:text="@string/high_goal_accuracy"
                     style="@style/RadioTextView"/>
 
                 <RadioGroup android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    >
 
                     <RadioButton android:id="@+id/highGoalAccuracyScoutPoor"
                         android:text="@string/poor"
@@ -364,14 +351,25 @@
                 android:layout_height="match_parent"
                 android:id="@+id/scaledFromWhereLinear">
 
-                <TextView android:labelFor="@+id/scaledFromWhereInput"
-                    android:text="@string/where_they_scaled_from"
+                <TextView android:text="@string/where_they_scaled_from"
                     style="@style/NormalTextView"/>
 
-                <EditText android:id="@+id/scaledFromWhereInput"
-                    android:inputType="text"
-                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;0123456789 "
-                    style="@style/ShortEditText" />
+                <RadioGroup android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <RadioButton android:id="@+id/scaledFromLeft"
+                        android:text="Scaled From Left"
+                        style="@style/RadioButton"/>
+
+                    <RadioButton android:id="@+id/scaledFromCenter"
+                        android:text="Scaled From Center"
+                        style="@style/RadioButton"/>
+
+                    <RadioButton android:id="@+id/scaledFromRight"
+                        android:text="Scaled From Right"
+                        style="@style/RadioButton"/>
+
+                </RadioGroup>
 
             </LinearLayout>
 

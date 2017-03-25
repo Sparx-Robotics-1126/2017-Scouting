@@ -99,11 +99,11 @@
     <string name="sometimes">Sometimes</string>
     <string name="often">Often</string>
     <string name="scores_low">Scores Low?</string>
-    <string name="number_of_balls_scored_in_a_high_goal_cycle">Approximate Fuel Scored In A High Goal Cycle</string>
+    <string name="number_of_balls_scored_in_high_goal">Approximate Fuel Scored In High Goal</string>
     <string name="number_of_times_collected_balls_from_human">Number Of Times Collected Fuel From Human</string>
     <string name="number_of_times_collected_balls_from_hopper">Number Of Times Collected Fuel From Hopper</string>
     <string name="number_of_times_collected_balls_from_floor">Number Of Times Collected Fuel From Floor</string>
-    <string name="approximate_fuel_scored_in_a_low_goal_cycle">Approximate Fuel Scored In A Low Goal Cycle</string>
+    <string name="approximate_fuel_scored_in_low_goal">Approximate Fuel Scored In Low Goal</string>
     <string name="number_of_low_goal_cycles">Number Of Low Goal Cycles</string>
     <string name="high_goal_accuracy">High Goal Accuracy</string>
     <string name="poor">Poor</string>
