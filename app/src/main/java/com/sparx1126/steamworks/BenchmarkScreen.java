@@ -79,6 +79,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     private RadioButton radioPreferredPlacesScaleNone;
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
+    private ToggleButton hasActiveGearSystemButton;
     // new
     //High Goal related Linears
     private LinearLayout typeOfShooterLinear;
@@ -193,6 +194,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         placesCanScaleFromLinear = (LinearLayout) findViewById(R.id.placesCanScaleFromLinear);
         prefPlaceToScaleLinear = (LinearLayout) findViewById(R.id.prefPlaceToScaleLinear);
         benchmarkWasDoneButton = (ToggleButton) findViewById(R.id.benchmarkingWasDoneButton);
+        hasActiveGearSystemButton = (ToggleButton) findViewById(R.id.hasActiveGearSystemButton);
 
         // <o/  D
         //  |   A
@@ -231,6 +233,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         pickupGearFloorBenchButton.setChecked(currentData.isPickupGearFloorBenchButton());
         pickupGearRetrievalBenchButton.setChecked(currentData.isPickupGearRetrievalBenchButton());
         benchmarkWasDoneButton.setChecked(currentData.isBenchmarkingWasDoneButton());
+        hasActiveGearSystemButton.setChecked(currentData.isHasActiveGearSystemButton());
         if(currentData.getPickupGearPreferred() != null) {
             switch(currentData.getPickupGearPreferred()) {
                 case "radioFloor":
@@ -422,6 +425,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         currentData.setAutoAbilitiesBench(autoAbilitiesBench.getText().toString());
         currentData.setCommentsBench(commentsBench.getText().toString());
         currentData.setBenchmarkWasDoneButton(benchmarkWasDoneButton.isChecked());
+        currentData.setHasActiveGearSystemButton(hasActiveGearSystemButton.isChecked());
 
         if(dbHelper.doesBenchmarkingDataExist(currentData)) {
             dbHelper.updateBenchmarkingData(currentData);

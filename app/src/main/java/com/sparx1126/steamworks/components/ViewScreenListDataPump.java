@@ -184,12 +184,19 @@ public class ViewScreenListDataPump {
         } else {
             gears.add("<font color=\"black\"><b>Can get gears from retrieval: </b></font>" + benchmarkingData.isPickupGearRetrievalBenchButton());
         }
+
+
         String gearPickup = "";
         if (benchmarkingData.getPickupGearPreferred().equals("radioFloor")) {
             gearPickup = "Floor";
         }
         if (benchmarkingData.getPickupGearPreferred().equals("radioZone")) {
             gearPickup = "Retrieval Zone";
+        }
+        if (!benchmarked) {
+            gears.add("<font color=\"black\"><b>Has an active gear system: </b></font>");
+        } else {
+            gears.add("<font color=\"black\"><b>Has an active gear system: </b></font>" + benchmarkingData.isHasActiveGearSystemButton());
         }
         gears.add("<font color=\"black\"><b>Preferred gear pickup location: </b></font>" + gearPickup);
         String cycleTimeGearsBenchInput = "";

@@ -36,6 +36,7 @@ public class BenchmarkingData{
     private boolean placesCanScaleRight;
     private boolean placesCanScaleCenter;
     private boolean placesCanScaleLeft;
+    private boolean hasActiveGearSystemButton;
     private boolean benchmarkWasDoneButton;
     private String preferredPlacesScaleInput = "";
     private String autoAbilitiesBench = "";
@@ -159,6 +160,14 @@ public class BenchmarkingData{
 
     public void setPickupBallHopperBenchButton(boolean pickupBallHopperBenchButton) {
         this.pickupBallHopperBenchButton = pickupBallHopperBenchButton;
+    }
+
+    public boolean isHasActiveGearSystemButton() {
+        return hasActiveGearSystemButton;
+    }
+
+    public void setHasActiveGearSystemButton(boolean hasActiveGearSystemButton) {
+        this.hasActiveGearSystemButton = hasActiveGearSystemButton;
     }
 
     public boolean isPickupBallFloorBenchButton() {

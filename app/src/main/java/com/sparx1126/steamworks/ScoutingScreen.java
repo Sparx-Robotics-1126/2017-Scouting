@@ -18,9 +18,6 @@ import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.ScoutingData;
 
 import static com.sparx1126.steamworks.R.layout.scouting_screen;
-// fuel scored in cycle ---> fuel scored total
-//remove number of low goal cycles
-//where did they scael from, add buttons
 public class ScoutingScreen extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private Utility utility;
