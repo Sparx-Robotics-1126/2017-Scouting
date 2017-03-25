@@ -16,8 +16,6 @@ public class ScoutingData {
     private int gearsDelivered = 0;
     private int gearsCollectedFromFloor = 0;
     private int gearsFromHuman = 0;
-    private String scoresHighAuto = "";
-    private String scoresLowAuto = "";
     private int ballsInHighCycle = 0;
     private int ballsFromHuman = 0;
     private int ballsFromHopper = 0;
@@ -108,20 +106,6 @@ public class ScoutingData {
 
     public void setGearsFromHuman(int gearsFromHuman) { this.gearsFromHuman = gearsFromHuman; }
 
-    public String getScoresHighAuto() {
-        return scoresHighAuto;
-    }
-
-    public void setScoresHighAuto(String scoresHighAuto) { this.scoresHighAuto = scoresHighAuto; }
-
-    public String getScoresLowAuto() {
-        return scoresLowAuto;
-    }
-
-    public void setScoresLowAuto(String scoresLowAuto) { this.scoresLowAuto = scoresLowAuto; }
-
-    public String getDoesntScoreAuto() { return scoresLowAuto; }
-
     public void setAutoShooting(String autoShooting) { this.autoShooting = autoShooting; }
 
     public String getAutoShooting() { return autoShooting; }
@@ -153,7 +137,6 @@ public class ScoutingData {
     }
 
     public void setFuelInLowCycle(int  fuelInLowCycle) { this.fuelInLowCycle =  fuelInLowCycle; }
-
 
     public String getHighGoalAccuracy() {
         return highGoalAccuracy;

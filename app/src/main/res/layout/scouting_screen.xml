@@ -170,57 +170,7 @@
             <TextView android:text="@string/fuel"
                 style="@style/HeaderText" />
 
-            <LinearLayout android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
 
-                <TextView android:text="@string/scores_high"
-                    style="@style/RadioTextView"/>
-
-                <RadioGroup android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <RadioButton android:id="@+id/scoresHighNeverAuto"
-                        android:text="@string/never"
-                        style="@style/RadioButton"/>
-
-                    <RadioButton android:id="@+id/scoresHighSometimesAuto"
-                        android:text="@string/sometimes"
-                        style="@style/RadioButton"/>
-
-                    <RadioButton android:id="@+id/scoresHighOftenAuto"
-                        android:text="@string/often"
-                        style="@style/RadioButton"/>
-
-                </RadioGroup>
-
-            </LinearLayout>
-
-            <LinearLayout android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView android:text="@string/scores_low"
-                    style="@style/RadioTextView"/>
-
-                <RadioGroup android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <RadioButton android:id="@+id/scoresLowNeverAuto"
-                        android:text="@string/never"
-                        style="@style/RadioButton"/>
-
-                    <RadioButton android:id="@+id/scoresLowSometimesAuto"
-                        android:text="@string/sometimes"
-                        style="@style/RadioButton"/>
-
-                    <RadioButton android:id="@+id/scoresLowOftenAuto"
-                        android:text="@string/often"
-                        style="@style/RadioButton"/>
-
-                </RadioGroup>
-
-            </LinearLayout>
 
             <LinearLayout android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -297,6 +247,7 @@
 
             </LinearLayout>
 
+
             <LinearLayout android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -305,8 +256,7 @@
                     style="@style/RadioTextView"/>
 
                 <RadioGroup android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
 
                     <RadioButton android:id="@+id/highGoalAccuracyScoutPoor"
                         android:text="@string/poor"
@@ -351,22 +301,23 @@
                 android:layout_height="match_parent"
                 android:id="@+id/scaledFromWhereLinear">
 
-                <TextView android:text="@string/where_they_scaled_from"
-                    style="@style/NormalTextView"/>
+                <TextView
+                    android:text="@string/where_they_scaled_from"
+                    style="@style/RadioTextView"/>
 
                 <RadioGroup android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <RadioButton android:id="@+id/scaledFromLeft"
-                        android:text="Scaled From Left"
+                        android:text="@string/left"
                         style="@style/RadioButton"/>
 
                     <RadioButton android:id="@+id/scaledFromCenter"
-                        android:text="Scaled From Center"
+                        android:text="@string/center"
                         style="@style/RadioButton"/>
 
                     <RadioButton android:id="@+id/scaledFromRight"
-                        android:text="Scaled From Right"
+                        android:text="@string/right"
                         style="@style/RadioButton"/>
 
                 </RadioGroup>
