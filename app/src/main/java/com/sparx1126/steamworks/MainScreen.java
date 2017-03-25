@@ -67,11 +67,7 @@ public class MainScreen extends AppCompatActivity {
     private boolean eventFilter = true;
     private static final int COMPETITION_Threshold = 4;
     private MediaPlayer mediaPlayer;
-    private String[] driveTypes = {"Swerve", "Mechanum", "Tank Treads",
-            "8 wheel traction drive", "6 wheel traction drive", "4 wheel traction drive",
-            "8 wheel omni drive", "6 wheel omni drive", "4 wheel omni drive",
-            "8 wheel traction + omni drive", "6 wheel traction + omni drive", "4 wheel traction + omni drive",
-            "Mechanum traction hyrbid"};
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
