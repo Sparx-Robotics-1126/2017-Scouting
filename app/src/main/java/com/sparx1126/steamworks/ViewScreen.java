@@ -1,21 +1,27 @@
 package com.sparx1126.steamworks;
-
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.sparx1126.steamworks.components.CustomExpandableListAdapter;
 import com.sparx1126.steamworks.components.Utility;
 import com.sparx1126.steamworks.components.ViewScreenListDataPump;
 
+
+
+import org.gosparx.scouting.aerialassist.BenchmarkingData;
+import org.gosparx.scouting.aerialassist.TeamData;
+import org.gosparx.scouting.aerialassist.ScoutingData;
 import org.gosparx.scouting.aerialassist.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.TeamData;
 
@@ -24,14 +30,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+
+
 public class ViewScreen extends AppCompatActivity {
+    private TextView scalingWarning;
     @Override
     protected  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.view_screen);
-
         TeamData currentInfo = TeamData.getCurrentTeam();
         BenchmarkingData currentData = currentInfo.getBenchmarkingData();
+        List<ScoutingData> scoutingDatas = currentInfo.getScoutingDatas();
+        boolean scaledEver = false;
+        for(ScoutingData sd: scoutingDatas) {
+            if(sd.isDidScale()) {
+                scaledEver = true;
+                        break;
+            }
+        }
+        System.out.println(scaledEver);
+        System.out.println("testerester");
+        scalingWarning = (TextView) findViewById(R.id.scalingWarning);
+         if(scaledEver) {
+            scalingWarning.setVisibility(View.INVISIBLE);
+             scalingWarning.setHeight(0);
+        } else {
+            scalingWarning.setVisibility(View.VISIBLE);
+         }
+
         Utility utility = Utility.getInstance();
 
         ImageButton home = (ImageButton) findViewById(R.id.home);

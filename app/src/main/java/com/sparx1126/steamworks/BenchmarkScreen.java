@@ -9,6 +9,8 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -31,7 +33,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     private Utility utility;
     private BenchmarkingData currentData;
 
-    private EditText driveSystem;
+    private AutoCompleteTextView driveSystem;
     private EditText drivesSpeed;
     private ToggleButton canPlayDefenseBenchButton;
     private ToggleButton abilityToShootHighGoalBenchButton;
@@ -98,6 +100,11 @@ public class BenchmarkScreen extends AppCompatActivity {
     private LinearLayout prefPlaceToScaleLinear;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
+    private String[] driveTypes = {"Swerve", "Mechanum", "Tank Treads",
+            "8 wheel traction drive", "6 wheel traction drive", "4 wheel traction drive",
+            "8 wheel omni drive", "6 wheel omni drive", "4 wheel omni drive",
+            "8 wheel traction + omni drive", "6 wheel traction + omni drive", "4 wheel traction + omni drive",
+            "Mechanum traction hyrbid", "kiwi", "West coast"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +131,7 @@ public class BenchmarkScreen extends AppCompatActivity {
             }
         });
 
-        driveSystem = (EditText) findViewById(R.id.drivesSystem);
+        driveSystem = (AutoCompleteTextView) findViewById(R.id.drivesSystem);
         drivesSpeed = (EditText) findViewById(R.id.drivesSpeed);
         canPlayDefenseBenchButton = (ToggleButton) findViewById(R.id.canPlayDefenseBenchButton);
         abilityToShootHighGoalBenchButton = (ToggleButton) findViewById(R.id.abilityToShootHighGoalBenchButton);
@@ -191,6 +198,10 @@ public class BenchmarkScreen extends AppCompatActivity {
         placesCanScaleFromLinear = (LinearLayout) findViewById(R.id.placesCanScaleFromLinear);
         prefPlaceToScaleLinear = (LinearLayout) findViewById(R.id.prefPlaceToScaleLinear);
         benchmarkWasDoneButton = (ToggleButton) findViewById(R.id.benchmarkingWasDoneButton);
+
+        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,driveTypes);
+        driveSystem.setAdapter(adapter);
+        driveSystem.setThreshold(0);
 
         // <o/  D
         //  |   A
