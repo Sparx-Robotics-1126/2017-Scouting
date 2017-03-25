@@ -27,6 +27,7 @@ import org.gosparx.scouting.aerialassist.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.ScoutingData;
 import org.gosparx.scouting.aerialassist.TeamData;
+import org.gosparx.scouting.aerialassist.dto.Alliance;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 
@@ -63,6 +64,8 @@ public class MainScreen extends AppCompatActivity {
     private boolean eventSelected = false;
     private boolean eventFilter = true;
     private static final int COMPETITION_Threshold = 3;
+    private int teamSelected;
+    private boolean redAlliance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +109,14 @@ public class MainScreen extends AppCompatActivity {
         teamsList = new ArrayList<>();
 
         restorePreferences();
+        teamSelected = settings.getInt("team selected", 0);
+
+        if(teamSelected == 0){
+            Intent intent = new Intent(MainScreen.this, AllianceScreen.class);
+            startActivity(intent);
+            redAlliance = settings.getBoolean("red alliance", true);
+
+        }
     }
 
     @Override

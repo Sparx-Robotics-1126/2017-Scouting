@@ -86,6 +86,7 @@ public class AllianceScreen extends AppCompatActivity {
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("red alliance", redAlliance);
             editor.putInt("team selected", teamSelected);
+            editor.apply();
 
             if(isTeamSelected) {
                 Intent intent = new Intent(AllianceScreen.this, MainScreen.class);

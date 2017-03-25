@@ -14,7 +14,7 @@
         android:theme="@style/AppTheme"
         android:fullBackupContent="@xml/backup_descriptor">
 
-        <activity android:name=".AllianceScreen"
+        <activity android:name=".MainScreen"
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".MainScreen"
+        <activity android:name=".AllianceScreen"
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".BenchmarkScreen"
             android:windowSoftInputMode="stateHidden"/>
