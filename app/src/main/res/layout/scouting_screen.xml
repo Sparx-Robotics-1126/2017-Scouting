@@ -237,7 +237,7 @@
                 android:layout_height="wrap_content">
 
                 <TextView android:labelFor="@+id/fuelScoredLowGoalCycleInput"
-                    android:text="@string/approximate_fuel_scored_in_low_goal"
+                    android:text="@string/approximate_fuel_scored_in_a_low_goal"
                     style="@style/NormalTextView"
                     android:layout_height="72dp" />
 

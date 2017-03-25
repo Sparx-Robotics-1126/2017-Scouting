@@ -103,9 +103,10 @@
     <string name="number_of_times_collected_balls_from_human">Number Of Times Collected Fuel From Human</string>
     <string name="number_of_times_collected_balls_from_hopper">Number Of Times Collected Fuel From Hopper</string>
     <string name="number_of_times_collected_balls_from_floor">Number Of Times Collected Fuel From Floor</string>
-    <string name="approximate_fuel_scored_in_a_low_goal_cycle">Fuel Scored In A Low Goal</string>
+    <string name="approximate_fuel_scored_in_a_low_goal">Fuel Scored In Low Goal</string>
     <string name="number_of_low_goal_cycles">Number Of Low Goal Cycles</string>
     <string name="high_goal_accuracy">High Goal Accuracy</string>
+    <string name="number_of_balls_scored_in_high_goal">Number Of Balls In High Goal</string>
     <string name="poor">Poor</string>
     <string name="ok">OK</string>
     <string name="great">Great</string>
