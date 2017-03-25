@@ -245,7 +245,7 @@ public class ScoutingScreen extends AppCompatActivity {
         scoutingComments.setText("");
         matchScoutedInput.setChecked(false);
     }
-
+//randy = daddy
     private final View.OnClickListener submitButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
