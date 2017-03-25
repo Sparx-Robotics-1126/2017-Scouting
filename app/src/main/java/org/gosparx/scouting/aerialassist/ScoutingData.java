@@ -8,7 +8,7 @@ public class ScoutingData {
     private final String eventName;
     private final String student;
     private boolean crossedBaseline;
-    private int hoppersDumped = Integer.MAX_VALUE;
+    private int hoppersDumped = 0;
     private boolean gearScoredRightAuto;
     private boolean gearScoredCenterAuto;
     private boolean gearScoredLeftAuto;
