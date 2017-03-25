@@ -1,5 +1,4 @@
 package com.sparx1126.steamworks;
-
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +17,9 @@ import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.ScoutingData;
 
 import static com.sparx1126.steamworks.R.layout.scouting_screen;
+
+//TODO add auto comments
+
 public class ScoutingScreen extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private Utility utility;
@@ -59,7 +61,6 @@ public class ScoutingScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(scouting_screen);
-
         dbHelper = DatabaseHelper.getInstance(this);
         utility = Utility.getInstance();
         currentTeam = TeamData.getCurrentTeam();
@@ -219,12 +220,12 @@ public class ScoutingScreen extends AppCompatActivity {
         scoutingComments.setText("");
         matchScoutedInput.setChecked(false);
     }
-
+//randy = daddy
     private final View.OnClickListener submitButtonClicked = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             saveData();
-            if(scoutingBeingEntered.isMatchScouted()) {
+            if(scoutingBeingEntered.isMatchScouted() && !scoutingBeingEntered.getScoutingComments().isEmpty()) {
                 currentTeam.addScoutingData(scoutingBeingEntered);
                 dbHelper.createScoutingData(scoutingBeingEntered);
                 utility.uploadScoutingData(ScoutingScreen.this, false);
@@ -233,8 +234,11 @@ public class ScoutingScreen extends AppCompatActivity {
                 scoutingBeingEntered = new ScoutingData(key, currentTeam.getTeamNumber(), currentTeam.getEventName(), currentTeam.getStudent());
                 clearData();
             }
-            else {
+            else if (!scoutingBeingEntered.isMatchScouted()) {
                 utility.alertUser(ScoutingScreen.this, getString(R.string.scouting_not_done), getString(R.string.check_submit_buttom)).show();
+            }
+            else if (scoutingBeingEntered.getScoutingComments().isEmpty()) {
+                utility.alertUser(ScoutingScreen.this, "Scouting Was Not Done", "Comments are required!").show();
             }
         }
     };

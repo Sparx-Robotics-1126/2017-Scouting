@@ -41,11 +41,6 @@ public class BenchmarkingData{
     private String preferredPlacesScaleInput = "";
     private String autoAbilitiesBench = "";
     private String commentsBench = "";
-    private String[] driveTypes = {"Swerve", "Mechanum", "Tank Treads",
-            "8 wheel traction drive", "6 wheel traction drive", "4 wheel traction drive",
-            "8 wheel omni drive", "6 wheel omni drive", "4 wheel omni drive",
-            "8 wheel traction + omni drive", "6 wheel traction + omni drive", "4 wheel traction + omni drive",
-            "Mechanum traction hyrbid"};
 
     public BenchmarkingData(int teamNumber, String eventName) {
         this.teamNumber = teamNumber;

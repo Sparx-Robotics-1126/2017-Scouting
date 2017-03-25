@@ -29,7 +29,7 @@
             <TextView android:text="@string/drives"
                 style="@style/HeaderText" />
 
-            <EditText android:id="@+id/drivesSystem"
+            <AutoCompleteTextView android:id="@+id/drivesSystem"
                 android:hint="@string/drivesTypeHint"
                 android:inputType="text"
                 android:maxLength="100"
