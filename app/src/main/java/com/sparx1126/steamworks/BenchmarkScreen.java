@@ -1,6 +1,7 @@
 package com.sparx1126.steamworks;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ToggleButton;
 import android.widget.LinearLayout;
@@ -79,6 +81,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     private RadioButton radioPreferredPlacesScaleNone;
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
+    private ToggleButton hasActiveGearSystemButton;
     // new
     //High Goal related Linears
     private LinearLayout typeOfShooterLinear;
@@ -198,6 +201,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         placesCanScaleFromLinear = (LinearLayout) findViewById(R.id.placesCanScaleFromLinear);
         prefPlaceToScaleLinear = (LinearLayout) findViewById(R.id.prefPlaceToScaleLinear);
         benchmarkWasDoneButton = (ToggleButton) findViewById(R.id.benchmarkingWasDoneButton);
+        hasActiveGearSystemButton = (ToggleButton) findViewById(R.id.hasActiveGearSystemButton);
 
         ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,driveTypes);
         driveSystem.setAdapter(adapter);
@@ -240,6 +244,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         pickupGearFloorBenchButton.setChecked(currentData.isPickupGearFloorBenchButton());
         pickupGearRetrievalBenchButton.setChecked(currentData.isPickupGearRetrievalBenchButton());
         benchmarkWasDoneButton.setChecked(currentData.isBenchmarkingWasDoneButton());
+        hasActiveGearSystemButton.setChecked(currentData.isHasActiveGearSystemButton());
         if(currentData.getPickupGearPreferred() != null) {
             switch(currentData.getPickupGearPreferred()) {
                 case "radioFloor":
@@ -431,6 +436,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         currentData.setAutoAbilitiesBench(autoAbilitiesBench.getText().toString());
         currentData.setCommentsBench(commentsBench.getText().toString());
         currentData.setBenchmarkWasDoneButton(benchmarkWasDoneButton.isChecked());
+        currentData.setHasActiveGearSystemButton(hasActiveGearSystemButton.isChecked());
 
         if(dbHelper.doesBenchmarkingDataExist(currentData)) {
             dbHelper.updateBenchmarkingData(currentData);
@@ -550,7 +556,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             saveData();
-            if(benchmarkWasDoneButton.isChecked()) {
+            if(benchmarkWasDoneButton.isChecked() &&  isPictures()) {
                 utility.uploadBenchmarkingData(BenchmarkScreen.this, false);
                 utility.uploadPictures(BenchmarkScreen.this, false);
             }
@@ -559,4 +565,24 @@ public class BenchmarkScreen extends AppCompatActivity {
             }
         }
     };
+
+    private boolean isPictures() {
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (storageDir == null)
+            throw new AssertionError("Cannot read " + Environment.DIRECTORY_PICTURES);
+        String path = storageDir.getAbsolutePath();
+
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+        boolean found = false;
+        for (int index = 0; index < files.length; index++) {
+            String fileName = files[index].getName();
+            if (fileName.contains(currentData.getTeamNumber() + "Robot")) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
 }

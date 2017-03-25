@@ -239,14 +239,16 @@ public class MainScreen extends AppCompatActivity {
     private void restorePreferences() {
         List<BenchmarkingData> benchmarkingDatas = dbHelper.getAllBenchmarkingData();
         for(BenchmarkingData benchmarkingData : benchmarkingDatas) {
-            TeamData.setTeamData(benchmarkingData.getTeamNumber(), benchmarkingData.getEventName(), benchmarkingData.getStudent());
+            TeamData.setTeamData(benchmarkingData.getTeamNumber(), benchmarkingData.getEventName());
             TeamData.getCurrentTeam().setBenchmarkingData(benchmarkingData);
+            TeamData.getCurrentTeam().setStudent(getScouterName());
         }
 
         List<ScoutingData> scoutingDatas = dbHelper.getAllScoutingDatas();
         for(ScoutingData scoutingData : scoutingDatas) {
-            TeamData.setTeamData(scoutingData.getTeamNumber(), scoutingData.getEventName(), scoutingData.getStudent());
+            TeamData.setTeamData(scoutingData.getTeamNumber(), scoutingData.getEventName());
             TeamData.getCurrentTeam().addScoutingData(scoutingData);
+            TeamData.getCurrentTeam().setStudent(getScouterName());
         }
 
         String eventName = settings.getString(getResources().getString(R.string.pref_event), "");
@@ -288,7 +290,8 @@ public class MainScreen extends AppCompatActivity {
                     destination = TeamChecklistScreen.class;
                     break;
             }
-            TeamData.setTeamData(getTeamNumber(), getEventName(), getScouterName());
+            TeamData.setTeamData(getTeamNumber(), getEventName());
+            TeamData.getCurrentTeam().setStudent(getScouterName());
 
             Intent intent = new Intent(MainScreen.this, destination);
             startActivity(intent);

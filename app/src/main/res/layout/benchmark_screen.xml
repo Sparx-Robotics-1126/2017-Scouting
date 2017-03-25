@@ -415,6 +415,18 @@
             </LinearLayout>
         </LinearLayout>
 
+        <LinearLayout android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView android:labelFor="@+id/hasActiveGearSystem"
+                android:text="Have Active Gear System"
+                style="@style/NormalTextView"/>
+
+            <ToggleButton android:id="@+id/hasActiveGearSystemButton"
+                style="@style/YesNoToggle"/>
+        </LinearLayout>
+
         <!-- Begin Low Goal Section -->
         <LinearLayout android:orientation="vertical"
             android:layout_width="match_parent"

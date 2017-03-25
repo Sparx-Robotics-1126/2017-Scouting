@@ -184,12 +184,19 @@ public class ViewScreenListDataPump {
         } else {
             gears.add("<font color=\"black\"><b>Can get gears from retrieval: </b></font>" + benchmarkingData.isPickupGearRetrievalBenchButton());
         }
+
+
         String gearPickup = "";
         if (benchmarkingData.getPickupGearPreferred().equals("radioFloor")) {
             gearPickup = "Floor";
         }
         if (benchmarkingData.getPickupGearPreferred().equals("radioZone")) {
             gearPickup = "Retrieval Zone";
+        }
+        if (!benchmarked) {
+            gears.add("<font color=\"black\"><b>Has an active gear system: </b></font>");
+        } else {
+            gears.add("<font color=\"black\"><b>Has an active gear system: </b></font>" + benchmarkingData.isHasActiveGearSystemButton());
         }
         gears.add("<font color=\"black\"><b>Preferred gear pickup location: </b></font>" + gearPickup);
         String cycleTimeGearsBenchInput = "";
@@ -240,7 +247,6 @@ public class ViewScreenListDataPump {
             gearsCollectedFromHuman += sd.getGearsFromHuman();
             fuelInHighCycle += sd.getBallsInHighCycle();
             fuelInLowCycle += sd.getFuelInLowCycle();
-            numberOfLowCycles += sd.getNumberOfLowCycles();
             fuelCollectedHuman += sd.getBallsFromHuman();
             fuelCollectedHopper += sd.getBallsFromHopper();
             fuelCollectedFloor += sd.getBallsFromFloor();
@@ -264,27 +270,7 @@ public class ViewScreenListDataPump {
             else if(Objects.equals(sd.getAutoShooting(), "Doesn't Shoot")){
                 noAutoShooting++;
             }
-
-            if(Objects.equals(sd.getScoresHighAuto(), "Often")){
-               highTeleop += 2;
-            }
-            else if(Objects.equals(sd.getScoresHighAuto(), "Sometimes")){
-                highTeleop++;
-            }
-            else if(Objects.equals(sd.getScoresHighAuto(), "Never")){
-                //do nothing (this else if isn't really needed)
-            }
-
-
-            if(Objects.equals(sd.getScoresLowAuto(), "Often")){
-                lowTeleop += 2;
-            }
-            else if(Objects.equals(sd.getScoresLowAuto(), "Sometimes")){
-                lowTeleop++;
-            }
-            else if(Objects.equals(sd.getScoresLowAuto(), "Never")){
-                //do nothing (this else if isn't really needed)
-            }
+            
 
             if(sd.isCrossedBaseline()){
                 crossedBaseline++;

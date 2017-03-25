@@ -130,7 +130,7 @@ public class SparxPosting {
                         }
 
                         for (BenchmarkingData bd : result) {
-                            TeamData.setTeamData(bd.getTeamNumber(), bd.getEventName(), bd.getStudent());
+                            TeamData.setTeamData(bd.getTeamNumber(), bd.getEventName());
                             TeamData.getCurrentTeam().setBenchmarkingData(bd);
                             if(dbHelper.doesBenchmarkingDataExist(bd))
                                 dbHelper.updateBenchmarkingData(bd);
@@ -229,7 +229,7 @@ public class SparxPosting {
                         }
 
                         for (ScoutingData sd : result) {
-                            TeamData.setTeamData(sd.getTeamNumber(), sd.getEventName(), sd.getStudent());
+                            TeamData.setTeamData(sd.getTeamNumber(), sd.getEventName());
                             TeamData.getCurrentTeam().addScoutingData(sd);
                         }
                         NetworkHelper.setLoadedScoutData(context);
