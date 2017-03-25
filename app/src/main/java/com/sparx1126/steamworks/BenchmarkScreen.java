@@ -1,6 +1,7 @@
 package com.sparx1126.steamworks;
 
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ToggleButton;
 import android.widget.LinearLayout;
@@ -539,7 +541,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             saveData();
-            if(benchmarkWasDoneButton.isChecked()) {
+            if(benchmarkWasDoneButton.isChecked() &&  isPictures()) {
                 utility.uploadBenchmarkingData(BenchmarkScreen.this, false);
                 utility.uploadPictures(BenchmarkScreen.this, false);
             }
@@ -548,4 +550,24 @@ public class BenchmarkScreen extends AppCompatActivity {
             }
         }
     };
+
+    private boolean isPictures() {
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (storageDir == null)
+            throw new AssertionError("Cannot read " + Environment.DIRECTORY_PICTURES);
+        String path = storageDir.getAbsolutePath();
+
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+        boolean found = false;
+        for (int index = 0; index < files.length; index++) {
+            String fileName = files[index].getName();
+            if (fileName.contains(currentData.getTeamNumber() + "Robot")) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
 }

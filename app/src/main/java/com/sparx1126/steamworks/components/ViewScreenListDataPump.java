@@ -240,7 +240,6 @@ public class ViewScreenListDataPump {
             gearsCollectedFromHuman += sd.getGearsFromHuman();
             fuelInHighCycle += sd.getBallsInHighCycle();
             fuelInLowCycle += sd.getFuelInLowCycle();
-            numberOfLowCycles += sd.getNumberOfLowCycles();
             fuelCollectedHuman += sd.getBallsFromHuman();
             fuelCollectedHopper += sd.getBallsFromHopper();
             fuelCollectedFloor += sd.getBallsFromFloor();
@@ -264,27 +263,7 @@ public class ViewScreenListDataPump {
             else if(Objects.equals(sd.getAutoShooting(), "Doesn't Shoot")){
                 noAutoShooting++;
             }
-
-            if(Objects.equals(sd.getScoresHighAuto(), "Often")){
-               highTeleop += 2;
-            }
-            else if(Objects.equals(sd.getScoresHighAuto(), "Sometimes")){
-                highTeleop++;
-            }
-            else if(Objects.equals(sd.getScoresHighAuto(), "Never")){
-                //do nothing (this else if isn't really needed)
-            }
-
-
-            if(Objects.equals(sd.getScoresLowAuto(), "Often")){
-                lowTeleop += 2;
-            }
-            else if(Objects.equals(sd.getScoresLowAuto(), "Sometimes")){
-                lowTeleop++;
-            }
-            else if(Objects.equals(sd.getScoresLowAuto(), "Never")){
-                //do nothing (this else if isn't really needed)
-            }
+            
 
             if(sd.isCrossedBaseline()){
                 crossedBaseline++;

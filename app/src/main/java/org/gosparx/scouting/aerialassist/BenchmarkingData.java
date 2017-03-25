@@ -3,7 +3,7 @@ package org.gosparx.scouting.aerialassist;
 public class BenchmarkingData{
     private final int teamNumber;
     private final String eventName;
-    private final String student;
+    private String student;
     private String driveSystem = "";
     private double drivesSpeed = 0;
     private boolean canPlayDefenseBenchButton;
@@ -46,10 +46,9 @@ public class BenchmarkingData{
             "8 wheel traction + omni drive", "6 wheel traction + omni drive", "4 wheel traction + omni drive",
             "Mechanum traction hyrbid"};
 
-    public BenchmarkingData(int teamNumber, String eventName, String student) {
+    public BenchmarkingData(int teamNumber, String eventName) {
         this.teamNumber = teamNumber;
         this.eventName = eventName;
-        this.student = student;
     }
 
     public int getTeamNumber() {
@@ -63,6 +62,8 @@ public class BenchmarkingData{
     public String getStudent() {
         return student;
     }
+
+    public void setStudent(String student) {this.student = student;}
 
     public String getDriveSystem() {
         return driveSystem;
