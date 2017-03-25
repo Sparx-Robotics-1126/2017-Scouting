@@ -1,5 +1,4 @@
 package com.sparx1126.steamworks;
-
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -18,6 +17,7 @@ import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.ScoutingData;
 
 import static com.sparx1126.steamworks.R.layout.scouting_screen;
+//TODO add auto comments
 public class ScoutingScreen extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private Utility utility;
