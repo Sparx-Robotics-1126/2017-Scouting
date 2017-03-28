@@ -11,6 +11,7 @@ public class NetworkHelper {
 
     private static final String PREF_FILE_NAME = "NETWORK_PREFERENCES";
     private static final String PREF_LOAD_EVENT_LIST = "LOAD_EVENT_LIST";
+    private static final String PREF_LOAD_EVENTS_WE_ARE_IN_LIST = "LOAD_EVENTS_WE_ARE_IN_LIST";
     private static final String PREF_LOAD_TEAM_LIST = "LOAD_TEAM_LIST";
     private static final String PREF_LOAD_BENCH_DATA = "LOAD_BENCH_DATA";
     private static final String PREF_LOAD_SCOUTING_DATA = "LOAD_SCOUTING_DATA";
@@ -24,6 +25,12 @@ public class NetworkHelper {
     public static boolean needToLoadEventList(Context context){
         long timeOfLastSync = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
                 .getLong(PREF_LOAD_EVENT_LIST, 0);
+        return new Date().after(new Date(timeOfLastSync + NetworkHelper.MS_IN_DAY));
+    }
+
+    public static boolean needToLoadEventsWeAreInList(Context context){
+        long timeOfLastSync = context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
+                .getLong(PREF_LOAD_EVENTS_WE_ARE_IN_LIST, 0);
         return new Date().after(new Date(timeOfLastSync + NetworkHelper.MS_IN_DAY));
     }
 
@@ -53,6 +60,10 @@ public class NetworkHelper {
 
     public static void setLoadedEventList(Context c){
         setPrefCurrentTime(c, PREF_LOAD_EVENT_LIST);
+    }
+
+    public static void setLoadedEventsWeAreInList(Context c){
+        setPrefCurrentTime(c, PREF_LOAD_EVENTS_WE_ARE_IN_LIST);
     }
 
     public static void setLoadedTeamList(Context c){

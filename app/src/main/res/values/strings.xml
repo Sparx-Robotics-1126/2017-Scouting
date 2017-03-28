@@ -75,6 +75,7 @@
     <string name="benchmark_upload_failed">"Did not successfully upload Benchmark data!"</string>
     <string name="picture_upload_failed">"Did not successfully upload Picture data!"</string>
     <string name="scouting_upload_failed">"Did not successfully upload Scouting data!"</string>
+    <string name="please_wait_event_we_are_in_download">Please wait while Events we are in data is downloaded.</string>
     <string name="please_wait_event_download">Please wait while Event data is downloaded.</string>
     <string name="please_wait_team_download">Please wait while Team data is downloaded.</string>
     <string name="please_wait_benchmarking_download">Please wait while Benchmarking data is downloaded.</string>
@@ -141,6 +142,16 @@
     <string name="benchmark_not_done">Benchmarking Was Not Done</string>
     <string name="check_submit_buttom">The button was probably not checked or there was no picture taken of this team.</string>
     <string name="scouting_not_done">Scouting Was Not Done</string>
+    <string name="red_alliance">Red Alliance</string>
+    <string name="blue_alliance">Blue Alliance</string>
+    <string name="team_1">Team 1</string>
+    <string name="team_2">Team 2</string>
+    <string name="team_3">Team 3</string>
+    <string name="select_position">Select Position</string>
+    <string name="issue_event_we_are_in">Issue getting event we are in list</string>
+    <string name="X_TBA">X-TBA-App-Id</string>
+    <string name="scout_screen_app">frc1126:scouting_screen-app-2017:</string>
+    <string name="frc_1126">frc1126</string>
     <string-array name="students">
         <item>Michael Anderson</item>
         <item>Tyler Armstrong</item>
