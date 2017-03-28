@@ -46,7 +46,7 @@
             <TextView android:text="@string/drives"
                 style="@style/HeaderText" />
 
-            <EditText android:id="@+id/drivesSystem"
+            <AutoCompleteTextView android:id="@+id/drivesSystem"
                 android:hint="@string/drivesTypeHint"
                 android:inputType="text"
                 android:maxLength="100"
@@ -430,6 +430,18 @@
                 </RadioGroup>
 
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView android:labelFor="@+id/hasActiveGearSystem"
+                android:text="Have Active Gear System"
+                style="@style/NormalTextView"/>
+
+            <ToggleButton android:id="@+id/hasActiveGearSystemButton"
+                style="@style/YesNoToggle"/>
         </LinearLayout>
 
         <!-- Begin Low Goal Section -->

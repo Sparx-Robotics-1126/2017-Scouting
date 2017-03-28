@@ -233,11 +233,11 @@ public class SparxPosting {
                                 TeamData.setTeamData(sd.getTeamNumber(), sd.getEventName(), sd.getStudent());
                                 TeamData.getCurrentTeam().addScoutingData(sd);
                             }
-                        }
 
-                        NetworkHelper.setLoadedScoutData(context);
-                        if(callback != null) {
-                            callback.handleFinishDownload(true);
+                            NetworkHelper.setLoadedScoutData(context);
+                            if(callback != null) {
+                                callback.handleFinishDownload(true);
+                            }
                         }
                     }
                 });
