@@ -61,6 +61,7 @@
     <string name="pref_event">eventText</string>
     <string name="pref_event_filter">eventFilter</string>
     <string name="pref_events_cursor">eventsCursor</string>
+    <string name="pref_number_teams">numberOfTeams</string>
     <string name="our_competition_buckeye">2017-03-29 Buckeye Regional</string>
     <string name="our_competition_flr">"2017-03-15 Finger Lakes Regional "</string>
     <string name="filter_on">Turn the event filter on?</string>

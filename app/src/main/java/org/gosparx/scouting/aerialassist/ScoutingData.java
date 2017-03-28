@@ -29,6 +29,8 @@ public class ScoutingData {
     private String whereScaled = "";
     private boolean matchScouted;
     private String autoShooting;
+    private String scoutingComments = "";
+
 
     public ScoutingData(String scoutingKey, int teamNumber, String eventName, String student) {
         this.scoutingKey = scoutingKey;
@@ -176,6 +178,10 @@ public class ScoutingData {
     }
 
     public void setWhereScaled(String whereScaled) { this.whereScaled= whereScaled;}
+
+    public String getScoutingComments() { return scoutingComments; }
+
+    public void setScoutingComments(String scoutingComments) { this.scoutingComments = scoutingComments;}
 
     public boolean isMatchScouted() {
         return matchScouted;

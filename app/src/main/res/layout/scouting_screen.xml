@@ -6,13 +6,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageButton android:id="@+id/home"
-            android:contentDescription="@string/home"
-            style="@style/HomeButton"/>
-
         <!-- Begin Auto Section -->
         <TextView android:text="@string/autoSection"
             style="@style/SectionText" />
+
+        <ImageButton
+            android:id="@+id/home"
+            style="@style/HomeButton"
+            android:contentDescription="@string/home" />
 
         <LinearLayout android:orientation="vertical"
             android:layout_width="match_parent"
@@ -371,6 +372,23 @@
                     android:inputType="text"
                     android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;0123456789 "
                     style="@style/ShortEditText" />
+
+            </LinearLayout>
+
+            <LinearLayout android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView android:labelFor="@+id/commentsScouting"
+                    android:text="Comments"
+                    style="@style/NormalTextView"/>
+
+                <EditText android:id="@+id/commentsScouting"
+                    android:hint="Required"
+                    style="@style/MultiLongEditText"
+                    android:layout_width="360dp"
+                    android:maxLength="400"
+                    android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;0123456789 " />
 
             </LinearLayout>
         </LinearLayout>

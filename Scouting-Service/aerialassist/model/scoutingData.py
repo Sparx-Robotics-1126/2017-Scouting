@@ -26,3 +26,5 @@ class ScoutingData(ndb.Model):
     didScale = ndb.BooleanProperty() 
     whereScaled = ndb.StringProperty()
     matchScouted = ndb.BooleanProperty()
+    autoShooting = ndb.StringProperty()
+    scoutingComments = ndb.StringProperty()

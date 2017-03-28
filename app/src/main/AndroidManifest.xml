@@ -30,6 +30,8 @@
             android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".ViewScreen"
             android:windowSoftInputMode="stateHidden"/>
+        <activity android:name=".TeamChecklistScreen"
+            android:windowSoftInputMode="stateHidden"/>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
