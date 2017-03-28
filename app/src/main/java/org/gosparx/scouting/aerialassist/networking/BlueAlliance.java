@@ -9,6 +9,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.sparx1126.steamworks.R;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.dto.Event;
@@ -22,6 +23,7 @@ public class BlueAlliance {
     private static final String TAG = "BlueAlliance";
     private static final String BASE_URL = "https://www.thebluealliance.com";
     private static final String GET_EVENT_LIST = "/api/v2/events/{YEAR}";
+    private static final String GET_EVENT_WE_ARE_IN_LIST = "/api/v2/team/{TEAM_KEY}/{YEAR}/events";
     private static final String GET_TEAM_LIST = "/api/v2/event/{EVENT_KEY}/teams";
     private static BlueAlliance blueAlliance;
     private Context context;
@@ -94,7 +96,7 @@ public class BlueAlliance {
         String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", year);
         Ion.with(context)
                 .load(request)
-                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2017:" + versionName)
+                .addHeader(context.getString(R.string.X_TBA), context.getString(R.string.scout_screen_app) + versionName)
                 .as(new TypeToken<List<Event>>(){})
                 .setCallback(new FutureCallback<List<Event>>() {
                     @Override
@@ -121,13 +123,44 @@ public class BlueAlliance {
                 });
     }
 
+    public void loadEventsWeAreInList(String year, final NetworkCallback callback){
+        String request = ((BASE_URL+GET_EVENT_WE_ARE_IN_LIST).replace("{YEAR}", year)).replace("{TEAM_KEY}", context.getString(R.string.frc_1126));
+        Ion.with(context)
+                .load(request)
+                .addHeader(context.getString(R.string.X_TBA), context.getString(R.string.scout_screen_app) + versionName)
+                .as(new TypeToken<List<Event>>(){})
+                .setCallback(new FutureCallback<List<Event>>() {
+                    @Override
+                    public void onCompleted(Exception e, final List<Event> result) {
+                        if(e != null){
+                            Log.e(TAG, context.getString(R.string.issue_event_we_are_in), e);
+                            if(callback != null)
+                                callback.handleFinishDownload(false);
+                            return;
+                        }
+
+                        for(Event event : result) {
+                            if(dbHelper.doesEventsWeAreInExist(event))
+                                dbHelper.updateEventsWeAreIn(event);
+                            else
+                                dbHelper.createEventsWeAreIn(event);
+
+                            Log.d(TAG, "Done getting event we are in("+event.getEventCode()+")");
+                        }
+                        NetworkHelper.setLoadedEventsWeAreInList(context);
+                        if(callback != null)
+                            callback.handleFinishDownload(true);
+                    }
+                });
+    }
+
 
     public void loadTeams(final Event event, final NetworkCallback callback){
         String request = (BASE_URL+GET_TEAM_LIST).replace("{EVENT_KEY}", event.getKey());
         System.out.println(request);
         Ion.with(context)
                 .load(request)
-                .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2017:" + versionName)
+                .addHeader(context.getString(R.string.X_TBA), context.getString(R.string.scout_screen_app) + versionName)
                 .as(new TypeToken<List<Team>>() {})
                 .setCallback(new FutureCallback<List<Team>>() {
                     @Override

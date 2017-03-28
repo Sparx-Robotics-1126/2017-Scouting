@@ -31,6 +31,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Table Names
     private static final String TABLE_EVENTS = "events";
+    private static final String TABLE_EVENTS_WE_ARE_IN = "eventsWeAreIn";
     private static final String TABLE_BENCHMARK = "benchmark";
     private static final String TABLE_SCOUT = "scout";
     private static final String TABLE_TEAMS = "teams";
@@ -152,6 +153,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Create Tables
     private static final String CREATE_TABLE_EVENTS = "CREATE TABLE " + TABLE_EVENTS + "("
+            + TABLE_EVENTS_KEY + " TEXT PRIMARY KEY, "
+            + TABLE_EVENTS_NAME + " TEXT, "
+            + TABLE_EVENTS_SHORT_NAME + " TEXT, "
+            + TABLE_EVENTS_EVENT_CODE + " TEXT, "
+            + TABLE_EVENTS_EVENT_TYPE_STRING + " TEXT, "
+            + TABLE_EVENTS_EVENT_TYPE + " INTEGER, "
+            + TABLE_EVENTS_YEAR + " INTEGER, "
+            + TABLE_EVENTS_LOCATION + " TEXT, "
+            + TABLE_EVENTS_OFFICIAL + " INTEGER, "
+            + TABLE_EVENTS_START_DATE + " TEXT, "
+            + TABLE_EVENTS_END_DATE + " TEXT)";
+
+    private static final String CREATE_TABLE_EVENTS_WE_ARE_IN = "CREATE TABLE " + TABLE_EVENTS_WE_ARE_IN + "("
             + TABLE_EVENTS_KEY + " TEXT PRIMARY KEY, "
             + TABLE_EVENTS_NAME + " TEXT, "
             + TABLE_EVENTS_SHORT_NAME + " TEXT, "
@@ -297,6 +311,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_EVENTS);
+        db.execSQL(CREATE_TABLE_EVENTS_WE_ARE_IN);
         db.execSQL(CREATE_TABLE_TEAMS);
         db.execSQL(CREATE_TABLE_E2T);
         db.execSQL(CREATE_TABLE_MATCH);
@@ -332,6 +347,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_EVENTS, null, mapEvent(event));
     }
 
+    public void createEventsWeAreIn(Event event){
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.insert(TABLE_EVENTS_WE_ARE_IN, null, mapEvent(event));
+    }
+
     public boolean doesEventExist(Event event){
         boolean retVal = false;
         SQLiteDatabase db = getReadableDatabase();
@@ -346,10 +367,30 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return retVal;
     }
 
+    public boolean doesEventsWeAreInExist(Event event){
+        boolean retVal = false;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.query(TABLE_EVENTS_WE_ARE_IN, new String[]{"COUNT(*)"},
+                TABLE_EVENTS_KEY + " = ?", new String[]{event.getKey()}, null, null, null);
+
+        if(c != null && c.moveToNext())
+            retVal = c.getInt(0) > 0;
+        if(c!=null)
+            c.close();
+        return retVal;
+    }
+
     public void updateEvent(Event event){
         SQLiteDatabase db = getWritableDatabase();
 
         db.update(TABLE_EVENTS, mapEvent(event), TABLE_EVENTS_KEY + " = ?", new String[]{event.getKey()});
+    }
+
+    public void updateEventsWeAreIn(Event event){
+        SQLiteDatabase db = getWritableDatabase();
+
+        db.update(TABLE_EVENTS_WE_ARE_IN, mapEvent(event), TABLE_EVENTS_KEY + " = ?", new String[]{event.getKey()});
     }
 
     public Event getEvent(String eventKey){
@@ -386,6 +427,51 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return event;
     }
 
+    public Event getEventWeAreIn(String eventKey){
+        SQLiteDatabase db = getReadableDatabase();
+        String selectQuery = "SELECT * FROM " + TABLE_EVENTS_WE_ARE_IN
+                + " WHERE " + TABLE_EVENTS_KEY + " = ?";
+
+        Cursor c = db.rawQuery(selectQuery, new String[]{eventKey});
+
+        Event event = new Event();
+        if(c != null && c.moveToNext()){
+            event.setKey(c.getString(c.getColumnIndex(TABLE_EVENTS_KEY)));
+            event.setName(c.getString(c.getColumnIndex(TABLE_EVENTS_NAME)));
+            event.setShortName(c.getString(c.getColumnIndex(TABLE_EVENTS_SHORT_NAME)));
+            event.setEventCode(c.getString(c.getColumnIndex(TABLE_EVENTS_EVENT_CODE)));
+            event.setEventTypeString(c.getString(c.getColumnIndex(TABLE_EVENTS_EVENT_TYPE_STRING)));
+            event.setEventType(c.getInt(c.getColumnIndex(TABLE_EVENTS_EVENT_TYPE)));
+            event.setYear(c.getInt(c.getColumnIndex(TABLE_EVENTS_YEAR)));
+            event.setLocation(c.getString(c.getColumnIndex(TABLE_EVENTS_LOCATION)));
+            event.setOfficial(c.getInt(c.getColumnIndex(TABLE_EVENTS_OFFICIAL)) == 1);
+            try{
+                event.setStartDate(ISO6701_FORMAT.parse(c.getString(c.getColumnIndex(TABLE_EVENTS_START_DATE))));
+            } catch (ParseException e) {
+                Log.e(TAG, "Could not parse Event's start date.", e);
+            }try{
+                event.setEndDate(ISO6701_FORMAT.parse(c.getString(c.getColumnIndex(TABLE_EVENTS_END_DATE))));
+            } catch (ParseException e) {
+                Log.e(TAG, "Could not parse Event's end date.", e);
+            }
+        }
+        if(c!=null) {
+            c.close();
+        }
+        return event;
+    }
+
+    public Cursor createEventNameCursor(){
+        SQLiteDatabase db = getReadableDatabase();
+        return db.query(true, TABLE_EVENTS, new String[]{"rowid AS _id, key", "substr(start_date,1,11) || name AS title", TABLE_EVENTS_SHORT_NAME, TABLE_EVENTS_START_DATE},
+                "", null, null, null, TABLE_EVENTS_START_DATE + " ASC", null);
+    }
+
+    public Cursor createEventsWeAreInNameCursor(){
+        SQLiteDatabase db = getReadableDatabase();
+        return db.query(true, TABLE_EVENTS_WE_ARE_IN, new String[]{"rowid AS _id, key", "substr(start_date,1,11) || name AS title", TABLE_EVENTS_SHORT_NAME, TABLE_EVENTS_START_DATE},
+                "", null, null, null, TABLE_EVENTS_START_DATE + " ASC", null);
+    }
 
     public void createMatch(Match match){
         SQLiteDatabase db = getWritableDatabase();
@@ -490,13 +576,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return retVal;
-    }
-
-
-    public Cursor createEventNameCursor(){
-        SQLiteDatabase db = getReadableDatabase();
-        return db.query(true, TABLE_EVENTS, new String[]{"rowid AS _id, key", "substr(start_date,1,11) || name AS title", TABLE_EVENTS_SHORT_NAME, TABLE_EVENTS_START_DATE},
-                "", null, null, null, TABLE_EVENTS_START_DATE + " ASC", null);
     }
 
     private ContentValues mapBenchmarkingData(BenchmarkingData data){

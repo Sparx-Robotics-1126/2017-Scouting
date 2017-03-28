@@ -59,24 +59,25 @@ public class MainScreen extends AppCompatActivity {
     private Button teamChecklist;
     private SharedPreferences settings;
     private List<String> eventsNearToday;
-    private List<String> eventsWeAreInArray;
+    private List<String> eventsWeAreIn;
+    private List<String> eventsArray;
     private ArrayAdapter<String> eventNamesAdapter;
     private Map<String, String> eventNamesToKey;
-
     private boolean eventSelected = false;
     private boolean eventFilter = true;
-    private static final int COMPETITION_THRESHOLD = 10;
+    private static final int COMPETITION_Threshold = 4;
     private int teamSelected;
     private boolean redAlliance;
     private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
+
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.main_menu_music);
         mediaPlayer.start();
+
         blueAlliance = BlueAlliance.getInstance(this);
         dbHelper = DatabaseHelper.getInstance(this);
         utility = Utility.getInstance();
@@ -110,28 +111,42 @@ public class MainScreen extends AppCompatActivity {
         settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
 
         eventsNearToday = new ArrayList<>();
-        eventsWeAreInArray = new ArrayList<>();
+        eventsWeAreIn = new ArrayList<>();
+        eventsArray = new ArrayList<>();
         eventNamesToKey = new HashMap<>();
 
-        restorePreferences();
         teamSelected = settings.getInt("team selected", 0);
         redAlliance = settings.getBoolean("red alliance", true);
+        restorePreferences();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        utility.downloadEventSpinnerData(this, false, new NetworkCallback() {
+        utility.downloadEventsData(this, false, new NetworkCallback() {
             @Override
             public void handleFinishDownload(final boolean success) {
                 MainScreen.this.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (success) {
-                            Dialog alert = utility.createDialog(MainScreen.this, getString(R.string.downloading_data), getString(R.string.please_wait_team_download));
-                            alert.show();
                             fillInEventsNearToday(dbHelper.createEventNameCursor());
-                            downloadTeamData(dbHelper.createEventNameCursor(), alert);
+                            utility.downloadEventsWeAreIn(MainScreen.this, false, new NetworkCallback() {
+                                @Override
+                                public void handleFinishDownload(final boolean success) {
+                                    MainScreen.this.runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            if (success) {
+                                                Dialog alert = utility.createDialog(MainScreen.this, getString(R.string.downloading_data), getString(R.string.please_wait_team_download));
+                                                alert.show();
+                                                fillInEventsWeAreIn(dbHelper.createEventsWeAreInNameCursor());
+                                                downloadTeamData(dbHelper.createEventsWeAreInNameCursor(), alert);
+                                            }
+                                        }
+                                    });
+                                }
+                            });
                         }
                     }
                 });
@@ -167,7 +182,7 @@ public class MainScreen extends AppCompatActivity {
                 utility.uploadScoutingData(this, true);
                 return true;
             case R.id.refresh_events:
-                utility.downloadEventSpinnerData(this, true, new NetworkCallback() {
+                utility.downloadEventsData(this, true, new NetworkCallback() {
                     @Override
                     public void handleFinishDownload(final boolean success) {
                         MainScreen.this.runOnUiThread(new Runnable() {
@@ -241,9 +256,15 @@ public class MainScreen extends AppCompatActivity {
 
         String eventName = settings.getString(getResources().getString(R.string.pref_event), "");
         if (!eventName.isEmpty()) {
-            eventFilter = settings.getBoolean(getResources().getString(R.string.pref_event_filter), false);
+            eventFilter = settings.getBoolean(getResources().getString(R.string.pref_event_filter), true);
+            fillInEventsWeAreIn(dbHelper.createEventsWeAreInNameCursor());
             fillInEventsNearToday(dbHelper.createEventNameCursor());
-            setupEventSpinner();
+            if(eventFilter) {
+                setupEventWeAreInSpinner();
+            }
+            else {
+                setupEventSpinner();
+            }
             eventSpinner.setSelection(eventNamesAdapter.getPosition(eventName));
         }
         String scouterName = settings.getString(getResources().getString(R.string.pref_scouter), "");
@@ -285,7 +306,7 @@ public class MainScreen extends AppCompatActivity {
     private final View.OnTouchListener spinnerOnTouch = new View.OnTouchListener() {
         public boolean onTouch(View v, MotionEvent event) {
             if (getEventName().isEmpty() && (event.getAction() == MotionEvent.ACTION_UP)) {
-                setupEventSpinner();
+                setupEventWeAreInSpinner();
             }
             return false;
         }
@@ -298,11 +319,14 @@ public class MainScreen extends AppCompatActivity {
                 if (getEventName().contentEquals(getResources().getString(R.string.filter_off))) {
                     eventSelected = false;
                     eventFilter = false;
+                    Dialog alert = utility.createDialog(MainScreen.this, getString(R.string.downloading_data), getString(R.string.please_wait_team_download));
+                    alert.show();
+                    downloadTeamData(dbHelper.createEventNameCursor(), alert);
                     setupEventSpinner();
                 } else if (getEventName().contentEquals(getResources().getString(R.string.filter_on))) {
                     eventSelected = false;
                     eventFilter = true;
-                    setupEventSpinner();
+                    setupEventWeAreInSpinner();
                 } else {
                     eventSelected = true;
                     SharedPreferences.Editor editor = settings.edit();
@@ -356,30 +380,77 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-    private void setupEventSpinner() {
-        Cursor eventDataCur = dbHelper.createEventNameCursor();
-
+    private void setupEventWeAreInSpinner() {
+        Cursor eventDataCur = dbHelper.createEventsWeAreInNameCursor();
         //Left that here because it's a way to dump all of the data into the console
         //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
         if (eventDataCur.getCount() > 0) {
-            eventsWeAreInArray.clear();
-            for (String eventName : eventsNearToday) {
-                eventsWeAreInArray.add(eventName);
+            eventsArray.clear();
+            for (String eventName : eventsWeAreIn) {
+                eventsArray.add(eventName);
             }
             if (eventFilter) {
-                for (int i = (eventsWeAreInArray.size() - 1); 0 <= i; i--) {
-                    if (!eventsWeAreInArray.get(i).contentEquals(getResources().getString(R.string.our_competition_buckeye)) && !eventsWeAreInArray.get(i).contentEquals(getResources().getString(R.string.our_competition_flr))) {
-                        eventsWeAreInArray.remove(i);
-                    }
-                }
-                eventsWeAreInArray.add(getResources().getString(R.string.filter_off));
+                eventsArray.add(getResources().getString(R.string.filter_off));
             } else {
-                eventsWeAreInArray.add(getResources().getString(R.string.filter_on));
+                eventsArray.add(getResources().getString(R.string.filter_on));
             }
         }
-        eventNamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eventsWeAreInArray);
+        eventNamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eventsArray);
         eventNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         eventSpinner.setAdapter(eventNamesAdapter);
+    }
+
+    private void setupEventSpinner() {
+        Cursor eventDataCur = dbHelper.createEventNameCursor();
+        //Left that here because it's a way to dump all of the data into the console
+        //System.out.println(DatabaseUtils.dumpCursorToString(eventDataCur));
+        if (eventDataCur.getCount() > 0) {
+            eventsArray.clear();
+            for (String eventName : eventsNearToday) {
+                eventsArray.add(eventName);
+            }
+            if (eventFilter) {
+                for (int i = (eventsArray.size() - 1); 0 <= i; i--) {
+                    if (!eventsArray.get(i).contentEquals(getResources().getString(R.string.our_competition_buckeye)) && !eventsArray.get(i).contentEquals(getResources().getString(R.string.our_competition_flr))) {
+                        eventsArray.remove(i);
+                    }
+                }
+                eventsArray.add(getResources().getString(R.string.filter_off));
+            } else {
+                eventsArray.add(getResources().getString(R.string.filter_on));
+            }
+        }
+        eventNamesAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, eventsArray);
+        eventNamesAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        eventSpinner.setAdapter(eventNamesAdapter);
+    }
+
+    private void fillInEventsWeAreIn(Cursor eventDataCur) {
+        SimpleDateFormat cursorFormat = new SimpleDateFormat(getString(R.string.day_format), Locale.US);
+        long epochToday = utility.getEpoch();
+        try {
+            while (eventDataCur.moveToNext()) {
+                Date dateObj;
+                try {
+                    String startDateStr = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_START_DATE));
+                    dateObj = cursorFormat.parse(startDateStr);
+                    long epoch = dateObj.getTime();
+
+                    long ONE_DAY_EPOCH = 86400000;
+                    long window = ONE_DAY_EPOCH * COMPETITION_Threshold;
+                    if ((epoch >= (epochToday - window)) && (epoch <= (epochToday + window))) {
+                        String eventName = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_TITLE));
+                        String eventKey = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_KEY));
+                        eventsWeAreIn.add(eventName);
+                        eventNamesToKey.put(eventName, eventKey);
+                    }
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        } finally {
+            eventDataCur.close();
+        }
     }
 
     private void fillInEventsNearToday(Cursor eventDataCur) {
