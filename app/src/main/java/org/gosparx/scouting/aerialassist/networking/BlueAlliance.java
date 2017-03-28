@@ -12,11 +12,13 @@ import com.koushikdutta.ion.Ion;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.util.List;
 
 public class BlueAlliance {
+    private static final String GET_MATCH_LIST = "/api/v2/event/{EVENT_KEY}/matches";
     private static final String TAG = "BlueAlliance";
     private static final String BASE_URL = "https://www.thebluealliance.com";
     private static final String GET_EVENT_LIST = "/api/v2/events/{YEAR}";
@@ -54,6 +56,40 @@ public class BlueAlliance {
         ion.cancelAll();
     }
 
+    public void loadMatches(final Event event){loadMatches(event, null);}
+    public void loadMatches(final Event event, final NetworkCallback callback){
+        //String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", event.getKey());
+        String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", "2016ohcl");
+        Ion.with(context)
+                .load(request)
+                .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2017:" + versionName)
+                .noCache()
+                .as(new TypeToken<List<Match>>(){})
+                .setCallback(new FutureCallback<List<Match>>() {
+                    @Override
+                    public void onCompleted(Exception e, List<Match> result) {
+                        if( e != null){
+                            Log.e(TAG, "Issue getting matches from event("+event.getKey()+")", e);
+
+                            if(callback != null)
+                                callback.handleFinishDownload(false);
+                            return;
+                        }
+                        for (Match match : result) {
+                            if (dbHelper.doesMatchExist(match))
+                                dbHelper.updateMatch(match);
+                            else {
+                                dbHelper.createMatch(match);
+                            }
+                        }
+
+                        if(callback != null)
+                            callback.handleFinishDownload(true);
+                        NetworkHelper.setLoadedMatchList(context);
+                    }
+                });
+    }
+
     public void loadEventList(String year, final NetworkCallback callback){
         String request = (BASE_URL+GET_EVENT_LIST).replace("{YEAR}", year);
         Ion.with(context)
@@ -88,6 +124,7 @@ public class BlueAlliance {
 
     public void loadTeams(final Event event, final NetworkCallback callback){
         String request = (BASE_URL+GET_TEAM_LIST).replace("{EVENT_KEY}", event.getKey());
+        System.out.println(request);
         Ion.with(context)
                 .load(request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting_screen-app-2017:" + versionName)

@@ -1,6 +1,9 @@
 package com.sparx1126.steamworks;
-//Hi
+
+import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,6 +12,9 @@ import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -26,15 +32,23 @@ import com.sparx1126.steamworks.components.Utility;
 import org.gosparx.scouting.aerialassist.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.TeamData;
+import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
+import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class BenchmarkScreen extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private Utility utility;
     private BenchmarkingData currentData;
-
+    private List<String> teamsList;
+    private SharedPreferences settings;
     private AutoCompleteTextView driveSystem;
     private EditText drivesSpeed;
     private ToggleButton canPlayDefenseBenchButton;
@@ -81,8 +95,10 @@ public class BenchmarkScreen extends AppCompatActivity {
     private RadioButton radioPreferredPlacesScaleNone;
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
+    private EditText teamNumber;
     private ToggleButton hasActiveGearSystemButton;
     // new
+    private  LinearLayout theAllKnower;
     //High Goal related Linears
     private LinearLayout typeOfShooterLinear;
     private LinearLayout ballsPerSecondLinear;
@@ -102,6 +118,8 @@ public class BenchmarkScreen extends AppCompatActivity {
     private LinearLayout placesCanScaleFromLinear;
     private LinearLayout prefPlaceToScaleLinear;
 
+    private Map<String, String> eventNamesToKey;
+
     private static final int REQUEST_TAKE_PHOTO = 1;
     private String[] driveTypes = {"Swerve", "Mechanum", "Tank Treads",
             "8 wheel traction drive", "6 wheel traction drive", "4 wheel traction drive",
@@ -116,8 +134,6 @@ public class BenchmarkScreen extends AppCompatActivity {
 
         dbHelper = DatabaseHelper.getInstance(this);
         utility = Utility.getInstance();
-        TeamData teamData = TeamData.getCurrentTeam();
-        currentData = teamData.getBenchmarkingData();
 
         ImageButton home = (ImageButton) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
@@ -133,7 +149,10 @@ public class BenchmarkScreen extends AppCompatActivity {
                 dispatchTakePictureIntent();
             }
         });
+        settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
+        teamsList = new ArrayList<>();
 
+        eventNamesToKey = new HashMap<>();
         driveSystem = (AutoCompleteTextView) findViewById(R.id.drivesSystem);
         drivesSpeed = (EditText) findViewById(R.id.drivesSpeed);
         canPlayDefenseBenchButton = (ToggleButton) findViewById(R.id.canPlayDefenseBenchButton);
@@ -186,6 +205,10 @@ public class BenchmarkScreen extends AppCompatActivity {
         Button submitBenchmark = (Button) findViewById(R.id.submitBenchmark);
         submitBenchmark.setOnClickListener(submitButtonClicked);
 
+        teamNumber = (EditText) findViewById(R.id.teamNumber);
+        teamNumber.addTextChangedListener(teamTextEntered);
+
+
         typeOfShooterLinear = (LinearLayout) findViewById(R.id.typeOfShooterLinear);
         ballsPerSecondLinear = (LinearLayout) findViewById(R.id.ballsPerSecondLinear);
         ballsPerCycleLinear = (LinearLayout) findViewById(R.id.ballsPerCycleLinear);
@@ -201,27 +224,34 @@ public class BenchmarkScreen extends AppCompatActivity {
         placesCanScaleFromLinear = (LinearLayout) findViewById(R.id.placesCanScaleFromLinear);
         prefPlaceToScaleLinear = (LinearLayout) findViewById(R.id.prefPlaceToScaleLinear);
         benchmarkWasDoneButton = (ToggleButton) findViewById(R.id.benchmarkingWasDoneButton);
+        theAllKnower = (LinearLayout) findViewById(R.id.theAllKnower);
+        theAllKnower.setVisibility(View.INVISIBLE);
+
         hasActiveGearSystemButton = (ToggleButton) findViewById(R.id.hasActiveGearSystemButton);
 
         ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,driveTypes);
         driveSystem.setAdapter(adapter);
         driveSystem.setThreshold(0);
+      
+        setupTeamList();
 
         // <o/  D
         //  |   A
         // / \  B
 
-        restorePreferences();
-        ActionBar bar = getSupportActionBar();
-        if(bar != null) {
+        //restorePreferences();
+        //ActionBar bar = getSupportActionBar();
+        /*if(bar != null) {
             bar.setTitle(getString(R.string.benchmark_title) + String.valueOf(currentData.getTeamNumber()));
-        }
+        }*/
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        saveData();
+        if(currentData != null) {
+            saveData();
+        }
     }
 
     private void restorePreferences() {
@@ -453,7 +483,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
     };
 
-
     private void hideHighGoal(){
         int visibility = View.GONE;
         if(abilityToShootHighGoalBenchButton.isChecked()){
@@ -501,6 +530,42 @@ public class BenchmarkScreen extends AppCompatActivity {
         lowGoalNumberOfCyclesLinear.setVisibility(visibility);
     }
 
+    private final TextWatcher teamTextEntered = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+            if(teamsList.contains(teamNumber.getText().toString())){
+                theAllKnower.setVisibility(View.VISIBLE);
+                TeamData.setTeamData(getTeamNumber(), settings.getString(getString(R.string.pref_event), ""), settings.getString(getString(R.string.pref_scouter), ""));
+                TeamData teamData = TeamData.getCurrentTeam();
+                currentData = teamData.getBenchmarkingData();
+                restorePreferences();
+            }
+            else{
+                theAllKnower.setVisibility(View.INVISIBLE);
+            }
+        }
+    };
+
+
+    private int getTeamNumber() {
+        int value = 0;
+        String textEntered = teamNumber.getText().toString();
+        if (!textEntered.isEmpty()) {
+            value = Integer.parseInt(textEntered);
+        }
+        return value;
+    }
+
+
     private final View.OnClickListener canScaleButtonClicked =  new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -525,7 +590,6 @@ public class BenchmarkScreen extends AppCompatActivity {
             File photoFile = null;
             try {
                 photoFile = createImageFile();
-            //    currentData.addPicturePath(photoFile.getAbsolutePath());
             } catch (IOException ex) {
                 // Error occurred while creating the File
             }
@@ -566,6 +630,24 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
     };
 
+    private void setupTeamList() {
+        if(teamsList != null){
+            teamsList.clear();
+        }
+        String event_key = settings.getString(getResources().getString(R.string.pref_event_key), "");
+        try (Cursor teamCursor = dbHelper.createTeamCursor(dbHelper.getEvent(event_key))) {
+            while (teamCursor.moveToNext()) {
+                String teamNumber = teamCursor.getString(teamCursor.getColumnIndex(DatabaseHelper.TABLE_TEAMS_TEAM_NUMBER));
+                teamsList.add(teamNumber);
+
+            }
+        }
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString(getResources().getString(R.string.pref_number_teams), TextUtils.join(",", teamsList));
+        editor.apply();
+        //teamNumberChecker();
+    }
+
     private boolean isPictures() {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (storageDir == null)
@@ -584,5 +666,4 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
         return found;
     }
-
 }

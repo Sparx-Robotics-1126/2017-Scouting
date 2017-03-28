@@ -9,6 +9,7 @@ public class NetworkHelper {
 
     private static final long MS_IN_DAY = 86400000;
 
+    public static final String PREF_LOAD_MATCH = "LOAD_MATCH";
     private static final String PREF_FILE_NAME = "NETWORK_PREFERENCES";
     private static final String PREF_LOAD_EVENT_LIST = "LOAD_EVENT_LIST";
     private static final String PREF_LOAD_TEAM_LIST = "LOAD_TEAM_LIST";
@@ -51,6 +52,14 @@ public class NetworkHelper {
         return new Date().after(new Date(timeOfLastSync + NetworkHelper.MS_IN_DAY));
     }
 
+    public static boolean needToLoadMatches(Context c){
+
+        long timeOfLastSync = c.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE)
+                .getLong(PREF_LOAD_MATCH, 0);
+
+        return new Date().after(new Date(timeOfLastSync + NetworkHelper.MS_IN_DAY));
+    }
+
     public static void setLoadedEventList(Context c){
         setPrefCurrentTime(c, PREF_LOAD_EVENT_LIST);
     }
@@ -69,6 +78,10 @@ public class NetworkHelper {
 
     public static void setLoadedScoutData(Context c){
         setPrefCurrentTime(c, PREF_LOAD_SCOUT_DATA);
+    }
+
+    public static void setLoadedMatchList(Context c){
+        setPrefCurrentTime(c, PREF_LOAD_MATCH);
     }
 
     private static void setPrefCurrentTime(Context context, String pref){

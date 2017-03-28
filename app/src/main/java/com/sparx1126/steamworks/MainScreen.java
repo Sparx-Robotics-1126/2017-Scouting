@@ -29,7 +29,6 @@ import org.gosparx.scouting.aerialassist.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.ScoutingData;
 import org.gosparx.scouting.aerialassist.TeamData;
-import org.gosparx.scouting.aerialassist.dto.Alliance;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 
@@ -42,6 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import static android.view.View.INVISIBLE;
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
@@ -53,7 +53,6 @@ public class MainScreen extends AppCompatActivity {
     private Spinner eventSpinner;
     private AutoCompleteTextView scouterText;
     private String[] students;
-    private EditText teamText;
     private Button benchmarkAuto;
     private Button scout;
     private Button view;
@@ -63,10 +62,10 @@ public class MainScreen extends AppCompatActivity {
     private List<String> eventsWeAreInArray;
     private ArrayAdapter<String> eventNamesAdapter;
     private Map<String, String> eventNamesToKey;
-    private List<String> teamsList;
+
     private boolean eventSelected = false;
     private boolean eventFilter = true;
-    private static final int COMPETITION_Threshold = 4;
+    private static final int COMPETITION_THRESHOLD = 10;
     private int teamSelected;
     private boolean redAlliance;
     private MediaPlayer mediaPlayer;
@@ -92,10 +91,6 @@ public class MainScreen extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, students);
         scouterText.setAdapter(adapter);
 
-        teamText = (EditText) findViewById(R.id.teamText);
-        teamText.addTextChangedListener(teamTextEntered);
-        teamText.setVisibility(View.INVISIBLE);
-
         benchmarkAuto = (Button) findViewById(R.id.benchmarkButton);
         benchmarkAuto.setOnClickListener(buttonClicked);
         benchmarkAuto.setVisibility(View.INVISIBLE);
@@ -112,23 +107,15 @@ public class MainScreen extends AppCompatActivity {
         teamChecklist.setOnClickListener(buttonClicked);
         teamChecklist.setVisibility(View.INVISIBLE);
 
-
         settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
 
         eventsNearToday = new ArrayList<>();
         eventsWeAreInArray = new ArrayList<>();
         eventNamesToKey = new HashMap<>();
-        teamsList = new ArrayList<>();
 
         restorePreferences();
         teamSelected = settings.getInt("team selected", 0);
-
-        if(teamSelected == 0){
-            Intent intent = new Intent(MainScreen.this, AllianceScreen.class);
-            startActivity(intent);
-            redAlliance = settings.getBoolean("red alliance", true);
-
-        }
+        redAlliance = settings.getBoolean("red alliance", true);
     }
 
     @Override
@@ -229,15 +216,6 @@ public class MainScreen extends AppCompatActivity {
     //Kevin is watching ( ͡° ͜ʖ ͡°)
     //this push thing isn't working ;-;
 
-    private int getTeamNumber() {
-        int value = 0;
-        String textEntered = teamText.getText().toString();
-        if (!textEntered.isEmpty()) {
-            value = Integer.parseInt(textEntered);
-        }
-        return value;
-    }
-
     private String getEventName() {
         String eventName = "";
         if (eventSpinner.getSelectedItem() != null) {
@@ -273,10 +251,8 @@ public class MainScreen extends AppCompatActivity {
             scouterText.setText(scouterName);
             scouterText.dismissDropDown();
         }
-        String teamNumber = settings.getString(getResources().getString(R.string.pref_team), "");
-        if (!teamNumber.isEmpty()) {
-            teamText.setText(teamNumber);
-        }
+        
+        showButtons();
     }
 
     // function called by any of the three buttons to switch screens
@@ -300,8 +276,6 @@ public class MainScreen extends AppCompatActivity {
                     destination = TeamChecklistScreen.class;
                     break;
             }
-            TeamData.setTeamData(getTeamNumber(), getEventName());
-            TeamData.getCurrentTeam().setStudent(getScouterName());
 
             Intent intent = new Intent(MainScreen.this, destination);
             startActivity(intent);
@@ -334,8 +308,9 @@ public class MainScreen extends AppCompatActivity {
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putString(getResources().getString(R.string.pref_event), getEventName());
                     editor.putBoolean(getResources().getString(R.string.pref_event_filter), eventFilter);
+                    editor.putString(getResources().getString(R.string.pref_event_key), eventNamesToKey.get(getEventName()));
                     editor.apply();
-                    setupTeamList();
+                    showButtons();
                 }
             }
 
@@ -366,48 +341,14 @@ public class MainScreen extends AppCompatActivity {
             showButtons();
         }
     };
-
-    private final TextWatcher teamTextEntered = new TextWatcher() {
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-            teamNumberChecker();
-        }
-    };
-
-    private void teamNumberChecker() {
-        String teamTextValue = teamText.getText().toString();
-        if (!teamTextValue.isEmpty() && teamsList.contains(teamTextValue)) {
-            SharedPreferences.Editor editor = settings.edit();
-            editor.putString(getResources().getString(R.string.pref_team), teamTextValue);
-            editor.apply();
-        }
-        showButtons();
-    }
-
+  
     private void showButtons() {
         if (eventSelected && Arrays.asList(students).contains(getScouterName())) {
-            teamText.setVisibility(View.VISIBLE);
-            if (teamsList.contains(teamText.getText().toString())) {
                 benchmarkAuto.setVisibility(View.VISIBLE);
                 view.setVisibility(View.VISIBLE);
                 teamChecklist.setVisibility(View.VISIBLE);
                 scout.setVisibility(View.VISIBLE);
-            } else {
-                benchmarkAuto.setVisibility(INVISIBLE);
-                view.setVisibility(INVISIBLE);
-                teamChecklist.setVisibility(INVISIBLE);
-                scout.setVisibility(INVISIBLE);
-            }
         } else {
-            teamText.setVisibility(INVISIBLE);
             benchmarkAuto.setVisibility(INVISIBLE);
             view.setVisibility(INVISIBLE);
             teamChecklist.setVisibility(INVISIBLE);
@@ -453,7 +394,7 @@ public class MainScreen extends AppCompatActivity {
                     long epoch = dateObj.getTime();
 
                     long ONE_DAY_EPOCH = 86400000;
-                    long window = ONE_DAY_EPOCH * COMPETITION_Threshold;
+                    long window = ONE_DAY_EPOCH * COMPETITION_THRESHOLD;
                     if ((epoch >= (epochToday - window)) && (epoch <= (epochToday + window))) {
                         String eventName = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_TITLE));
                         String eventKey = eventDataCur.getString(eventDataCur.getColumnIndex(DatabaseHelper.TABLE_EVENTS_KEY));
@@ -514,18 +455,6 @@ public class MainScreen extends AppCompatActivity {
                                         MainScreen.this.runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                /*if (success) {
-                                                    utility.downloadPictures(MainScreen.this, false, new NetworkCallback() {
-                                                        @Override
-                                                        public void handleFinishDownload(final boolean success) {
-                                                            MainScreen.this.runOnUiThread(new Runnable() {
-                                                                @Override
-                                                                public void run() {
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                }*/
                                             }
                                         });
                                     }
@@ -538,17 +467,5 @@ public class MainScreen extends AppCompatActivity {
         }
     }
 
-    private void setupTeamList() {
-        teamsList.clear();
-        try (Cursor teamCursor = dbHelper.createTeamCursor(dbHelper.getEvent(eventNamesToKey.get(getEventName())))) {
-            while (teamCursor.moveToNext()) {
-                String teamNumber = teamCursor.getString(teamCursor.getColumnIndex(DatabaseHelper.TABLE_TEAMS_TEAM_NUMBER));
-                teamsList.add(teamNumber);
-            }
-        }
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(getResources().getString(R.string.pref_number_teams), TextUtils.join(",", teamsList));
-        editor.apply();
-        teamNumberChecker();
-    }
+
 }
