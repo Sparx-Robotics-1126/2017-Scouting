@@ -137,9 +137,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String TABLE_E2T_TEAM = "team";
 
     // Matches Column Names
-    private static final String TABLE_MATCHES_KEY = "key";
-    private static final String TABLE_MATCHES_EVENT_KEY = "event_key";
-    private static final String TABLE_MATCHES_MATCH_NUMBER = "match_number";
+    public static final String TABLE_MATCHES_KEY = "key";
+    public static final String TABLE_MATCHES_EVENT_KEY = "event_key";
+    public static final String TABLE_MATCHES_MATCH_NUMBER = "match_number";
     private static final String TABLE_MATCHES_SET_NUMBER = "set_number";
     private static final String TABLE_MATCHES_COMP_LEVEL = "comp_level";
     private static final String TABLE_MATCHES_BLUE_SCORE = "blue_score";
@@ -548,7 +548,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         return db.query(TABLE_MATCHES,
                 new String[]{"*", "rowid As _id"},
-                TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{event.getKey()},
+                //TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{event.getKey()},
+                TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{"2016ohcl"},
                 null, null,
                 "(CASE " + TABLE_MATCHES_COMP_LEVEL + " "
                         + "WHEN 'qm' THEN 1 "

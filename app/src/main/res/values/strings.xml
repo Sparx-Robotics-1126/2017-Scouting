@@ -59,6 +59,7 @@
     <string name="pref_scouter">scouterText</string>
     <string name="pref_team">teamNumber</string>
     <string name="pref_event">eventText</string>
+    <string name="pref_event_key">eventTextKey</string>
     <string name="pref_event_filter">eventFilter</string>
     <string name="pref_events_cursor">eventsCursor</string>
     <string name="pref_number_teams">numberOfTeams</string>

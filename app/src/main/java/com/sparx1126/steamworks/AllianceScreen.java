@@ -23,24 +23,23 @@ public class AllianceScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alliance_selection_screen);
 
-        selectStuff = (Button) findViewById(R.id.selectStuff);
-        selectStuff.setOnClickListener(selectStuffClicked);
-        selectStuff.setVisibility(View.INVISIBLE);
-
-        blueSelectedToggle = (ToggleButton) findViewById(R.id.blueSelectedToggle);
-
-        team1 = (RadioButton) findViewById(R.id.team1);
-        team1.setOnClickListener(teamListener);
-        team2 = (RadioButton) findViewById(R.id.team2);
-        team2.setOnClickListener(teamListener);
-        team3 = (RadioButton) findViewById(R.id.team3);
-        team3.setOnClickListener(teamListener);
-
         settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
 
         if(settings.getInt("team selected", 0) != 0){
             Intent intent = new Intent(AllianceScreen.this, MainScreen.class);
             startActivity(intent);
+        }
+        else {
+            selectStuff = (Button) findViewById(R.id.selectStuff);
+            selectStuff.setOnClickListener(selectStuffClicked);
+            selectStuff.setVisibility(View.INVISIBLE);
+            blueSelectedToggle = (ToggleButton) findViewById(R.id.blueSelectedToggle);
+            team1 = (RadioButton) findViewById(R.id.team1);
+            team1.setOnClickListener(teamListener);
+            team2 = (RadioButton) findViewById(R.id.team2);
+            team2.setOnClickListener(teamListener);
+            team3 = (RadioButton) findViewById(R.id.team3);
+            team3.setOnClickListener(teamListener);
         }
     }
 
@@ -63,8 +62,7 @@ public class AllianceScreen extends AppCompatActivity {
                 selectStuff.setVisibility(View.INVISIBLE);
             }
         }
-
-        };
+    };
 
     private final View.OnClickListener selectStuffClicked = new View.OnClickListener() {
         @Override
