@@ -1,6 +1,7 @@
 package com.sparx1126.steamworks;
-
+//Hi
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -9,10 +10,13 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ToggleButton;
 import android.widget.LinearLayout;
@@ -31,7 +35,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     private Utility utility;
     private BenchmarkingData currentData;
 
-    private EditText driveSystem;
+    private AutoCompleteTextView driveSystem;
     private EditText drivesSpeed;
     private ToggleButton canPlayDefenseBenchButton;
     private ToggleButton abilityToShootHighGoalBenchButton;
@@ -77,6 +81,7 @@ public class BenchmarkScreen extends AppCompatActivity {
     private RadioButton radioPreferredPlacesScaleNone;
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
+    private ToggleButton hasActiveGearSystemButton;
     // new
     //High Goal related Linears
     private LinearLayout typeOfShooterLinear;
@@ -98,6 +103,11 @@ public class BenchmarkScreen extends AppCompatActivity {
     private LinearLayout prefPlaceToScaleLinear;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
+    private String[] driveTypes = {"Swerve", "Mechanum", "Tank Treads",
+            "8 wheel traction drive", "6 wheel traction drive", "4 wheel traction drive",
+            "8 wheel omni drive", "6 wheel omni drive", "4 wheel omni drive",
+            "8 wheel traction + omni drive", "6 wheel traction + omni drive", "4 wheel traction + omni drive",
+            "Mechanum traction hyrbid", "kiwi", "West coast"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,7 +134,7 @@ public class BenchmarkScreen extends AppCompatActivity {
             }
         });
 
-        driveSystem = (EditText) findViewById(R.id.drivesSystem);
+        driveSystem = (AutoCompleteTextView) findViewById(R.id.drivesSystem);
         drivesSpeed = (EditText) findViewById(R.id.drivesSpeed);
         canPlayDefenseBenchButton = (ToggleButton) findViewById(R.id.canPlayDefenseBenchButton);
         abilityToShootHighGoalBenchButton = (ToggleButton) findViewById(R.id.abilityToShootHighGoalBenchButton);
@@ -191,6 +201,11 @@ public class BenchmarkScreen extends AppCompatActivity {
         placesCanScaleFromLinear = (LinearLayout) findViewById(R.id.placesCanScaleFromLinear);
         prefPlaceToScaleLinear = (LinearLayout) findViewById(R.id.prefPlaceToScaleLinear);
         benchmarkWasDoneButton = (ToggleButton) findViewById(R.id.benchmarkingWasDoneButton);
+        hasActiveGearSystemButton = (ToggleButton) findViewById(R.id.hasActiveGearSystemButton);
+
+        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,driveTypes);
+        driveSystem.setAdapter(adapter);
+        driveSystem.setThreshold(0);
 
         // <o/  D
         //  |   A
@@ -229,6 +244,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         pickupGearFloorBenchButton.setChecked(currentData.isPickupGearFloorBenchButton());
         pickupGearRetrievalBenchButton.setChecked(currentData.isPickupGearRetrievalBenchButton());
         benchmarkWasDoneButton.setChecked(currentData.isBenchmarkingWasDoneButton());
+        hasActiveGearSystemButton.setChecked(currentData.isHasActiveGearSystemButton());
         if(currentData.getPickupGearPreferred() != null) {
             switch(currentData.getPickupGearPreferred()) {
                 case "radioFloor":
@@ -420,6 +436,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         currentData.setAutoAbilitiesBench(autoAbilitiesBench.getText().toString());
         currentData.setCommentsBench(commentsBench.getText().toString());
         currentData.setBenchmarkWasDoneButton(benchmarkWasDoneButton.isChecked());
+        currentData.setHasActiveGearSystemButton(hasActiveGearSystemButton.isChecked());
 
         if(dbHelper.doesBenchmarkingDataExist(currentData)) {
             dbHelper.updateBenchmarkingData(currentData);
@@ -539,7 +556,7 @@ public class BenchmarkScreen extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             saveData();
-            if(benchmarkWasDoneButton.isChecked()) {
+            if(benchmarkWasDoneButton.isChecked() &&  isPictures()) {
                 utility.uploadBenchmarkingData(BenchmarkScreen.this, false);
                 utility.uploadPictures(BenchmarkScreen.this, false);
             }
@@ -548,4 +565,24 @@ public class BenchmarkScreen extends AppCompatActivity {
             }
         }
     };
+
+    private boolean isPictures() {
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        if (storageDir == null)
+            throw new AssertionError("Cannot read " + Environment.DIRECTORY_PICTURES);
+        String path = storageDir.getAbsolutePath();
+
+        File directory = new File(path);
+        File[] files = directory.listFiles();
+        boolean found = false;
+        for (int index = 0; index < files.length; index++) {
+            String fileName = files[index].getName();
+            if (fileName.contains(currentData.getTeamNumber() + "Robot")) {
+                found = true;
+                break;
+            }
+        }
+        return found;
+    }
+
 }

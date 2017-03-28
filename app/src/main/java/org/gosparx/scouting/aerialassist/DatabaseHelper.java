@@ -39,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Events Column Names
     public static final String TABLE_EVENTS_KEY = "key";
-    private static final String TABLE_EVENTS_NAME = "name";
+    public static final String TABLE_EVENTS_NAME = "name";
     private static final String TABLE_EVENTS_SHORT_NAME = "short_name";
     private static final String TABLE_EVENTS_EVENT_CODE = "event_code";
     private static final String TABLE_EVENTS_EVENT_TYPE_STRING = "event_type_string";
@@ -108,14 +108,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_SCOUT_GEARS_DELIVERED = "gearsDelivered";
     public static final String TABLE_SCOUT_GEARS_COLLECTED_FROM_FLOOR = "gearsCollectedFromFloor";
     public static final String TABLE_SCOUT_GEARS_FROM_HUMAN = "gearsFromHuman";
-    public static final String TABLE_SCOUT_SCORES_HIGH_AUTO = "scoresHighAuto";
-    public static final String TABLE_SCOUT_SCORES_LOW_AUTO = "scoresLowAuto";
     public static final String TABLE_SCOUT_BALLS_IN_HIGH_CYCLE = "ballsInHighCycle";
     public static final String TABLE_SCOUT_BALLS_FROM_HUMAN = "ballsFromHuman";
     public static final String TABLE_SCOUT_BALLS_FROM_HOPPER = "ballsFromHopper";
     public static final String TABLE_SCOUT_BALLS_FROM_FLOOR = "ballsFromFloor";
     public static final String TABLE_SCOUT_FUEL_IN_LOW_CYCLE = "fuelInLowCycle";
-    public static final String TABLE_SCOUT_NUMBER_OF_LOW_CYCLES = "numberOfLowCycles";
     public static final String TABLE_SCOUT_HIGH_GOAL_ACCURACY = "highGoalAccuracy";
     public static final String TABLE_SCOUT_DID_SCALE = "didScale";
     public static final String TABLE_SCOUT_WHERE_SCALED = "whereScaled";
@@ -274,14 +271,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SCOUT_GEARS_DELIVERED + " INTEGER, "
             + TABLE_SCOUT_GEARS_COLLECTED_FROM_FLOOR + " INTEGER, "
             + TABLE_SCOUT_GEARS_FROM_HUMAN + " INTEGER, "
-            + TABLE_SCOUT_SCORES_HIGH_AUTO + " TEXT, "
-            + TABLE_SCOUT_SCORES_LOW_AUTO + " TEXT, "
             + TABLE_SCOUT_BALLS_IN_HIGH_CYCLE + " INTEGER, "
             + TABLE_SCOUT_BALLS_FROM_HUMAN + " INTEGER, "
             + TABLE_SCOUT_BALLS_FROM_HOPPER + " INTEGER, "
             + TABLE_SCOUT_BALLS_FROM_FLOOR + " INTEGER, "
             + TABLE_SCOUT_FUEL_IN_LOW_CYCLE + " INTEGER, "
-            + TABLE_SCOUT_NUMBER_OF_LOW_CYCLES + " INTEGER, "
             + TABLE_SCOUT_HIGH_GOAL_ACCURACY + " TEXT, "
             + TABLE_SCOUT_DID_SCALE + " BOOLEAN, "
             + TABLE_SCOUT_WHERE_SCALED + " TEXT, "
@@ -551,7 +545,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     private static BenchmarkingData mapBenchmarking(Cursor c) {
-        BenchmarkingData data = new BenchmarkingData(c.getInt(c.getColumnIndex(TABLE_BENCHMARK_TEAM_NUMBER)), c.getString(c.getColumnIndex(TABLE_BENCHMARK_EVENT_NAME)), c.getString(c.getColumnIndex(TABLE_BENCHMARK_STUDENT)));
+        BenchmarkingData data = new BenchmarkingData(c.getInt(c.getColumnIndex(TABLE_BENCHMARK_TEAM_NUMBER)), c.getString(c.getColumnIndex(TABLE_BENCHMARK_EVENT_NAME)));
 
         data.setDriveSystem(c.getString(c.getColumnIndex(TABLE_BENCHMARK_DRIVE_SYSTEM)));
         data.setDrivesSpeed(c.getDouble(c.getColumnIndex(TABLE_BENCHMARK_DRIVES_SPEED)));
@@ -649,14 +643,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_SCOUT_GEARS_DELIVERED, data.getGearsDelivered());
         values.put(TABLE_SCOUT_GEARS_COLLECTED_FROM_FLOOR, data.getGearsCollectedFromFloor());
         values.put(TABLE_SCOUT_GEARS_FROM_HUMAN, data.getGearsFromHuman());
-        values.put(TABLE_SCOUT_SCORES_HIGH_AUTO, data.getScoresHighAuto());
-        values.put(TABLE_SCOUT_SCORES_LOW_AUTO, data.getScoresLowAuto());
         values.put(TABLE_SCOUT_BALLS_IN_HIGH_CYCLE, data.getBallsInHighCycle());
         values.put(TABLE_SCOUT_BALLS_FROM_HUMAN, data.getBallsFromHuman());
         values.put(TABLE_SCOUT_BALLS_FROM_HOPPER, data.getBallsFromHopper());
         values.put(TABLE_SCOUT_BALLS_FROM_FLOOR, data.getBallsFromFloor());
         values.put(TABLE_SCOUT_FUEL_IN_LOW_CYCLE, data.getFuelInLowCycle());
-        values.put(TABLE_SCOUT_NUMBER_OF_LOW_CYCLES, data.getNumberOfLowCycles());
         values.put(TABLE_SCOUT_HIGH_GOAL_ACCURACY, data.getHighGoalAccuracy());
         values.put(TABLE_SCOUT_DID_SCALE, data.isDidScale());
         values.put(TABLE_SCOUT_WHERE_SCALED, data.getWhereScaled());
@@ -677,14 +668,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         data.setGearsDelivered(c.getInt(c.getColumnIndex(TABLE_SCOUT_GEARS_DELIVERED)));
         data.setGearsCollectedFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUT_GEARS_COLLECTED_FROM_FLOOR)));
         data.setGearsFromHuman(c.getInt(c.getColumnIndex(TABLE_SCOUT_GEARS_FROM_HUMAN)));
-        data.setScoresHighAuto(c.getString(c.getColumnIndex(TABLE_SCOUT_SCORES_HIGH_AUTO)));
-        data.setScoresLowAuto(c.getString(c.getColumnIndex(TABLE_SCOUT_SCORES_LOW_AUTO)));
         data.setBallsInHighCycle(c.getInt(c.getColumnIndex(TABLE_SCOUT_BALLS_IN_HIGH_CYCLE)));
         data.setBallsFromHuman(c.getInt(c.getColumnIndex(TABLE_SCOUT_BALLS_FROM_HUMAN)));
         data.setBallsFromHopper(c.getInt(c.getColumnIndex(TABLE_SCOUT_BALLS_FROM_HOPPER)));
         data.setBallsFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUT_BALLS_FROM_FLOOR)));
         data.setFuelInLowCycle(c.getInt(c.getColumnIndex(TABLE_SCOUT_FUEL_IN_LOW_CYCLE)));
-        data.setNumberOfLowCycles(c.getInt(c.getColumnIndex(TABLE_SCOUT_NUMBER_OF_LOW_CYCLES)));
         data.setHighGoalAccuracy(c.getString(c.getColumnIndex(TABLE_SCOUT_HIGH_GOAL_ACCURACY)));
         data.setDidScale(c.getInt(c.getColumnIndex(TABLE_SCOUT_DID_SCALE)) == 1);
         data.setWhereScaled(c.getString(c.getColumnIndex(TABLE_SCOUT_WHERE_SCALED)));

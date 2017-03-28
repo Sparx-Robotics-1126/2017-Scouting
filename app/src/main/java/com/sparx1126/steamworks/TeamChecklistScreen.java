@@ -13,6 +13,10 @@ import org.gosparx.scouting.aerialassist.TeamData;
 
 import static android.R.color.black;
 import static com.sparx1126.steamworks.R.color.colorBlack;
+import static com.sparx1126.steamworks.R.color.colorGrayLight1;
+import static com.sparx1126.steamworks.R.color.colorGrayLight2;
+import static com.sparx1126.steamworks.R.color.colorSparxRed;
+import static com.sparx1126.steamworks.R.color.colorWhite;
 
 /**
  * Created by Papa on 3/17/17.
@@ -100,6 +104,11 @@ public class TeamChecklistScreen extends AppCompatActivity {
             TextView scoutedTv = new TextView(this);
             scoutedTv.setText(scouted);
             scoutedTv.setTextSize(20);
+            if (index % 2 == 0) {
+                teamTv.setBackgroundResource(colorGrayLight2);
+                scoutedTv.setBackgroundResource(colorGrayLight2);
+                benchmarkedtv.setBackgroundResource(colorGrayLight2);
+            }
             row.addView(scoutedTv);
 
             ll.addView(row,index);

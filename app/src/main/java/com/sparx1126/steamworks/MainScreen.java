@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -68,13 +69,15 @@ public class MainScreen extends AppCompatActivity {
     private static final int COMPETITION_Threshold = 4;
     private int teamSelected;
     private boolean redAlliance;
+    private MediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
-
+        mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.main_menu_music);
+        mediaPlayer.start();
         blueAlliance = BlueAlliance.getInstance(this);
         dbHelper = DatabaseHelper.getInstance(this);
         utility = Utility.getInstance();
@@ -147,6 +150,13 @@ public class MainScreen extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mediaPlayer.stop();
+
     }
 
     @Override
@@ -239,14 +249,16 @@ public class MainScreen extends AppCompatActivity {
     private void restorePreferences() {
         List<BenchmarkingData> benchmarkingDatas = dbHelper.getAllBenchmarkingData();
         for(BenchmarkingData benchmarkingData : benchmarkingDatas) {
-            TeamData.setTeamData(benchmarkingData.getTeamNumber(), benchmarkingData.getEventName(), benchmarkingData.getStudent());
+            TeamData.setTeamData(benchmarkingData.getTeamNumber(), benchmarkingData.getEventName());
             TeamData.getCurrentTeam().setBenchmarkingData(benchmarkingData);
+            TeamData.getCurrentTeam().setStudent(getScouterName());
         }
 
         List<ScoutingData> scoutingDatas = dbHelper.getAllScoutingDatas();
         for(ScoutingData scoutingData : scoutingDatas) {
-            TeamData.setTeamData(scoutingData.getTeamNumber(), scoutingData.getEventName(), scoutingData.getStudent());
+            TeamData.setTeamData(scoutingData.getTeamNumber(), scoutingData.getEventName());
             TeamData.getCurrentTeam().addScoutingData(scoutingData);
+            TeamData.getCurrentTeam().setStudent(getScouterName());
         }
 
         String eventName = settings.getString(getResources().getString(R.string.pref_event), "");
@@ -288,7 +300,8 @@ public class MainScreen extends AppCompatActivity {
                     destination = TeamChecklistScreen.class;
                     break;
             }
-            TeamData.setTeamData(getTeamNumber(), getEventName(), getScouterName());
+            TeamData.setTeamData(getTeamNumber(), getEventName());
+            TeamData.getCurrentTeam().setStudent(getScouterName());
 
             Intent intent = new Intent(MainScreen.this, destination);
             startActivity(intent);

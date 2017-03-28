@@ -3,23 +3,23 @@ package org.gosparx.scouting.aerialassist;
 public class BenchmarkingData{
     private final int teamNumber;
     private final String eventName;
-    private final String student;
+    private String student;
     private String driveSystem = "";
-    private double drivesSpeed = Double.MAX_VALUE;
+    private double drivesSpeed = 0;
     private boolean canPlayDefenseBenchButton;
     private boolean abilityToShootHighGoalBenchButton;
     private String typeOfShooterBenchInput = "";
-    private double ballsPerSecondBenchInput = Double.MAX_VALUE;
-    private int ballsInCycleBenchInput = Integer.MAX_VALUE;
-    private int cycleTimeHighBenchInput = Integer.MAX_VALUE;
-    private double shootingRangeBenchInput = Double.MAX_VALUE;
+    private double ballsPerSecondBenchInput = 0;
+    private int ballsInCycleBenchInput = 0;
+    private int cycleTimeHighBenchInput = 0;
+    private double shootingRangeBenchInput = 0;
     private String preferredShootingLocationBenchInput = "";
-    private double accuracyHighBenchInput = Double.MAX_VALUE;
+    private double accuracyHighBenchInput = 0;
     private boolean pickupBallHopperBenchButton;
     private boolean pickupBallFloorBenchButton;
     private boolean pickupBallHumanBenchButton;
     private String pickupBallPreferredBenchInput = "";
-    private int maximumBallCapacityBenchInput = Integer.MAX_VALUE;
+    private int maximumBallCapacityBenchInput = 0;
     private boolean canScoreGearsBenchButton;
     private boolean pickupGearFloorBenchButton;
     private boolean pickupGearRetrievalBenchButton;
@@ -28,23 +28,23 @@ public class BenchmarkingData{
     private boolean canGearCenterBench;
     private boolean canGearRightBench;
     private String radioPreferredGear = "";
-    private int cycleTimeGearsBenchInput = Integer.MAX_VALUE;
+    private int cycleTimeGearsBenchInput = 0;
     private boolean abilityToShootLowGoalBenchButton;
-    private int cycleTimeLowBenchInput = Integer.MAX_VALUE;
-    private int cycleNumberLowBenchInput = Integer.MAX_VALUE;
+    private int cycleTimeLowBenchInput = 0;
+    private int cycleNumberLowBenchInput = 0;
     private boolean abilityScaleBenchButton;
     private boolean placesCanScaleRight;
     private boolean placesCanScaleCenter;
     private boolean placesCanScaleLeft;
+    private boolean hasActiveGearSystemButton;
     private boolean benchmarkWasDoneButton;
     private String preferredPlacesScaleInput = "";
     private String autoAbilitiesBench = "";
     private String commentsBench = "";
 
-    public BenchmarkingData(int teamNumber, String eventName, String student) {
+    public BenchmarkingData(int teamNumber, String eventName) {
         this.teamNumber = teamNumber;
         this.eventName = eventName;
-        this.student = student;
     }
 
     public int getTeamNumber() {
@@ -58,6 +58,8 @@ public class BenchmarkingData{
     public String getStudent() {
         return student;
     }
+
+    public void setStudent(String student) {this.student = student;}
 
     public String getDriveSystem() {
         return driveSystem;
@@ -153,6 +155,14 @@ public class BenchmarkingData{
 
     public void setPickupBallHopperBenchButton(boolean pickupBallHopperBenchButton) {
         this.pickupBallHopperBenchButton = pickupBallHopperBenchButton;
+    }
+
+    public boolean isHasActiveGearSystemButton() {
+        return hasActiveGearSystemButton;
+    }
+
+    public void setHasActiveGearSystemButton(boolean hasActiveGearSystemButton) {
+        this.hasActiveGearSystemButton = hasActiveGearSystemButton;
     }
 
     public boolean isPickupBallFloorBenchButton() {

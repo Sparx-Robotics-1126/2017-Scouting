@@ -11,6 +11,12 @@
             android:contentDescription="@string/home"
             style="@style/HomeButton"/>
 
+        <TextView android:id="@+id/scalingWarning"
+            android:layout_width="600dp"
+            android:text="This team has not scaled"
+            android:visibility="visible"
+            style="@style/HeaderText" />
+
         <ExpandableListView
             android:id="@+id/expandableListView"
             android:layout_height="match_parent"
