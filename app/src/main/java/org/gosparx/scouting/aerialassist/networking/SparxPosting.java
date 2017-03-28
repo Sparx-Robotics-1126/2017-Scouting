@@ -123,21 +123,22 @@ public class SparxPosting {
                 .setCallback(new FutureCallback<List<BenchmarkingData>>() {
                     @Override
                     public void onCompleted(Exception e, List<BenchmarkingData> result) {
-                        if (e != null) {
+                        if ((e != null) && (result != null) && !result.isEmpty()) {
                             Log.e(TAG, "Issue getting benchmarking data.", e);
                             callback.handleFinishDownload(false);
                             return;
                         }
+                        else if(result != null){
+                            for (BenchmarkingData bd : result) {
+                                TeamData.setTeamData(bd.getTeamNumber(), bd.getEventName(), bd.getStudent());
+                                TeamData.getCurrentTeam().setBenchmarkingData(bd);
+                                if(dbHelper.doesBenchmarkingDataExist(bd))
+                                    dbHelper.updateBenchmarkingData(bd);
+                                else
+                                    dbHelper.createBenchmarkingData(bd);
 
-                        for (BenchmarkingData bd : result) {
-                            TeamData.setTeamData(bd.getTeamNumber(), bd.getEventName(), bd.getStudent());
-                            TeamData.getCurrentTeam().setBenchmarkingData(bd);
-                            if(dbHelper.doesBenchmarkingDataExist(bd))
-                                dbHelper.updateBenchmarkingData(bd);
-                            else
-                                dbHelper.createBenchmarkingData(bd);
-
-                            Log.d(TAG, "Done getting benchmark data("+bd.getTeamNumber()+")");
+                                Log.d(TAG, "Done getting benchmark data("+bd.getTeamNumber()+")");
+                            }
                         }
 
                         NetworkHelper.setLoadedBenchmarkData(context);
@@ -222,16 +223,18 @@ public class SparxPosting {
                 .setCallback(new FutureCallback<List<ScoutingData>>() {
                     @Override
                     public void onCompleted(Exception e, List<ScoutingData> result) {
-                        if (e != null) {
+                        if ((e != null) && (result != null) && !result.isEmpty()) {
                             Log.e(TAG, "Issue getting scouting data.", e);
                             callback.handleFinishDownload(false);
                             return;
                         }
-
-                        for (ScoutingData sd : result) {
-                            TeamData.setTeamData(sd.getTeamNumber(), sd.getEventName(), sd.getStudent());
-                            TeamData.getCurrentTeam().addScoutingData(sd);
+                        else if(result != null) {
+                            for (ScoutingData sd : result) {
+                                TeamData.setTeamData(sd.getTeamNumber(), sd.getEventName(), sd.getStudent());
+                                TeamData.getCurrentTeam().addScoutingData(sd);
+                            }
                         }
+
                         NetworkHelper.setLoadedScoutData(context);
                         if(callback != null) {
                             callback.handleFinishDownload(true);

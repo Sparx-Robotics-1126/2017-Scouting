@@ -27,31 +27,39 @@ public class AllianceScreen extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.alliance_selection_screen);
-        selectStuff = (Button) findViewById(R.id.button2);
-        selectStuff.setOnClickListener(buttonClicked);
-        selectStuff.setVisibility(View.INVISIBLE);
-        allianceColor = (ToggleButton) findViewById(R.id.toggleButton);
-        team1 = (RadioButton) findViewById(R.id.team1);
-        team1.setOnClickListener(teamListener);
-        team2 = (RadioButton) findViewById(R.id.team2);
-        team2.setOnClickListener(teamListener);
-        team3 = (RadioButton) findViewById(R.id.team3);
-        team3.setOnClickListener(teamListener);
+
         settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
+        teamSelected = settings.getInt("team selected", 0);
 
-
+        if(teamSelected != 0){
+            Intent intent = new Intent(AllianceScreen.this, MainScreen.class);
+            startActivity(intent);
+            redAlliance = settings.getBoolean("red alliance", true);
+        }
+        else {
+            selectStuff = (Button) findViewById(R.id.button2);
+            selectStuff.setOnClickListener(buttonClicked);
+            selectStuff.setVisibility(View.INVISIBLE);
+            allianceColor = (ToggleButton) findViewById(R.id.toggleButton);
+            team1 = (RadioButton) findViewById(R.id.team1);
+            team1.setOnClickListener(teamListener);
+            team2 = (RadioButton) findViewById(R.id.team2);
+            team2.setOnClickListener(teamListener);
+            team3 = (RadioButton) findViewById(R.id.team3);
+            team3.setOnClickListener(teamListener);
+        }
     }
     private final View.OnClickListener teamListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             if (team1.isChecked() == (true)) {
-                teamSelected = 1;
+                teamSelected = 0;
                 isTeamSelected = true;
             } else if (team2.isChecked() == (true)) {
-                teamSelected = 2;
+                teamSelected = 1;
                 isTeamSelected = true;
             } else if (team3.isChecked() == (true)) {
-                teamSelected = 3;
+                teamSelected = 2;
                 isTeamSelected = true;
             } else {
                 isTeamSelected = false;

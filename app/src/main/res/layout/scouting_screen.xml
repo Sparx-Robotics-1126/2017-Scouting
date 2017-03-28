@@ -6,14 +6,25 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Begin Auto Section -->
-        <TextView android:text="@string/autoSection"
-            style="@style/SectionText" />
+        <EditText android:id="@+id/qualMatchEdit"
+            android:inputType="number"
+            style="@style/ShortEditText"/>
+
 
         <ImageButton
             android:id="@+id/home"
             style="@style/HomeButton"
             android:contentDescription="@string/home" />
+
+    <LinearLayout android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/allKnowingLinear">
+
+        <!-- Begin Auto Section -->
+        <TextView android:text="@string/autoSection"
+            style="@style/SectionText" />
+
 
         <LinearLayout android:orientation="vertical"
             android:layout_width="match_parent"
@@ -410,6 +421,7 @@
             android:text="@string/submit"
             style="@style/BigButton"/>
 
+    </LinearLayout>
     </LinearLayout>
 
 </ScrollView>
