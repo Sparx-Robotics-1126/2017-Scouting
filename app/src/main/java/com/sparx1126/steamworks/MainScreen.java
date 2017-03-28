@@ -29,6 +29,7 @@ import org.gosparx.scouting.aerialassist.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.ScoutingData;
 import org.gosparx.scouting.aerialassist.TeamData;
+import org.gosparx.scouting.aerialassist.dto.Alliance;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 
@@ -66,11 +67,13 @@ public class MainScreen extends AppCompatActivity {
     private boolean eventSelected = false;
     private boolean eventFilter = true;
     private static final int COMPETITION_Threshold = 4;
+    private int teamSelected;
+    private boolean redAlliance;
     private MediaPlayer mediaPlayer;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_screen);
         mediaPlayer = MediaPlayer.create(getApplicationContext(), R.raw.main_menu_music);
@@ -118,8 +121,15 @@ public class MainScreen extends AppCompatActivity {
         teamsList = new ArrayList<>();
 
         restorePreferences();
-    }
+        teamSelected = settings.getInt("team selected", 0);
 
+        if(teamSelected == 0){
+            Intent intent = new Intent(MainScreen.this, AllianceScreen.class);
+            startActivity(intent);
+            redAlliance = settings.getBoolean("red alliance", true);
+
+        }
+    }
 
     @Override
     protected void onStart() {

@@ -7,7 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import org.gosparx.scouting.aerialassist.dto.Alliance;
+import org.gosparx.scouting.aerialassist.dto.Alliances;
 import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.dto.Match;
 import org.gosparx.scouting.aerialassist.dto.Team;
 
 import java.text.ParseException;
@@ -234,6 +237,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_BENCHMARK_AUTO_ABILITIES_BENCH + " TEXT, "
             + TABLE_BENCHMARK_COMMENTS_BENCH + " TEXT)";
 
+
+    private ContentValues mapMatch(Match match){
+        ContentValues values = new ContentValues();
+        values.put(TABLE_MATCHES_KEY, match.getKey());
+        values.put(TABLE_MATCHES_EVENT_KEY, match.getEventKey());
+        values.put(TABLE_MATCHES_MATCH_NUMBER, match.getMatchNumber());
+        values.put(TABLE_MATCHES_SET_NUMBER, match.getSetNumber());
+        values.put(TABLE_MATCHES_COMP_LEVEL, match.getCompetitionLevel());
+        values.put(TABLE_MATCHES_BLUE_SCORE, match.getAlliances().getBlue().getScore());
+        values.put(TABLE_MATCHES_BLUE_ONE, match.getAlliances().getBlue().getTeams().get(0));
+        values.put(TABLE_MATCHES_BLUE_TWO, match.getAlliances().getBlue().getTeams().get(1));
+        values.put(TABLE_MATCHES_BLUE_THREE, match.getAlliances().getBlue().getTeams().get(2));
+        values.put(TABLE_MATCHES_RED_SCORE, match.getAlliances().getRed().getScore());
+        values.put(TABLE_MATCHES_RED_ONE, match.getAlliances().getRed().getTeams().get(0));
+        values.put(TABLE_MATCHES_RED_TWO, match.getAlliances().getRed().getTeams().get(1));
+        values.put(TABLE_MATCHES_RED_THREE, match.getAlliances().getRed().getTeams().get(2));
+
+        return values;
+    }
     private static final String CREATE_TABLE_SCOUT = "CREATE TABLE " + TABLE_SCOUT + "("
             + TABLE_SCOUT_KEY + " TEXT PRIMARY KEY, "
             + TABLE_SCOUT_SKEY + " TEXT, "
@@ -363,6 +385,112 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return event;
     }
+
+
+    public void createMatch(Match match){
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues values = mapMatch(match);
+
+        db.insert(TABLE_MATCHES, null, values);
+    }
+
+    public boolean doesMatchExist(Match match){
+        boolean retVal = false;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.query(TABLE_MATCHES, new String[]{"COUNT(*)"},
+                TABLE_MATCHES_KEY+" = ?", new String[]{match.getKey()}, null, null, null);
+
+        if(c != null && c.moveToNext())
+            retVal = c.getInt(0) > 0;
+
+        if (c != null) {
+            c.close();
+        }
+        return retVal;
+    }
+
+    public void updateMatch(Match match){
+        SQLiteDatabase db = getWritableDatabase();
+        db.update(TABLE_MATCHES, mapMatch(match), TABLE_MATCHES_KEY+" = ?", new String[]{match.getKey()});
+    }
+
+    public Match getMatch(String matchKey){
+        SQLiteDatabase db = getReadableDatabase();
+        String selectStatement = "SELECT * FROM " + TABLE_MATCHES
+                + " WHERE " + TABLE_MATCHES_KEY + " = ?";
+
+        Cursor c = db.rawQuery(selectStatement, new String[]{matchKey});
+
+        Match match = new Match();
+
+        if(c!=null && c.moveToNext()){
+            match.setKey(c.getString(c.getColumnIndex(TABLE_MATCHES_KEY)));
+            match.setEventKey(c.getString(c.getColumnIndex(TABLE_MATCHES_EVENT_KEY)));
+            match.setMatchNumber(c.getInt(c.getColumnIndex(TABLE_MATCHES_MATCH_NUMBER)));
+            match.setSetNumber(c.getInt(c.getColumnIndex(TABLE_MATCHES_SET_NUMBER)));
+            match.setCompetitionLevel(c.getString(c.getColumnIndex(TABLE_MATCHES_COMP_LEVEL)));
+
+            Alliances alliances = new Alliances();
+            Alliance red = new Alliance();
+            red.setTeams(new ArrayList<String>(3));
+            Alliance blue = new Alliance();
+            blue.setTeams(new ArrayList<String>(3));
+            alliances.setBlue(blue);
+            alliances.setRed(red);
+
+            blue.setScore(c.getInt(c.getColumnIndex(TABLE_MATCHES_BLUE_SCORE)));
+            blue.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_BLUE_ONE)));
+            blue.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_BLUE_TWO)));
+            blue.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_BLUE_THREE)));
+
+            red.setScore(c.getInt(c.getColumnIndex(TABLE_MATCHES_RED_SCORE)));
+            red.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_RED_ONE)));
+            red.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_RED_TWO)));
+            red.getTeams().add(c.getString(c.getColumnIndex(TABLE_MATCHES_RED_THREE)));
+            match.setAlliances(alliances);
+        }
+
+        if (c != null) {
+            c.close();
+        }
+        return match;
+    }
+
+    public Cursor createMatchCursor(Event event){
+        SQLiteDatabase db = getReadableDatabase();
+        return db.query(TABLE_MATCHES,
+                new String[]{"*", "rowid As _id"},
+                TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{event.getKey()},
+                null, null,
+                "(CASE " + TABLE_MATCHES_COMP_LEVEL + " "
+                        + "WHEN 'qm' THEN 1 "
+                        + "WHEN 'qf' THEN 2 "
+                        + "WHEN 'sf' THEN 3 "
+                        + "WHEN 'f'  THEN 4 "
+                        + "ELSE 5 END), "
+                        + TABLE_MATCHES_SET_NUMBER +", "
+                        + TABLE_MATCHES_MATCH_NUMBER + " ASC",
+                null);
+    }
+
+    public int getMatchCount(Event event){
+        int retVal = 0;
+        SQLiteDatabase db = getReadableDatabase();
+
+        Cursor c = db.rawQuery("SELECT COUNT(*) FROM " + TABLE_MATCHES + " WHERE " + TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{event.getKey()});
+
+        if(c != null && c.moveToNext())
+            retVal = c.getInt(0);
+
+        if (c != null) {
+            c.close();
+        }
+
+        return retVal;
+    }
+
 
     public Cursor createEventNameCursor(){
         SQLiteDatabase db = getReadableDatabase();
