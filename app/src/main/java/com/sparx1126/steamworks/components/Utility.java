@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.sparx1126.steamworks.R;
 
+import org.gosparx.scouting.aerialassist.DatabaseHelper;
+import org.gosparx.scouting.aerialassist.dto.Event;
 import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
@@ -82,7 +84,7 @@ public class Utility {
         }
     }
 
-    public void downloadEventsData(final Activity activity, boolean forceDownload, final NetworkCallback callback) {
+    public void downloadAllEvents(final Activity activity, boolean forceDownload, final NetworkCallback callback) {
         if (NetworkHelper.needToLoadEventList(activity) || forceDownload) {
             if (!isNetworkAvailable(activity)) {
                 utility.alertUser(activity, activity.getString(R.string.no_network), activity.getString(R.string.try_again)).show();
@@ -109,7 +111,7 @@ public class Utility {
         }
     }
 
-    public void uploadBenchmarkingData(final Activity activity, boolean errorOnNoNetwork) {
+    public void uploadBenchmarkingData(final Activity activity, final boolean errorOnNoNetwork, final boolean uploadPictures) {
         if (isNetworkAvailable(activity)) {
             final Dialog alert = utility.createDialog(activity, activity.getString(R.string.uploading_data), activity.getString(R.string.please_wait_benchmarking_upload));
             alert.show();
@@ -121,8 +123,13 @@ public class Utility {
                         @Override
                         public void run() {
                             alert.dismiss();
-                            if (!success)
+                            if (!success) {
                                 utility.alertUser(activity, activity.getString(R.string.failure), activity.getString(R.string.benchmark_upload_failed)).show();
+
+                            }
+                            else if (uploadPictures){
+                                utility.uploadPictures(activity, errorOnNoNetwork);
+                            }
                         }
                     });
                 }

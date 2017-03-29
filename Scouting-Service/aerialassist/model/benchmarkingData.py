@@ -36,6 +36,7 @@ class BenchmarkingData(ndb.Model):
     placesCanScaleRight = ndb.BooleanProperty()
     placesCanScaleCenter = ndb.BooleanProperty()
     placesCanScaleLeft = ndb.BooleanProperty()
+    hasActiveGearSystemButton = ndb.BooleanProperty()
     benchmarkWasDoneButton = ndb.BooleanProperty()
     preferredPlacesScaleInput = ndb.StringProperty()
     autoAbilitiesBench = ndb.StringProperty()

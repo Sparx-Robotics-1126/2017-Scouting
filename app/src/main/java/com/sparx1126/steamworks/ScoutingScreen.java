@@ -1,6 +1,5 @@
 package com.sparx1126.steamworks;
 
-import android.app.Dialog;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -20,27 +19,21 @@ import android.widget.ToggleButton;
 import com.sparx1126.steamworks.components.Utility;
 
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
-import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.ScoutingData;
-import org.gosparx.scouting.aerialassist.dto.Event;
+import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.dto.Match;
-import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
-import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 
 import static com.sparx1126.steamworks.R.layout.scouting_screen;
 
-//TODO add auto comments
-
 public class ScoutingScreen extends AppCompatActivity {
     private DatabaseHelper dbHelper;
-    //private ScoutingData scoutingBeingEntered;
-    private SharedPreferences settings;
+    private Utility utility;
+    private ScoutingData scoutingBeingEntered;
     private Map<String, String> matchMap;
+    private SharedPreferences settings;
 
     private EditText qualMatchNumber;
     private ToggleButton crossedBaseLineAutoInput;
@@ -48,8 +41,10 @@ public class ScoutingScreen extends AppCompatActivity {
     private CheckBox putGearLeftAuto;
     private CheckBox putGearCenterAuto;
     private CheckBox putGearRightAuto;
+    private RadioButton scoresHighDuringAuto;
+    private RadioButton scoresLowDuringAuto;
+    private RadioButton doesntScoreDuringAuto;
     private EditText gearsScoredTeleInput;
-    //private EditText gearsDeliveredInput;
     private EditText numberOfGearsFromFloorInput;
     private EditText numberOfGearsFromHumanInput;
     private EditText numberOfBallsScoredHighGoalInput;
@@ -66,15 +61,9 @@ public class ScoutingScreen extends AppCompatActivity {
     private RadioButton scaledRight;
     private EditText scoutingComments;
     private ToggleButton matchScoutedInput;
-    private RadioButton scoresHighDuringAuto;
-    private RadioButton scoresLowDuringAuto;
-    private RadioButton doesntScoreDuringAuto;
-    private LinearLayout allKnowingLinear;
-    private Utility utility;
-    private String teamNumber = "";
 
-    private boolean redAlliance;
-    private int allianceNumber;
+    private LinearLayout allKnowingLinear;
+    private int teamNumber = 0;
 
     //   Zzzzz  |\      _,,,--,,_
     //          /,`.-'`'   ._  \-;;,_
@@ -86,19 +75,8 @@ public class ScoutingScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(scouting_screen);
 
-        matchMap  = new HashMap<>();
-
-        redAlliance = settings.getBoolean("red alliance", false);
-        allianceNumber = settings.getInt("team selected", 0);
-        allKnowingLinear = (LinearLayout) findViewById(R.id.allKnowingLinear);
-        allKnowingLinear.setVisibility(View.INVISIBLE);
-        qualMatchNumber = (EditText) findViewById(R.id.qualMatchEdit);
-        qualMatchNumber.addTextChangedListener(matchTextEntered);
-
         dbHelper = DatabaseHelper.getInstance(this);
         utility = Utility.getInstance();
-        //String key = String.valueOf(currentTeam.getTeamNumber()) + "_" + utility.getEpoch();
-        //scoutingBeingEntered = new ScoutingData(key, currentTeam.getTeamNumber(), currentTeam.getEventName(), currentTeam.getStudent());
 
         ImageButton home = (ImageButton) findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
@@ -107,14 +85,20 @@ public class ScoutingScreen extends AppCompatActivity {
                 finish();
             }
         });
+        settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
+        matchMap  = new HashMap<>();
 
+        qualMatchNumber = (EditText) findViewById(R.id.qualMatchEdit);
+        qualMatchNumber.addTextChangedListener(matchTextEntered);
         crossedBaseLineAutoInput = (ToggleButton) findViewById(R.id.crossedBaseLineAutoInput);
         hoppersDumpedAutoInput = (EditText) findViewById(R.id.hoppersDumpedAutoInput);
         putGearLeftAuto = (CheckBox) findViewById(R.id.putGearLeftAuto);
         putGearCenterAuto = (CheckBox) findViewById(R.id.putGearCenterAuto);
         putGearRightAuto = (CheckBox) findViewById(R.id.putGearRightAuto);
+        scoresHighDuringAuto = (RadioButton) findViewById(R.id.scoresHighAuto);
+        scoresLowDuringAuto = (RadioButton) findViewById(R.id.scoresLowAuto);
+        doesntScoreDuringAuto = (RadioButton) findViewById(R.id.doesntScoreAuto);
         gearsScoredTeleInput = (EditText) findViewById(R.id.gearsScoredTeleInput).findViewById(R.id.edit_text);
-        //gearsDeliveredInput = (EditText) findViewById(R.id.gearsDeliveredInput).findViewById(R.id.edit_text);
         numberOfGearsFromFloorInput = (EditText) findViewById(R.id.numberOfGearsFromFloorInput).findViewById(R.id.edit_text);
         numberOfGearsFromHumanInput = (EditText) findViewById(R.id.numberOfGearsFromHumanInput).findViewById(R.id.edit_text);
         numberOfBallsScoredHighGoalInput = (EditText) findViewById(R.id.numberOfBallsScoredHighGoalInput).findViewById(R.id.edit_text);
@@ -133,27 +117,133 @@ public class ScoutingScreen extends AppCompatActivity {
         matchScoutedInput = (ToggleButton) findViewById(R.id.matchScouted);
         Button submitScouting = (Button) findViewById(R.id.submitScouting);
         submitScouting.setOnClickListener(submitButtonClicked);
-        scoresHighDuringAuto = (RadioButton) findViewById(R.id.scoresHighAuto);
-        scoresLowDuringAuto = (RadioButton) findViewById(R.id.scoresLowAuto);
-        doesntScoreDuringAuto = (RadioButton) findViewById(R.id.doesntScoreAuto);
-        settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
-
-        downloadMatchData();
+        allKnowingLinear = (LinearLayout) findViewById(R.id.allKnowingLinear);
+        allKnowingLinear.setVisibility(View.INVISIBLE);
 
 
-        /*ActionBar bar = getSupportActionBar();
+        ActionBar bar = getSupportActionBar();
         if(bar != null) {
-            bar.setTitle(getString(R.string.scouting_title) + String.valueOf(currentTeam.getTeamNumber()));
-        }*/
+            bar.setTitle(getString(R.string.scouting_title));
+        }
+
+        setupMatchList();
     }
 
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        //saveData();
-        /*if(scoutingBeingEntered.isMatchScouted()) {
-            currentTeam.addScoutingData(scoutingBeingEntered);
+        saveData();
+        if((scoutingBeingEntered != null) && scoutingBeingEntered.isMatchScouted()) {
+            TeamData.setTeamData(teamNumber, settings.getString(getString(R.string.pref_event), ""));
+            TeamData teamData = TeamData.getCurrentTeam();
+            teamData.setStudent(settings.getString(getString(R.string.pref_scouter), ""));
+            teamData.addScoutingData(scoutingBeingEntered);
             dbHelper.createScoutingData(scoutingBeingEntered);
-        }*/
+        }
+    }
+
+    private void saveData() {
+        if(scoutingBeingEntered == null) {
+            String key = String.valueOf(teamNumber) + "_" + utility.getEpoch();
+            scoutingBeingEntered = new ScoutingData(key, teamNumber, settings.getString(getString(R.string.pref_event), ""), settings.getString(getString(R.string.pref_scouter), ""));
+        }
+        scoutingBeingEntered.setCrossedBaseline(crossedBaseLineAutoInput.isChecked());
+        String valueAsSring = hoppersDumpedAutoInput.getText().toString();
+        if (!valueAsSring.isEmpty()) {
+            int value = Integer.parseInt(valueAsSring);
+            if (value == Integer.MAX_VALUE) value = 0;
+            scoutingBeingEntered.setHoppersDumped(value);
+        }
+        scoutingBeingEntered.setGearScoredLeftAuto(putGearLeftAuto.isChecked());
+        scoutingBeingEntered.setGearScoredCenterAuto(putGearCenterAuto.isChecked());
+        scoutingBeingEntered.setGearScoredRightAuto(putGearRightAuto.isChecked());
+        if (scoresHighDuringAuto.isChecked()) {
+            scoutingBeingEntered.setAutoShooting("scoresHighAuto");
+        } else if (scoresLowDuringAuto.isChecked()) {
+            scoutingBeingEntered.setAutoShooting("scoresLowAuto");
+        } else if (doesntScoreDuringAuto.isChecked()) {
+            scoutingBeingEntered.setAutoShooting("doesntScoreAuto");
+        }
+        valueAsSring = gearsScoredTeleInput.getText().toString();
+        if (!valueAsSring.isEmpty()) {
+            int value = Integer.parseInt(valueAsSring);
+            if (value == Integer.MAX_VALUE) value = 0;
+            scoutingBeingEntered.setGearsScored(value);
+        }
+        valueAsSring = numberOfGearsFromFloorInput.getText().toString();
+        if (!valueAsSring.isEmpty()) {
+            int value = Integer.parseInt(valueAsSring);
+            if (value == Integer.MAX_VALUE) value = 0;
+            scoutingBeingEntered.setGearsCollectedFromFloor(value);
+        }
+        valueAsSring = numberOfGearsFromHumanInput.getText().toString();
+        if (!valueAsSring.isEmpty()) {
+            int value = Integer.parseInt(valueAsSring);
+            if (value == Integer.MAX_VALUE) value = 0;
+            scoutingBeingEntered.setGearsFromHuman(value);
+        }
+        valueAsSring = numberOfBallsScoredHighGoalInput.getText().toString();
+        if (!valueAsSring.isEmpty()) {
+            int value = Integer.parseInt(valueAsSring);
+            if (value == Integer.MAX_VALUE) value = 0;
+            scoutingBeingEntered.setBallsInHighCycle(value);
+        }
+        valueAsSring = timesCollectedFromHumanInput.getText().toString();
+        if (!valueAsSring.isEmpty()) {
+            int value = Integer.parseInt(valueAsSring);
+            if (value == Integer.MAX_VALUE) value = 0;
+            scoutingBeingEntered.setBallsFromHuman(value);
+        }
+        valueAsSring = timesCollectedFromHopperInput.getText().toString();
+        if (!valueAsSring.isEmpty()) {
+            int value = Integer.parseInt(valueAsSring);
+            if (value == Integer.MAX_VALUE) value = 0;
+            scoutingBeingEntered.setBallsFromHopper(value);
+        }
+        valueAsSring = timesCollectedFromFloorInput.getText().toString();
+        if (!valueAsSring.isEmpty()) {
+            int value = Integer.parseInt(valueAsSring);
+            if (value == Integer.MAX_VALUE) value = 0;
+            scoutingBeingEntered.setBallsFromFloor(value);
+        }
+        valueAsSring = fuelScoredLowGoalCycleInput.getText().toString();
+        if (!valueAsSring.isEmpty()) {
+            int value = Integer.parseInt(valueAsSring);
+            if (value == Integer.MAX_VALUE) value = 0;
+            scoutingBeingEntered.setFuelInLowCycle(value);
+        }
+        if (highGoalAccuracyScoutPoor.isChecked()) {
+            scoutingBeingEntered.setHighGoalAccuracy("highGoalAccuracyScoutPoor");
+        } else if (highGoalAccuracyScoutOk.isChecked()) {
+            scoutingBeingEntered.setHighGoalAccuracy("highGoalAccuracyScoutOk");
+        } else if (highGoalAccuracyScoutGreat.isChecked()) {
+            scoutingBeingEntered.setHighGoalAccuracy("highGoalAccuracyScoutGreat");
+        }
+        scoutingBeingEntered.setDidScale(didScaleInput.isChecked());
+        if (scaledLeft.isChecked()) {
+            scoutingBeingEntered.setWhereScaled("scaledLeft");
+        } else if (scaledCenter.isChecked()) {
+            scoutingBeingEntered.setWhereScaled("scaledCenter");
+        } else if (scaledRight.isChecked()) {
+            scoutingBeingEntered.setWhereScaled("scaledRight");
+        }
+        scoutingBeingEntered.setScoutingComments(scoutingComments.getText().toString());
+        scoutingBeingEntered.setMatchScouted(matchScoutedInput.isChecked());
+    }
+
+    private void setupMatchList() {
+        matchMap.clear();
+        String event_key = settings.getString(getResources().getString(R.string.pref_event_key), "");
+        try (Cursor matchCursor = dbHelper.createMatchCursor(dbHelper.getEvent(event_key))) {
+            while (matchCursor.moveToNext()) {
+                String compLevel = matchCursor.getString(matchCursor.getColumnIndex(DatabaseHelper.TABLE_MATCHES_COMP_LEVEL));
+                if(compLevel.contentEquals("qm")) {
+                    String matchNumber = matchCursor.getString(matchCursor.getColumnIndex(DatabaseHelper.TABLE_MATCHES_MATCH_NUMBER));
+                    String matchKey = matchCursor.getString(matchCursor.getColumnIndex(DatabaseHelper.TABLE_MATCHES_KEY));
+                    matchMap.put(matchNumber, matchKey);
+                }
+            }
+        }
     }
 
     private final TextWatcher matchTextEntered = new TextWatcher() {
@@ -168,124 +258,31 @@ public class ScoutingScreen extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable s) {
 
+            if(matchMap.containsKey(qualMatchNumber.getText().toString())){
+                int teamIndex = settings.getInt(getString(R.string.team_selected), Integer.MAX_VALUE);
+                boolean redAlliance = settings.getBoolean(getString(R.string.red_alliance), true);
+                allKnowingLinear.setVisibility(View.VISIBLE);
+                String key = matchMap.get(qualMatchNumber.getText().toString());
+                Match match = dbHelper.getMatch(key);
+                String teamId = "";
+                if(redAlliance){
+                    teamId = match.getAlliances().getRed().getTeams().get(teamIndex);
+                }
+                else if(!redAlliance){
+                    teamId = match.getAlliances().getBlue().getTeams().get(teamIndex);
+                }
+                teamNumber = Integer.parseInt(teamId.replace("frc",""));
 
-           if((qualMatchNumber != null) || (!Objects.equals(qualMatchNumber, ""))){
-               allKnowingLinear.setVisibility(View.VISIBLE);
-               String key = matchMap.get(qualMatchNumber.getText().toString());
-               Match match = dbHelper.getMatch(key);
-               if(redAlliance){
-                   teamNumber = match.getAlliances().getRed().getTeams().get(allianceNumber);
-               }
-               else if(!redAlliance){
-                   teamNumber = match.getAlliances().getBlue().getTeams().get(allianceNumber);
-               }
-               System.out.println(match.getAlliances().getRed().getTeams().get(0));
-           }
-           else{
-               allKnowingLinear.setVisibility(View.INVISIBLE);
-           }
+                ActionBar bar = getSupportActionBar();
+                if(bar != null) {
+                    bar.setTitle(getString(R.string.scouting_title) + " - " + String.valueOf(teamNumber));
+                }
+            }
+            else{
+                allKnowingLinear.setVisibility(View.INVISIBLE);
+            }
         }
     };
-
-
-
-    private void downloadMatchData() {
-        final Dialog alert = utility.createDialog(ScoutingScreen.this, getString(R.string.downloading_data), "Match Data");
-        alert.show();
-        //get the event
-        String event_key = settings.getString(getResources().getString(R.string.pref_event_key), "");
-        final Event e = dbHelper.getEvent(event_key);
-        BlueAlliance ba = BlueAlliance.getInstance(this);
-        //load matches for the event
-        ba.loadMatches(e, new NetworkCallback() {
-            @Override
-            public void handleFinishDownload(final boolean success) {
-                ScoutingScreen.this.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        alert.dismiss();
-                        if (!success)
-                            utility.alertUser(ScoutingScreen.this, ScoutingScreen.this.getString(R.string.failure), "Downloading match data failed").show();
-
-                        try (Cursor matchCursor = dbHelper.createMatchCursor(e)) {
-                            while (matchCursor.moveToNext()) {
-                                String matchNumber = matchCursor.getString(matchCursor.getColumnIndex(DatabaseHelper.TABLE_MATCHES_MATCH_NUMBER));
-                                String matchKey = matchCursor.getString(matchCursor.getColumnIndex(DatabaseHelper.TABLE_MATCHES_KEY));
-                                matchMap.put(matchNumber, matchKey);
-                            }
-                        }
-                    }
-                });
-            }
-        });
-    }
-
-    /*private void saveData() {
-        scoutingBeingEntered.setCrossedBaseline(crossedBaseLineAutoInput.isChecked());
-        String valueAsSring = hoppersDumpedAutoInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
-            scoutingBeingEntered.setHoppersDumped(Integer.parseInt(valueAsSring));
-        }
-        scoutingBeingEntered.setGearScoredLeftAuto(putGearLeftAuto.isChecked());
-        scoutingBeingEntered.setGearScoredCenterAuto(putGearCenterAuto.isChecked());
-        scoutingBeingEntered.setGearScoredRightAuto(putGearRightAuto.isChecked());
-        valueAsSring = gearsScoredTeleInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
-            scoutingBeingEntered.setGearsScored(Integer.parseInt(valueAsSring));
-        }
-        valueAsSring = numberOfGearsFromFloorInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
-            scoutingBeingEntered.setGearsCollectedFromFloor(Integer.parseInt(valueAsSring));
-        }
-        valueAsSring = numberOfGearsFromHumanInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
-            scoutingBeingEntered.setGearsFromHuman(Integer.parseInt(valueAsSring));
-        }
-        valueAsSring = numberOfBallsScoredHighGoalInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
-            scoutingBeingEntered.setBallsInHighCycle(Integer.parseInt(valueAsSring));
-        }
-        valueAsSring = timesCollectedFromHumanInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
-            scoutingBeingEntered.setBallsFromHuman(Integer.parseInt(valueAsSring));
-        }
-        valueAsSring = timesCollectedFromHopperInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
-            scoutingBeingEntered.setBallsFromHopper(Integer.parseInt(valueAsSring));
-        }
-        valueAsSring = timesCollectedFromFloorInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
-            scoutingBeingEntered.setBallsFromFloor(Integer.parseInt(valueAsSring));
-        }
-        valueAsSring = fuelScoredLowGoalCycleInput.getText().toString();
-        if (!valueAsSring.isEmpty()) {
-            scoutingBeingEntered.setFuelInLowCycle(Integer.parseInt(valueAsSring));
-        }
-        if (highGoalAccuracyScoutPoor.isChecked()) {
-            scoutingBeingEntered.setHighGoalAccuracy("highGoalAccuracyScoutPoor");
-        } else if (highGoalAccuracyScoutOk.isChecked()) {
-            scoutingBeingEntered.setHighGoalAccuracy("highGoalAccuracyScoutOk");
-        } else if (highGoalAccuracyScoutGreat.isChecked()) {
-            scoutingBeingEntered.setHighGoalAccuracy("highGoalAccuracyScoutGreat");
-        }
-        if (scoresHighDuringAuto.isChecked()) {
-            scoutingBeingEntered.setAutoShooting("scoresHighAuto");
-        } else if (scoresLowDuringAuto.isChecked()) {
-            scoutingBeingEntered.setAutoShooting("scoresLowAuto");
-        } else if (doesntScoreDuringAuto.isChecked()) {
-            scoutingBeingEntered.setAutoShooting("doesntScoreAuto");
-        }
-        scoutingBeingEntered.setDidScale(didScaleInput.isChecked());
-        if (scaledLeft.isChecked()) {
-            scoutingBeingEntered.setWhereScaled("scaledLeft");
-        } else if (scaledCenter.isChecked()) {
-            scoutingBeingEntered.setWhereScaled("scaledCenter");
-        } else if (scaledRight.isChecked()) {
-            scoutingBeingEntered.setWhereScaled("scaledRight");
-        }
-        scoutingBeingEntered.setScoutingComments(scoutingComments.getText().toString());
-        scoutingBeingEntered.setMatchScouted(matchScoutedInput.isChecked());
-    }*/
 
     private void clearData() {
         crossedBaseLineAutoInput.setChecked(false);
@@ -293,8 +290,10 @@ public class ScoutingScreen extends AppCompatActivity {
         putGearLeftAuto.setChecked(false);
         putGearCenterAuto.setChecked(false);
         putGearRightAuto.setChecked(false);
+        scoresHighDuringAuto.setChecked(false);
+        scoresLowDuringAuto.setChecked(false);
+        doesntScoreDuringAuto.setChecked(false);
         gearsScoredTeleInput.setText("0");
-        //gearsDeliveredInput.setText("0");
         numberOfGearsFromFloorInput.setText("0");
         numberOfGearsFromHumanInput.setText("0");
         numberOfBallsScoredHighGoalInput.setText("0");
@@ -305,10 +304,6 @@ public class ScoutingScreen extends AppCompatActivity {
         highGoalAccuracyScoutPoor.setChecked(false);
         highGoalAccuracyScoutOk.setChecked(false);
         highGoalAccuracyScoutGreat.setChecked(false);
-        scoresHighDuringAuto.setChecked(false);
-        scoresLowDuringAuto.setChecked(false);
-        doesntScoreDuringAuto.setChecked(false);
-
         didScaleInput.setChecked(false);
         scaledLeft.setChecked(false);
         scaledCenter.setChecked(false);
@@ -321,23 +316,22 @@ public class ScoutingScreen extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            /*saveData();
-            if(scoutingBeingEntered.isMatchScouted() && !scoutingBeingEntered.getScoutingComments().isEmpty()) {
-                currentTeam.addScoutingData(scoutingBeingEntered);
+            saveData();
+            if((scoutingBeingEntered != null) && scoutingBeingEntered.isMatchScouted() && !scoutingBeingEntered.getScoutingComments().isEmpty()) {
+                TeamData.setTeamData(teamNumber, settings.getString(getString(R.string.pref_event), ""));
+                TeamData teamData = TeamData.getCurrentTeam();
+                teamData.setStudent(settings.getString(getString(R.string.pref_scouter), ""));
+                teamData.addScoutingData(scoutingBeingEntered);
                 dbHelper.createScoutingData(scoutingBeingEntered);
                 utility.uploadScoutingData(ScoutingScreen.this, false);
-                // reset data
-                String key = String.valueOf(currentTeam.getTeamNumber()) + "_" + utility.getEpoch();
-                scoutingBeingEntered = new ScoutingData(key, currentTeam.getTeamNumber(), currentTeam.getEventName(), currentTeam.getStudent());
                 clearData();
             }
-            else if (!scoutingBeingEntered.isMatchScouted()) {
+            else if ((scoutingBeingEntered != null) && !scoutingBeingEntered.isMatchScouted()) {
                 utility.alertUser(ScoutingScreen.this, getString(R.string.scouting_not_done), getString(R.string.check_submit_buttom)).show();
             }
+            else if ((scoutingBeingEntered != null) && scoutingBeingEntered.getScoutingComments().isEmpty()) {
+                utility.alertUser(ScoutingScreen.this, getString(R.string.scouting_not_done), getString(R.string.comments_required)).show();
             }
-            else if (scoutingBeingEntered.getScoutingComments().isEmpty()) {
-                utility.alertUser(ScoutingScreen.this, "Scouting Was Not Done", "Comments are required!").show();
-            }*/
         }
     };
 }

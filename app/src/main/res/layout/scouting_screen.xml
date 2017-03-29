@@ -6,10 +6,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <EditText android:id="@+id/qualMatchEdit"
-            android:inputType="number"
-            style="@style/ShortEditText"/>
+        <LinearLayout android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <TextView android:labelFor="@+id/qualMatchEdit"
+                android:text="@string/qualifications_match_number"
+                style="@style/NormalTextView"/>
+
+            <EditText android:id="@+id/qualMatchEdit"
+                android:inputType="number"
+                style="@style/ShortEditText"/>
+
+        </LinearLayout>
 
         <ImageButton
             android:id="@+id/home"

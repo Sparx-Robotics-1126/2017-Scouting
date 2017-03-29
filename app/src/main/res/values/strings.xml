@@ -63,8 +63,6 @@
     <string name="pref_event_filter">eventFilter</string>
     <string name="pref_events_cursor">eventsCursor</string>
     <string name="pref_number_teams">numberOfTeams</string>
-    <string name="our_competition_buckeye">2017-03-29 Buckeye Regional</string>
-    <string name="our_competition_flr">"2017-03-15 Finger Lakes Regional "</string>
     <string name="filter_on">Turn the event filter on?</string>
     <string name="filter_off">Turn the event filter off?</string>
     <string name="failure">Failure</string>
@@ -73,6 +71,7 @@
     <string name="benchmark_download_failed">Did not successfully download Benchmark!</string>
     <string name="picture_download_failed">Did not successfully download Pictures!</string>
     <string name="scouting_download_failed">Did not successfully download Scouting!</string>
+    <string name="match_download_failed">Did not successfully download Match!</string>
     <string name="benchmark_upload_failed">"Did not successfully upload Benchmark data!"</string>
     <string name="picture_upload_failed">"Did not successfully upload Picture data!"</string>
     <string name="scouting_upload_failed">"Did not successfully upload Scouting data!"</string>
@@ -82,6 +81,7 @@
     <string name="please_wait_benchmarking_download">Please wait while Benchmarking data is downloaded.</string>
     <string name="please_wait_pictures_download">Please wait while Pictures are downloaded.</string>
     <string name="please_wait_scouting_download">Please wait while Scouting data is downloaded.</string>
+    <string name="please_wait_match_download">Please wait while Match data is downloaded.</string>
     <string name="please_wait_benchmarking_upload">Please wait while Benchmarking data is uploaded.</string>
     <string name="please_wait_picture_upload">Please wait while Picture data is uploaded.</string>
     <string name="please_wait_scouting_upload">Please wait while Scouting data is uploaded.</string>
@@ -137,9 +137,9 @@
     <string name="right">Right</string>
     <string name="team_not_benchmark">This Team Has Yet To Be Benchmarked</string>
     <string name="data_missing">No Data to show</string>
-    <string name="benchmark_title">Benchmarking -</string>
-    <string name="scouting_title">Scouting -</string>
-    <string name="view_title">View -</string>
+    <string name="benchmark_title">Benchmarking</string>
+    <string name="scouting_title">Scouting</string>
+    <string name="view_title">View</string>
     <string name="benchmark_not_done">Benchmarking Was Not Done</string>
     <string name="check_submit_buttom">The button was probably not checked or there was no picture taken of this team.</string>
     <string name="scouting_not_done">Scouting Was Not Done</string>
@@ -153,6 +153,9 @@
     <string name="X_TBA">X-TBA-App-Id</string>
     <string name="scout_screen_app">frc1126:scouting_screen-app-2017:</string>
     <string name="frc_1126">frc1126</string>
+    <string name="team_selected">team selected</string>
+    <string name="qualifications_match_number">Qualifications Match number</string>
+    <string name="comments_required">Comments are required!</string>
     <string-array name="students">
         <item>Michael Anderson</item>
         <item>Tyler Armstrong</item>

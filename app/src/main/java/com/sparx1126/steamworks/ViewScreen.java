@@ -5,7 +5,6 @@ import android.os.Environment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -22,15 +21,11 @@ import com.sparx1126.steamworks.components.ViewScreenListDataPump;
 import org.gosparx.scouting.aerialassist.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.ScoutingData;
-import org.gosparx.scouting.aerialassist.BenchmarkingData;
-import org.gosparx.scouting.aerialassist.TeamData;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-
 
 public class ViewScreen extends AppCompatActivity {
     private TextView scalingWarning;

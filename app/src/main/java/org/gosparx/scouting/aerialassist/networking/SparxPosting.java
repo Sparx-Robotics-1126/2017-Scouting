@@ -17,6 +17,7 @@ import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.RobotImage;
 import org.gosparx.scouting.aerialassist.ScoutingData;
 import org.gosparx.scouting.aerialassist.TeamData;
+import org.gosparx.scouting.aerialassist.dto.Event;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -30,7 +31,7 @@ import java.util.Set;
 
 public class SparxPosting {
     private static final String TAG = "SparxPosting";
-    //private static final String BASE_URL = "http://192.168.0.12:8080";
+    //private static final String BASE_URL = "http://192.168.0.17:8080";
     private static final String BASE_URL = "http://scouting-2017-156319.appspot.com";
     private static final String SCOUTING = "/api/2017/v1/ScoutingData";
     private static final String BENCHMARKING = "/api/2017/v1/BenchmarkingData";
@@ -62,7 +63,6 @@ public class SparxPosting {
         String request = (BASE_URL + BENCHMARKING);
         if((teamsMap == null) || teamsMap.isEmpty()) {
             Log.e(TAG, "No benchmarking to Upload!");
-            System.out.println("No benchmarking to Upload!");
             callback.handleFinishDownload(true);
         }
         else {
@@ -101,7 +101,6 @@ public class SparxPosting {
                                 public void onCompleted(Exception e, String result) {
                                     if ((e != null) || ((result != null) && (!result.isEmpty()))) {
                                         Log.e(TAG, "Issue saving Benchmarking to Server!", e);
-                                        System.out.println("Issue saving Benchmarking to Server!");
                                         subCallback.handleFinishDownload(false);
                                     } else {
                                         subCallback.handleFinishDownload(true);
@@ -130,7 +129,7 @@ public class SparxPosting {
                         }
                         else if(result != null){
                             for (BenchmarkingData bd : result) {
-                                TeamData.setTeamData(bd.getTeamNumber(), bd.getEventName(), bd.getStudent());
+                                TeamData.setTeamData(bd.getTeamNumber(), bd.getEventName());
                                 TeamData.getCurrentTeam().setBenchmarkingData(bd);
                                 if(dbHelper.doesBenchmarkingDataExist(bd))
                                     dbHelper.updateBenchmarkingData(bd);
@@ -230,7 +229,7 @@ public class SparxPosting {
                         }
                         else if(result != null) {
                             for (ScoutingData sd : result) {
-                                TeamData.setTeamData(sd.getTeamNumber(), sd.getEventName(), sd.getStudent());
+                                TeamData.setTeamData(sd.getTeamNumber(), sd.getEventName());
                                 TeamData.getCurrentTeam().addScoutingData(sd);
                             }
 

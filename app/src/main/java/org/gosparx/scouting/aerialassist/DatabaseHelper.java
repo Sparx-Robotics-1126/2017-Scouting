@@ -89,12 +89,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_BENCHMARK_PLACES_CAN_SCALE_RIGHT = "placesCanScaleRight";
     public static final String TABLE_BENCHMARK_PLACES_CAN_SCALE_CENTER = "placesCanScaleCenter";
     public static final String TABLE_BENCHMARK_PLACES_CAN_SCALE_LEFT = "placesCanScaleLeft";
+    public static final String TABLE_BENCHMARK_HAS_ACTIVE_GEAR_SYSTEM = "hasActiveGearSystemButton";
     public static final String TABLE_BENCHMARK_BENCHMARK_WAS_DONE_BUTTON = "benchmarkWasDoneButton";
     public static final String TABLE_BENCHMARK_PREFERRED_PLACES_SCALE_INPUT = "preferredPlacesScaleInput";
     public static final String TABLE_BENCHMARK_AUTO_ABILITIES_BENCH = "autoAbilitiesBench";
     public static final String TABLE_BENCHMARK_COMMENTS_BENCH = "commentsBench";
 
-    // Benchmark Column Names
+    // Scout Column Names
     public static final String TABLE_SCOUT_KEY = "key";
     public static final String TABLE_SCOUT_SKEY = "scoutingKey";
     public static final String TABLE_SCOUT_TEAM_NUMBER = "teamNumber";
@@ -106,7 +107,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_SCOUT_GEAR_SCORED_CENTER_AUTO = "gearScoredCenterAuto";
     public static final String TABLE_SCOUT_GEAR_SCORED_LEFT_AUTO = "gearScoredLeftAuto";
     public static final String TABLE_SCOUT_GEARS_SCORED = "gearsScored";
-    public static final String TABLE_SCOUT_GEARS_DELIVERED = "gearsDelivered";
     public static final String TABLE_SCOUT_GEARS_COLLECTED_FROM_FLOOR = "gearsCollectedFromFloor";
     public static final String TABLE_SCOUT_GEARS_FROM_HUMAN = "gearsFromHuman";
     public static final String TABLE_SCOUT_BALLS_IN_HIGH_CYCLE = "ballsInHighCycle";
@@ -118,6 +118,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_SCOUT_DID_SCALE = "didScale";
     public static final String TABLE_SCOUT_WHERE_SCALED = "whereScaled";
     public static final String TABLE_SCOUT_MATCH_SCOUTED = "matchScouted";
+    public static final String TABLE_SCOUT_AUTO_SHOOTING = "autoShooting";
+    public static final String TABLE_SCOUT_SCOUTING_COMMENTS = "scoutingComments";
 
 
     // Teams Column Names
@@ -141,7 +143,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String TABLE_MATCHES_EVENT_KEY = "event_key";
     public static final String TABLE_MATCHES_MATCH_NUMBER = "match_number";
     private static final String TABLE_MATCHES_SET_NUMBER = "set_number";
-    private static final String TABLE_MATCHES_COMP_LEVEL = "comp_level";
+    public static final String TABLE_MATCHES_COMP_LEVEL = "comp_level";
     private static final String TABLE_MATCHES_BLUE_SCORE = "blue_score";
     private static final String TABLE_MATCHES_BLUE_ONE = "blue_one";
     private static final String TABLE_MATCHES_BLUE_TWO = "blue_two";
@@ -246,6 +248,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_BENCHMARK_PLACES_CAN_SCALE_RIGHT + " BOOLEAN, "
             + TABLE_BENCHMARK_PLACES_CAN_SCALE_CENTER + " BOOLEAN, "
             + TABLE_BENCHMARK_PLACES_CAN_SCALE_LEFT + " BOOLEAN, "
+            + TABLE_BENCHMARK_HAS_ACTIVE_GEAR_SYSTEM + " BOOLEAN, "
             + TABLE_BENCHMARK_BENCHMARK_WAS_DONE_BUTTON + " BOOLEAN, "
             + TABLE_BENCHMARK_PREFERRED_PLACES_SCALE_INPUT + " TEXT, "
             + TABLE_BENCHMARK_AUTO_ABILITIES_BENCH + " TEXT, "
@@ -282,7 +285,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SCOUT_GEAR_SCORED_CENTER_AUTO + " BOOLEAN, "
             + TABLE_SCOUT_GEAR_SCORED_LEFT_AUTO + " BOOLEAN, "
             + TABLE_SCOUT_GEARS_SCORED + " INTEGER, "
-            + TABLE_SCOUT_GEARS_DELIVERED + " INTEGER, "
             + TABLE_SCOUT_GEARS_COLLECTED_FROM_FLOOR + " INTEGER, "
             + TABLE_SCOUT_GEARS_FROM_HUMAN + " INTEGER, "
             + TABLE_SCOUT_BALLS_IN_HIGH_CYCLE + " INTEGER, "
@@ -293,7 +295,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + TABLE_SCOUT_HIGH_GOAL_ACCURACY + " TEXT, "
             + TABLE_SCOUT_DID_SCALE + " BOOLEAN, "
             + TABLE_SCOUT_WHERE_SCALED + " TEXT, "
-            + TABLE_SCOUT_MATCH_SCOUTED + " BOOLEAN)";
+            + TABLE_SCOUT_MATCH_SCOUTED + " BOOLEAN, "
+            + TABLE_SCOUT_AUTO_SHOOTING + " TEXT, "
+            + TABLE_SCOUT_SCOUTING_COMMENTS + " TEXT)";
 
     private static final SimpleDateFormat ISO6701_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
     private static DatabaseHelper dbHelper;
@@ -461,7 +465,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return event;
     }
 
-    public Cursor createEventNameCursor(){
+    public Cursor createAllEventsCursor(){
         SQLiteDatabase db = getReadableDatabase();
         return db.query(true, TABLE_EVENTS, new String[]{"rowid AS _id, key", "substr(start_date,1,11) || name AS title", TABLE_EVENTS_SHORT_NAME, TABLE_EVENTS_START_DATE},
                 "", null, null, null, TABLE_EVENTS_START_DATE + " ASC", null);
@@ -616,6 +620,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_BENCHMARK_PLACES_CAN_SCALE_RIGHT, data.isPlacesCanScaleRight());
         values.put(TABLE_BENCHMARK_PLACES_CAN_SCALE_CENTER, data.isPlacesCanScaleCenter());
         values.put(TABLE_BENCHMARK_PLACES_CAN_SCALE_LEFT, data.isPlacesCanScaleLeft());
+        values.put(TABLE_BENCHMARK_HAS_ACTIVE_GEAR_SYSTEM, data.isHasActiveGearSystemButton());
         values.put(TABLE_BENCHMARK_BENCHMARK_WAS_DONE_BUTTON, data.isBenchmarkingWasDoneButton());
         values.put(TABLE_BENCHMARK_PREFERRED_PLACES_SCALE_INPUT, data.getPreferredPlacesScaleInput());
         values.put(TABLE_BENCHMARK_AUTO_ABILITIES_BENCH, data.getAutoAbilitiesBench());
@@ -627,6 +632,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static BenchmarkingData mapBenchmarking(Cursor c) {
         BenchmarkingData data = new BenchmarkingData(c.getInt(c.getColumnIndex(TABLE_BENCHMARK_TEAM_NUMBER)), c.getString(c.getColumnIndex(TABLE_BENCHMARK_EVENT_NAME)));
 
+        data.setStudent(c.getString(c.getColumnIndex(TABLE_BENCHMARK_STUDENT)));
         data.setDriveSystem(c.getString(c.getColumnIndex(TABLE_BENCHMARK_DRIVE_SYSTEM)));
         data.setDrivesSpeed(c.getDouble(c.getColumnIndex(TABLE_BENCHMARK_DRIVES_SPEED)));
         data.setCanPlayDefenseBenchButton(c.getInt(c.getColumnIndex(TABLE_BENCHMARK_CAN_PLAY_DEFENSE_BENCH_BUTTON)) == 1);
@@ -659,6 +665,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         data.setPlacesCanScaleRight(c.getInt(c.getColumnIndex(TABLE_BENCHMARK_PLACES_CAN_SCALE_RIGHT)) == 1);
         data.setPlacesCanScaleCenter(c.getInt(c.getColumnIndex(TABLE_BENCHMARK_PLACES_CAN_SCALE_CENTER)) == 1);
         data.setPlacesCanScaleLeft(c.getInt(c.getColumnIndex(TABLE_BENCHMARK_PLACES_CAN_SCALE_LEFT)) == 1);
+        data.setHasActiveGearSystemButton(c.getInt(c.getColumnIndex(TABLE_BENCHMARK_HAS_ACTIVE_GEAR_SYSTEM)) == 1);
         data.setBenchmarkWasDoneButton(c.getInt(c.getColumnIndex(TABLE_BENCHMARK_BENCHMARK_WAS_DONE_BUTTON)) == 1);
         data.setPreferredPlacesScaleInput(c.getString(c.getColumnIndex(TABLE_BENCHMARK_PREFERRED_PLACES_SCALE_INPUT)));
         data.setAutoAbilitiesBench(c.getString(c.getColumnIndex(TABLE_BENCHMARK_AUTO_ABILITIES_BENCH)));
@@ -720,7 +727,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_SCOUT_GEAR_SCORED_CENTER_AUTO, data.isGearScoredCenterAuto());
         values.put(TABLE_SCOUT_GEAR_SCORED_LEFT_AUTO, data.isGearScoredLeftAuto());
         values.put(TABLE_SCOUT_GEARS_SCORED, data.getGearsScored());
-        values.put(TABLE_SCOUT_GEARS_DELIVERED, data.getGearsDelivered());
         values.put(TABLE_SCOUT_GEARS_COLLECTED_FROM_FLOOR, data.getGearsCollectedFromFloor());
         values.put(TABLE_SCOUT_GEARS_FROM_HUMAN, data.getGearsFromHuman());
         values.put(TABLE_SCOUT_BALLS_IN_HIGH_CYCLE, data.getBallsInHighCycle());
@@ -732,6 +738,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(TABLE_SCOUT_DID_SCALE, data.isDidScale());
         values.put(TABLE_SCOUT_WHERE_SCALED, data.getWhereScaled());
         values.put(TABLE_SCOUT_MATCH_SCOUTED, data.isMatchScouted());
+        values.put(TABLE_SCOUT_AUTO_SHOOTING, data.getAutoShooting());
+        values.put(TABLE_SCOUT_SCOUTING_COMMENTS, data.getScoutingComments());
 
         return values;
     }
@@ -745,7 +753,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         data.setGearScoredCenterAuto(c.getInt(c.getColumnIndex(TABLE_SCOUT_GEAR_SCORED_CENTER_AUTO)) == 1);
         data.setGearScoredLeftAuto(c.getInt(c.getColumnIndex(TABLE_SCOUT_GEAR_SCORED_LEFT_AUTO)) == 1);
         data.setGearsScored(c.getInt(c.getColumnIndex(TABLE_SCOUT_GEARS_SCORED)));
-        data.setGearsDelivered(c.getInt(c.getColumnIndex(TABLE_SCOUT_GEARS_DELIVERED)));
         data.setGearsCollectedFromFloor(c.getInt(c.getColumnIndex(TABLE_SCOUT_GEARS_COLLECTED_FROM_FLOOR)));
         data.setGearsFromHuman(c.getInt(c.getColumnIndex(TABLE_SCOUT_GEARS_FROM_HUMAN)));
         data.setBallsInHighCycle(c.getInt(c.getColumnIndex(TABLE_SCOUT_BALLS_IN_HIGH_CYCLE)));
@@ -757,6 +764,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         data.setDidScale(c.getInt(c.getColumnIndex(TABLE_SCOUT_DID_SCALE)) == 1);
         data.setWhereScaled(c.getString(c.getColumnIndex(TABLE_SCOUT_WHERE_SCALED)));
         data.setMatchScouted(c.getInt(c.getColumnIndex(TABLE_SCOUT_MATCH_SCOUTED)) == 1);
+        data.setAutoShooting(c.getString(c.getColumnIndex(TABLE_SCOUT_AUTO_SHOOTING)));
+        data.setScoutingComments(c.getString(c.getColumnIndex(TABLE_SCOUT_SCOUTING_COMMENTS)));
 
 
         return data;

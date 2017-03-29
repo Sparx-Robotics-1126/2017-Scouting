@@ -1,10 +1,8 @@
 package com.sparx1126.steamworks;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,7 +11,6 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -22,7 +19,6 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.ToggleButton;
 import android.widget.LinearLayout;
@@ -32,16 +28,11 @@ import com.sparx1126.steamworks.components.Utility;
 import org.gosparx.scouting.aerialassist.BenchmarkingData;
 import org.gosparx.scouting.aerialassist.DatabaseHelper;
 import org.gosparx.scouting.aerialassist.TeamData;
-import org.gosparx.scouting.aerialassist.dto.Event;
-import org.gosparx.scouting.aerialassist.networking.BlueAlliance;
-import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class BenchmarkScreen extends AppCompatActivity {
     private DatabaseHelper dbHelper;
@@ -49,6 +40,8 @@ public class BenchmarkScreen extends AppCompatActivity {
     private BenchmarkingData currentData;
     private List<String> teamsList;
     private SharedPreferences settings;
+
+    private EditText teamNumber;
     private AutoCompleteTextView driveSystem;
     private EditText drivesSpeed;
     private ToggleButton canPlayDefenseBenchButton;
@@ -95,7 +88,6 @@ public class BenchmarkScreen extends AppCompatActivity {
     private RadioButton radioPreferredPlacesScaleNone;
     private EditText autoAbilitiesBench;
     private EditText commentsBench;
-    private EditText teamNumber;
     private ToggleButton hasActiveGearSystemButton;
     // new
     private  LinearLayout theAllKnower;
@@ -117,8 +109,6 @@ public class BenchmarkScreen extends AppCompatActivity {
     //Scaling related Linear
     private LinearLayout placesCanScaleFromLinear;
     private LinearLayout prefPlaceToScaleLinear;
-
-    private Map<String, String> eventNamesToKey;
 
     private static final int REQUEST_TAKE_PHOTO = 1;
     private String[] driveTypes = {"Swerve", "Mechanum", "Tank Treads",
@@ -152,8 +142,12 @@ public class BenchmarkScreen extends AppCompatActivity {
         settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
         teamsList = new ArrayList<>();
 
-        eventNamesToKey = new HashMap<>();
+        teamNumber = (EditText) findViewById(R.id.teamNumber);
+        teamNumber.addTextChangedListener(teamTextEntered);
         driveSystem = (AutoCompleteTextView) findViewById(R.id.drivesSystem);
+        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1, driveTypes);
+        driveSystem.setAdapter(adapter);
+        driveSystem.setThreshold(0);
         drivesSpeed = (EditText) findViewById(R.id.drivesSpeed);
         canPlayDefenseBenchButton = (ToggleButton) findViewById(R.id.canPlayDefenseBenchButton);
         abilityToShootHighGoalBenchButton = (ToggleButton) findViewById(R.id.abilityToShootHighGoalBenchButton);
@@ -205,10 +199,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         Button submitBenchmark = (Button) findViewById(R.id.submitBenchmark);
         submitBenchmark.setOnClickListener(submitButtonClicked);
 
-        teamNumber = (EditText) findViewById(R.id.teamNumber);
-        teamNumber.addTextChangedListener(teamTextEntered);
-
-
         typeOfShooterLinear = (LinearLayout) findViewById(R.id.typeOfShooterLinear);
         ballsPerSecondLinear = (LinearLayout) findViewById(R.id.ballsPerSecondLinear);
         ballsPerCycleLinear = (LinearLayout) findViewById(R.id.ballsPerCycleLinear);
@@ -224,257 +214,364 @@ public class BenchmarkScreen extends AppCompatActivity {
         placesCanScaleFromLinear = (LinearLayout) findViewById(R.id.placesCanScaleFromLinear);
         prefPlaceToScaleLinear = (LinearLayout) findViewById(R.id.prefPlaceToScaleLinear);
         benchmarkWasDoneButton = (ToggleButton) findViewById(R.id.benchmarkingWasDoneButton);
+        hasActiveGearSystemButton = (ToggleButton) findViewById(R.id.hasActiveGearSystemButton);
         theAllKnower = (LinearLayout) findViewById(R.id.theAllKnower);
         theAllKnower.setVisibility(View.INVISIBLE);
-
-        hasActiveGearSystemButton = (ToggleButton) findViewById(R.id.hasActiveGearSystemButton);
-
-        ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_list_item_1,driveTypes);
-        driveSystem.setAdapter(adapter);
-        driveSystem.setThreshold(0);
-      
-        setupTeamList();
 
         // <o/  D
         //  |   A
         // / \  B
 
-        //restorePreferences();
-        //ActionBar bar = getSupportActionBar();
-        /*if(bar != null) {
-            bar.setTitle(getString(R.string.benchmark_title) + String.valueOf(currentData.getTeamNumber()));
-        }*/
+        ActionBar bar = getSupportActionBar();
+        if(bar != null) {
+            bar.setTitle(getString(R.string.benchmark_title));
+        }
+
+        setupTeamList();
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(currentData != null) {
-            saveData();
-        }
+        saveData();
     }
 
-    private void restorePreferences() {
-        utility.setStringIntoTextView(driveSystem, currentData.getDriveSystem());
-        utility.setDoubleIntoTextView(drivesSpeed, currentData.getDrivesSpeed());
-        canPlayDefenseBenchButton.setChecked(currentData.isCanPlayDefenseBenchButton());
-        abilityToShootHighGoalBenchButton.setChecked(currentData.isAbilityToShootHighGoalBenchButton());
-        utility.setStringIntoTextView(typeOfShooterBenchInput, currentData.getTypeOfShooterBenchInput());
-        utility.setDoubleIntoTextView(ballsPerSecondBenchInput, currentData.getBallsPerSecondBenchInput());
-        utility.setIntegerIntoTextView(ballsInCycleBenchInput, currentData.getBallsInCycleBenchInput());
-        utility.setIntegerIntoTextView(cycleTimeHighBenchInput, currentData.getCycleTimeHighBenchInput());
-        utility.setDoubleIntoTextView(shootingRangeBenchInput, currentData.getShootingRangeBenchInput());
-        utility.setStringIntoTextView(preferredShootingLocationBenchInput, currentData.getPreferredShootingLocationBenchInput());
-        utility.setDoubleIntoTextView(accuracyHighBenchInput, currentData.getAccuracyHighBenchInput());
-        pickupBallHopperBenchButton.setChecked(currentData.isPickupBallHopperBenchButton());
-        pickupBallFloorBenchButton.setChecked(currentData.isPickupBallFloorBenchButton());
-        pickupBallHumanBenchButton.setChecked(currentData.isPickupBallHumanBenchButton());
-        utility.setIntegerIntoTextView(maximumBallCapacityBenchInput, currentData.getMaximumBallCapacityBenchInput());
-        canScoreGearsBenchButton.setChecked(currentData.isCanScoreGearsBenchButton());
-        pickupGearFloorBenchButton.setChecked(currentData.isPickupGearFloorBenchButton());
-        pickupGearRetrievalBenchButton.setChecked(currentData.isPickupGearRetrievalBenchButton());
-        benchmarkWasDoneButton.setChecked(currentData.isBenchmarkingWasDoneButton());
-        hasActiveGearSystemButton.setChecked(currentData.isHasActiveGearSystemButton());
-        if(currentData.getPickupGearPreferred() != null) {
-            switch(currentData.getPickupGearPreferred()) {
-                case "radioFloor":
-                    radioFloor.setChecked(true);
-                    break;
-                case "radioZone":
-                    radioZone.setChecked(true);
-                    break;
-                default:
-                    break;
-            }
+    private int getTeamNumber() {
+        int value = 0;
+        String textEntered = teamNumber.getText().toString();
+        if (!textEntered.isEmpty()) {
+            value = Integer.parseInt(textEntered);
         }
-        canGearLeftBench.setChecked(currentData.isCanGearLeftBench());
-        canGearCenterBench.setChecked(currentData.isCanGearCenterBench());
-        canGearRightBench.setChecked(currentData.isCanGearRightBench());
-        if(currentData.getRadioPreferredGear() != null) {
-            switch(currentData.getRadioPreferredGear()) {
-                case "radioGearRight":
-                    radioGearRight.setChecked(true);
-                    break;
-                case "radioGearCenter":
-                    radioGearCenter.setChecked(true);
-                    break;
-                case "radioGearLeft":
-                    radioGearLeft.setChecked(true);
-                    break;
-                case "radioGearNone":
-                    radioGearNone.setChecked(true);
-                    break;
-                default:
-                    break;
-            }
-        }
-        if(currentData.getPickupBallPreferredBenchInput() != null) {
-            switch(currentData.getPickupBallPreferredBenchInput()) {
-                case "radioBallHopper":
-                    radioBallHopper.setChecked(true);
-                    break;
-                case "radioBallFloor":
-                    radioBallFloor.setChecked(true);
-                    break;
-                case "radioBallHuman":
-                    radioBallHuman.setChecked(true);
-                    break;
-                case "radioBallNone":
-                    radioBallNone.setChecked(true);
-                    break;
-                default:
-                    break;
-            }
-        }
-        utility.setIntegerIntoTextView(cycleTimeGearsBenchInput, currentData.getCycleTimeGearsBenchInput());
-        abilityToShootLowGoalBenchButton.setChecked(currentData.isAbilityToShootLowGoalBenchButton());
-        utility.setIntegerIntoTextView(cycleTimeLowBenchInput, currentData.getCycleTimeLowBenchInput());
-        utility.setIntegerIntoTextView(cycleNumberLowBenchInput, currentData.getCycleNumberLowBenchInput());
-        abilityScaleBenchButton.setChecked(currentData.isAbilityScaleBenchButton());
-        canScaleCenterBench.setChecked(currentData.isPlacesCanScaleCenter());
-        canScaleLeftBench.setChecked(currentData.isPlacesCanScaleLeft());
-        canScaleRightBench.setChecked(currentData.isPlacesCanScaleRight());
-        if(currentData.getPreferredPlacesScaleInput() != null) {
-            switch(currentData.getPreferredPlacesScaleInput()) {
-                case "radioPreferredPlacesScaleRight":
-                    radioPreferredPlacesScaleRight.setChecked(true);
-                    break;
-                case "radioPreferredPlacesScaleCenter":
-                    radioPreferredPlacesScaleCenter.setChecked(true);
-                    break;
-                case "radioPreferredPlacesScaleLeft":
-                    radioPreferredPlacesScaleLeft.setChecked(true);
-                    break;
-                case "radioPreferredPlacesScaleNone":
-                    radioPreferredPlacesScaleNone.setChecked(true);
-                    break;
-                default:
-                    break;
-            }
-        }
-        utility.setStringIntoTextView(autoAbilitiesBench, currentData.getAutoAbilitiesBench());
-        utility.setStringIntoTextView(commentsBench, currentData.getCommentsBench());
+        return value;
+    }
+
+    private void clearData() {
+        driveSystem.setText("");
+        drivesSpeed.setText("");
+        canPlayDefenseBenchButton.setChecked(false);
+        abilityToShootHighGoalBenchButton.setChecked(false);
+        typeOfShooterBenchInput.setText("");
+        ballsPerSecondBenchInput.setText("");
+        ballsInCycleBenchInput.setText("");
+        cycleTimeHighBenchInput.setText("");
+        shootingRangeBenchInput.setText("");
+        preferredShootingLocationBenchInput.setText("");
+        accuracyHighBenchInput.setText("");
+        pickupBallHopperBenchButton.setChecked(false);
+        pickupBallFloorBenchButton.setChecked(false);
+        pickupBallHumanBenchButton.setChecked(false);
+        maximumBallCapacityBenchInput.setText("");
+        canScoreGearsBenchButton.setChecked(false);
+        pickupGearFloorBenchButton.setChecked(false);
+        pickupGearRetrievalBenchButton.setChecked(false);
+        benchmarkWasDoneButton.setChecked(false);
+        hasActiveGearSystemButton.setChecked(false);
+        radioFloor.setChecked(false);
+        radioZone.setChecked(false);
+        canGearLeftBench.setChecked(false);
+        canGearCenterBench.setChecked(false);
+        canGearRightBench.setChecked(false);
+        radioGearRight.setChecked(false);
+        radioGearCenter.setChecked(false);
+        radioGearLeft.setChecked(false);
+        radioGearNone.setChecked(false);
+        radioBallHopper.setChecked(false);
+        radioBallFloor.setChecked(false);
+        radioBallHuman.setChecked(false);
+        radioBallNone.setChecked(false);
+        cycleTimeGearsBenchInput.setText("");
+        abilityToShootLowGoalBenchButton.setChecked(false);
+        cycleTimeLowBenchInput.setText("");
+        cycleNumberLowBenchInput.setText("");
+        abilityScaleBenchButton.setChecked(false);
+        canScaleCenterBench.setChecked(false);
+        canScaleLeftBench.setChecked(false);
+        canScaleRightBench.setChecked(false);
+        radioPreferredPlacesScaleRight.setChecked(false);
+        radioPreferredPlacesScaleCenter.setChecked(false);
+        radioPreferredPlacesScaleLeft.setChecked(false);
+        radioPreferredPlacesScaleNone.setChecked(false);
+        autoAbilitiesBench.setText("");
+        commentsBench.setText("");
         hideHighGoal();
         hideGear();
         lowGoalHide();
         scaleHide();
     }
 
-    private void saveData() {
-        currentData.setDriveSystem(driveSystem.getText().toString());
-        String valueAsSring = drivesSpeed.getText().toString();
-        if(!valueAsSring.isEmpty()) {
-            currentData.setDrivesSpeed(Double.parseDouble(valueAsSring));
-        }
-        currentData.setCanPlayDefenseBenchButton(canPlayDefenseBenchButton.isChecked());
-        currentData.setAbilityToShootHighGoalBenchButton(abilityToShootHighGoalBenchButton.isChecked());
-        currentData.setTypeOfShooterBenchInput(typeOfShooterBenchInput.getText().toString());
-        valueAsSring = ballsPerSecondBenchInput.getText().toString();
-        if(!valueAsSring.isEmpty()) {
-            currentData.setBallsPerSecondBenchInput(Double.parseDouble(valueAsSring));
-        }
-        valueAsSring = ballsInCycleBenchInput.getText().toString();
-        if(!valueAsSring.isEmpty()) {
-            currentData.setBallsInCycleBenchInput(Integer.parseInt(valueAsSring));
-        }
-        valueAsSring = cycleTimeHighBenchInput.getText().toString();
-        if(!valueAsSring.isEmpty()) {
-            currentData.setCycleTimeHighBenchInput(Integer.parseInt(valueAsSring));
-        }
-        valueAsSring = shootingRangeBenchInput.getText().toString();
-        if(!valueAsSring.isEmpty()) {
-            currentData.setShootingRangeBenchInput(Double.parseDouble(valueAsSring));
-        }
-        currentData.setPreferredShootingLocationBenchInput(preferredShootingLocationBenchInput.getText().toString());
-        valueAsSring = accuracyHighBenchInput.getText().toString();
-        if(!valueAsSring.isEmpty()) {
-            currentData.setAccuracyHighBenchInput(Double.parseDouble(valueAsSring));
-        }
-        currentData.setPickupBallHopperBenchButton(pickupBallHopperBenchButton.isChecked());
-        currentData.setPickupBallFloorBenchButton(pickupBallFloorBenchButton.isChecked());
-        currentData.setPickupBallHumanBenchButton(pickupBallHumanBenchButton.isChecked());
-        valueAsSring = maximumBallCapacityBenchInput.getText().toString();
-        if(!valueAsSring.isEmpty()) {
-            currentData.setMaximumBallCapacityBenchInput(Integer.parseInt(valueAsSring));
-        }
-        currentData.setCanScoreGearsBenchButton(canScoreGearsBenchButton.isChecked());
-        currentData.setPickupGearFloorBenchButton(pickupGearFloorBenchButton.isChecked());
-        currentData.setPickupGearRetrievalBenchButton(pickupGearRetrievalBenchButton.isChecked());
-        if(radioFloor.isChecked()) {
-            currentData.setPickupGearPreferred("radioFloor");
-        }
-        else if(radioZone.isChecked()) {
-            currentData.setPickupGearPreferred("radioZone");
-        }
-        currentData.setCanGearLeftBench(canGearLeftBench.isChecked());
-        currentData.setCanGearCenterBench(canGearCenterBench.isChecked());
-        currentData.setCanGearRightBench(canGearRightBench.isChecked());
-        if(radioGearRight.isChecked()) {
-            currentData.setRadioPreferredGear("radioGearRight");
-        }
-        else if(radioGearCenter.isChecked()) {
-            currentData.setRadioPreferredGear("radioGearCenter");
-        }
-        else if(radioGearLeft.isChecked()) {
-            currentData.setRadioPreferredGear("radioGearLeft");
-        }
-        else if(radioGearNone.isChecked()) {
-            currentData.setRadioPreferredGear("radioGearNone");
-        }
-        if(radioBallHopper.isChecked()) {
-            currentData.setPickupBallPreferredBenchInput("radioBallHopper");
-        }
-        else if(radioBallFloor.isChecked()) {
-            currentData.setPickupBallPreferredBenchInput("radioBallFloor");
-        }
-        else if(radioBallHuman.isChecked()) {
-            currentData.setPickupBallPreferredBenchInput("radioBallHuman");
-        }
-        else if(radioBallNone.isChecked()) {
-            currentData.setPickupBallPreferredBenchInput("radioBallNone");
-        }
-        valueAsSring = cycleTimeGearsBenchInput.getText().toString();
-        if(!valueAsSring.isEmpty()) {
-            currentData.setCycleTimeGearsBenchInput(Integer.parseInt(valueAsSring));
-        }
-        currentData.setAbilityToShootLowGoalBenchButton(abilityToShootLowGoalBenchButton.isChecked());
-        valueAsSring = cycleTimeLowBenchInput.getText().toString();
-        if(!valueAsSring.isEmpty()) {
-            currentData.setCycleTimeLowBenchInput(Integer.parseInt(valueAsSring));
-        }
-        valueAsSring = cycleNumberLowBenchInput.getText().toString();
-        if(!valueAsSring.isEmpty()) {
-            currentData.setCycleNumberLowBenchInput(Integer.parseInt(valueAsSring));
-        }
-        currentData.setAbilityScaleBenchButton(abilityScaleBenchButton.isChecked());
-        currentData.setPlacesCanScaleCenter(canScaleCenterBench.isChecked());
-        currentData.setPlacesCanScaleLeft(canScaleLeftBench.isChecked());
-        currentData.setPlacesCanScaleRight(canScaleRightBench.isChecked());
-        if(radioPreferredPlacesScaleRight.isChecked()) {
-            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleRight");
-        }
-        else if(radioPreferredPlacesScaleCenter.isChecked()) {
-            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleCenter");
-        }
-        else if(radioPreferredPlacesScaleLeft.isChecked()) {
-            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleLeft");
-        }
-        else if(radioPreferredPlacesScaleNone.isChecked()) {
-            currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleNone");
-        }
-
-        currentData.setAutoAbilitiesBench(autoAbilitiesBench.getText().toString());
-        currentData.setCommentsBench(commentsBench.getText().toString());
-        currentData.setBenchmarkWasDoneButton(benchmarkWasDoneButton.isChecked());
-        currentData.setHasActiveGearSystemButton(hasActiveGearSystemButton.isChecked());
-
-        if(dbHelper.doesBenchmarkingDataExist(currentData)) {
-            dbHelper.updateBenchmarkingData(currentData);
-        }
-        else {
-            dbHelper.createBenchmarkingData(currentData);
+    private void restorePreferences() {
+        if(currentData != null) {
+            utility.setStringIntoTextView(driveSystem, currentData.getDriveSystem());
+            utility.setDoubleIntoTextView(drivesSpeed, currentData.getDrivesSpeed());
+            canPlayDefenseBenchButton.setChecked(currentData.isCanPlayDefenseBenchButton());
+            abilityToShootHighGoalBenchButton.setChecked(currentData.isAbilityToShootHighGoalBenchButton());
+            utility.setStringIntoTextView(typeOfShooterBenchInput, currentData.getTypeOfShooterBenchInput());
+            utility.setDoubleIntoTextView(ballsPerSecondBenchInput, currentData.getBallsPerSecondBenchInput());
+            utility.setIntegerIntoTextView(ballsInCycleBenchInput, currentData.getBallsInCycleBenchInput());
+            utility.setIntegerIntoTextView(cycleTimeHighBenchInput, currentData.getCycleTimeHighBenchInput());
+            utility.setDoubleIntoTextView(shootingRangeBenchInput, currentData.getShootingRangeBenchInput());
+            utility.setStringIntoTextView(preferredShootingLocationBenchInput, currentData.getPreferredShootingLocationBenchInput());
+            utility.setDoubleIntoTextView(accuracyHighBenchInput, currentData.getAccuracyHighBenchInput());
+            pickupBallHopperBenchButton.setChecked(currentData.isPickupBallHopperBenchButton());
+            pickupBallFloorBenchButton.setChecked(currentData.isPickupBallFloorBenchButton());
+            pickupBallHumanBenchButton.setChecked(currentData.isPickupBallHumanBenchButton());
+            utility.setIntegerIntoTextView(maximumBallCapacityBenchInput, currentData.getMaximumBallCapacityBenchInput());
+            canScoreGearsBenchButton.setChecked(currentData.isCanScoreGearsBenchButton());
+            pickupGearFloorBenchButton.setChecked(currentData.isPickupGearFloorBenchButton());
+            pickupGearRetrievalBenchButton.setChecked(currentData.isPickupGearRetrievalBenchButton());
+            benchmarkWasDoneButton.setChecked(currentData.isBenchmarkingWasDoneButton());
+            hasActiveGearSystemButton.setChecked(currentData.isHasActiveGearSystemButton());
+            if (currentData.getPickupGearPreferred() != null) {
+                switch (currentData.getPickupGearPreferred()) {
+                    case "radioFloor":
+                        radioFloor.setChecked(true);
+                        break;
+                    case "radioZone":
+                        radioZone.setChecked(true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            canGearLeftBench.setChecked(currentData.isCanGearLeftBench());
+            canGearCenterBench.setChecked(currentData.isCanGearCenterBench());
+            canGearRightBench.setChecked(currentData.isCanGearRightBench());
+            if (currentData.getRadioPreferredGear() != null) {
+                switch (currentData.getRadioPreferredGear()) {
+                    case "radioGearRight":
+                        radioGearRight.setChecked(true);
+                        break;
+                    case "radioGearCenter":
+                        radioGearCenter.setChecked(true);
+                        break;
+                    case "radioGearLeft":
+                        radioGearLeft.setChecked(true);
+                        break;
+                    case "radioGearNone":
+                        radioGearNone.setChecked(true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            if (currentData.getPickupBallPreferredBenchInput() != null) {
+                switch (currentData.getPickupBallPreferredBenchInput()) {
+                    case "radioBallHopper":
+                        radioBallHopper.setChecked(true);
+                        break;
+                    case "radioBallFloor":
+                        radioBallFloor.setChecked(true);
+                        break;
+                    case "radioBallHuman":
+                        radioBallHuman.setChecked(true);
+                        break;
+                    case "radioBallNone":
+                        radioBallNone.setChecked(true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            utility.setIntegerIntoTextView(cycleTimeGearsBenchInput, currentData.getCycleTimeGearsBenchInput());
+            abilityToShootLowGoalBenchButton.setChecked(currentData.isAbilityToShootLowGoalBenchButton());
+            utility.setIntegerIntoTextView(cycleTimeLowBenchInput, currentData.getCycleTimeLowBenchInput());
+            utility.setIntegerIntoTextView(cycleNumberLowBenchInput, currentData.getCycleNumberLowBenchInput());
+            abilityScaleBenchButton.setChecked(currentData.isAbilityScaleBenchButton());
+            canScaleCenterBench.setChecked(currentData.isPlacesCanScaleCenter());
+            canScaleLeftBench.setChecked(currentData.isPlacesCanScaleLeft());
+            canScaleRightBench.setChecked(currentData.isPlacesCanScaleRight());
+            if (currentData.getPreferredPlacesScaleInput() != null) {
+                switch (currentData.getPreferredPlacesScaleInput()) {
+                    case "radioPreferredPlacesScaleRight":
+                        radioPreferredPlacesScaleRight.setChecked(true);
+                        break;
+                    case "radioPreferredPlacesScaleCenter":
+                        radioPreferredPlacesScaleCenter.setChecked(true);
+                        break;
+                    case "radioPreferredPlacesScaleLeft":
+                        radioPreferredPlacesScaleLeft.setChecked(true);
+                        break;
+                    case "radioPreferredPlacesScaleNone":
+                        radioPreferredPlacesScaleNone.setChecked(true);
+                        break;
+                    default:
+                        break;
+                }
+            }
+            utility.setStringIntoTextView(autoAbilitiesBench, currentData.getAutoAbilitiesBench());
+            utility.setStringIntoTextView(commentsBench, currentData.getCommentsBench());
+            hideHighGoal();
+            hideGear();
+            lowGoalHide();
+            scaleHide();
         }
     }
+
+    private void saveData() {
+        if(currentData != null) {
+            currentData.setDriveSystem(driveSystem.getText().toString());
+            String valueAsSring = drivesSpeed.getText().toString();
+            if (!valueAsSring.isEmpty()) {
+                double value = Double.parseDouble(valueAsSring);
+                if (value == Double.MAX_VALUE) value = 0;
+                currentData.setDrivesSpeed(value);
+            }
+            currentData.setCanPlayDefenseBenchButton(canPlayDefenseBenchButton.isChecked());
+            currentData.setAbilityToShootHighGoalBenchButton(abilityToShootHighGoalBenchButton.isChecked());
+            currentData.setTypeOfShooterBenchInput(typeOfShooterBenchInput.getText().toString());
+            valueAsSring = ballsPerSecondBenchInput.getText().toString();
+            if (!valueAsSring.isEmpty()) {
+                double value = Double.parseDouble(valueAsSring);
+                if (value == Double.MAX_VALUE) value = 0;
+                currentData.setBallsPerSecondBenchInput(value);
+            }
+            valueAsSring = ballsInCycleBenchInput.getText().toString();
+            if (!valueAsSring.isEmpty()) {
+                int value = Integer.parseInt(valueAsSring);
+                if (value == Integer.MAX_VALUE) value = 0;
+                currentData.setBallsInCycleBenchInput(value);
+            }
+            valueAsSring = cycleTimeHighBenchInput.getText().toString();
+            if (!valueAsSring.isEmpty()) {
+                int value = Integer.parseInt(valueAsSring);
+                if (value == Integer.MAX_VALUE) value = 0;
+                currentData.setCycleTimeHighBenchInput(value);
+            }
+            valueAsSring = shootingRangeBenchInput.getText().toString();
+            if (!valueAsSring.isEmpty()) {
+                double value = Double.parseDouble(valueAsSring);
+                if (value == Double.MAX_VALUE) value = 0;
+                currentData.setShootingRangeBenchInput(value);
+            }
+            currentData.setPreferredShootingLocationBenchInput(preferredShootingLocationBenchInput.getText().toString());
+            valueAsSring = accuracyHighBenchInput.getText().toString();
+            if (!valueAsSring.isEmpty()) {
+                double value = Double.parseDouble(valueAsSring);
+                if (value == Double.MAX_VALUE) value = 0;
+                currentData.setAccuracyHighBenchInput(value);
+            }
+            currentData.setPickupBallHopperBenchButton(pickupBallHopperBenchButton.isChecked());
+            currentData.setPickupBallFloorBenchButton(pickupBallFloorBenchButton.isChecked());
+            currentData.setPickupBallHumanBenchButton(pickupBallHumanBenchButton.isChecked());
+            valueAsSring = maximumBallCapacityBenchInput.getText().toString();
+            if (!valueAsSring.isEmpty()) {
+                int value = Integer.parseInt(valueAsSring);
+                if (value == Integer.MAX_VALUE) value = 0;
+                currentData.setMaximumBallCapacityBenchInput(value);
+            }
+            currentData.setCanScoreGearsBenchButton(canScoreGearsBenchButton.isChecked());
+            currentData.setPickupGearFloorBenchButton(pickupGearFloorBenchButton.isChecked());
+            currentData.setPickupGearRetrievalBenchButton(pickupGearRetrievalBenchButton.isChecked());
+            if (radioFloor.isChecked()) {
+                currentData.setPickupGearPreferred("radioFloor");
+            } else if (radioZone.isChecked()) {
+                currentData.setPickupGearPreferred("radioZone");
+            }
+            currentData.setCanGearLeftBench(canGearLeftBench.isChecked());
+            currentData.setCanGearCenterBench(canGearCenterBench.isChecked());
+            currentData.setCanGearRightBench(canGearRightBench.isChecked());
+            if (radioGearRight.isChecked()) {
+                currentData.setRadioPreferredGear("radioGearRight");
+            } else if (radioGearCenter.isChecked()) {
+                currentData.setRadioPreferredGear("radioGearCenter");
+            } else if (radioGearLeft.isChecked()) {
+                currentData.setRadioPreferredGear("radioGearLeft");
+            } else if (radioGearNone.isChecked()) {
+                currentData.setRadioPreferredGear("radioGearNone");
+            }
+            if (radioBallHopper.isChecked()) {
+                currentData.setPickupBallPreferredBenchInput("radioBallHopper");
+            } else if (radioBallFloor.isChecked()) {
+                currentData.setPickupBallPreferredBenchInput("radioBallFloor");
+            } else if (radioBallHuman.isChecked()) {
+                currentData.setPickupBallPreferredBenchInput("radioBallHuman");
+            } else if (radioBallNone.isChecked()) {
+                currentData.setPickupBallPreferredBenchInput("radioBallNone");
+            }
+            valueAsSring = cycleTimeGearsBenchInput.getText().toString();
+            if (!valueAsSring.isEmpty()) {
+                int value = Integer.parseInt(valueAsSring);
+                if (value == Integer.MAX_VALUE) value = 0;
+                currentData.setCycleTimeGearsBenchInput(value);
+            }
+            currentData.setAbilityToShootLowGoalBenchButton(abilityToShootLowGoalBenchButton.isChecked());
+            valueAsSring = cycleTimeLowBenchInput.getText().toString();
+            if (!valueAsSring.isEmpty()) {
+                int value = Integer.parseInt(valueAsSring);
+                if (value == Integer.MAX_VALUE) value = 0;
+                currentData.setCycleTimeLowBenchInput(value);
+            }
+            valueAsSring = cycleNumberLowBenchInput.getText().toString();
+            if (!valueAsSring.isEmpty()) {
+                int value = Integer.parseInt(valueAsSring);
+                if (value == Integer.MAX_VALUE) value = 0;
+                currentData.setCycleNumberLowBenchInput(value);
+            }
+            currentData.setAbilityScaleBenchButton(abilityScaleBenchButton.isChecked());
+            currentData.setPlacesCanScaleCenter(canScaleCenterBench.isChecked());
+            currentData.setPlacesCanScaleLeft(canScaleLeftBench.isChecked());
+            currentData.setPlacesCanScaleRight(canScaleRightBench.isChecked());
+            if (radioPreferredPlacesScaleRight.isChecked()) {
+                currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleRight");
+            } else if (radioPreferredPlacesScaleCenter.isChecked()) {
+                currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleCenter");
+            } else if (radioPreferredPlacesScaleLeft.isChecked()) {
+                currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleLeft");
+            } else if (radioPreferredPlacesScaleNone.isChecked()) {
+                currentData.setPreferredPlacesScaleInput("radioPreferredPlacesScaleNone");
+            }
+
+            currentData.setAutoAbilitiesBench(autoAbilitiesBench.getText().toString());
+            currentData.setCommentsBench(commentsBench.getText().toString());
+            currentData.setBenchmarkWasDoneButton(benchmarkWasDoneButton.isChecked());
+            currentData.setHasActiveGearSystemButton(hasActiveGearSystemButton.isChecked());
+
+            if (dbHelper.doesBenchmarkingDataExist(currentData)) {
+                dbHelper.updateBenchmarkingData(currentData);
+            } else {
+                dbHelper.createBenchmarkingData(currentData);
+            }
+        }
+    }
+
+    private void setupTeamList() {
+        teamsList.clear();
+        String event_key = settings.getString(getResources().getString(R.string.pref_event_key), "");
+        try (Cursor teamCursor = dbHelper.createTeamCursor(dbHelper.getEvent(event_key))) {
+            while (teamCursor.moveToNext()) {
+                String teamNumber = teamCursor.getString(teamCursor.getColumnIndex(DatabaseHelper.TABLE_TEAMS_TEAM_NUMBER));
+                teamsList.add(teamNumber);
+
+            }
+        }
+    }
+
+    private final TextWatcher teamTextEntered = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+            if(teamsList.contains(teamNumber.getText().toString())){
+                clearData();
+                theAllKnower.setVisibility(View.VISIBLE);
+                TeamData.setTeamData(getTeamNumber(), settings.getString(getString(R.string.pref_event), ""));
+                TeamData teamData = TeamData.getCurrentTeam();
+                currentData = teamData.getBenchmarkingData();
+                teamData.setStudent(settings.getString(getString(R.string.pref_scouter), ""));
+                restorePreferences();
+            }
+            else{
+                theAllKnower.setVisibility(View.INVISIBLE);
+            }
+        }
+    };
 
     private final View.OnClickListener highGoalButtonClicked =  new View.OnClickListener() {
             @Override
@@ -530,42 +627,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         lowGoalNumberOfCyclesLinear.setVisibility(visibility);
     }
 
-    private final TextWatcher teamTextEntered = new TextWatcher() {
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-
-            if(teamsList.contains(teamNumber.getText().toString())){
-                theAllKnower.setVisibility(View.VISIBLE);
-                TeamData.setTeamData(getTeamNumber(), settings.getString(getString(R.string.pref_event), ""), settings.getString(getString(R.string.pref_scouter), ""));
-                TeamData teamData = TeamData.getCurrentTeam();
-                currentData = teamData.getBenchmarkingData();
-                restorePreferences();
-            }
-            else{
-                theAllKnower.setVisibility(View.INVISIBLE);
-            }
-        }
-    };
-
-
-    private int getTeamNumber() {
-        int value = 0;
-        String textEntered = teamNumber.getText().toString();
-        if (!textEntered.isEmpty()) {
-            value = Integer.parseInt(textEntered);
-        }
-        return value;
-    }
-
-
     private final View.OnClickListener canScaleButtonClicked =  new View.OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -616,38 +677,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         );
     }
 
-    private final View.OnClickListener submitButtonClicked = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            saveData();
-            if(benchmarkWasDoneButton.isChecked() &&  isPictures()) {
-                utility.uploadBenchmarkingData(BenchmarkScreen.this, false);
-                utility.uploadPictures(BenchmarkScreen.this, false);
-            }
-            else {
-                utility.alertUser(BenchmarkScreen.this, getString(R.string.benchmark_not_done), getString(R.string.check_submit_buttom)).show();
-            }
-        }
-    };
-
-    private void setupTeamList() {
-        if(teamsList != null){
-            teamsList.clear();
-        }
-        String event_key = settings.getString(getResources().getString(R.string.pref_event_key), "");
-        try (Cursor teamCursor = dbHelper.createTeamCursor(dbHelper.getEvent(event_key))) {
-            while (teamCursor.moveToNext()) {
-                String teamNumber = teamCursor.getString(teamCursor.getColumnIndex(DatabaseHelper.TABLE_TEAMS_TEAM_NUMBER));
-                teamsList.add(teamNumber);
-
-            }
-        }
-        SharedPreferences.Editor editor = settings.edit();
-        editor.putString(getResources().getString(R.string.pref_number_teams), TextUtils.join(",", teamsList));
-        editor.apply();
-        //teamNumberChecker();
-    }
-
     private boolean isPictures() {
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         if (storageDir == null)
@@ -666,4 +695,17 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
         return found;
     }
+
+    private final View.OnClickListener submitButtonClicked = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            saveData();
+            if(benchmarkWasDoneButton.isChecked() && isPictures()) {
+                utility.uploadBenchmarkingData(BenchmarkScreen.this, false, true);
+            }
+            else {
+                utility.alertUser(BenchmarkScreen.this, getString(R.string.benchmark_not_done), getString(R.string.check_submit_buttom)).show();
+            }
+        }
+    };
 }
