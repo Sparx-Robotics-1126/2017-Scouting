@@ -2,20 +2,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Screen" >
 
-    <Spinner android:id="@+id/eventSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginRight="15dp"
-        android:background="@android:drawable/btn_dropdown" />
-
     <AutoCompleteTextView android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scouterText"
         android:textSize="35sp"
         android:hint="@string/scouterName"
         android:inputType="text"
-        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ.,;0123456789 "
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ' "
         android:layout_above="@+id/benchmarkButton"
         android:layout_marginBottom="20sp"/>
 

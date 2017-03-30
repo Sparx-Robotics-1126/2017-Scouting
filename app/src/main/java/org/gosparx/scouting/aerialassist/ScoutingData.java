@@ -8,19 +8,18 @@ public class ScoutingData {
     private final String eventName;
     private final String student;
     private boolean crossedBaseline;
-    private int hoppersDumped = 0;
+    private int hoppersDumped;
     private boolean gearScoredRightAuto;
     private boolean gearScoredCenterAuto;
     private boolean gearScoredLeftAuto;
-    private int gearsScored = 0;
-    private int gearsDelivered = 0;
-    private int gearsCollectedFromFloor = 0;
-    private int gearsFromHuman = 0;
-    private int ballsInHighCycle = 0;
-    private int ballsFromHuman = 0;
-    private int ballsFromHopper = 0;
-    private int ballsFromFloor = 0;
-    private int fuelInLowCycle = 0;
+    private int gearsScored;
+    private int gearsCollectedFromFloor;
+    private int gearsFromHuman;
+    private int ballsInHighCycle;
+    private int ballsFromHuman;
+    private int ballsFromHopper;
+    private int ballsFromFloor;
+    private int fuelInLowCycle;
     private String highGoalAccuracy = "";
     private boolean didScale;
     private String whereScaled = "";
@@ -87,12 +86,6 @@ public class ScoutingData {
     }
 
     public void setGearsScored(int gearsScored) { this.gearsScored = gearsScored; }
-
-    public int getGearsDelivered() {
-        return gearsDelivered;
-    }
-
-    public void setGearsDelivered(int gearsDelivered) { this.gearsDelivered = gearsDelivered; }
 
     public int getGearsCollectedFromFloor() {
         return gearsCollectedFromFloor;

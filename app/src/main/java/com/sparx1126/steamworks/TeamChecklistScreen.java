@@ -3,35 +3,26 @@ package com.sparx1126.steamworks;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.sparx1126.steamworks.components.Utility;
+
 import org.gosparx.scouting.aerialassist.TeamData;
 
-import static android.R.color.black;
-import static com.sparx1126.steamworks.R.color.colorBlack;
-import static com.sparx1126.steamworks.R.color.colorGrayLight1;
 import static com.sparx1126.steamworks.R.color.colorGrayLight2;
-import static com.sparx1126.steamworks.R.color.colorSparxRed;
-import static com.sparx1126.steamworks.R.color.colorWhite;
-
-/**
- * Created by Papa on 3/17/17.
- */
 
 public class TeamChecklistScreen extends AppCompatActivity {
     @Override
     protected  void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.team_checklist_screen);
-        TableLayout ll = (TableLayout) findViewById(R.id.checkBoxTable);
-        SharedPreferences settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
-        String teamsString = settings.getString(getResources().getString(R.string.pref_number_teams), "");
-        String[] teams = TextUtils.split(teamsString, ",");
-        int numberOfTeams = teams.length;
 
+        Utility utility = Utility.getInstance();
+        int numberOfTeams = utility.getTeamList().size();
+
+        TableLayout ll = (TableLayout) findViewById(R.id.checkBoxTable);
         TableRow.LayoutParams lp = new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT);
 
         int index = 0;
@@ -39,20 +30,10 @@ public class TeamChecklistScreen extends AppCompatActivity {
         TableRow row1= new TableRow(this);
         row1.setLayoutParams(lp);
         TextView numberOfTeamsTv = new TextView(this);
-        numberOfTeamsTv.setText("# teams- " + numberOfTeams);
+        numberOfTeamsTv.setText("# teams-" + String.valueOf(numberOfTeams));
         numberOfTeamsTv.setTextSize(20);
         numberOfTeamsTv.setWidth(200);
         row1.addView(numberOfTeamsTv);
-        TextView emptyTv = new TextView(this);
-        emptyTv.setText("                                                                     ");
-        numberOfTeamsTv.setTextSize(20);
-        numberOfTeamsTv.setWidth(200);
-        row1.addView(emptyTv);
-        TextView teamsBenchmarked = new TextView(this);
-        teamsBenchmarked.setText("# benchmarked- " + TeamData.getTeamsMap().size());
-        teamsBenchmarked.setTextSize(20);
-        teamsBenchmarked.setWidth(200);
-        row1.addView(teamsBenchmarked);
         ll.addView(row1, index);
         index++;
 
@@ -73,7 +54,7 @@ public class TeamChecklistScreen extends AppCompatActivity {
         ll.addView(row2, index);
         index++;
 
-        for (String team: teams) {
+        for (String team: utility.getTeamList()) {
 
             TableRow row= new TableRow(this);
             row.setLayoutParams(lp);
@@ -115,4 +96,3 @@ public class TeamChecklistScreen extends AppCompatActivity {
         }
     }
 }
-

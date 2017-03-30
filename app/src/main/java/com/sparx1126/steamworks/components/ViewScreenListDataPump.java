@@ -242,7 +242,6 @@ public class ViewScreenListDataPump {
         for(ScoutingData sd: displayedInfo.getScoutingDatas()){
             hoppersDumped += sd.getHoppersDumped();
             gearsScored += sd.getGearsScored();
-            gearsDelivered += sd.getGearsDelivered();
             gearsCollectedFromFloor += sd.getGearsCollectedFromFloor();
             gearsCollectedFromHuman += sd.getGearsFromHuman();
             fuelInHighCycle += sd.getBallsInHighCycle();
