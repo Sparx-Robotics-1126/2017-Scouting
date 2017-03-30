@@ -12,11 +12,6 @@
             android:contentDescription="@string/home"
             style="@style/HomeButton"/>
 
-
-
-        <!-- Begin Drives Section -->
-
-
         <EditText
             android:id="@+id/teamNumber"
             style="@style/LongEditText"
@@ -24,6 +19,8 @@
             android:hint="Team number"
             android:inputType="number"
             android:maxLength="4" />
+
+        <!-- Begin Drives Section -->
 
     <LinearLayout android:orientation="vertical"
         android:layout_width="match_parent"

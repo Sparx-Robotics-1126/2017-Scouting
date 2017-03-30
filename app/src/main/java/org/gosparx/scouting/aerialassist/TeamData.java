@@ -10,7 +10,6 @@ public class TeamData {
     private static TeamData currentTeam;
     private final int teamNumber;
     private final String eventName;
-    private String student;
     private BenchmarkingData currentBenchmarkingData;
     private List<ScoutingData> scoutingDatas;
 
@@ -45,14 +44,6 @@ public class TeamData {
 
     public String getEventName() {
         return eventName;
-    }
-
-    public String getStudent() { return student; }
-
-    public void setStudent(String student) {
-        this.student = student;
-        if(currentBenchmarkingData != null)
-            currentBenchmarkingData.setStudent(student);
     }
 
     public BenchmarkingData getBenchmarkingData() { return currentBenchmarkingData; }

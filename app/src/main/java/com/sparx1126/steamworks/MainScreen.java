@@ -3,6 +3,7 @@ package com.sparx1126.steamworks;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.media.MediaPlayer;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -26,8 +27,11 @@ import org.gosparx.scouting.aerialassist.ScoutingData;
 import org.gosparx.scouting.aerialassist.TeamData;
 import org.gosparx.scouting.aerialassist.networking.NetworkCallback;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static android.view.View.INVISIBLE;
 
@@ -97,6 +101,8 @@ public class MainScreen extends AppCompatActivity {
                 bar.setTitle(getString(R.string.app_name) + " -  " + settings.getString(getResources().getString(R.string.pref_event), ""));
             }
             mediaPlayer.start();
+            setupTeamList();
+            setupMatchMap();
         }
     }
 
@@ -160,24 +166,22 @@ public class MainScreen extends AppCompatActivity {
     //this push thing isn't working ;-;
 
     private void restorePreferences() {
+        String scouterName = settings.getString(getResources().getString(R.string.pref_scouter), "");
+        if (!scouterName.isEmpty()) {
+            scouterText.setText(scouterName);
+            scouterText.dismissDropDown();
+        }
+
         List<BenchmarkingData> benchmarkingDatas = dbHelper.getAllBenchmarkingData();
         for(BenchmarkingData benchmarkingData : benchmarkingDatas) {
             TeamData.setTeamData(benchmarkingData.getTeamNumber(), benchmarkingData.getEventName());
             TeamData.getCurrentTeam().setBenchmarkingData(benchmarkingData);
-            TeamData.getCurrentTeam().setStudent(getScouterName());
         }
 
         List<ScoutingData> scoutingDatas = dbHelper.getAllScoutingDatas();
         for(ScoutingData scoutingData : scoutingDatas) {
             TeamData.setTeamData(scoutingData.getTeamNumber(), scoutingData.getEventName());
             TeamData.getCurrentTeam().addScoutingData(scoutingData);
-            TeamData.getCurrentTeam().setStudent(getScouterName());
-        }
-
-        String scouterName = settings.getString(getResources().getString(R.string.pref_scouter), "");
-        if (!scouterName.isEmpty()) {
-            scouterText.setText(scouterName);
-            scouterText.dismissDropDown();
         }
     }
 
@@ -242,5 +246,35 @@ public class MainScreen extends AppCompatActivity {
             teamChecklistButon.setVisibility(INVISIBLE);
             scoutButton.setVisibility(INVISIBLE);
         }
+    }
+
+    private void setupTeamList() {
+        List<String> teamsList = new ArrayList<>();
+        String event_key = settings.getString(getResources().getString(R.string.pref_event_key), "");
+        try (Cursor teamCursor = dbHelper.createTeamCursor(dbHelper.getEvent(event_key))) {
+            while (teamCursor.moveToNext()) {
+                String teamNumber = teamCursor.getString(teamCursor.getColumnIndex(DatabaseHelper.TABLE_TEAMS_TEAM_NUMBER));
+                teamsList.add(teamNumber);
+
+            }
+        }
+        utility.setTeamList(teamsList);
+    }
+
+    private void setupMatchMap() {
+        Map<String, String> matchMap = new HashMap<>();
+        String event_key = settings.getString(getResources().getString(R.string.pref_event_key), "");
+        try (Cursor matchCursor = dbHelper.createMatchCursor(dbHelper.getEvent(event_key))) {
+            while (matchCursor.moveToNext()) {
+                String compLevel = matchCursor.getString(matchCursor.getColumnIndex(DatabaseHelper.TABLE_MATCHES_COMP_LEVEL));
+                if(compLevel.contentEquals("qm")) {
+                    String matchNumber = matchCursor.getString(matchCursor.getColumnIndex(DatabaseHelper.TABLE_MATCHES_MATCH_NUMBER));
+                    String matchKey = matchCursor.getString(matchCursor.getColumnIndex(DatabaseHelper.TABLE_MATCHES_KEY));
+                    matchMap.put(matchNumber, matchKey);
+                }
+            }
+        }
+
+        utility.setMatchMap(matchMap);
     }
 }

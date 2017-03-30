@@ -8,23 +8,23 @@ public class ScoutingData {
     private final String eventName;
     private final String student;
     private boolean crossedBaseline;
-    private int hoppersDumped = Integer.MAX_VALUE;
+    private int hoppersDumped;
     private boolean gearScoredRightAuto;
     private boolean gearScoredCenterAuto;
     private boolean gearScoredLeftAuto;
-    private int gearsScored = Integer.MAX_VALUE;
-    private int gearsCollectedFromFloor = Integer.MAX_VALUE;
-    private int gearsFromHuman = Integer.MAX_VALUE;
-    private int ballsInHighCycle = Integer.MAX_VALUE;
-    private int ballsFromHuman = Integer.MAX_VALUE;
-    private int ballsFromHopper = Integer.MAX_VALUE;
-    private int ballsFromFloor = Integer.MAX_VALUE;
-    private int fuelInLowCycle = Integer.MAX_VALUE;
+    private int gearsScored;
+    private int gearsCollectedFromFloor;
+    private int gearsFromHuman;
+    private int ballsInHighCycle;
+    private int ballsFromHuman;
+    private int ballsFromHopper;
+    private int ballsFromFloor;
+    private int fuelInLowCycle;
     private String highGoalAccuracy = "";
     private boolean didScale;
     private String whereScaled = "";
     private boolean matchScouted;
-    private String autoShooting = "";
+    private String autoShooting;
     private String scoutingComments = "";
 
 

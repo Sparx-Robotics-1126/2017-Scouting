@@ -149,7 +149,6 @@ public class AdminScreen extends AppCompatActivity {
     }
 
     private void refresh(final boolean force) {
-
         utility.downloadAllEvents(this, force, new NetworkCallback() {
             @Override
             public void handleFinishDownload(final boolean success) {

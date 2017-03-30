@@ -17,11 +17,15 @@ import org.gosparx.scouting.aerialassist.networking.NetworkHelper;
 import org.gosparx.scouting.aerialassist.networking.SparxPosting;
 
 import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 import static org.gosparx.scouting.aerialassist.networking.NetworkHelper.isNetworkAvailable;
 
 public class Utility {
     private static Utility utility;
+    private List<String> teamsList;
+    private Map<String, String> matchMap;
 
     public static synchronized Utility getInstance(){
         if (utility == null) {
@@ -274,14 +278,30 @@ public class Utility {
     }
 
     public void setDoubleIntoTextView(TextView item, double value){
-        if(value != Double.MAX_VALUE) {
+        if(value != 0) {
             setStringIntoTextView(item, String.valueOf(value));
         }
     }
 
     public void setIntegerIntoTextView(TextView item, int value){
-        if(value != Integer.MAX_VALUE) {
+        if(value != 0) {
             setStringIntoTextView(item, String.valueOf(value));
         }
+    }
+
+    public void setTeamList(List<String> teamList) {
+        this.teamsList = teamList;
+    }
+
+    public List<String> getTeamList() {
+        return teamsList;
+    }
+
+    public void setMatchMap(Map<String, String> matchMap) {
+        this.matchMap = matchMap;
+    }
+
+    public Map<String, String> getMatchMap() {
+        return matchMap;
     }
 }

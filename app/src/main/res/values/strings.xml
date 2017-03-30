@@ -62,7 +62,6 @@
     <string name="pref_event_key">eventTextKey</string>
     <string name="pref_event_filter">eventFilter</string>
     <string name="pref_events_cursor">eventsCursor</string>
-    <string name="pref_number_teams">numberOfTeams</string>
     <string name="filter_on">Turn the event filter on?</string>
     <string name="filter_off">Turn the event filter off?</string>
     <string name="failure">Failure</string>
@@ -130,7 +129,7 @@
     <string name="locally">Stored in local memory. Upload later.</string>
     <string name="using_backup">Using backup!</string>
     <string name="refresh_benchmark_data">Refresh Benchmark Data</string>
-    <string name="refresh_pictures">Refresh Pictures</string>
+    <string name="refresh_pictures">Download Pictures</string>
     <string name="refresh_scouting_data">Refresh Scouting Data</string>
     <string name="left">Left</string>
     <string name="center">Center</string>
@@ -141,7 +140,8 @@
     <string name="scouting_title">Scouting</string>
     <string name="view_title">View</string>
     <string name="benchmark_not_done">Benchmarking Was Not Done</string>
-    <string name="check_submit_buttom">The button was probably not checked or there was no picture taken of this team.</string>
+    <string name="check_submit_buttom">The button was probably not checked.</string>
+    <string name="check_submit_picture_buttom">The button was probably not checked or there was no picture taken of this team.</string>
     <string name="scouting_not_done">Scouting Was Not Done</string>
     <string name="red_alliance">Red Alliance</string>
     <string name="blue_alliance">Blue Alliance</string>

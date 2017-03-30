@@ -11,6 +11,7 @@ import android.support.v4.content.FileProvider;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -38,7 +39,6 @@ public class BenchmarkScreen extends AppCompatActivity {
     private DatabaseHelper dbHelper;
     private Utility utility;
     private BenchmarkingData currentData;
-    private List<String> teamsList;
     private SharedPreferences settings;
 
     private EditText teamNumber;
@@ -140,7 +140,6 @@ public class BenchmarkScreen extends AppCompatActivity {
             }
         });
         settings = getSharedPreferences(getResources().getString(R.string.pref_name), 0);
-        teamsList = new ArrayList<>();
 
         teamNumber = (EditText) findViewById(R.id.teamNumber);
         teamNumber.addTextChangedListener(teamTextEntered);
@@ -226,8 +225,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         if(bar != null) {
             bar.setTitle(getString(R.string.benchmark_title));
         }
-
-        setupTeamList();
     }
 
     @Override
@@ -412,52 +409,38 @@ public class BenchmarkScreen extends AppCompatActivity {
             currentData.setDriveSystem(driveSystem.getText().toString());
             String valueAsSring = drivesSpeed.getText().toString();
             if (!valueAsSring.isEmpty()) {
-                double value = Double.parseDouble(valueAsSring);
-                if (value == Double.MAX_VALUE) value = 0;
-                currentData.setDrivesSpeed(value);
+                currentData.setDrivesSpeed(Double.parseDouble(valueAsSring));
             }
             currentData.setCanPlayDefenseBenchButton(canPlayDefenseBenchButton.isChecked());
             currentData.setAbilityToShootHighGoalBenchButton(abilityToShootHighGoalBenchButton.isChecked());
             currentData.setTypeOfShooterBenchInput(typeOfShooterBenchInput.getText().toString());
             valueAsSring = ballsPerSecondBenchInput.getText().toString();
             if (!valueAsSring.isEmpty()) {
-                double value = Double.parseDouble(valueAsSring);
-                if (value == Double.MAX_VALUE) value = 0;
-                currentData.setBallsPerSecondBenchInput(value);
+                currentData.setBallsPerSecondBenchInput(Double.parseDouble(valueAsSring));
             }
             valueAsSring = ballsInCycleBenchInput.getText().toString();
             if (!valueAsSring.isEmpty()) {
-                int value = Integer.parseInt(valueAsSring);
-                if (value == Integer.MAX_VALUE) value = 0;
-                currentData.setBallsInCycleBenchInput(value);
+                currentData.setBallsInCycleBenchInput(Integer.parseInt(valueAsSring));
             }
             valueAsSring = cycleTimeHighBenchInput.getText().toString();
             if (!valueAsSring.isEmpty()) {
-                int value = Integer.parseInt(valueAsSring);
-                if (value == Integer.MAX_VALUE) value = 0;
-                currentData.setCycleTimeHighBenchInput(value);
+                currentData.setCycleTimeHighBenchInput(Integer.parseInt(valueAsSring));
             }
             valueAsSring = shootingRangeBenchInput.getText().toString();
             if (!valueAsSring.isEmpty()) {
-                double value = Double.parseDouble(valueAsSring);
-                if (value == Double.MAX_VALUE) value = 0;
-                currentData.setShootingRangeBenchInput(value);
+                currentData.setShootingRangeBenchInput(Double.parseDouble(valueAsSring));
             }
             currentData.setPreferredShootingLocationBenchInput(preferredShootingLocationBenchInput.getText().toString());
             valueAsSring = accuracyHighBenchInput.getText().toString();
             if (!valueAsSring.isEmpty()) {
-                double value = Double.parseDouble(valueAsSring);
-                if (value == Double.MAX_VALUE) value = 0;
-                currentData.setAccuracyHighBenchInput(value);
+                currentData.setAccuracyHighBenchInput(Double.parseDouble(valueAsSring));
             }
             currentData.setPickupBallHopperBenchButton(pickupBallHopperBenchButton.isChecked());
             currentData.setPickupBallFloorBenchButton(pickupBallFloorBenchButton.isChecked());
             currentData.setPickupBallHumanBenchButton(pickupBallHumanBenchButton.isChecked());
             valueAsSring = maximumBallCapacityBenchInput.getText().toString();
             if (!valueAsSring.isEmpty()) {
-                int value = Integer.parseInt(valueAsSring);
-                if (value == Integer.MAX_VALUE) value = 0;
-                currentData.setMaximumBallCapacityBenchInput(value);
+                currentData.setMaximumBallCapacityBenchInput(Integer.parseInt(valueAsSring));
             }
             currentData.setCanScoreGearsBenchButton(canScoreGearsBenchButton.isChecked());
             currentData.setPickupGearFloorBenchButton(pickupGearFloorBenchButton.isChecked());
@@ -490,22 +473,16 @@ public class BenchmarkScreen extends AppCompatActivity {
             }
             valueAsSring = cycleTimeGearsBenchInput.getText().toString();
             if (!valueAsSring.isEmpty()) {
-                int value = Integer.parseInt(valueAsSring);
-                if (value == Integer.MAX_VALUE) value = 0;
-                currentData.setCycleTimeGearsBenchInput(value);
+                currentData.setCycleTimeGearsBenchInput(Integer.parseInt(valueAsSring));
             }
             currentData.setAbilityToShootLowGoalBenchButton(abilityToShootLowGoalBenchButton.isChecked());
             valueAsSring = cycleTimeLowBenchInput.getText().toString();
             if (!valueAsSring.isEmpty()) {
-                int value = Integer.parseInt(valueAsSring);
-                if (value == Integer.MAX_VALUE) value = 0;
-                currentData.setCycleTimeLowBenchInput(value);
+                currentData.setCycleTimeLowBenchInput(Integer.parseInt(valueAsSring));
             }
             valueAsSring = cycleNumberLowBenchInput.getText().toString();
             if (!valueAsSring.isEmpty()) {
-                int value = Integer.parseInt(valueAsSring);
-                if (value == Integer.MAX_VALUE) value = 0;
-                currentData.setCycleNumberLowBenchInput(value);
+                currentData.setCycleNumberLowBenchInput(Integer.parseInt(valueAsSring));
             }
             currentData.setAbilityScaleBenchButton(abilityScaleBenchButton.isChecked());
             currentData.setPlacesCanScaleCenter(canScaleCenterBench.isChecked());
@@ -534,18 +511,6 @@ public class BenchmarkScreen extends AppCompatActivity {
         }
     }
 
-    private void setupTeamList() {
-        teamsList.clear();
-        String event_key = settings.getString(getResources().getString(R.string.pref_event_key), "");
-        try (Cursor teamCursor = dbHelper.createTeamCursor(dbHelper.getEvent(event_key))) {
-            while (teamCursor.moveToNext()) {
-                String teamNumber = teamCursor.getString(teamCursor.getColumnIndex(DatabaseHelper.TABLE_TEAMS_TEAM_NUMBER));
-                teamsList.add(teamNumber);
-
-            }
-        }
-    }
-
     private final TextWatcher teamTextEntered = new TextWatcher() {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -558,13 +523,13 @@ public class BenchmarkScreen extends AppCompatActivity {
         @Override
         public void afterTextChanged(Editable s) {
 
-            if(teamsList.contains(teamNumber.getText().toString())){
+            if(utility.getTeamList().contains(teamNumber.getText().toString())){
                 clearData();
                 theAllKnower.setVisibility(View.VISIBLE);
                 TeamData.setTeamData(getTeamNumber(), settings.getString(getString(R.string.pref_event), ""));
                 TeamData teamData = TeamData.getCurrentTeam();
                 currentData = teamData.getBenchmarkingData();
-                teamData.setStudent(settings.getString(getString(R.string.pref_scouter), ""));
+                currentData.setStudent(settings.getString(getString(R.string.pref_scouter), ""));
                 restorePreferences();
             }
             else{
@@ -704,7 +669,7 @@ public class BenchmarkScreen extends AppCompatActivity {
                 utility.uploadBenchmarkingData(BenchmarkScreen.this, false, true);
             }
             else {
-                utility.alertUser(BenchmarkScreen.this, getString(R.string.benchmark_not_done), getString(R.string.check_submit_buttom)).show();
+                utility.alertUser(BenchmarkScreen.this, getString(R.string.benchmark_not_done), getString(R.string.check_submit_picture_buttom)).show();
             }
         }
     };
