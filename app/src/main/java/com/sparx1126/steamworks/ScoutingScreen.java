@@ -221,8 +221,10 @@ public class ScoutingScreen extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
+            System.out.println("Hiram");
 
             if(utility.getMatchMap().containsKey(qualMatchNumber.getText().toString())){
+                System.out.println("Hiram2");
                 int teamIndex = settings.getInt(getString(R.string.team_selected), Integer.MAX_VALUE);
                 boolean redAlliance = settings.getBoolean(getString(R.string.red_alliance), true);
                 allKnowingLinear.setVisibility(View.VISIBLE);

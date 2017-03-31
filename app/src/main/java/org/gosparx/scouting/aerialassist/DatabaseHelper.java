@@ -552,8 +552,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         return db.query(TABLE_MATCHES,
                 new String[]{"*", "rowid As _id"},
-                //TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{event.getKey()},
-                TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{"2016ohcl"},
+                TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{event.getKey()},
+                //TABLE_MATCHES_EVENT_KEY + " = ?", new String[]{"2016ohcl"},
                 null, null,
                 "(CASE " + TABLE_MATCHES_COMP_LEVEL + " "
                         + "WHEN 'qm' THEN 1 "

@@ -60,8 +60,8 @@ public class BlueAlliance {
 
     public void loadMatches(final Event event){loadMatches(event, null);}
     public void loadMatches(final Event event, final NetworkCallback callback){
-        //String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", event.getKey());
-        String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", "2017ohcl");
+        String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", event.getKey());
+        //String request = (BASE_URL+GET_MATCH_LIST).replace("{EVENT_KEY}", "2016ohcl");
         Ion.with(context)
                 .load(request)
                 .addHeader("X-TBA-App-Id", "frc1126:scouting-app-2017:" + versionName)
@@ -78,6 +78,7 @@ public class BlueAlliance {
                             return;
                         }
                         for (Match match : result) {
+                            System.out.println(match.getMatchNumber());
                             if (dbHelper.doesMatchExist(match))
                                 dbHelper.updateMatch(match);
                             else {
