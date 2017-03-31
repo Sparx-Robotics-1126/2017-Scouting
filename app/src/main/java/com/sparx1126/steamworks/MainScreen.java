@@ -264,9 +264,14 @@ public class MainScreen extends AppCompatActivity {
     private void setupMatchMap() {
         Map<String, String> matchMap = new HashMap<>();
         String event_key = settings.getString(getResources().getString(R.string.pref_event_key), "");
+        System.out.println("Hiram3");
+        System.out.println(event_key);
         try (Cursor matchCursor = dbHelper.createMatchCursor(dbHelper.getEvent(event_key))) {
+            System.out.println("Hiram4");
             while (matchCursor.moveToNext()) {
+                System.out.println("Hiram5");
                 String compLevel = matchCursor.getString(matchCursor.getColumnIndex(DatabaseHelper.TABLE_MATCHES_COMP_LEVEL));
+                System.out.println(compLevel);
                 if(compLevel.contentEquals("qm")) {
                     String matchNumber = matchCursor.getString(matchCursor.getColumnIndex(DatabaseHelper.TABLE_MATCHES_MATCH_NUMBER));
                     String matchKey = matchCursor.getString(matchCursor.getColumnIndex(DatabaseHelper.TABLE_MATCHES_KEY));

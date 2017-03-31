@@ -78,6 +78,7 @@ public class BlueAlliance {
                             return;
                         }
                         for (Match match : result) {
+                            System.out.println(match.getMatchNumber());
                             if (dbHelper.doesMatchExist(match))
                                 dbHelper.updateMatch(match);
                             else {
