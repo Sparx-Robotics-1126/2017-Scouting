@@ -330,6 +330,8 @@ public class SparxPosting {
                         File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
                         if(storageDir == null) throw new AssertionError("Cannot read " + Environment.DIRECTORY_PICTURES);
                         String path = storageDir.getAbsolutePath();
+                        System.out.println("Hiram");
+                        System.out.println(path);
 
                         for (RobotImage sd : result) {
                             byte[] imageDataBytes = Base64.decode(sd.getBlob(), 0);
@@ -343,6 +345,19 @@ public class SparxPosting {
                                 e1.printStackTrace();
                             }
                         }
+
+                        /*for (RobotImage sd : result) {
+                            byte[] imageDataBytes = Base64.decode(sd.getBlob(), 0);
+                            try {
+                                FileOutputStream imageOutFile = new FileOutputStream(
+                                        "/storage/1D0F-260D/Android/data/com.sparx1126.steamworks/files/Pictures" + "/" + sd.getFileName());
+                                imageOutFile.write(imageDataBytes);
+                                imageOutFile.close();
+                                uploadedPictures.add(sd.getFileName());
+                            } catch (IOException e1) {
+                                e1.printStackTrace();
+                            }
+                        }*/
                         NetworkHelper.setLoadedPictures(context);
                         if(callback != null) {
                             callback.handleFinishDownload(true);
